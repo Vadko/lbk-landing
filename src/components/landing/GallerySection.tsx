@@ -4,12 +4,43 @@ import { useState } from "react";
 import Image from "next/image";
 
 const GALLERY_ITEMS = [
-  { src: "/assets/2.webp", alt: "Головний екран LB Launcher", label: "Головний екран", large: true },
-  { src: "/assets/1.webp", alt: "LB Launcher світла тема", label: "Світла тема" },
-  { src: "/assets/3.webp", alt: "Налаштування LB Launcher", label: "Налаштування" },
-  { src: "/assets/4.webp", alt: "Сповіщення LB Launcher", label: "Сповіщення" },
-  { src: "/assets/5.webp", alt: "Деталі гри в LB Launcher", label: "Деталі гри" },
-  { src: "/assets/7.webp", alt: "Процес завантаження в LB Launcher", label: "Процес завантаження" },
+  {
+    src: "/assets/2.webp",
+    alt: "Головний екран LB Launcher",
+    label: "Головний екран",
+    description: "Каталог ігор з українськими перекладами. Шукайте, фільтруйте та встановлюйте локалізації в один клік.",
+    large: true
+  },
+  {
+    src: "/assets/1.webp",
+    alt: "LB Launcher світла тема",
+    label: "Світла тема",
+    description: "Лаунчер підтримує світлу та темну теми — обирайте те, що зручніше для ваших очей."
+  },
+  {
+    src: "/assets/3.webp",
+    alt: "Налаштування LB Launcher",
+    label: "Налаштування",
+    description: "Гнучкі налаштування: тема, мова інтерфейсу, шляхи до ігор та автооновлення."
+  },
+  {
+    src: "/assets/4.webp",
+    alt: "Сповіщення LB Launcher",
+    label: "Сповіщення",
+    description: "Отримуйте сповіщення про нові переклади та оновлення встановлених локалізацій."
+  },
+  {
+    src: "/assets/5.webp",
+    alt: "Деталі гри в LB Launcher",
+    label: "Деталі гри",
+    description: "Детальна інформація про переклад: прогрес, команда перекладачів, версія та опис."
+  },
+  {
+    src: "/assets/7.webp",
+    alt: "Процес завантаження в LB Launcher",
+    label: "Процес завантаження",
+    description: "Швидке завантаження та автоматичне встановлення перекладу прямо в папку з грою."
+  },
 ];
 
 export function GallerySection() {
@@ -100,7 +131,8 @@ export function GallerySection() {
               height={800}
             />
             <div className="lightbox-caption">
-              {GALLERY_ITEMS[lightboxIndex].label}
+              <h3>{GALLERY_ITEMS[lightboxIndex].label}</h3>
+              <p>{GALLERY_ITEMS[lightboxIndex].description}</p>
             </div>
           </div>
         )}

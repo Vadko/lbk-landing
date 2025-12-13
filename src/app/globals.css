@@ -767,10 +767,27 @@ a { text-decoration: none; color: white; transition: 0.3s; }
 .lightbox-caption {
     text-align: center;
     color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-top: 16px;
-    opacity: 0.9;
+    margin-top: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lightbox-caption h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.lightbox-caption p {
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.85;
+    line-height: 1.6;
 }
 
 .lightbox-close {
