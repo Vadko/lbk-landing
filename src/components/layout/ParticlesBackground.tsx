@@ -1,13 +1,18 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
-import Particles from "react-tsparticles";
-import type { Engine } from "tsparticles-engine";
-import { loadSlim } from "tsparticles-slim";
+import { useEffect, useMemo, useState } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 
 export function ParticlesBackground() {
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
+  const [init, setInit] = useState(false);
+
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => {
+      setInit(true);
+    });
   }, []);
 
   const options = useMemo(
@@ -35,11 +40,9 @@ export function ParticlesBackground() {
         },
         opacity: {
           value: 0.3,
-          random: false,
         },
         size: {
           value: { min: 1, max: 3 },
-          random: true,
         },
         links: {
           enable: true,
@@ -52,12 +55,10 @@ export function ParticlesBackground() {
           enable: true,
           speed: 0.3,
           direction: "none" as const,
-          random: false,
           straight: false,
           outModes: {
             default: "out" as const,
           },
-          bounce: false,
         },
       },
       interactivity: {
@@ -69,7 +70,6 @@ export function ParticlesBackground() {
           onClick: {
             enable: false,
           },
-          resize: true,
         },
       },
       detectRetina: false,
@@ -77,10 +77,13 @@ export function ParticlesBackground() {
     []
   );
 
+  if (!init) {
+    return null;
+  }
+
   return (
     <Particles
       id="tsparticles"
-      init={particlesInit}
       options={options}
       className="particles-container"
     />
