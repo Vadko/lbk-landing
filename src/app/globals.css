@@ -45,6 +45,14 @@
     color: var(--text-primary);
 }
 
+/* Світла тема - кнопки з градієнтом повинні мати білий текст */
+.light .dl-btn,
+.light .collab-btn:not(.github),
+.light .btn-support,
+.light .game-dl-btn {
+    color: white;
+}
+
 /* Світла тема - картки */
 .light .g-card,
 .light .why-card,
@@ -1115,7 +1123,6 @@ a { text-decoration: none; color: white; transition: 0.3s; }
     border: 1px solid var(--glass-border);
     border-radius: 16px;
     margin-bottom: 16px;
-    overflow: hidden;
     transition: all 0.3s ease;
 }
 
@@ -1165,7 +1172,7 @@ a { text-decoration: none; color: white; transition: 0.3s; }
 }
 
 .faq-item.active .faq-answer {
-    max-height: 500px;
+    max-height: 700px;
 }
 
 .faq-answer p {
@@ -1190,6 +1197,7 @@ a { text-decoration: none; color: white; transition: 0.3s; }
 
 .tech-stack li:last-child {
     border-bottom: none;
+    padding-bottom: 20px;
 }
 
 .tech-stack li strong {
@@ -2083,6 +2091,96 @@ footer {
     font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 16px;
+}
+
+/* Game Install Steps */
+.game-install-steps {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+    margin: 0;
+}
+
+.game-install-steps li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 50px;
+    margin-bottom: 20px;
+    color: var(--text-sec);
+    line-height: 1.6;
+}
+
+.game-install-steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 32px;
+    height: 32px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: white;
+}
+
+.game-install-steps li strong {
+    color: var(--text-primary);
+}
+
+/* Game FAQ */
+.game-faq .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.game-faq .faq-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.game-faq .faq-item:hover {
+    border-color: var(--accent-blue);
+}
+
+.game-faq .faq-item summary {
+    padding: 16px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.game-faq .faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.game-faq .faq-item summary::after {
+    content: '+';
+    font-size: 1.5rem;
+    color: var(--accent-blue);
+    transition: transform 0.3s ease;
+}
+
+.game-faq .faq-item[open] summary::after {
+    transform: rotate(45deg);
+}
+
+.game-faq .faq-item p {
+    padding: 0 20px 16px;
+    margin: 0;
+    color: var(--text-sec);
+    line-height: 1.7;
 }
 
 /* Game Progress */

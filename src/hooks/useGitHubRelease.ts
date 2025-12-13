@@ -67,13 +67,9 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
   const { latest: release, totalDownloads } = data;
   const assets = release.assets;
 
-  const windows = assets.find(
-    (a) => a.name.endsWith(".exe") || a.name.includes("Setup")
-  );
+  const windows = assets.find((a) => a.name.endsWith("Setup.exe"));
   const macos = assets.find((a) => a.name.endsWith(".dmg"));
-  const linux = assets.find(
-    (a) => a.name.endsWith(".AppImage") || a.name.endsWith(".deb")
-  );
+  const linux = assets.find((a) => a.name.endsWith(".AppImage"));
 
   return {
     windows: windows?.browser_download_url ?? null,

@@ -24,22 +24,45 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  const statusText = game.status === 'completed'
+    ? 'Повний переклад готовий!'
+    : game.status === 'in-progress'
+      ? `Переклад ${game.translation_progress}% готовий`
+      : 'Переклад в розробці';
+
+  const description = `Український переклад ${game.name} від ${game.team}. ${statusText} Завантажте безкоштовно через LB Launcher та грайте українською.`;
+
   return {
     title: `${game.name} українською — Український переклад гри`,
-    description: game.description
-      ? `${game.description.slice(0, 150)}...`
-      : `Завантажте українську локалізацію для ${game.name}. Грайте в ${game.name} українською мовою.`,
+    description,
     keywords: [
       `${game.name} українською`,
       `${game.name} український переклад`,
       `${game.name} українізатор`,
       `${game.name} локалізація`,
       `${game.name} переклад`,
+      `${game.name} ua`,
+      `${game.name} ukrainian`,
+      `скачати ${game.name} українською`,
+      `як перекласти ${game.name}`,
+      'українізатор ігор',
+      'LB Launcher',
     ],
     openGraph: {
-      title: `${game.name} — Український переклад | LB Launcher`,
-      description: game.description || `Український переклад гри ${game.name}`,
+      title: `${game.name} українською — Український переклад | LB Launcher`,
+      description,
       images: game.banner_path ? [getImageUrl(game.banner_path)!] : undefined,
+      type: 'article',
+      locale: 'uk_UA',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${game.name} українською`,
+      description,
+      images: game.banner_path ? [getImageUrl(game.banner_path)!] : undefined,
+    },
+    alternates: {
+      canonical: `https://lblauncher.com/games/${slug}`,
     },
   };
 }
@@ -191,6 +214,50 @@ export default async function GamePage({ params }: PageProps) {
                   <p className="game-description">{game.game_description}</p>
                 </section>
               )}
+
+              {/* How to Install - SEO content */}
+              <section className="game-section">
+                <h2>Як встановити український переклад {game.name}</h2>
+                <ol className="game-install-steps">
+                  <li>
+                    <strong>Завантажте LB Launcher</strong> — безкоштовну програму для встановлення українських перекладів ігор
+                  </li>
+                  <li>
+                    <strong>Знайдіть {game.name}</strong> у каталозі ігор лаунчера
+                  </li>
+                  <li>
+                    <strong>Натисніть &quot;Встановити&quot;</strong> — переклад автоматично завантажиться та встановиться
+                  </li>
+                  <li>
+                    <strong>Запустіть гру</strong> та насолоджуйтесь українською локалізацією!
+                  </li>
+                </ol>
+              </section>
+
+              {/* FAQ - SEO content */}
+              <section className="game-section game-faq">
+                <h2>Часті питання про переклад {game.name}</h2>
+                <div className="faq-list">
+                  <details className="faq-item">
+                    <summary>Чи безкоштовний український переклад {game.name}?</summary>
+                    <p>Так, переклад {game.name} від команди {game.team} повністю безкоштовний. Завантажте LB Launcher та встановіть українську локалізацію за кілька кліків.</p>
+                  </details>
+                  <details className="faq-item">
+                    <summary>Чи потрібна ліцензійна гра для встановлення перекладу?</summary>
+                    <p>Так, для коректної роботи перекладу потрібна оригінальна гра {game.name}. Переклад працює з версіями з {game.platforms?.join(', ') || 'Steam, GOG, Epic Games'}.</p>
+                  </details>
+                  <details className="faq-item">
+                    <summary>Як оновити переклад до нової версії?</summary>
+                    <p>LB Launcher автоматично перевіряє оновлення. Коли вийде нова версія перекладу, ви отримаєте сповіщення та зможете оновити в один клік.</p>
+                  </details>
+                  {game.voice_progress && game.voice_progress > 0 && (
+                    <details className="faq-item">
+                      <summary>Чи є українська озвучка для {game.name}?</summary>
+                      <p>Так! Команда {game.team} працює над українською озвучкою. Наразі озвучено {game.voice_progress}% гри.</p>
+                    </details>
+                  )}
+                </div>
+              </section>
             </div>
 
             {/* Sidebar */}
@@ -201,7 +268,7 @@ export default async function GamePage({ params }: PageProps) {
                   <i className="fa-solid fa-download" />
                   <h3>Встановіть переклад</h3>
                 </div>
-                <p>Завантажте LB Launcher і встановіть переклад в один клік</p>
+                <p>Завантажте LB Launcher і встановіть переклад в один клац</p>
                 <Link href="/#hero" className="dl-btn game-dl-btn">
                   <i className="fa-brands fa-windows" />
                   <div className="dl-info">
@@ -275,7 +342,7 @@ export default async function GamePage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* JSON-LD */}
+      {/* JSON-LD Software Application */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -283,8 +350,7 @@ export default async function GamePage({ params }: PageProps) {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             name: `${game.name} — Український переклад`,
-            description:
-              game.description || `Український переклад гри ${game.name}`,
+            description: `Український переклад ${game.name} від ${game.team}. Завантажте безкоштовно через LB Launcher.`,
             applicationCategory: "GameApplication",
             operatingSystem: game.platforms?.join(", ") || "Windows",
             author: {
@@ -297,6 +363,75 @@ export default async function GamePage({ params }: PageProps) {
               priceCurrency: "UAH",
             },
             inLanguage: "uk",
+            downloadUrl: "https://lblauncher.com",
+          }),
+        }}
+      />
+
+      {/* JSON-LD FAQ - для rich snippets в Google */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: `Чи безкоштовний український переклад ${game.name}?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `Так, переклад ${game.name} від команди ${game.team} повністю безкоштовний. Завантажте LB Launcher та встановіть українську локалізацію за кілька кліків.`,
+                },
+              },
+              {
+                "@type": "Question",
+                name: `Як встановити український переклад ${game.name}?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `Завантажте безкоштовний LB Launcher з lblauncher.com, знайдіть ${game.name} у каталозі ігор та натисніть "Встановити". Переклад автоматично завантажиться та встановиться.`,
+                },
+              },
+              {
+                "@type": "Question",
+                name: `Чи потрібна ліцензійна гра для встановлення перекладу ${game.name}?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `Так, для коректної роботи перекладу потрібна оригінальна гра ${game.name}. Переклад працює з версіями з ${game.platforms?.join(', ') || 'Steam, GOG, Epic Games'}.`,
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
+      {/* JSON-LD BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Головна",
+                item: "https://lblauncher.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Ігри",
+                item: "https://lblauncher.com/games",
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: game.name,
+                item: `https://lblauncher.com/games/${slug}`,
+              },
+            ],
           }),
         }}
       />
