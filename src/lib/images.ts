@@ -1,8 +1,11 @@
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const STORAGE_BUCKET = "game-images";
+/**
+ * R2 public URL for images (via custom domain)
+ */
+const R2_IMAGES_URL =
+  process.env.NEXT_PUBLIC_R2_IMAGES_URL || "https://images.lblauncher.com";
 
 /**
- * Converts a storage path to a full Supabase storage URL.
+ * Converts a storage path to a full R2 storage URL.
  * Handles both relative paths and full URLs.
  */
 export function getImageUrl(path: string | null): string | null {
@@ -16,5 +19,5 @@ export function getImageUrl(path: string | null): string | null {
   // Remove leading slash if present
   const cleanPath = path.startsWith("/") ? path.slice(1) : path;
 
-  return `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${cleanPath}`;
+  return `${R2_IMAGES_URL}/${cleanPath}`;
 }
