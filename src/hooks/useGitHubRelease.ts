@@ -4,57 +4,23 @@ import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/queryKeys";
 import type { GitHubRelease } from "@/lib/types";
 
-const GITHUB_REPO = "Vadko/littlebit-launcher";
-
 interface AllReleasesData {
   latest: GitHubRelease;
   totalDownloads: number;
 }
 
 async function fetchAllReleases(): Promise<AllReleasesData> {
-  // Fetch only latest release for version info (швидше)
-  const latestResponse = await fetch(
-    `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`,
-    {
-      headers: {
-        Accept: "application/vnd.github.v3+json",
-      },
-      next: { revalidate: 3600 },
-    }
-  );
+  const response = await fetch("/api/github-releases");
 
-  if (!latestResponse.ok) {
-    throw new Error("Failed to fetch latest release");
+  if (!response.ok) {
+    throw new Error("Failed to fetch releases");
   }
 
-  const latest: GitHubRelease = await latestResponse.json();
-
-  // Fetch all releases тільки для підрахунку downloads
-  // Використовуємо per_page=100 і рахуємо тільки перші 20 релізів для швидкості
-  const allReleasesResponse = await fetch(
-    `https://api.github.com/repos/${GITHUB_REPO}/releases?per_page=20`,
-    {
-      headers: {
-        Accept: "application/vnd.github.v3+json",
-      },
-      next: { revalidate: 3600 },
-    }
-  );
-
-  let totalDownloads = 0;
-  if (allReleasesResponse.ok) {
-    const releases: GitHubRelease[] = await allReleasesResponse.json();
-    // Оптимізований підрахунок - один прохід
-    for (const release of releases) {
-      for (const asset of release.assets) {
-        totalDownloads += asset.download_count;
-      }
-    }
-  }
+  const data = await response.json();
 
   return {
-    latest,
-    totalDownloads,
+    latest: data.latest,
+    totalDownloads: data.totalDownloads,
   };
 }
 
