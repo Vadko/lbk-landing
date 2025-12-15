@@ -5,13 +5,18 @@ const GITHUB_REPO = "Vadko/littlebit-launcher";
 const CACHE_TTL_SECONDS = 3600; // 1 година
 
 async function fetchFromGitHub() {
+  const headers = {
+    Accept: "application/vnd.github.v3+json",
+    "User-Agent": "lb-landing/1.0",
+  };
+
   const [latestResponse, allReleasesResponse] = await Promise.all([
     fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`, {
-      headers: { Accept: "application/vnd.github.v3+json" },
+      headers,
       next: { revalidate: CACHE_TTL_SECONDS },
     }),
     fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases?per_page=100`, {
-      headers: { Accept: "application/vnd.github.v3+json" },
+      headers,
       next: { revalidate: CACHE_TTL_SECONDS },
     }),
   ]);
