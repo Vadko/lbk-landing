@@ -45,33 +45,45 @@ async function fetchFromGitHub(): Promise<CachedData> {
   };
 }
 
-export async function GET() {
+function getKV(): CloudflareEnv["NEXT_CACHE_WORKERS_KV"] | null {
   try {
     const { env } = getCloudflareContext();
-    const kv = env.NEXT_CACHE_WORKERS_KV;
+    return env.NEXT_CACHE_WORKERS_KV ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function GET() {
+  try {
+    const kv = getKV();
 
     // Спробувати отримати з KV
-    const cached = await kv.get<CachedData>(KV_KEY, "json");
+    if (kv) {
+      const cached = await kv.get<CachedData>(KV_KEY, "json");
 
-    if (cached) {
-      const age = (Date.now() - cached.cachedAt) / 1000;
-      if (age < CACHE_TTL_SECONDS) {
-        return NextResponse.json({
-          latest: cached.latest,
-          totalDownloads: cached.totalDownloads,
-          cached: true,
-          age: Math.round(age),
-        });
+      if (cached) {
+        const age = (Date.now() - cached.cachedAt) / 1000;
+        if (age < CACHE_TTL_SECONDS) {
+          return NextResponse.json({
+            latest: cached.latest,
+            totalDownloads: cached.totalDownloads,
+            cached: true,
+            age: Math.round(age),
+          });
+        }
       }
     }
 
     // Фетчимо свіжі дані
     const freshData = await fetchFromGitHub();
 
-    // Зберігаємо в KV
-    await kv.put(KV_KEY, JSON.stringify(freshData), {
-      expirationTtl: CACHE_TTL_SECONDS,
-    });
+    // Зберігаємо в KV якщо доступний
+    if (kv) {
+      await kv.put(KV_KEY, JSON.stringify(freshData), {
+        expirationTtl: CACHE_TTL_SECONDS,
+      });
+    }
 
     return NextResponse.json({
       latest: freshData.latest,
