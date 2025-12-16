@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import type { GameListItem } from "@/lib/types";
+import type { GameGroup, TranslationItem } from "@/lib/types";
 import { getImageUrl } from "@/lib/images";
 
 interface GameCardProps {
-  game: GameListItem;
+  game: GameGroup;
 }
 
 const STATUS_LABELS: Record<string, { label: string; className: string }> = {
@@ -18,51 +18,80 @@ const STATUS_LABELS: Record<string, { label: string; className: string }> = {
   planned: { label: "Заплановано", className: "game-card-status planned" },
 };
 
-export function GameCard({ game }: GameCardProps) {
-  const status = STATUS_LABELS[game.status] || STATUS_LABELS.planned;
-  const imageUrl =
-    getImageUrl(game.banner_path) || getImageUrl(game.thumbnail_path);
+function TranslationRow({ translation, slug }: { translation: TranslationItem; slug: string }) {
+  const status = STATUS_LABELS[translation.status] || STATUS_LABELS.planned;
+  const progress = translation.translation_progress ?? 0;
 
   return (
-    <Link href={`/games/${game.slug}`} className="game-card">
-      <div className="game-card-image">
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={`${game.name} — український переклад гри`}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
-          />
-        ) : (
-          <div className="game-card-placeholder">
-            <i className="fa-solid fa-gamepad" />
+    <Link
+      href={`/games/${slug}/${encodeURIComponent(translation.team)}`}
+      className="game-card-translation"
+    >
+      <span className="game-card-translation-team">{translation.team}</span>
+      <div className="game-card-translation-info">
+        <span className={`game-card-translation-status ${status.className}`}>
+          {status.label}
+        </span>
+        {translation.status !== "planned" && progress > 0 && (
+          <div className="game-card-translation-progress">
+            <div className="progress-bar progress-bar-small">
+              <div
+                className="progress-bar-fill"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <span className="game-card-translation-percent">{progress}%</span>
           </div>
         )}
       </div>
+    </Link>
+  );
+}
 
-      <div className="game-card-content">
-        <h3 className="game-card-title">{game.name}</h3>
-        <p className="game-card-team">{game.team}</p>
+export function GameCard({ game }: GameCardProps) {
+  const imageUrl =
+    getImageUrl(game.banner_path) || getImageUrl(game.thumbnail_path);
 
-        <div className="game-card-footer">
-          <span className={status.className}>{status.label}</span>
+  // For single translation, link directly to the translation page
+  const cardHref = game.translations.length === 1
+    ? `/games/${game.slug}/${encodeURIComponent(game.translations[0].team)}`
+    : `/games/${game.slug}`;
 
-          {game.status !== "planned" && game.translation_progress > 0 && (
-            <div className="game-card-progress">
-              <div className="game-card-progress-text">
-                {game.translation_progress}%
-              </div>
-              <div className="progress-bar">
-                <div
-                  className="progress-bar-fill"
-                  style={{ width: `${game.translation_progress}%` }}
-                />
-              </div>
+  return (
+    <div className="game-card">
+      <Link href={cardHref} className="game-card-image-link">
+        <div className="game-card-image">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={`${game.name} — український переклад гри`}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover"
+            />
+          ) : (
+            <div className="game-card-placeholder">
+              <i className="fa-solid fa-gamepad" />
             </div>
           )}
         </div>
+      </Link>
+
+      <div className="game-card-content">
+        <Link href={cardHref}>
+          <h3 className="game-card-title">{game.name}</h3>
+        </Link>
+
+        <div className="game-card-translations">
+          {game.translations.map((translation) => (
+            <TranslationRow
+              key={translation.id}
+              translation={translation}
+              slug={game.slug}
+            />
+          ))}
+        </div>
       </div>
-    </Link>
+    </div>
   );
 }

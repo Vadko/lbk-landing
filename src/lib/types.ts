@@ -4,20 +4,29 @@ export type Game = Database["public"]["Tables"]["games"]["Row"];
 
 export type GameStatus = Database["public"]["Enums"]["game_status"];
 
-export type GameListItem = Pick<
+// Translation item for grouped games
+export type TranslationItem = Pick<
   Game,
   | "id"
-  | "name"
-  | "slug"
-  | "status"
-  | "thumbnail_path"
-  | "translation_progress"
   | "team"
-  | "banner_path"
+  | "status"
+  | "translation_progress"
+  | "version"
+  | "updated_at"
 >;
 
-export interface GamesResponse {
-  games: GameListItem[];
+// Grouped game with multiple translations
+export interface GameGroup {
+  slug: string;
+  name: string;
+  banner_path: string | null;
+  thumbnail_path: string | null;
+  is_adult: boolean;
+  translations: TranslationItem[];
+}
+
+export interface GamesGroupedResponse {
+  games: GameGroup[];
   total: number;
   hasMore: boolean;
   nextOffset: number;

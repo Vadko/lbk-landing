@@ -65,20 +65,23 @@ function WhyCard({ feature, gamesCount }: WhyCardProps) {
   const angleRef = useRef(0);
   const animationRef = useRef<number | null>(null);
 
-  const rotateGradient = useCallback(() => {
-    if (!cardRef.current) return;
-    angleRef.current += 0.5;
-    if (angleRef.current >= 360) angleRef.current = 0;
-    cardRef.current.style.setProperty(
-      "--gradient-angle",
-      String(angleRef.current)
-    );
-    animationRef.current = requestAnimationFrame(rotateGradient);
+  const startAnimation = useCallback(() => {
+    const animate = () => {
+      if (!cardRef.current) return;
+      angleRef.current += 0.5;
+      if (angleRef.current >= 360) angleRef.current = 0;
+      cardRef.current.style.setProperty(
+        "--gradient-angle",
+        String(angleRef.current)
+      );
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    animate();
   }, []);
 
   const handleMouseEnter = useCallback(() => {
-    rotateGradient();
-  }, [rotateGradient]);
+    startAnimation();
+  }, [startAnimation]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;

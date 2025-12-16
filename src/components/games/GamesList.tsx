@@ -69,7 +69,7 @@ export function GamesList() {
         <>
           <div className="games-grid">
             {allGames.map((game, index) => (
-              <div key={game.id} className="game-card-wrapper">
+              <div key={game.slug} className="game-card-wrapper">
                 <GameCard game={game} />
                 {hasNextPage && index === allGames.length - 5 && (
                   <div ref={observerTarget} style={{ height: 0 }} />

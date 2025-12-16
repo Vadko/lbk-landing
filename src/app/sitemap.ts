@@ -6,15 +6,47 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const { data: games } = await supabase
     .from("games")
-    .select("slug, updated_at")
+    .select("slug, team, updated_at")
     .eq("approved", true);
 
-  const gameUrls: MetadataRoute.Sitemap = (games ?? []).map((game) => ({
-    url: `https://lblauncher.com/games/${game.slug}`,
-    lastModified: new Date(game.updated_at),
-    changeFrequency: "weekly",
-    priority: 0.7,
-  }));
+  const allGames = games ?? [];
+
+  // Group games by slug to determine which have multiple translations
+  const slugGroups = new Map<string, typeof allGames>();
+  for (const game of allGames) {
+    const existing = slugGroups.get(game.slug) ?? [];
+    existing.push(game);
+    slugGroups.set(game.slug, existing);
+  }
+
+  const gameUrls: MetadataRoute.Sitemap = [];
+
+  for (const [slug, translations] of slugGroups) {
+    // Get the most recent update date for the slug page
+    const latestUpdate = translations.reduce(
+      (latest, t) =>
+        new Date(t.updated_at) > latest ? new Date(t.updated_at) : latest,
+      new Date(0)
+    );
+
+    // Add slug page (shows all translations or redirects if single)
+    gameUrls.push({
+      url: `https://lblauncher.com/games/${slug}`,
+      lastModified: latestUpdate,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    });
+
+    // Add individual translation pages
+    for (const translation of translations) {
+      gameUrls.push({
+        url: `https://lblauncher.com/games/${slug}/${encodeURIComponent(translation.team)}`,
+        lastModified: new Date(translation.updated_at),
+        changeFrequency: "weekly",
+        priority: 0.6,
+      });
+    }
+  }
 
   return [
     {
