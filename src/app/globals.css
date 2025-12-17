@@ -2866,6 +2866,19 @@ footer {
     color: var(--text-primary);
 }
 
+.light .game-card-translation {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.light .game-card-translation:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.light .game-card-translation-status.in-progress {
+    background: rgba(255, 193, 7, 0.25);
+    color: #b8860b;
+}
+
 .light .game-sidebar {
     background: rgba(255, 255, 255, 0.8);
     border-color: rgba(0, 0, 0, 0.1);
