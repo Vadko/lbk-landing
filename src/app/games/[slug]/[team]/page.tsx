@@ -200,14 +200,18 @@ export default async function GameTranslationPage({ params }: PageProps) {
               {game.description && (
                 <section className="game-section">
                   <h2>Про переклад</h2>
-                  <p className="game-description">{game.description}</p>
+                  <p className="game-description whitespace-pre-line">
+                    {game.description}
+                  </p>
                 </section>
               )}
 
               {game.game_description && (
                 <section className="game-section">
                   <h2>Про гру</h2>
-                  <p className="game-description">{game.game_description}</p>
+                  <p className="game-description whitespace-pre-line">
+                    {game.game_description}
+                  </p>
                 </section>
               )}
 
