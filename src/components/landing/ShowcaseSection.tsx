@@ -18,12 +18,6 @@ const FEATURES = [
       "Лаунчер сам знаходить усі встановлені ігри у ваших бібліотеках.",
   },
   {
-    icon: "fa-solid fa-bolt",
-    title: "Встановлення в один клац",
-    description:
-      "Встановлюйте, оновлюйте або видаляйте переклади за лічені секунди.",
-  },
-  {
     icon: "fa-solid fa-floppy-disk",
     title: "Резервні копії",
     description:
@@ -40,6 +34,12 @@ const FEATURES = [
     title: "Налаштуйте під себе",
     description:
       "Темна й світла теми, гнучкі налаштування інтерфейсу та сповіщень.",
+  },
+  {
+    icon: "fa-solid fa-gamepad",
+    title: "Геймпад і Steam Deck",
+    description:
+      "Повна підтримка керування геймпадом та оптимізація для Steam Deck.",
   },
   {
     icon: "fa-solid fa-rotate",

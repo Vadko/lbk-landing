@@ -9,7 +9,7 @@ const GALLERY_ITEMS = [
     alt: "Головний екран LB Launcher",
     label: "Головний екран",
     description:
-      "Каталог ігор з українськими перекладами. Шукайте, фільтруйте та встановлюйте локалізації в один клік.",
+      "Каталог ігор з українськими перекладами. Шукайте, фільтруйте та встановлюйте локалізації в один клац.",
     large: true,
   },
   {
@@ -93,6 +93,10 @@ export function GallerySection() {
               />
               <div className="gallery-overlay">
                 <span>{item.label}</span>
+              </div>
+              <div className="gallery-caption-mobile">
+                <strong>{item.label}</strong>
+                <span>{item.description}</span>
               </div>
             </div>
           ))}

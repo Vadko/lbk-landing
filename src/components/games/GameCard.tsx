@@ -5,6 +5,7 @@ import Image from "next/image";
 import type { GameGroup, TranslationItem } from "@/lib/types";
 import { getImageUrl } from "@/lib/images";
 import { teamToSlug } from "@/lib/transliterate";
+import { AuthorName } from "@/components/ui/AuthorName";
 
 interface GameCardProps {
   game: GameGroup;
@@ -28,7 +29,9 @@ function TranslationRow({ translation, slug }: { translation: TranslationItem; s
       href={`/games/${slug}/${teamToSlug(translation.team)}`}
       className="game-card-translation"
     >
-      <span className="game-card-translation-team">{translation.team}</span>
+      <span className="game-card-translation-team">
+        <AuthorName team={translation.team} />
+      </span>
       <div className="game-card-translation-info">
         <span className={`game-card-translation-status ${status.className}`}>
           {status.label}

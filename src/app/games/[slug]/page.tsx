@@ -172,8 +172,15 @@ export default async function GamePage({ params }: PageProps) {
 
                       <p className="game-translation-card-updated">
                         Оновлено:{" "}
-                        {new Date(translation.updated_at).toLocaleDateString(
-                          "uk-UA"
+                        {new Date(translation.updated_at).toLocaleString(
+                          "uk-UA",
+                          {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
                         )}
                       </p>
                     </div>

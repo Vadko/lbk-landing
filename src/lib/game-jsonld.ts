@@ -32,7 +32,7 @@ export function generateFAQLD(game: Game) {
         name: `Чи безкоштовний український переклад ${game.name}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Так, переклад ${game.name} від команди ${game.team} повністю безкоштовний. Завантажте LB Launcher та встановіть українську локалізацію за кілька кліків.`,
+          text: `Так, переклад ${game.name} від команди ${game.team} повністю безкоштовний. Завантажте LB Launcher та встановіть українську локалізацію за кілька клаців.`,
         },
       },
       {

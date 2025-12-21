@@ -22,6 +22,7 @@ import {
   GameFAQ,
   GameInstallSteps,
 } from "@/components/game-detail";
+import { GameTeamLink } from "@/components/ui/GameTeamLink";
 
 interface PageProps {
   params: Promise<{ slug: string; team: string }>;
@@ -153,13 +154,7 @@ export default async function GameTranslationPage({ params }: PageProps) {
                   <span className={status.className}>{status.label}</span>
                 </div>
                 <p className="game-meta">
-                  Переклад від{" "}
-                  <Link
-                    href={`/games?team=${encodeURIComponent(game.team)}`}
-                    className="game-team-link"
-                  >
-                    {game.team}
-                  </Link>
+                  Переклад від <GameTeamLink team={game.team} />
                   {game.version && ` • Версія ${game.version}`}
                 </p>
               </header>

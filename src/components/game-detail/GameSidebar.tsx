@@ -85,10 +85,12 @@ export function GameSidebar({ game }: GameSidebarProps) {
           <div className="game-stat">
             <span>Оновлено</span>
             <strong>
-              {new Date(game.updated_at).toLocaleDateString("uk-UA", {
+              {new Date(game.updated_at).toLocaleString("uk-UA", {
                 day: "numeric",
-                month: "long",
+                month: "short",
                 year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
               })}
             </strong>
           </div>

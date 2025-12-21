@@ -96,11 +96,6 @@ export function HeroSection() {
     return "fa-windows";
   };
 
-  const getInstructionUrl = () => {
-    if (os === "macos") return "https://github.com/Vadko/littlebit-launcher#macos";
-    if (os === "linux") return "https://github.com/Vadko/littlebit-launcher#linux";
-    return "https://github.com/Vadko/littlebit-launcher#windows";
-  };
 
   const versionText = isReleaseLoading
     ? "Завантаження..."
@@ -181,15 +176,10 @@ export function HeroSection() {
             </div>
           </div>
 
-          <a
-            href={getInstructionUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="instruction-link"
-          >
+          <Link href="/setup" className="instruction-link">
             <i className="fa-solid fa-book" />
             <span>Інструкція з встановлення</span>
-          </a>
+          </Link>
 
           <div className="stats-mini">
             <div>
@@ -208,21 +198,27 @@ export function HeroSection() {
         </div>
 
         <div className="hero-visual">
-          <Image
-            src="/assets/2.webp"
-            alt="LB Launcher головний екран — українізатор ігор"
-            width={600}
-            height={400}
-            className="hero-img main-shot"
-            priority
-          />
-          <Image
-            src="/assets/1.webp"
-            alt="LB Launcher світла тема"
-            width={540}
-            height={360}
-            className="hero-img back-shot"
-          />
+          <figure className="hero-figure main-figure">
+            <Image
+              src="/assets/2.webp"
+              alt="LB Launcher головний екран — українізатор ігор"
+              width={600}
+              height={400}
+              className="hero-img main-shot"
+              priority
+            />
+            <figcaption className="hero-caption">Темна тема</figcaption>
+          </figure>
+          <figure className="hero-figure back-figure">
+            <Image
+              src="/assets/1.webp"
+              alt="LB Launcher світла тема"
+              width={540}
+              height={360}
+              className="hero-img back-shot"
+            />
+            <figcaption className="hero-caption">Світла тема</figcaption>
+          </figure>
         </div>
       </div>
     </section>

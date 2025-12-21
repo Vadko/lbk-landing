@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useGamesCount } from "@/hooks/useGames";
 
 const FAQ_ITEMS = [
   {
     question: "Як це працює?",
     answer:
-      "Усе дуже просто: завантажте лаунчер — він автоматично знайде встановлені ігри на вашому комп'ютері. Оберіть потрібну гру й натисніть «Встановити переклад». Готово!",
+      "Усе дуже просто: завантажте лаунчер — він автоматично знайде встановлені ігри на вашому пристрої. Оберіть потрібну гру й натисніть «Встановити переклад». Готово!",
   },
   {
     question: "Чи безпечно використовувати LB Launcher?",
@@ -20,13 +21,12 @@ const FAQ_ITEMS = [
   },
   {
     question: "Які ігри підтримуються?",
-    answer:
-      "Наразі підтримується понад 80 ігор, і цей список постійно поповнюється. Серед них — популярні AAA-тайтли, інді-ігри та класика. Повний перелік доступний у самому лаунчері.",
+    answer: "games-count",
   },
   {
     question: "Лаунчер безкоштовний?",
     answer:
-      "Так, LB Launcher повністю безкоштовний — і таким залишиться назавжди. Ми робимо це для української спільноти ґеймерів.",
+      "Так, LB Launcher повністю безкоштовний — і таким залишиться назавжди. Ми робимо це для української спільноти геймерів.",
   },
   {
     question: "Як додати свій переклад до лаунчера?",
@@ -59,9 +59,34 @@ const TECH_STACK = [
 
 export function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { data: gamesCount } = useGamesCount();
 
   const toggle = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
+  };
+
+  const renderAnswer = (answer: string) => {
+    if (answer === "tech-stack") {
+      return (
+        <ul className="tech-stack">
+          {TECH_STACK.map((tech, i) => (
+            <li key={i}>
+              <strong>{tech.name}</strong> — {tech.desc}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    if (answer === "games-count") {
+      return (
+        <p>
+          Наразі підтримується {gamesCount}+ ігор, і цей список постійно
+          поповнюється. Серед них — популярні AAA-тайтли, інді-ігри та класика.
+          Повний перелік доступний у самому лаунчері.
+        </p>
+      );
+    }
+    return <p>{answer}</p>;
   };
 
   return (
@@ -80,19 +105,7 @@ export function FaqSection() {
                 <i className="fa-solid fa-chevron-down" />
               </button>
 
-              <div className="faq-answer">
-                {item.answer === "tech-stack" ? (
-                  <ul className="tech-stack">
-                    {TECH_STACK.map((tech, i) => (
-                      <li key={i}>
-                        <strong>{tech.name}</strong> — {tech.desc}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>{item.answer}</p>
-                )}
-              </div>
+              <div className="faq-answer">{renderAnswer(item.answer)}</div>
             </div>
           ))}
         </div>

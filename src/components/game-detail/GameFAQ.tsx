@@ -16,7 +16,7 @@ export function GameFAQ({ game }: GameFAQProps) {
           <p>
             Так, переклад {game.name} від команди {game.team} повністю
             безкоштовний. Завантажте LB Launcher та встановіть
-            українську локалізацію за кілька кліків.
+            українську локалізацію за кілька клаців.
           </p>
         </details>
         <details className="faq-item">
@@ -34,7 +34,7 @@ export function GameFAQ({ game }: GameFAQProps) {
           <p>
             LB Launcher автоматично перевіряє оновлення. Коли вийде
             нова версія перекладу, ви отримаєте сповіщення та зможете
-            оновити в один клік.
+            оновити в один клац.
           </p>
         </details>
         {game.voice_progress && game.voice_progress > 0 && (
