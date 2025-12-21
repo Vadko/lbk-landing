@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { detectOS } from "@/hooks/useGitHubRelease";
 
@@ -13,14 +13,18 @@ const PLATFORMS: { id: Platform; label: string; icon: string }[] = [
   { id: "steamdeck", label: "Steam Deck", icon: "fa-brands fa-steam" },
 ];
 
-export default function SetupPage() {
-  const [activePlatform, setActivePlatform] = useState<Platform>("windows");
+const getOSPlatform = (): Platform => {
+  const os = detectOS();
+  if (os === "macos") return "macos";
+  if (os === "linux") return "linux";
+  return "windows";
+};
 
-  useEffect(() => {
-    const os = detectOS();
-    if (os === "macos") setActivePlatform("macos");
-    else if (os === "linux") setActivePlatform("linux");
-  }, []);
+const emptySubscribe = () => () => {};
+
+export default function SetupPage() {
+  const detectedPlatform = useSyncExternalStore(emptySubscribe, getOSPlatform, () => "windows" as Platform);
+  const [activePlatform, setActivePlatform] = useState<Platform>(detectedPlatform);
 
   return (
     <section className="setup-page">
