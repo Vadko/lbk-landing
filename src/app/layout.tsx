@@ -136,7 +136,7 @@ export default function RootLayout({
               <ChristmasEffects />
               <BackgroundEffects />
               <Navbar />
-              <main>{children}</main>
+              <main className="relative z-10">{children}</main>
               <Footer />
               <ScrollToTop />
             </ChristmasProvider>

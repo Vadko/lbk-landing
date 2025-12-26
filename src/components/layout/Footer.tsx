@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer>
+    <footer className="relative z-10">
       <div className="container">
         <p>
           &copy; 2025 Little Bit. Зроблено з{" "}

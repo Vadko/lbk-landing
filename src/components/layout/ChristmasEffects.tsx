@@ -19,11 +19,11 @@ export function ChristmasEffects() {
           width: "100%",
           height: "100%",
           pointerEvents: "none",
-          zIndex: 9999,
+          zIndex: 1,
         }}
       >
         <Snowfall
-          snowflakeCount={35}
+          snowflakeCount={25}
           speed={[0.5, 2]}
           wind={[-0.5, 1]}
           radius={[1, 4]}
@@ -108,18 +108,9 @@ export function ChristmasEffects() {
             right: -40px;
           }
         }
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
           .pine-corner {
-            width: 110px;
-            height: 110px;
-          }
-          .pine-top-left {
-            top: -30px;
-            left: -30px;
-          }
-          .pine-top-right {
-            top: -30px;
-            right: -30px;
+            display: none;
           }
         }
       `}</style>
