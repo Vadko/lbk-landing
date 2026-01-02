@@ -8,7 +8,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { data: games } = await supabase
     .from("games")
     .select("slug, team, updated_at")
-    .eq("approved", true);
+    .eq("approved", true)
+    .eq("hide", false);
 
   const allGames = games ?? [];
 

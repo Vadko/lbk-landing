@@ -213,7 +213,8 @@ export function useTeams() {
       const { data, error } = await supabase
         .from("games")
         .select("team")
-        .eq("approved", true);
+        .eq("approved", true)
+        .eq("hide", false);
 
       if (error) {
         throw new Error(error.message);

@@ -11,6 +11,7 @@ export async function getGamesBySlug(slug: string): Promise<Game[]> {
     .select("*")
     .eq("slug", slug)
     .eq("approved", true)
+    .eq("hide", false)
     .order("translation_progress", { ascending: false });
 
   if (error) {
@@ -32,7 +33,8 @@ export async function getGameBySlugAndTeamSlug(
     .from("games")
     .select("*")
     .eq("slug", slug)
-    .eq("approved", true);
+    .eq("approved", true)
+    .eq("hide", false);
 
   if (error || !data) {
     return null;
@@ -50,7 +52,8 @@ export async function getAllGameSlugs(): Promise<string[]> {
   const { data, error } = await supabase
     .from("games")
     .select("slug")
-    .eq("approved", true);
+    .eq("approved", true)
+    .eq("hide", false);
 
   if (error) {
     return [];
@@ -70,7 +73,8 @@ export async function getAllGameSlugsWithTeams(): Promise<
   const { data, error } = await supabase
     .from("games")
     .select("slug, team")
-    .eq("approved", true);
+    .eq("approved", true)
+    .eq("hide", false);
 
   if (error) {
     return [];
