@@ -59,8 +59,6 @@ export function GameBanner({ bannerUrl, logoUrl, name }: GameBannerProps) {
             objectFit: "contain",
             width: "auto",
             height: "auto",
-            maxHeight: "150px",
-            maxWidth: "400px",
           }}
         />
       )}
