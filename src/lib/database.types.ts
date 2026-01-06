@@ -190,6 +190,7 @@ export type Database = {
           achievements_archive_hash: string | null
           achievements_archive_path: string | null
           achievements_archive_size: string | null
+          additional_path: string | null
           ai: boolean
           approved_at: string | null
           approved_by: string | null
@@ -250,6 +251,7 @@ export type Database = {
           achievements_archive_hash?: string | null
           achievements_archive_path?: string | null
           achievements_archive_size?: string | null
+          additional_path?: string | null
           ai?: boolean
           approved_at?: string | null
           approved_by?: string | null
@@ -310,6 +312,7 @@ export type Database = {
           achievements_archive_hash?: string | null
           achievements_archive_path?: string | null
           achievements_archive_size?: string | null
+          additional_path?: string | null
           ai?: boolean
           approved_at?: string | null
           approved_by?: string | null
@@ -392,6 +395,7 @@ export type Database = {
           achievements_archive_hash: string | null
           achievements_archive_path: string | null
           achievements_archive_size: string | null
+          additional_path: string | null
           ai: boolean
           approved: boolean
           approved_at: string | null
@@ -455,6 +459,7 @@ export type Database = {
           achievements_archive_hash?: string | null
           achievements_archive_path?: string | null
           achievements_archive_size?: string | null
+          additional_path?: string | null
           ai?: boolean
           approved?: boolean
           approved_at?: string | null
@@ -518,6 +523,7 @@ export type Database = {
           achievements_archive_hash?: string | null
           achievements_archive_path?: string | null
           achievements_archive_size?: string | null
+          additional_path?: string | null
           ai?: boolean
           approved?: boolean
           approved_at?: string | null
@@ -618,6 +624,7 @@ export type Database = {
       }
       media_upload_queue: {
         Row: {
+          additional_path: string | null
           completed_at: string | null
           created_at: string
           error_message: string | null
@@ -638,6 +645,7 @@ export type Database = {
           version_id: string | null
         }
         Insert: {
+          additional_path?: string | null
           completed_at?: string | null
           created_at?: string
           error_message?: string | null
@@ -658,6 +666,7 @@ export type Database = {
           version_id?: string | null
         }
         Update: {
+          additional_path?: string | null
           completed_at?: string | null
           created_at?: string
           error_message?: string | null
