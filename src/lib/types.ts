@@ -12,6 +12,7 @@ export type TranslationItem = Pick<
   | "version"
   | "banner_path"
   | "updated_at"
+  | "achievements_archive_path"
 >;
 
 // Grouped game with multiple translations

@@ -56,6 +56,16 @@ export function GameSidebar({ game }: GameSidebarProps) {
         </div>
       )}
 
+      {/* Achievements */}
+      {game.achievements_archive_path && (
+        <div className="game-sidebar-card game-achievements-card">
+          <div className="game-achievements-badge">
+            <i className="fa-solid fa-trophy" />
+            <span>Включає переклад досягнень</span>
+          </div>
+        </div>
+      )}
+
       {/* Stats */}
       <div className="game-sidebar-card">
         <h3>Статистика</h3>

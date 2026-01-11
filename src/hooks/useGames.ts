@@ -3,6 +3,7 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
 import { queryKeys } from "@/lib/queryKeys";
+import { buildFtsQuery } from "@/lib/search-utils";
 import type {
   GamesGroupedResponse,
   GameGroup,
@@ -84,7 +85,8 @@ async function fetchGamesGrouped({
     .range(offset, offset + limit - 1);
 
   if (search) {
-    query = query.ilike("name", `%${search}%`);
+    const ftsQuery = buildFtsQuery(search);
+    query = query.textSearch("name_fts", ftsQuery);
   }
 
   const { data, error, count } = await query;
@@ -119,7 +121,8 @@ async function fetchGamesGroupedWithFilter({
     .order("name");
 
   if (search) {
-    query = query.ilike("name", `%${search}%`);
+    const ftsQuery = buildFtsQuery(search);
+    query = query.textSearch("name_fts", ftsQuery);
   }
 
   const { data, error } = await query;
