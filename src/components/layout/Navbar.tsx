@@ -40,14 +40,6 @@ export function Navbar() {
 
         <div className="nav-socials">
           <a
-            href="https://littlebitua.github.io/"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Веб-сайт"
-          >
-            <i className="fa-solid fa-globe" />
-          </a>
-          <a
             href="https://t.me/LittleBitUA"
             target="_blank"
             rel="noopener noreferrer"
