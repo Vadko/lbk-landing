@@ -4,7 +4,7 @@ const CARDS = [
     title: "Додайте свою гру",
     description:
       "Український переклад вашої гри стане доступний тисячам користувачів.",
-    link: "https://t.me/lb_launcher_bot",
+    link: "https://t.me/lbk_launcher_bot",
     linkText: "Написати нам",
     linkIcon: "fa-brands fa-telegram",
     isGithub: false,

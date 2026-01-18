@@ -6,7 +6,7 @@ import Image from "next/image";
 const GALLERY_ITEMS = [
   {
     src: "/assets/2.webp",
-    alt: "Головний екран LB Launcher",
+    alt: "Головний екран LBK Launcher",
     label: "Головний екран",
     description:
       "Каталог ігор з українськими перекладами. Шукайте, фільтруйте та встановлюйте локалізації в один клац.",
@@ -14,35 +14,35 @@ const GALLERY_ITEMS = [
   },
   {
     src: "/assets/1.webp",
-    alt: "LB Launcher світла тема",
+    alt: "LBK Launcher світла тема",
     label: "Світла тема",
     description:
       "Лаунчер підтримує світлу та темну теми — обирайте те, що зручніше для ваших очей.",
   },
   {
     src: "/assets/3.webp",
-    alt: "Налаштування LB Launcher",
+    alt: "Налаштування LBK Launcher",
     label: "Налаштування",
     description:
       "Гнучкі налаштування: тема, мова інтерфейсу, шляхи до ігор та автооновлення.",
   },
   {
     src: "/assets/4.webp",
-    alt: "Сповіщення LB Launcher",
+    alt: "Сповіщення LBK Launcher",
     label: "Сповіщення",
     description:
       "Отримуйте сповіщення про нові переклади та оновлення встановлених локалізацій.",
   },
   {
     src: "/assets/5.webp",
-    alt: "Деталі гри в LB Launcher",
+    alt: "Деталі гри в LBK Launcher",
     label: "Деталі гри",
     description:
       "Детальна інформація про переклад: прогрес, команда перекладачів, версія та опис.",
   },
   {
     src: "/assets/7.webp",
-    alt: "Процес завантаження в LB Launcher",
+    alt: "Процес завантаження в LBK Launcher",
     label: "Процес завантаження",
     description:
       "Швидке завантаження та автоматичне встановлення перекладу прямо в папку з грою.",

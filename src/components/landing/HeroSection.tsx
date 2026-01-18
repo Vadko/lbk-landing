@@ -201,7 +201,7 @@ export function HeroSection() {
           <figure className="hero-figure main-figure">
             <Image
               src="/assets/2.webp"
-              alt="LB Launcher головний екран — українізатор ігор"
+              alt="LBK Launcher головний екран — українізатор ігор"
               width={600}
               height={400}
               className="hero-img main-shot"
@@ -212,7 +212,7 @@ export function HeroSection() {
           <figure className="hero-figure back-figure">
             <Image
               src="/assets/1.webp"
-              alt="LB Launcher світла тема"
+              alt="LBK Launcher світла тема"
               width={540}
               height={360}
               className="hero-img back-shot"

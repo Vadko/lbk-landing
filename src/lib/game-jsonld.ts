@@ -5,7 +5,7 @@ export function generateSoftwareApplicationLD(game: Game) {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: `${game.name} — Український переклад від ${game.team}`,
-    description: `Український переклад ${game.name} від ${game.team}. Завантажте безкоштовно через LB Launcher.`,
+    description: `Український переклад ${game.name} від ${game.team}. Завантажте безкоштовно через LBK Launcher.`,
     applicationCategory: "GameApplication",
     operatingSystem: game.platforms?.join(", ") || "Windows",
     author: {
@@ -32,7 +32,7 @@ export function generateFAQLD(game: Game) {
         name: `Чи безкоштовний український переклад ${game.name}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Так, переклад ${game.name} від команди ${game.team} повністю безкоштовний. Завантажте LB Launcher та встановіть українську локалізацію за кілька клаців.`,
+          text: `Так, переклад ${game.name} від команди ${game.team} повністю безкоштовний. Завантажте LBK Launcher та встановіть українську локалізацію за кілька клаців.`,
         },
       },
       {
@@ -40,7 +40,7 @@ export function generateFAQLD(game: Game) {
         name: `Як встановити український переклад ${game.name}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Завантажте безкоштовний LB Launcher з lblauncher.com, знайдіть ${game.name} у каталозі ігор та натисніть "Встановити". Переклад автоматично завантажиться та встановиться.`,
+          text: `Завантажте безкоштовний LBK Launcher з lblauncher.com, знайдіть ${game.name} у каталозі ігор та натисніть "Встановити". Переклад автоматично завантажиться та встановиться.`,
         },
       },
       {

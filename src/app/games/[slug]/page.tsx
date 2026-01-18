@@ -33,8 +33,8 @@ export async function generateMetadata({
 
   const description =
     translations.length === 1
-      ? `Український переклад ${game.name} від ${game.team}. Завантажте безкоштовно через LB Launcher.`
-      : `Українські переклади ${game.name} від ${teamNames}. Оберіть переклад та завантажте безкоштовно через LB Launcher.`;
+      ? `Український переклад ${game.name} від ${game.team}. Завантажте безкоштовно через LBK Launcher.`
+      : `Українські переклади ${game.name} від ${teamNames}. Оберіть переклад та завантажте безкоштовно через LBK Launcher.`;
 
   return {
     title: `${game.name} українською — Українські переклади гри`,
@@ -45,10 +45,10 @@ export async function generateMetadata({
       `${game.name} українізатор`,
       `${game.name} локалізація`,
       "українізатор ігор",
-      "LB Launcher",
+      "LBK Launcher",
     ],
     openGraph: {
-      title: `${game.name} українською | LB Launcher`,
+      title: `${game.name} українською | LBK Launcher`,
       description,
       images: game.banner_path
         ? [getImageUrl(game.banner_path, game.updated_at)!]

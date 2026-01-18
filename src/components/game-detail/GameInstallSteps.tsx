@@ -8,7 +8,7 @@ export function GameInstallSteps({ gameName }: GameInstallStepsProps) {
       <h2>Як встановити український переклад {gameName}</h2>
       <ol className="game-install-steps">
         <li>
-          <strong>Завантажте LB Launcher</strong> — безкоштовну програму для
+          <strong>Завантажте LBK Launcher</strong> — безкоштовну програму для
           встановлення українських перекладів ігор
         </li>
         <li>

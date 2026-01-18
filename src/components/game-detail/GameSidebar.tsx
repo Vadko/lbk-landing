@@ -22,7 +22,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
           <i className="fa-solid fa-download" />
           <h3>Встановіть переклад</h3>
         </div>
-        <p>Завантажте LB Launcher і встановіть переклад в один клац</p>
+        <p>Завантажте LBK Launcher і встановіть переклад в один клац</p>
         <Link href="/#hero" className="dl-btn game-dl-btn">
           <i className="fa-brands fa-windows" />
           <div className="dl-info">
@@ -32,7 +32,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
         </Link>
         {game.slug && game.team && (
           <a
-            href={`littlebit://games/${game.slug}/${encodeURIComponent(game.team)}`}
+            href={`lbk://games/${game.slug}/${encodeURIComponent(game.team)}`}
             className="btn-launcher"
           >
             <i className="fa-solid fa-rocket" />
