@@ -2892,7 +2892,7 @@ footer {
   justify-content: center;
   font-weight: 700;
   font-size: 0.9rem;
-  color: white;
+  color: var(--text-primary);
 }
 
 .game-install-steps li strong {

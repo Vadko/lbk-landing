@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     "ігри на українській",
     "українська мова в іграх",
   ],
-  authors: [{ name: "LBK team" }],
-  creator: "LBK team",
-  publisher: "LBK team",
+  authors: [{ name: "LB Team & GGL Studio" }],
+  creator: "LB Team & GGL Studio",
+  publisher: "LB Team & GGL Studio",
   openGraph: {
     type: "website",
     locale: "uk_UA",
@@ -119,7 +119,7 @@ export default function RootLayout({
               },
               author: {
                 "@type": "Organization",
-                name: "LBK team",
+                name: "LB Team & GGL Studio",
                 url: "https://t.me/LittleBitUA",
               },
               inLanguage: "uk",
