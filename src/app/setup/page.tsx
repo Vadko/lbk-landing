@@ -39,7 +39,7 @@ export default function SetupPage() {
             <i className="fa-solid fa-arrow-left" />
             На головну
           </Link>
-          <h1>Встановлення LB Launcher</h1>
+          <h1>Встановлення LBK Launcher</h1>
           <p>
             Покрокова інструкція для встановлення лаунчера на вашу платформу
           </p>
@@ -85,7 +85,7 @@ export default function SetupPage() {
           <Link href="/#hero" className="dl-btn">
             <i className="fa-solid fa-download" />
             <div className="dl-info">
-              <span>Завантажити LB Launcher</span>
+              <span>Завантажити LBK Launcher</span>
               <small>Windows / macOS / Linux</small>
             </div>
           </Link>
@@ -107,10 +107,10 @@ function WindowsInstructions() {
         <h3>Варіанти завантаження</h3>
         <ul className="setup-files">
           <li>
-            <code>LB-Launcher-win-Setup.exe</code> — інсталятор
+            <code>LBK-Launcher-win-Setup.exe</code> — інсталятор
           </li>
           <li>
-            <code>LB-Launcher-win-Portable.exe</code> — портативна версія
+            <code>LBK-Launcher-win-Portable.exe</code> — портативна версія
           </li>
         </ul>
       </div>
@@ -186,10 +186,10 @@ function MacOSInstructions() {
         <h3>Варіанти завантаження</h3>
         <ul className="setup-files">
           <li>
-            <code>LB-Launcher-*-arm64.dmg</code> — для Apple Silicon
+            <code>LBK-Launcher-*-arm64.dmg</code> — для Apple Silicon
           </li>
           <li>
-            <code>LB-Launcher-*-x64.dmg</code> — для Intel
+            <code>LBK-Launcher-*-x64.dmg</code> — для Intel
           </li>
         </ul>
       </div>
@@ -218,10 +218,10 @@ function LinuxInstructions() {
         <h3>Варіанти завантаження</h3>
         <ul className="setup-files">
           <li>
-            <code>LB-Launcher-linux.AppImage</code> — універсальний формат
+            <code>LBK-Launcher-linux.AppImage</code> — універсальний формат
           </li>
           <li>
-            <code>LB-Launcher-linux.rpm</code> — для Fedora/RHEL
+            <code>LBK-Launcher-linux.rpm</code> — для Fedora/RHEL
           </li>
         </ul>
       </div>
@@ -245,11 +245,13 @@ function LinuxInstructions() {
           <li>Встановіть через пакетний менеджер:</li>
         </ol>
         <div className="setup-code">
-          <code>sudo rpm -i LB-Launcher-linux.rpm</code>
+          <code>sudo rpm -i LBK-Launcher-linux.rpm</code>
           <button
             className="copy-btn"
             onClick={() =>
-              navigator.clipboard.writeText("sudo rpm -i LB-Launcher-linux.rpm")
+              navigator.clipboard.writeText(
+                "sudo rpm -i LBK-Launcher-linux.rpm"
+              )
             }
           >
             <i className="fa-solid fa-copy" />

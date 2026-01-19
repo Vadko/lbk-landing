@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Встановлення LB Launcher — інструкція для Windows, macOS, Linux",
+  title: "Встановлення LBK Launcher — інструкція для Windows, macOS, Linux",
   description:
-    "Покрокова інструкція з встановлення LB Launcher на Windows, macOS, Linux та Steam Deck. Вирішення проблем з SmartScreen та Gatekeeper.",
+    "Покрокова інструкція з встановлення LBK Launcher на Windows, macOS, Linux та Steam Deck. Вирішення проблем з SmartScreen та Gatekeeper.",
   keywords: [
-    "встановлення LB Launcher",
+    "встановлення LBK Launcher",
     "інструкція встановлення",
-    "LB Launcher Windows",
-    "LB Launcher macOS",
-    "LB Launcher Linux",
-    "LB Launcher Steam Deck",
+    "LBK Launcher Windows",
+    "LBK Launcher macOS",
+    "LBK Launcher Linux",
+    "LBK Launcher Steam Deck",
     "українізатор ігор встановлення",
   ],
   openGraph: {
-    title: "Встановлення LB Launcher | Інструкція",
+    title: "Встановлення LBK Launcher | Інструкція",
     description:
-      "Покрокова інструкція з встановлення LB Launcher на вашу платформу.",
+      "Покрокова інструкція з встановлення LBK Launcher на вашу платформу.",
   },
 };
 

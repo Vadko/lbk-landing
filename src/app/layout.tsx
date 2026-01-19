@@ -17,8 +17,8 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL("https://lblauncher.com"),
   title: {
-    default: "LB Launcher — Ігри українською мовою | Українізатор ігор",
-    template: "%s | LB Launcher — Українізатор ігор",
+    default: "LBK Launcher — Ігри українською мовою | Українізатор ігор",
+    template: "%s | LBK Launcher — Українізатор ігор",
   },
   description:
     "Безкоштовний українізатор ігор. Встановлюйте українську локалізацію для ігор в один клац. Грайте українською — понад 80+ ігор з українським перекладом.",
@@ -29,22 +29,22 @@ export const metadata: Metadata = {
     "грати українською",
     "ігри українською",
     "український переклад ігор",
-    "LB Launcher",
+    "LBK Launcher",
     "локалізація ігор",
     "переклад ігор українською",
     "українізація ігор",
     "ігри на українській",
     "українська мова в іграх",
   ],
-  authors: [{ name: "Little Bit" }],
-  creator: "Little Bit",
-  publisher: "Little Bit",
+  authors: [{ name: "LBK team" }],
+  creator: "LBK team",
+  publisher: "LBK team",
   openGraph: {
     type: "website",
     locale: "uk_UA",
     url: "https://lblauncher.com",
-    siteName: "LB Launcher — Українізатор ігор",
-    title: "LB Launcher — Ігри українською мовою",
+    siteName: "LBK Launcher — Українізатор ігор",
+    title: "LBK Launcher — Ігри українською мовою",
     description:
       "Безкоштовний українізатор ігор. Встановлюйте українську локалізацію для ігор в один клац.",
     images: [
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
         url: "/assets/og-image.webp",
         width: 1200,
         height: 630,
-        alt: "LB Launcher — Українізатор ігор",
+        alt: "LBK Launcher — Українізатор ігор",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "LB Launcher — Ігри українською мовою",
+    title: "LBK Launcher — Ігри українською мовою",
     description:
       "Безкоштовний українізатор ігор. Встановлюйте українську локалізацію для ігор в один клац.",
     images: ["/assets/og-image.webp"],
@@ -104,10 +104,10 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
-              name: "LB Launcher",
+              name: "LBK Launcher",
               description:
                 "Безкоштовний українізатор ігор. Встановлюйте українську локалізацію для ігор в один клац.",
-              url: "https://lblauncher.com",
+              url: "https://lbklauncher.com",
               downloadUrl:
                 "https://github.com/Vadko/littlebit-launcher/releases/latest",
               operatingSystem: "Windows, macOS, Linux",
@@ -119,7 +119,7 @@ export default function RootLayout({
               },
               author: {
                 "@type": "Organization",
-                name: "Little Bit",
+                name: "LBK team",
                 url: "https://t.me/LittleBitUA",
               },
               inLanguage: "uk",
@@ -127,7 +127,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased main-bg">
         <ThemeProvider>
           <QueryProvider>
             <BackgroundEffects />

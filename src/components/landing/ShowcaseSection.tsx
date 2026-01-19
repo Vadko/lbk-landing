@@ -134,7 +134,7 @@ export function ShowcaseSection() {
   return (
     <section id="showcase" className="showcase">
       <div className="container">
-        <h2 className="section-title center">Чому обирають LB Launcher</h2>
+        <h2 className="section-title center">Чому обирають LBK Launcher</h2>
 
         <div className="why-grid">
           {FEATURES.map((feature, index) => (

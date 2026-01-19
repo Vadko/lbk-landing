@@ -1,6 +1,6 @@
-# LittleBit Launcher - Landing Page
+# LBK Launcher - Landing Page
 
-Landing page for [LittleBit Launcher](https://github.com/Vadko/littlebit-launcher) - a game launcher with Ukrainian translations.
+Landing page for [LBK Launcher](https://github.com/Vadko/lbk-launcher) - a game launcher with Ukrainian translations.
 
 ## Tech Stack
 
