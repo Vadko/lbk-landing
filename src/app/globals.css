@@ -1949,6 +1949,11 @@ footer {
   animation: dropdownSlide 0.2s ease;
 }
 
+.dropdown-menu--right {
+  right: 0;
+  left: auto;
+}
+
 @keyframes dropdownSlide {
   from {
     opacity: 0;

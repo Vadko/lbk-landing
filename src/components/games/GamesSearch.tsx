@@ -247,7 +247,7 @@ export function GamesSearch({
           </button>
 
           {isAuthorOpen && (
-            <div className="dropdown-menu dropdown-menu-with-search">
+            <div className="dropdown-menu dropdown-menu-with-search dropdown-menu--right">
               {/* Search Input */}
               <div className="dropdown-search">
                 <i className="fa-solid fa-magnifying-glass" />
