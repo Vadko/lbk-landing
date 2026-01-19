@@ -149,7 +149,7 @@ body *::after {
 }
 
 .main-bg {
-  background-image: url("/assets/main-bg.png");
+  background-image: url("/assets/main-bg.webp");
   background-position: center top;
   background-size: 100% auto;
   background-repeat: no-repeat;
