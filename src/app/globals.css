@@ -2,8 +2,8 @@
 
 :root {
   /* Темна тема (Deep Space) - за замовчуванням */
-  --bg-base: #0F0F10;
-  --bg-gradient: linear-gradient(135deg, #0F0F10 0%, #15162c 100%);
+  --bg-base: #0f0f10;
+  --bg-gradient: linear-gradient(135deg, #0f0f10 0%, #15162c 100%);
 
   --accent-blue: #00c2ff;
   --accent-purple: #bd00ff;
@@ -238,7 +238,6 @@ body *::after {
 }
 
 @keyframes blink {
-
   0%,
   50% {
     opacity: 1;
@@ -295,9 +294,7 @@ a {
 }
 
 .text-gradient {
-  background: linear-gradient(to right,
-      var(--color-main),
-      var(--color-accent));
+  background: linear-gradient(to right, var(--color-main), var(--color-accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -440,9 +437,11 @@ a {
   align-items: center;
   gap: 10px;
   padding: 10px 20px;
-  background: linear-gradient(135deg,
-      rgba(var(--color-main-rgb), 0.1) 0%,
-      rgba(var(--color-accent-rgb), 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-main-rgb), 0.1) 0%,
+    rgba(var(--color-accent-rgb), 0.1) 100%
+  );
   color: var(--text-primary);
   border: 1px solid rgba(var(--color-main-rgb), 0.3);
   border-radius: 50px;
@@ -1061,27 +1060,33 @@ a {
   position: absolute;
   inset: 0;
   border-radius: 20px;
-  background: conic-gradient(from calc(var(--gradient-angle) * 1deg),
-      var(--color-main) 0deg,
-      var(--color-accent) 90deg,
-      var(--color-main) 180deg,
-      var(--color-accent) 270deg,
-      var(--color-main) 360deg);
+  background: conic-gradient(
+    from calc(var(--gradient-angle) * 1deg),
+    var(--color-main) 0deg,
+    var(--color-accent) 90deg,
+    var(--color-main) 180deg,
+    var(--color-accent) 270deg,
+    var(--color-main) 360deg
+  );
   opacity: 0;
   transition: opacity 0.2s ease;
   z-index: 0;
   pointer-events: none;
   padding: 3px;
   mask:
-    radial-gradient(circle 150px at var(--mouse-x) var(--mouse-y),
+    radial-gradient(
+      circle 150px at var(--mouse-x) var(--mouse-y),
       black 0%,
-      transparent 100%),
+      transparent 100%
+    ),
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask:
-    radial-gradient(circle 150px at var(--mouse-x) var(--mouse-y),
+    radial-gradient(
+      circle 150px at var(--mouse-x) var(--mouse-y),
       black 0%,
-      transparent 100%),
+      transparent 100%
+    ),
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: source-in, xor;
@@ -1114,7 +1119,7 @@ a {
   background: rgba(var(--color-main-rgb), 0.08);
 }
 
-.why-card>* {
+.why-card > * {
   position: relative;
   z-index: 2;
 }
@@ -1141,7 +1146,7 @@ a {
   margin: 0 auto 24px;
   font-size: 2rem;
   color: var(--color-black);
-  box-shadow: 0px 10px 30px 0px #A8CF964D;
+  box-shadow: 0px 10px 30px 0px #a8cf964d;
 }
 
 .why-card h3 {
@@ -1160,10 +1165,12 @@ a {
 /* Collaboration Section */
 .collaboration-sec {
   padding: 100px 0;
-  background: linear-gradient(180deg,
-      transparent 0%,
-      rgba(var(--color-main-rgb), 0.03) 50%,
-      transparent 100%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(var(--color-main-rgb), 0.03) 50%,
+    transparent 100%
+  );
 }
 
 .collab-grid {
@@ -1192,7 +1199,11 @@ a {
 .collab-icon {
   width: 80px;
   height: 80px;
-  background: linear-gradient(90deg, rgba(var(--color-main-rgb), 0.1) -0.63%, rgba(var(--color-accent-rgb), 0.1) 106.68%);
+  background: linear-gradient(
+    90deg,
+    rgba(var(--color-main-rgb), 0.1) -0.63%,
+    rgba(var(--color-accent-rgb), 0.1) 106.68%
+  );
   border: 2px solid rgba(var(--color-accent-rgb), 0.3);
   border-radius: 20px;
   display: flex;
@@ -1378,7 +1389,7 @@ a {
   transform: translateY(20px);
   transition: all 0.3s ease;
   z-index: 999;
-  box-shadow: 0px 5px 25px 0px #A8CF9666;
+  box-shadow: 0px 5px 25px 0px #a8cf9666;
 }
 
 .scroll-top.visible {
@@ -2124,9 +2135,11 @@ footer {
 
 .dropdown-trigger.has-value {
   border-color: var(--color-main);
-  background: linear-gradient(135deg,
-      rgba(var(--color-main-rgb), 0.1),
-      rgba(var(--color-accent-rgb), 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-main-rgb), 0.1),
+    rgba(var(--color-accent-rgb), 0.1)
+  );
 }
 
 /* Dropdown with Search */
@@ -2253,9 +2266,11 @@ footer {
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: linear-gradient(135deg,
-      rgba(var(--color-main-rgb), 0.15),
-      rgba(var(--color-accent-rgb), 0.15));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-main-rgb), 0.15),
+    rgba(var(--color-accent-rgb), 0.15)
+  );
   border: 1px solid var(--color-main);
   border-radius: 24px;
   color: var(--text-primary);
@@ -2292,9 +2307,11 @@ footer {
 }
 
 .light .team-filter-chip {
-  background: linear-gradient(135deg,
-      rgba(0, 149, 204, 0.1),
-      rgba(144, 0, 204, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 149, 204, 0.1),
+    rgba(144, 0, 204, 0.1)
+  );
 }
 
 .light .team-filter-clear {
@@ -3209,7 +3226,7 @@ footer {
   font-size: 1.2rem;
 }
 
-.game-download-cta>p {
+.game-download-cta > p {
   font-size: 0.9rem;
   color: var(--text-sec);
   margin-bottom: 20px;
@@ -3555,9 +3572,11 @@ footer {
 }
 
 .setup-tab.active {
-  background: linear-gradient(135deg,
-      rgba(var(--color-main-rgb), 0.15),
-      rgba(var(--color-accent-rgb), 0.15));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-main-rgb), 0.15),
+    rgba(var(--color-accent-rgb), 0.15)
+  );
   border-color: var(--color-main);
   color: var(--text-primary);
 }
@@ -3581,7 +3600,7 @@ footer {
   padding: 30px;
 }
 
-.setup-platform>h2 {
+.setup-platform > h2 {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -3591,7 +3610,7 @@ footer {
   border-bottom: 1px solid var(--glass-border);
 }
 
-.setup-platform>h2 i {
+.setup-platform > h2 i {
   font-size: 1.8rem;
   color: var(--color-main);
 }
@@ -3685,19 +3704,19 @@ footer {
   padding-bottom: 0;
 }
 
-.setup-issue>p {
+.setup-issue > p {
   color: var(--text-sec);
   line-height: 1.6;
   margin: 12px 0 8px 20px;
 }
 
-.setup-issue>ol {
+.setup-issue > ol {
   padding-left: 20px;
   color: var(--text-sec);
   margin: 0;
 }
 
-.setup-issue>ol li {
+.setup-issue > ol li {
   padding: 4px 0;
 }
 

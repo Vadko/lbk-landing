@@ -249,7 +249,9 @@ function LinuxInstructions() {
           <button
             className="copy-btn"
             onClick={() =>
-              navigator.clipboard.writeText("sudo rpm -i LBK-Launcher-linux.rpm")
+              navigator.clipboard.writeText(
+                "sudo rpm -i LBK-Launcher-linux.rpm"
+              )
             }
           >
             <i className="fa-solid fa-copy" />
