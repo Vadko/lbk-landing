@@ -20,7 +20,7 @@ const AUTHORS_PER_PAGE = 20;
 
 const STATUS_OPTIONS = [
   { value: "completed", label: "Готово", icon: "fa-solid fa-check-circle" },
-  { value: "in-progress", label: "у розробці", icon: "fa-solid fa-spinner" },
+  { value: "in-progress", label: "У розробці", icon: "fa-solid fa-spinner" },
   { value: "planned", label: "Заплановано", icon: "fa-solid fa-clock" },
 ];
 

@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import type { GameGroup, TranslationItem } from "@/lib/types";
+import Link from "next/link";
+import { AuthorName } from "@/components/ui/AuthorName";
 import { getImageUrl } from "@/lib/images";
 import { teamToSlug } from "@/lib/transliterate";
-import { AuthorName } from "@/components/ui/AuthorName";
+import type { GameGroup, TranslationItem } from "@/lib/types";
 
 interface GameCardProps {
   game: GameGroup;
@@ -14,7 +14,7 @@ interface GameCardProps {
 const STATUS_LABELS: Record<string, { label: string; className: string }> = {
   completed: { label: "Готово", className: "game-card-status completed" },
   "in-progress": {
-    label: "В розробці",
+    label: "У розробці",
     className: "game-card-status in-progress",
   },
   planned: { label: "Заплановано", className: "game-card-status planned" },
