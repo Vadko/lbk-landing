@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
 import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 import { Footer } from "@/components/layout/Footer";
