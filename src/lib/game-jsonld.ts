@@ -18,7 +18,7 @@ export function generateSoftwareApplicationLD(game: Game) {
       priceCurrency: "UAH",
     },
     inLanguage: "uk",
-    downloadUrl: "https://lblauncher.com",
+    downloadUrl: "https://lbklauncher.com",
   };
 }
 
@@ -40,7 +40,7 @@ export function generateFAQLD(game: Game) {
         name: `Як встановити український переклад ${game.name}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Завантажте безкоштовний LBK Launcher з lblauncher.com, знайдіть ${game.name} у каталозі ігор та натисніть "Встановити". Переклад автоматично завантажиться та встановиться.`,
+          text: `Завантажте безкоштовний LBK Launcher з lbklauncher.com, знайдіть ${game.name} у каталозі ігор та натисніть "Встановити". Переклад автоматично завантажиться та встановиться.`,
         },
       },
       {

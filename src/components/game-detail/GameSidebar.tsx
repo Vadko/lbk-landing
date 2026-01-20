@@ -32,7 +32,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
         </Link>
         {game.slug && game.team && (
           <a
-            href={`lbk://games/${game.slug}/${encodeURIComponent(game.team)}`}
+            href={`lb://games/${game.slug}/${encodeURIComponent(game.team)}`}
             className="btn-launcher"
           >
             <i className="fa-solid fa-rocket" />

@@ -15,7 +15,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lblauncher.com"),
+  metadataBase: new URL("https://lbklauncher.com"),
   title: {
     default: "LBK Launcher — Ігри українською мовою | Українізатор ігор",
     template: "%s | LBK Launcher — Українізатор ігор",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "uk_UA",
-    url: "https://lblauncher.com",
+    url: "https://lbklauncher.com",
     siteName: "LBK Launcher — Українізатор ігор",
     title: "LBK Launcher — Ігри українською мовою",
     description:

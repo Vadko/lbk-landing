@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Add slug page (shows all translations or redirects if single)
     gameUrls.push({
-      url: `https://lblauncher.com/games/${slug}`,
+      url: `https://lbklauncher.com/games/${slug}`,
       lastModified: latestUpdate,
       changeFrequency: "weekly",
       priority: 0.7,
@@ -42,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Add individual translation pages
     for (const translation of translations) {
       gameUrls.push({
-        url: `https://lblauncher.com/games/${slug}/${teamToSlug(translation.team)}`,
+        url: `https://lbklauncher.com/games/${slug}/${teamToSlug(translation.team)}`,
         lastModified: new Date(translation.updated_at),
         changeFrequency: "weekly",
         priority: 0.6,
@@ -52,19 +52,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: "https://lblauncher.com",
+      url: "https://lbklauncher.com",
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
     },
     {
-      url: "https://lblauncher.com/games",
+      url: "https://lbklauncher.com/games",
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
-      url: "https://lblauncher.com/setup",
+      url: "https://lbklauncher.com/setup",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
