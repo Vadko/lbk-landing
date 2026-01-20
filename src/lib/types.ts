@@ -1,5 +1,7 @@
 import type { Database } from "./database.types";
 
+export type Platform = Database["public"]["Enums"]["install_source"];
+
 export type Game = Database["public"]["Tables"]["games"]["Row"];
 
 // Translation item for grouped games
