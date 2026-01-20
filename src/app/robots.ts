@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/"],
     },
-    sitemap: "https://lblauncher.com/sitemap.xml",
+    sitemap: "https://lbklauncher.com/sitemap.xml",
   };
 }

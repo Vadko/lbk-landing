@@ -91,7 +91,7 @@ export async function generateMetadata({
         : undefined,
     },
     alternates: {
-      canonical: `https://lblauncher.com/games/${slug}/${teamToSlug(game.team)}`,
+      canonical: `https://lbklauncher.com/games/${slug}/${teamToSlug(game.team)}`,
     },
   };
 }
@@ -115,12 +115,12 @@ export default async function GameTranslationPage({ params }: PageProps) {
   const featuredInfo = getFeaturedInfo(slug, game.team);
 
   const breadcrumbItems = [
-    { name: "Головна", url: "https://lblauncher.com" },
-    { name: "Ігри", url: "https://lblauncher.com/games" },
-    { name: game.name, url: `https://lblauncher.com/games/${slug}` },
+    { name: "Головна", url: "https://lbklauncher.com" },
+    { name: "Ігри", url: "https://lbklauncher.com/games" },
+    { name: game.name, url: `https://lbklauncher.com/games/${slug}` },
     {
       name: game.team,
-      url: `https://lblauncher.com/games/${slug}/${teamToSlug(game.team)}`,
+      url: `https://lbklauncher.com/games/${slug}/${teamToSlug(game.team)}`,
     },
   ];
 

@@ -65,7 +65,7 @@ export async function generateMetadata({
         : undefined,
     },
     alternates: {
-      canonical: `https://lblauncher.com/games/${slug}`,
+      canonical: `https://lbklauncher.com/games/${slug}`,
     },
   };
 }
@@ -198,9 +198,9 @@ export default async function GamePage({ params }: PageProps) {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             generateBreadcrumbLD([
-              { name: "Головна", url: "https://lblauncher.com" },
-              { name: "Ігри", url: "https://lblauncher.com/games" },
-              { name: game.name, url: `https://lblauncher.com/games/${slug}` },
+              { name: "Головна", url: "https://lbklauncher.com" },
+              { name: "Ігри", url: "https://lbklauncher.com/games" },
+              { name: game.name, url: `https://lbklauncher.com/games/${slug}` },
             ])
           ),
         }}
