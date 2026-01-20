@@ -1,3 +1,4 @@
+import { getReadablePlatform } from "@/helpers/getReadablePlatform";
 import type { Game } from "@/lib/types";
 
 interface GameFAQProps {
@@ -23,8 +24,14 @@ export function GameFAQ({ game }: GameFAQProps) {
           </summary>
           <p>
             Так, для коректної роботи перекладу потрібна оригінальна гра{" "}
-            {game.name}. Переклад працює з версіями з{" "}
-            {game.platforms?.join(", ") || "Steam, GOG, Epic Games"}.
+            {game.name}. Переклад працює з{" "}
+            {game.platforms.includes("other")
+              ? `оригінальним лаунчером гри`
+              : `версіями з ${
+                  game.platforms?.map(getReadablePlatform).join(", ") ||
+                  "Steam, GOG, Epic Games"
+                }`}
+            .
           </p>
         </details>
         <details className="faq-item">

@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import confetti from "canvas-confetti";
 import Image from "next/image";
 import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import { useClientValue } from "@/hooks/useClientValue";
+import { useGamesCount } from "@/hooks/useGames";
 import {
-  useGitHubRelease,
-  getDownloadLinks,
   detectOS,
   formatDate,
+  getDownloadLinks,
+  useGitHubRelease,
 } from "@/hooks/useGitHubRelease";
-import { useGamesCount } from "@/hooks/useGames";
-import { useClientValue } from "@/hooks/useClientValue";
-import confetti from "canvas-confetti";
 
 const TYPEWRITER_PHRASES = [
   "без зусиль!",
@@ -177,7 +177,7 @@ export function HeroSection() {
 
           <Link href="/setup" className="instruction-link">
             <i className="fa-solid fa-book" />
-            <span>Інструкція з встановлення</span>
+            <span>Інструкція зі встановлення</span>
           </Link>
 
           <div className="stats-mini">

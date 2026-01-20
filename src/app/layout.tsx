@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
+import { Footer } from "@/components/layout/Footer";
+import { Navbar } from "@/components/layout/Navbar";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { ScrollToTop } from "@/components/layout/ScrollToTop";
-import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 
 const outfit = Outfit({
   subsets: ["latin", "latin-ext"],
@@ -15,7 +15,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lblauncher.com"),
+  metadataBase: new URL("https://lbklauncher.com"),
   title: {
     default: "LBK Launcher — Ігри українською мовою | Українізатор ігор",
     template: "%s | LBK Launcher — Українізатор ігор",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "uk_UA",
-    url: "https://lblauncher.com",
+    url: "https://lbklauncher.com",
     siteName: "LBK Launcher — Українізатор ігор",
     title: "LBK Launcher — Ігри українською мовою",
     description:
@@ -93,10 +93,6 @@ export default function RootLayout({
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         />
         <script
           type="application/ld+json"

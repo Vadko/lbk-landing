@@ -14,7 +14,7 @@ export function Navbar() {
   }, [theme, setTheme]);
 
   return (
-    <nav className="navbar" style={{ position: "relative" }}>
+    <nav className="navbar">
       <div className="container nav-container">
         <Link href="/" className="logo">
           <svg
@@ -75,9 +75,9 @@ export function Navbar() {
             href="https://x.com/LittleBitUA"
             target="_blank"
             rel="noopener noreferrer"
-            title="Twitter"
+            title="X"
           >
-            <i className="fa-brands fa-twitter" />
+            <i className="fa-brands fa-x-twitter" />
           </a>
           <a
             href="https://www.youtube.com/@UA_LittleBit"

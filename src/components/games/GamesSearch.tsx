@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface GamesSearchProps {
   value: string;
@@ -332,7 +332,7 @@ export function GamesSearch({
                   <span>
                     {authorSearch
                       ? `Знайдено: ${filteredAuthors.length}`
-                      : `Всього: ${authors.length}`}
+                      : `Усього: ${authors.length}`}
                   </span>
                 </div>
               )}

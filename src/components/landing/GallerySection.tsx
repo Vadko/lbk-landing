@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
 
 const GALLERY_ITEMS = [
   {
@@ -49,25 +53,15 @@ const GALLERY_ITEMS = [
   },
 ];
 
+const slides = GALLERY_ITEMS.map((item) => ({
+  src: item.src,
+  alt: item.alt,
+  title: item.label,
+  description: item.description,
+}));
+
 export function GallerySection() {
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-
-  const openLightbox = (index: number) => setLightboxIndex(index);
-  const closeLightbox = () => setLightboxIndex(null);
-
-  const goNext = () => {
-    if (lightboxIndex !== null) {
-      setLightboxIndex((lightboxIndex + 1) % GALLERY_ITEMS.length);
-    }
-  };
-
-  const goPrev = () => {
-    if (lightboxIndex !== null) {
-      setLightboxIndex(
-        (lightboxIndex - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length
-      );
-    }
-  };
+  const [lightboxIndex, setLightboxIndex] = useState(-1);
 
   return (
     <section id="gallery" className="gallery-sec">
@@ -83,7 +77,7 @@ export function GallerySection() {
             <div
               key={index}
               className={`gallery-item ${item.large ? "large" : ""}`}
-              onClick={() => openLightbox(index)}
+              onClick={() => setLightboxIndex(index)}
             >
               <Image
                 src={item.src}
@@ -103,53 +97,18 @@ export function GallerySection() {
         </div>
       </div>
 
-      {/* Lightbox */}
-      <div
-        className={`lightbox ${lightboxIndex !== null ? "active" : ""}`}
-        onClick={closeLightbox}
-      >
-        <button className="lightbox-close" onClick={closeLightbox}>
-          <i className="fa-solid fa-xmark" />
-        </button>
-
-        <button
-          className="lightbox-nav prev"
-          onClick={(e) => {
-            e.stopPropagation();
-            goPrev();
-          }}
-        >
-          <i className="fa-solid fa-chevron-left" />
-        </button>
-
-        <button
-          className="lightbox-nav next"
-          onClick={(e) => {
-            e.stopPropagation();
-            goNext();
-          }}
-        >
-          <i className="fa-solid fa-chevron-right" />
-        </button>
-
-        {lightboxIndex !== null && (
-          <div
-            className="lightbox-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Image
-              src={GALLERY_ITEMS[lightboxIndex].src}
-              alt={GALLERY_ITEMS[lightboxIndex].alt}
-              width={1200}
-              height={800}
-            />
-            <div className="lightbox-caption">
-              <h3>{GALLERY_ITEMS[lightboxIndex].label}</h3>
-              <p>{GALLERY_ITEMS[lightboxIndex].description}</p>
-            </div>
-          </div>
-        )}
-      </div>
+      <Lightbox
+        open={lightboxIndex >= 0}
+        index={lightboxIndex}
+        close={() => setLightboxIndex(-1)}
+        slides={slides}
+        plugins={[Captions]}
+        captions={{ showToggle: true, descriptionTextAlign: "center" }}
+        carousel={{ imageFit: "contain", padding: "16px", preload: 1, spacing: "100%" }}
+        styles={{
+          container: { backgroundColor: "rgba(0, 0, 0, 0.95)" },
+        }}
+      />
     </section>
   );
 }

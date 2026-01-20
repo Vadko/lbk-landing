@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 
 :root {
   /* Темна тема (Deep Space) - за замовчуванням */
@@ -417,6 +418,7 @@ a {
   min-height: 100vh;
   display: flex;
   align-items: center;
+  padding-top: 77px;
 }
 
 .hero-wrapper {
@@ -978,17 +980,7 @@ a {
 
 @media (max-width: 600px) {
   .lightbox-nav {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
-
-  .lightbox-nav.prev {
-    left: 10px;
-  }
-
-  .lightbox-nav.next {
-    right: 10px;
+    display: none;
   }
 
   .lightbox-close {
@@ -1537,6 +1529,10 @@ footer {
     padding: 12px 0;
   }
 
+  .hero {
+    padding-top: 61px;
+  }
+
   .nav-container {
     justify-content: space-between;
     padding: 0 15px;
@@ -1647,6 +1643,18 @@ footer {
 
   .why-card {
     padding: 30px 24px;
+  }
+
+  .why-card::before {
+    display: none;
+  }
+
+  .why-card:hover {
+    transform: none;
+  }
+
+  .why-card:hover::after {
+    background: var(--glass-bg);
   }
 
   .collaboration-sec {
@@ -1798,7 +1806,7 @@ footer {
 
 /* Games List Page */
 .games-page {
-  padding-top: 80px;
+  padding-top: 127px;
   padding-bottom: 60px;
   min-height: 100vh;
 }
@@ -2690,7 +2698,13 @@ footer {
 
 /* Game Detail Page */
 .game-detail {
-  padding-top: 0;
+  padding-top: 77px;
+}
+
+@media (max-width: 968px) {
+  .game-detail {
+    padding-top: 61px;
+  }
 }
 
 .game-banner {
@@ -2742,7 +2756,7 @@ footer {
   gap: 40px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 969px) {
   .game-info-grid {
     grid-template-columns: 2fr 1fr;
   }
@@ -2852,7 +2866,12 @@ footer {
   border: 1px solid var(--glass-border);
   border-radius: 16px;
   padding: 24px;
-  margin-bottom: 24px;
+}
+
+@media (min-width: 969px) {
+  .game-section {
+    margin-bottom: 24px;
+  }
 }
 
 .game-section h2 {
@@ -3398,7 +3417,7 @@ footer {
   }
 
   .games-page {
-    padding-top: 70px;
+    padding-top: 81px;
   }
 
   .games-header h1 {
@@ -3432,6 +3451,81 @@ footer {
   .games-link {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* Mobile layout for game detail page */
+@media (max-width: 968px) {
+  .game-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .game-main,
+  .game-sidebar {
+    display: contents;
+  }
+
+  /* Базовий порядок */
+  .game-sidebar-card {
+    order: 20;
+  }
+
+  .game-section {
+    order: 5;
+  }
+
+  /* Порядок секцій на мобільних */
+  .game-header {
+    order: 1;
+  }
+
+  .game-other-translations {
+    order: 2;
+  }
+
+  .game-section.game-progress {
+    order: 3;
+  }
+
+  .game-section.game-fundraising {
+    order: 4;
+  }
+
+  /* Sidebar елементи після "Про гру" */
+  .game-sidebar-card.game-stats-card {
+    order: 6;
+  }
+
+  .game-sidebar-card.game-links-card {
+    order: 7;
+  }
+
+  .game-sidebar-card.game-support-card {
+    order: 8;
+  }
+
+  .game-sidebar-card.game-achievements-card {
+    order: 9;
+  }
+
+  .game-sidebar-card.game-steam-card {
+    order: 10;
+  }
+
+  /* Як встановити і FAQ - останні */
+  .game-section.game-install-section {
+    order: 11;
+  }
+
+  .game-section.game-faq {
+    order: 12;
+  }
+
+  /* Приховати "Встановіть переклад" на мобільних */
+  .game-download-cta {
+    display: none;
   }
 }
 
