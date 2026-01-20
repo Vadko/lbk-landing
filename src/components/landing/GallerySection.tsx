@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
+import { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import Captions from "yet-another-react-lightbox/plugins/captions";
 import "yet-another-react-lightbox/styles.css";
@@ -104,7 +104,12 @@ export function GallerySection() {
         slides={slides}
         plugins={[Captions]}
         captions={{ showToggle: true, descriptionTextAlign: "center" }}
-        carousel={{ imageFit: "contain", padding: "16px", preload: 1, spacing: "100%" }}
+        carousel={{
+          imageFit: "contain",
+          padding: "16px",
+          preload: 1,
+          spacing: "100%",
+        }}
         styles={{
           container: { backgroundColor: "rgba(0, 0, 0, 0.95)" },
         }}
