@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 interface TooltipProps {
@@ -14,7 +14,7 @@ export function Tooltip({ content, children, className = "" }: TooltipProps) {
   const [coords, setCoords] = useState({ top: 0, left: 0 });
   const containerRef = useRef<HTMLSpanElement>(null);
 
-  const handleMouseEnter = () => {
+  const updateCoords = () => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       setCoords({
@@ -22,8 +22,41 @@ export function Tooltip({ content, children, className = "" }: TooltipProps) {
         left: rect.left + rect.width / 2,
       });
     }
+  };
+
+  const handleMouseEnter = () => {
+    updateCoords();
     setIsVisible(true);
   };
+
+  const handleClick = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    updateCoords();
+    setIsVisible((prev) => !prev);
+  };
+
+  // Закрити тултіп при кліку поза ним
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setIsVisible(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [isVisible]);
 
   return (
     <span
@@ -31,6 +64,7 @@ export function Tooltip({ content, children, className = "" }: TooltipProps) {
       className={`tooltip-container ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setIsVisible(false)}
+      onClick={handleClick}
     >
       {children}
       {isVisible &&

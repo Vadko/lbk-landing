@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
+import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
+import { Footer } from "@/components/layout/Footer";
+import { Navbar } from "@/components/layout/Navbar";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { ScrollToTop } from "@/components/layout/ScrollToTop";
-import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 
 const outfit = Outfit({
   subsets: ["latin", "latin-ext"],
@@ -36,9 +37,9 @@ export const metadata: Metadata = {
     "ігри на українській",
     "українська мова в іграх",
   ],
-  authors: [{ name: "LBK team" }],
-  creator: "LBK team",
-  publisher: "LBK team",
+  authors: [{ name: "LB Team & GGL Studio" }],
+  creator: "LB Team & GGL Studio",
+  publisher: "LB Team & GGL Studio",
   openGraph: {
     type: "website",
     locale: "uk_UA",
@@ -94,10 +95,6 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -119,7 +116,7 @@ export default function RootLayout({
               },
               author: {
                 "@type": "Organization",
-                name: "LBK team",
+                name: "LB Team & GGL Studio",
                 url: "https://t.me/LittleBitUA",
               },
               inLanguage: "uk",

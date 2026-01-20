@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getReadablePlatform } from "@/helpers/getReadablePlatform";
 import type { Game } from "@/lib/types";
 
 interface GameSidebarProps {
@@ -10,7 +11,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
     { url: game.telegram, icon: "fa-brands fa-telegram", label: "Telegram" },
     { url: game.discord, icon: "fa-brands fa-discord", label: "Discord" },
     { url: game.youtube, icon: "fa-brands fa-youtube", label: "YouTube" },
-    { url: game.twitter, icon: "fa-brands fa-twitter", label: "Twitter" },
+    { url: game.twitter, icon: "fa-brands fa-x-twitter", label: "X" },
     { url: game.website, icon: "fa-solid fa-globe", label: "Веб-сайт" },
   ].filter((link) => link.url);
 
@@ -43,7 +44,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
 
       {/* Steam Link */}
       {game.steam_app_id && (
-        <div className="game-sidebar-card">
+        <div className="game-sidebar-card game-steam-card">
           <a
             href={`https://store.steampowered.com/app/${game.steam_app_id}`}
             target="_blank"
@@ -67,7 +68,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
       )}
 
       {/* Stats */}
-      <div className="game-sidebar-card">
+      <div className="game-sidebar-card game-stats-card">
         <h3>Статистика</h3>
         <div className="game-stats-list">
           {game.downloads && game.downloads > 0 ? (
@@ -79,7 +80,9 @@ export function GameSidebar({ game }: GameSidebarProps) {
           {game.platforms && game.platforms.length > 0 && (
             <div className="game-stat">
               <span>Платформи</span>
-              <strong>{game.platforms.join(", ")}</strong>
+              <strong>
+                {game.platforms.map(getReadablePlatform).join(", ")}
+              </strong>
             </div>
           )}
           <div className="game-stat">
@@ -109,7 +112,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
 
       {/* Social Links */}
       {socialLinks.length > 0 && (
-        <div className="game-sidebar-card">
+        <div className="game-sidebar-card game-links-card">
           <h3>Посилання</h3>
           <div className="game-social-links">
             {socialLinks.map((link) => (
@@ -130,7 +133,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
 
       {/* Support */}
       {game.support_url && (
-        <div className="game-sidebar-card">
+        <div className="game-sidebar-card game-support-card">
           <h3>Підтримати</h3>
           <a
             href={game.support_url}

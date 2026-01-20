@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface GamesSearchProps {
   value: string;
@@ -20,7 +20,7 @@ const AUTHORS_PER_PAGE = 20;
 
 const STATUS_OPTIONS = [
   { value: "completed", label: "Готово", icon: "fa-solid fa-check-circle" },
-  { value: "in-progress", label: "В розробці", icon: "fa-solid fa-spinner" },
+  { value: "in-progress", label: "У розробці", icon: "fa-solid fa-spinner" },
   { value: "planned", label: "Заплановано", icon: "fa-solid fa-clock" },
 ];
 
@@ -247,7 +247,7 @@ export function GamesSearch({
           </button>
 
           {isAuthorOpen && (
-            <div className="dropdown-menu dropdown-menu-with-search">
+            <div className="dropdown-menu dropdown-menu-with-search dropdown-menu--right">
               {/* Search Input */}
               <div className="dropdown-search">
                 <i className="fa-solid fa-magnifying-glass" />
@@ -332,7 +332,7 @@ export function GamesSearch({
                   <span>
                     {authorSearch
                       ? `Знайдено: ${filteredAuthors.length}`
-                      : `Всього: ${authors.length}`}
+                      : `Усього: ${authors.length}`}
                   </span>
                 </div>
               )}

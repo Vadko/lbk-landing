@@ -52,7 +52,7 @@ export async function generateMetadata({
       ? "Повний переклад готовий!"
       : game.status === "in-progress"
         ? `Переклад ${game.translation_progress}% готовий`
-        : "Переклад в розробці";
+        : "Переклад у розробці";
 
   const description = `Український переклад ${game.name} від ${game.team}. ${statusText} Завантажте безкоштовно через LBK Launcher та грайте українською.`;
 

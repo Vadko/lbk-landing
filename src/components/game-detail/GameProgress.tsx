@@ -14,7 +14,7 @@ export function GameProgress({
   texturesProgress,
 }: GameProgressProps) {
   return (
-    <section className="game-section">
+    <section className="game-section game-progress">
       <h2>Прогрес перекладу</h2>
       <div className="game-progress-list">
         <div className="game-progress-item">

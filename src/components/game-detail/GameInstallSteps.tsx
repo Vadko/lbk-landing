@@ -4,7 +4,7 @@ interface GameInstallStepsProps {
 
 export function GameInstallSteps({ gameName }: GameInstallStepsProps) {
   return (
-    <section className="game-section">
+    <section className="game-section game-install-section">
       <h2>Як встановити український переклад {gameName}</h2>
       <ol className="game-install-steps">
         <li>
