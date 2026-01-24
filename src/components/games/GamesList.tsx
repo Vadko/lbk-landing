@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
 import { useGamesInfinite, useTeams } from "@/hooks/useGames";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { GameCard } from "./GameCard";

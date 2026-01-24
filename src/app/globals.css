@@ -3948,3 +3948,284 @@ footer {
 .light .setup-troubleshoot {
   background: rgba(255, 77, 141, 0.05);
 }
+
+/* ==========================================
+   Open in Launcher Page
+   ========================================== */
+.open-launcher-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 100px 20px 20px;
+}
+
+.open-launcher-bg {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(20px) brightness(0.3);
+  transform: scale(1.1);
+  z-index: -1;
+}
+
+.open-launcher-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 15, 0.8) 0%,
+    rgba(10, 10, 15, 0.95) 100%
+  );
+}
+
+.open-launcher-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 40px 30px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.open-launcher-logo {
+  max-width: 200px;
+  max-height: 80px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+.open-launcher-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-main));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.open-launcher-team {
+  color: var(--text-sec);
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
+
+.open-launcher-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.open-launcher-status p {
+  color: var(--text-main);
+  font-size: 1.1rem;
+}
+
+.open-launcher-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--glass-border);
+  border-top-color: var(--color-main);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.open-launcher-countdown {
+  font-size: 0.9rem;
+  color: var(--text-sec);
+}
+
+.open-launcher-success {
+  color: #4ade80;
+}
+
+.open-launcher-success i {
+  font-size: 3rem;
+}
+
+.open-launcher-success p {
+  color: #4ade80;
+}
+
+.open-launcher-link {
+  color: var(--color-main);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.open-launcher-link:hover {
+  color: var(--color-accent);
+}
+
+.open-launcher-failed h2 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.open-launcher-failed > i {
+  font-size: 3rem;
+  color: var(--color-main);
+  margin-bottom: 10px;
+}
+
+.open-launcher-failed > p {
+  color: var(--text-sec);
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+}
+
+.open-launcher-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.open-launcher-download {
+  width: 100%;
+  justify-content: center;
+}
+
+.open-launcher-retry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--text-sec);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.open-launcher-retry:hover {
+  border-color: var(--color-main);
+  color: var(--color-main);
+}
+
+.open-launcher-game-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-sec);
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.open-launcher-game-link:hover {
+  color: var(--color-main);
+}
+
+.open-launcher-game-link i {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.open-launcher-game-link:hover i {
+  transform: translateX(3px);
+}
+
+.open-launcher-share {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  color: var(--text-sec);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.open-launcher-share:hover {
+  border-color: var(--color-main);
+  color: var(--color-main);
+}
+
+/* Share button for game sidebar */
+.btn-share {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  color: var(--text-sec);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-share:hover {
+  border-color: var(--color-main);
+  color: var(--color-main);
+}
+
+.btn-share.copied {
+  border-color: #4ade80;
+  color: #4ade80;
+}
+
+/* Light theme adjustments */
+.light .open-launcher-bg::after {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
+}
+
+.light .open-launcher-content {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 768px) {
+  .open-launcher-content {
+    padding: 30px 20px;
+  }
+
+  .open-launcher-title {
+    font-size: 1.5rem;
+  }
+
+  .open-launcher-logo {
+    max-width: 150px;
+    max-height: 60px;
+  }
+}

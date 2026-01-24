@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import type { GitHubRelease } from "@/lib/types";
 import { getFromCache, setCache } from "@/lib/redis";
+import type { GitHubRelease } from "@/lib/types";
 
 const GITHUB_REPO = "Vadko/littlebit-launcher";
 const CACHE_KEY = "github:releases";

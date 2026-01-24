@@ -1,6 +1,6 @@
 import { createServerClient } from "@/lib/supabase/server";
-import type { Game } from "@/lib/types";
 import { teamToSlug } from "@/lib/transliterate";
+import type { Game } from "@/lib/types";
 
 // Get all translations for a specific game slug
 export async function getGamesBySlug(slug: string): Promise<Game[]> {
