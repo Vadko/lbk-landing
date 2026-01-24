@@ -2,28 +2,28 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  getGameBySlugAndTeamSlug,
-  getAllGameSlugsWithTeams,
-  getGamesBySlug,
-} from "@/lib/games";
-import { teamToSlug } from "@/lib/transliterate";
-import { getImageUrl } from "@/lib/images";
-import { STATUS_LABELS } from "@/lib/constants";
-import {
-  generateSoftwareApplicationLD,
-  generateFAQLD,
-  generateBreadcrumbLD,
-} from "@/lib/game-jsonld";
-import {
-  GameBanner,
-  GameProgress,
   FundraisingProgress,
-  GameSidebar,
+  GameBanner,
   GameFAQ,
   GameInstallSteps,
+  GameProgress,
+  GameSidebar,
 } from "@/components/game-detail";
 import { GameTeamLink } from "@/components/ui/GameTeamLink";
+import { STATUS_LABELS } from "@/lib/constants";
 import { getFeaturedInfo } from "@/lib/featuredTranslations";
+import {
+  generateBreadcrumbLD,
+  generateFAQLD,
+  generateSoftwareApplicationLD,
+} from "@/lib/game-jsonld";
+import {
+  getAllGameSlugsWithTeams,
+  getGameBySlugAndTeamSlug,
+  getGamesBySlug,
+} from "@/lib/games";
+import { getImageUrl } from "@/lib/images";
+import { teamToSlug } from "@/lib/transliterate";
 
 interface PageProps {
   params: Promise<{ slug: string; team: string }>;

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
+import { useState, useSyncExternalStore } from "react";
 import { detectOS } from "@/hooks/useGitHubRelease";
 
 type Platform = "windows" | "macos" | "linux" | "steamdeck";

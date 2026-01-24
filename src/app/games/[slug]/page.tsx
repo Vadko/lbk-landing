@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { getGamesBySlug, getAllGameSlugs } from "@/lib/games";
-import { teamToSlug } from "@/lib/transliterate";
-import { getImageUrl } from "@/lib/images";
+import { GameBanner } from "@/components/game-detail";
 import { STATUS_LABELS } from "@/lib/constants";
 import { generateBreadcrumbLD } from "@/lib/game-jsonld";
-import { GameBanner } from "@/components/game-detail";
+import { getAllGameSlugs, getGamesBySlug } from "@/lib/games";
+import { getImageUrl } from "@/lib/images";
+import { teamToSlug } from "@/lib/transliterate";
 
 interface PageProps {
   params: Promise<{ slug: string }>;

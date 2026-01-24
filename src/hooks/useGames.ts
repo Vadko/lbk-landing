@@ -1,15 +1,15 @@
 "use client";
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase/client";
+import type { Database } from "@/lib/database.types";
 import { queryKeys } from "@/lib/queryKeys";
 import { buildFtsQuery } from "@/lib/search-utils";
+import { supabase } from "@/lib/supabase/client";
 import type {
-  GamesGroupedResponse,
   GameGroup,
+  GamesGroupedResponse,
   TranslationItem,
 } from "@/lib/types";
-import type { Database } from "@/lib/database.types";
 
 type GamesGroupedRow = Database["public"]["Views"]["games_grouped"]["Row"];
 

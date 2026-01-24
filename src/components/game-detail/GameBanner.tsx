@@ -1,8 +1,8 @@
 "use client";
 
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useEffect } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
 
 interface GameBannerProps {
   bannerUrl: string | null;

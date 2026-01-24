@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  getGameBySlugAndTeamSlug,
-  getAllGameSlugsWithTeams,
-} from "@/lib/games";
-import { teamToSlug } from "@/lib/transliterate";
-import { getImageUrl } from "@/lib/images";
 import { OpenInLauncher } from "@/components/open/OpenInLauncher";
+import {
+  getAllGameSlugsWithTeams,
+  getGameBySlugAndTeamSlug,
+} from "@/lib/games";
+import { getImageUrl } from "@/lib/images";
+import { teamToSlug } from "@/lib/transliterate";
 
 interface PageProps {
   params: Promise<{ slug: string; team: string }>;
