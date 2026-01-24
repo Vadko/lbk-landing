@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useReducer, useRef } from "react";
 
@@ -62,68 +63,43 @@ export function OpenInLauncher({
     retryCount: 0,
   });
 
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
-
+  const linkRef = useRef<HTMLAnchorElement>(null);
   const launcherUrl = `lbk://games/${gameSlug}/${encodeURIComponent(team)}`;
   const gamePageUrl = `/games/${gameSlug}/${teamSlug}`;
 
-  // Main effect for attempting to open launcher
   useEffect(() => {
     if (state.status !== "attempting") return;
 
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    document.body.appendChild(iframe);
-    iframeRef.current = iframe;
+    // Click hidden link to trigger protocol
+    linkRef.current?.click();
 
-    if (iframe.contentWindow) {
-      iframe.contentWindow.location.href = launcherUrl;
-    }
-
-    const locationTimeout = setTimeout(() => {
-      window.location.href = launcherUrl;
-    }, 100);
-
+    // If we're still here after timeout, launcher probably didn't open
     const checkTimeout = setTimeout(() => {
       dispatch({ type: "FAILED" });
-      if (document.body.contains(iframe)) {
-        document.body.removeChild(iframe);
-      }
     }, 2500);
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
         dispatch({ type: "OPENED" });
         clearTimeout(checkTimeout);
-        if (document.body.contains(iframe)) {
-          document.body.removeChild(iframe);
-        }
       }
     };
 
     const handleBlur = () => {
       dispatch({ type: "OPENED" });
       clearTimeout(checkTimeout);
-      if (document.body.contains(iframe)) {
-        document.body.removeChild(iframe);
-      }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("blur", handleBlur);
 
     return () => {
-      clearTimeout(locationTimeout);
       clearTimeout(checkTimeout);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("blur", handleBlur);
-      if (document.body.contains(iframe)) {
-        document.body.removeChild(iframe);
-      }
     };
-  }, [launcherUrl, state.status, state.retryCount]);
+  }, [state.status, state.retryCount]);
 
-  // Countdown timer
   useEffect(() => {
     if (state.status !== "attempting") return;
 
@@ -140,16 +116,7 @@ export function OpenInLauncher({
 
   const copyShareLink = async () => {
     const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-    } catch {
-      const textArea = document.createElement("textarea");
-      textArea.value = shareUrl;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textArea);
-    }
+    await navigator.clipboard.writeText(shareUrl);
   };
 
   return (
@@ -161,9 +128,18 @@ export function OpenInLauncher({
         />
       )}
 
+      {/* Hidden link for triggering protocol */}
+      <a ref={linkRef} href={launcherUrl} style={{ display: "none" }} />
+
       <div className="open-launcher-content">
         {logoUrl && (
-          <img src={logoUrl} alt={gameName} className="open-launcher-logo" />
+          <Image
+            src={logoUrl}
+            alt={gameName}
+            width={200}
+            height={80}
+            className="open-launcher-logo"
+          />
         )}
 
         <h1 className="open-launcher-title">{gameName}</h1>
