@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { ShareButton } from "@/components/ui/ShareButton";
 import { getReadablePlatform } from "@/helpers/getReadablePlatform";
+import { teamToSlug } from "@/lib/transliterate";
 import type { Game } from "@/lib/types";
 
 interface GameSidebarProps {
@@ -32,13 +34,19 @@ export function GameSidebar({ game }: GameSidebarProps) {
           </div>
         </Link>
         {game.slug && game.team && (
-          <a
-            href={`lb://games/${game.slug}/${encodeURIComponent(game.team)}`}
-            className="btn-launcher"
-          >
-            <i className="fa-solid fa-rocket" />
-            Відкрити в лаунчері
-          </a>
+          <>
+            <a
+              href={`lbk://games/${game.slug}/${encodeURIComponent(game.team)}`}
+              className="btn-launcher"
+            >
+              <i className="fa-solid fa-rocket" />
+              Відкрити в лаунчері
+            </a>
+            <ShareButton
+              gameSlug={game.slug}
+              teamSlug={teamToSlug(game.team)}
+            />
+          </>
         )}
       </div>
 
@@ -134,7 +142,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
       {/* Support */}
       {game.support_url && (
         <div className="game-sidebar-card game-support-card">
-          <h3>Підтримати</h3>
+          <h3>Підтримка</h3>
           <a
             href={game.support_url}
             target="_blank"
