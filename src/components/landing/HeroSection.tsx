@@ -163,18 +163,27 @@ export function HeroSection() {
                 <button
                   onClick={() => handleDownload(FLATPAKREF_URL)}
                   className="dl-mini"
-                  title="Steam Deck / Flatpak"
+                  title="Flatpak (Steam Deck)"
                 >
-                  <i className="fa-brands fa-steam" />
+                  <i className="fa-solid fa-box" />
                 </button>
               )}
-              {os !== "linux" && downloadLinks.linux && (
+              {os !== "linux" && !isSteamDeck && downloadLinks.linux && (
                 <button
                   onClick={() => handleDownload(downloadLinks.linux)}
                   className="dl-mini"
-                  title="Linux"
+                  title="Linux (AppImage)"
                 >
                   <i className="fa-brands fa-linux" />
+                </button>
+              )}
+              {os !== "linux" && !isSteamDeck && (
+                <button
+                  onClick={() => handleDownload(FLATPAKREF_URL)}
+                  className="dl-mini"
+                  title="Flatpak (Steam Deck)"
+                >
+                  <i className="fa-solid fa-box" />
                 </button>
               )}
               {os !== "macos" && downloadLinks.macos && (
