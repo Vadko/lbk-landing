@@ -61,10 +61,24 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
   };
 }
 
-export function detectOS(): "windows" | "macos" | "linux" | "unknown" {
+export function detectOS():
+  | "windows"
+  | "macos"
+  | "linux"
+  | "steamdeck"
+  | "unknown" {
   if (typeof navigator === "undefined") return "unknown";
 
   const userAgent = navigator.userAgent.toLowerCase();
+
+  // Steam Deck detection (must be before generic linux check)
+  if (
+    userAgent.includes("steamdeck") ||
+    userAgent.includes("steam deck") ||
+    userAgent.includes("valve")
+  ) {
+    return "steamdeck";
+  }
 
   if (userAgent.includes("win")) return "windows";
   if (userAgent.includes("mac")) return "macos";

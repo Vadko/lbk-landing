@@ -68,29 +68,43 @@ export function HeroSection() {
   const handleDownload = (url: string | null) => {
     if (url) {
       fireConfetti();
-      window.open(url, "_blank");
+      // For flatpakref, navigate directly so the OS/Discover can handle it
+      if (url.endsWith(".flatpakref")) {
+        window.location.assign(url);
+      } else {
+        window.open(url, "_blank");
+      }
     }
   };
 
+  const FLATPAKREF_URL =
+    "https://raw.githubusercontent.com/Vadko/lbk-flatpak/main/com.lbk.launcher.flatpakref";
+
+  const isSteamDeck = os === "steamdeck";
+
   const getMainDownloadUrl = () => {
+    if (isSteamDeck) return FLATPAKREF_URL;
     if (os === "macos") return downloadLinks.macos;
     if (os === "linux") return downloadLinks.linux;
     return downloadLinks.windows;
   };
 
   const getMainDownloadLabel = () => {
+    if (isSteamDeck) return "Встановити на Steam Deck";
     if (os === "macos") return "Завантажити для macOS";
     if (os === "linux") return "Завантажити для Linux";
     return "Завантажити для Windows";
   };
 
   const getMainDownloadSubtitle = () => {
+    if (isSteamDeck) return "Flatpak";
     if (os === "macos") return ".dmg";
     if (os === "linux") return "AppImage";
     return "x64 Installer";
   };
 
   const getMainDownloadIcon = () => {
+    if (isSteamDeck) return "fa-steam";
     if (os === "macos") return "fa-apple";
     if (os === "linux") return "fa-linux";
     return "fa-windows";

@@ -15,6 +15,7 @@ const PLATFORMS: { id: Platform; label: string; icon: string }[] = [
 
 const getOSPlatform = (): Platform => {
   const os = detectOS();
+  if (os === "steamdeck") return "steamdeck";
   if (os === "macos") return "macos";
   if (os === "linux") return "linux";
   return "windows";
@@ -207,6 +208,9 @@ function MacOSInstructions() {
 }
 
 function LinuxInstructions() {
+  const flatpakrefUrl =
+    "https://raw.githubusercontent.com/Vadko/lbk-flatpak/main/com.lbk.launcher.flatpakref";
+
   return (
     <div className="setup-platform">
       <h2>
@@ -218,12 +222,44 @@ function LinuxInstructions() {
         <h3>Варіанти завантаження</h3>
         <ul className="setup-files">
           <li>
+            <strong>Flatpak</strong> — рекомендовано для Steam Deck та
+            дистрибутивів з підтримкою Flatpak
+          </li>
+          <li>
             <code>LBK-Launcher-linux.AppImage</code> — універсальний формат
           </li>
           <li>
             <code>LBK-Launcher-linux.rpm</code> — для Fedora/RHEL
           </li>
         </ul>
+      </div>
+
+      <div className="setup-section">
+        <h3>
+          <i className="fa-solid fa-star" /> Встановлення Flatpak
+          (рекомендовано)
+        </h3>
+        <p>
+          Найпростіший спосіб встановити лаунчер. Відкрийте{" "}
+          <a href={flatpakrefUrl} className="setup-link">
+            посилання на flatpakref
+          </a>{" "}
+          — система запропонує встановити застосунок автоматично.
+        </p>
+        <p>Або через термінал:</p>
+        <div className="setup-code">
+          <code>flatpak install --user {flatpakrefUrl}</code>
+          <button
+            className="copy-btn"
+            onClick={() =>
+              navigator.clipboard.writeText(
+                `flatpak install --user ${flatpakrefUrl}`
+              )
+            }
+          >
+            <i className="fa-solid fa-copy" />
+          </button>
+        </div>
       </div>
 
       <div className="setup-section">
@@ -263,6 +299,9 @@ function LinuxInstructions() {
 }
 
 function SteamDeckInstructions() {
+  const flatpakrefUrl =
+    "https://raw.githubusercontent.com/Vadko/lbk-flatpak/main/com.lbk.launcher.flatpakref";
+
   return (
     <div className="setup-platform">
       <h2>
@@ -270,16 +309,64 @@ function SteamDeckInstructions() {
         Встановлення на Steam Deck
       </h2>
 
+      {/* Recommended: Flatpak */}
       <div className="setup-section">
-        <h3>Кроки встановлення</h3>
+        <h3>
+          <i className="fa-solid fa-star" /> Спосіб 1: Flatpak (рекомендовано)
+        </h3>
+        <p>
+          Найпростіший спосіб — встановити через Flatpak. Відкрийте{" "}
+          <a href={flatpakrefUrl} className="setup-link">
+            це посилання
+          </a>{" "}
+          у браузері на Steam Deck, і система запропонує встановити застосунок
+          автоматично.
+        </p>
         <ol className="setup-steps">
           <li>
             <strong>Перейдіть у режим робочого столу:</strong> Затисніть кнопку
-            живлення та оберіть &quot;Перейти на робочий стіл&quot;
+            живлення → &quot;Перейти на робочий стіл&quot;
           </li>
           <li>
-            <strong>Завантажте:</strong> Відкрийте браузер та завантажте
-            AppImage файл
+            <strong>Відкрийте посилання:</strong> У браузері перейдіть за{" "}
+            <a href={flatpakrefUrl} className="setup-link">
+              посиланням на flatpakref
+            </a>
+            . Система автоматично відкриє Discover і запропонує встановити LBK
+            Launcher.
+          </li>
+          <li>
+            <strong>Встановіть:</strong> Натисніть &quot;Install&quot; у
+            Discover
+          </li>
+        </ol>
+        <p>Або встановіть через термінал (Konsole):</p>
+        <div className="setup-code">
+          <code>flatpak install --user {flatpakrefUrl}</code>
+          <button
+            className="copy-btn"
+            onClick={() =>
+              navigator.clipboard.writeText(
+                `flatpak install --user ${flatpakrefUrl}`
+              )
+            }
+          >
+            <i className="fa-solid fa-copy" />
+          </button>
+        </div>
+      </div>
+
+      {/* Alternative: AppImage */}
+      <div className="setup-section">
+        <h3>Спосіб 2: AppImage</h3>
+        <ol className="setup-steps">
+          <li>
+            <strong>Перейдіть у режим робочого столу:</strong> Затисніть кнопку
+            живлення → &quot;Перейти на робочий стіл&quot;
+          </li>
+          <li>
+            <strong>Завантажте:</strong> Відкрийте браузер та завантажте файл{" "}
+            <code>LBK-Launcher-linux.AppImage</code>
           </li>
           <li>
             <strong>Надайте права:</strong>
