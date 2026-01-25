@@ -78,7 +78,7 @@ export function HeroSection() {
   };
 
   const FLATPAKREF_URL =
-    "https://raw.githubusercontent.com/Vadko/lbk-flatpak/main/com.lbk.launcher.flatpakref";
+    "https://flatpak.lbklauncher.com/com.lbk.launcher.flatpakref";
 
   const isSteamDeck = os === "steamdeck";
 
@@ -159,6 +159,15 @@ export function HeroSection() {
             </button>
 
             <div className="dl-others">
+              {os === "linux" && (
+                <button
+                  onClick={() => handleDownload(FLATPAKREF_URL)}
+                  className="dl-mini"
+                  title="Steam Deck / Flatpak"
+                >
+                  <i className="fa-brands fa-steam" />
+                </button>
+              )}
               {os !== "linux" && downloadLinks.linux && (
                 <button
                   onClick={() => handleDownload(downloadLinks.linux)}

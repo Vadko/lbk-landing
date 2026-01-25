@@ -209,7 +209,7 @@ function MacOSInstructions() {
 
 function LinuxInstructions() {
   const flatpakrefUrl =
-    "https://raw.githubusercontent.com/Vadko/lbk-flatpak/main/com.lbk.launcher.flatpakref";
+    "https://flatpak.lbklauncher.com/com.lbk.launcher.flatpakref";
 
   return (
     <div className="setup-platform">
@@ -300,7 +300,7 @@ function LinuxInstructions() {
 
 function SteamDeckInstructions() {
   const flatpakrefUrl =
-    "https://raw.githubusercontent.com/Vadko/lbk-flatpak/main/com.lbk.launcher.flatpakref";
+    "https://flatpak.lbklauncher.com/com.lbk.launcher.flatpakref";
 
   return (
     <div className="setup-platform">
@@ -328,7 +328,11 @@ function SteamDeckInstructions() {
             живлення → &quot;Перейти на робочий стіл&quot;
           </li>
           <li>
-            <strong>Відкрийте посилання:</strong> У браузері перейдіть за{" "}
+            <strong>Відкрийте Firefox:</strong> Використовуйте Firefox (не
+            Chrome), оскільки він краще інтегрований з системою
+          </li>
+          <li>
+            <strong>Відкрийте посилання:</strong> У Firefox перейдіть за{" "}
             <a href={flatpakrefUrl} className="setup-link">
               посиланням на flatpakref
             </a>
@@ -340,7 +344,10 @@ function SteamDeckInstructions() {
             Discover
           </li>
         </ol>
-        <p>Або встановіть через термінал (Konsole):</p>
+        <p>
+          <strong>Примітка:</strong> Якщо браузер пропонує просто скачати файл
+          замість відкриття Discover, встановіть через термінал (Konsole):
+        </p>
         <div className="setup-code">
           <code>flatpak install --user {flatpakrefUrl}</code>
           <button

@@ -72,11 +72,8 @@ export function detectOS():
   const userAgent = navigator.userAgent.toLowerCase();
 
   // Steam Deck detection (must be before generic linux check)
-  if (
-    userAgent.includes("steamdeck") ||
-    userAgent.includes("steam deck") ||
-    userAgent.includes("valve")
-  ) {
+  // Steam Deck UA: "Valve Steam Client/Steam Deck" or contains "steam deck"
+  if (userAgent.includes("steam deck") || userAgent.includes("valve steam")) {
     return "steamdeck";
   }
 
