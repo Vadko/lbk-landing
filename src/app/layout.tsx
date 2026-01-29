@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
 import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
@@ -135,6 +136,7 @@ export default function RootLayout({
           </QueryProvider>
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId="G-41MBF0G83S" />
     </html>
   );
 }
