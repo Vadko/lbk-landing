@@ -431,6 +431,7 @@ a {
 .hero-content {
   flex: 1;
   max-width: 600px;
+  margin-top: 20px;
 }
 
 .badge {
@@ -3924,7 +3925,7 @@ footer {
 
 .setup-notes li::before {
   content: "\f00c";
-  font-family: "Font Awesome 6 Free";
+  font-family: "Font Awesome 7 Free";
   font-weight: 900;
   color: var(--accent-main);
 }
