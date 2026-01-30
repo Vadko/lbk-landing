@@ -3,7 +3,6 @@ import { Outfit } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
-import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
@@ -128,7 +127,6 @@ export default function RootLayout({
       <body className="antialiased main-bg">
         <ThemeProvider>
           <QueryProvider>
-            <BackgroundEffects />
             <Navbar />
             <main className="relative z-10">{children}</main>
             <Footer />
