@@ -2891,7 +2891,7 @@ footer {
 .game-install-steps li {
   counter-increment: step;
   position: relative;
-  padding-left: 50px;
+  padding-left: 40px;
   margin-bottom: 20px;
   color: var(--text-sec);
   line-height: 1.6;
@@ -2901,16 +2901,15 @@ footer {
   content: counter(step);
   position: absolute;
   left: 0;
-  top: 0;
-  width: 32px;
-  height: 32px;
+  top: 2px;
+  width: 24px;
+  height: 24px;
   background: var(--gradient-primary);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-content: center;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--text-primary);
 }
 
