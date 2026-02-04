@@ -1,39 +1,98 @@
 "use client";
 
 import Link from "next/link";
+import { useRef, useState } from "react";
 import { getSpecialTranslatorInfo } from "@/lib/specialTranslators";
 import { Tooltip } from "./Tooltip";
 
 interface GameTeamLinkProps {
   team: string;
+  maxVisible?: number;
 }
 
-export function GameTeamLink({ team }: GameTeamLinkProps) {
+export function GameTeamLink({ team, maxVisible = 3 }: GameTeamLinkProps) {
+  const [showPopover, setShowPopover] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   const authors = team.split(",").map((a) => a.trim());
+  const visibleAuthors = authors.slice(0, maxVisible);
+  const hiddenAuthors = authors.slice(maxVisible);
+  const hasMore = hiddenAuthors.length > 0;
+
+  const renderAuthor = (author: string, showComma: boolean) => {
+    const specialInfo = getSpecialTranslatorInfo(author);
+    const isSpecial = specialInfo !== null;
+
+    return (
+      <span key={author}>
+        <Link
+          href={`/games?team=${encodeURIComponent(author)}`}
+          className={`game-team-link ${isSpecial ? "special-author" : ""}`}
+        >
+          {author}
+        </Link>
+        {isSpecial && specialInfo && (
+          <Tooltip content={specialInfo.description}>
+            <i className="fa-solid fa-star special-author-star" />
+          </Tooltip>
+        )}
+        {showComma && ", "}
+      </span>
+    );
+  };
 
   return (
     <>
-      {authors.map((author, index) => {
-        const specialInfo = getSpecialTranslatorInfo(author);
-        const isSpecial = specialInfo !== null;
+      {visibleAuthors.map((author, index) =>
+        renderAuthor(author, index < visibleAuthors.length - 1 || hasMore)
+      )}
 
-        return (
-          <span key={author}>
-            <Link
-              href={`/games?team=${encodeURIComponent(author)}`}
-              className={`game-team-link ${isSpecial ? "special-author" : ""}`}
-            >
-              {author}
-            </Link>
-            {isSpecial && specialInfo && (
-              <Tooltip content={specialInfo.description}>
-                <i className="fa-solid fa-star special-author-star" />
-              </Tooltip>
-            )}
-            {index < authors.length - 1 && ", "}
-          </span>
-        );
-      })}
+      {hasMore && (
+        <span className="authors-popover-container">
+          <button
+            ref={buttonRef}
+            type="button"
+            onClick={() => setShowPopover(!showPopover)}
+            onBlur={(e) => {
+              if (!popoverRef.current?.contains(e.relatedTarget as Node)) {
+                setShowPopover(false);
+              }
+            }}
+            className="authors-more-btn"
+          >
+            +{hiddenAuthors.length}
+          </button>
+
+          {showPopover && (
+            <div ref={popoverRef} className="authors-popover">
+              <div className="authors-popover-title">Інші автори:</div>
+              <div className="authors-popover-list">
+                {hiddenAuthors.map((author) => {
+                  const specialInfo = getSpecialTranslatorInfo(author);
+                  const isSpecial = specialInfo !== null;
+
+                  return (
+                    <div key={author} className="authors-popover-item">
+                      <Link
+                        href={`/games?team=${encodeURIComponent(author)}`}
+                        className={`game-team-link ${isSpecial ? "special-author" : ""}`}
+                      >
+                        {author}
+                      </Link>
+                      {isSpecial && specialInfo && (
+                        <Tooltip content={specialInfo.description}>
+                          <i className="fa-solid fa-star special-author-star" />
+                        </Tooltip>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </span>
+      )}
     </>
   );
 }

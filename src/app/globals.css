@@ -2835,6 +2835,59 @@ footer {
   text-decoration: underline;
 }
 
+/* Authors Popover */
+.authors-popover-container {
+  position: relative;
+  display: inline-block;
+}
+
+.authors-more-btn {
+  background: none;
+  border: none;
+  color: var(--text-sec);
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.authors-more-btn:hover {
+  color: var(--color-main);
+}
+
+.authors-popover {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  margin-bottom: 8px;
+  z-index: 100;
+  min-width: 200px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--bg-base);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.authors-popover-title {
+  font-size: 0.75rem;
+  color: var(--text-sec);
+  margin-bottom: 8px;
+}
+
+.authors-popover-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.authors-popover-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 /* Game Status Badge */
 .game-status-badge {
   display: inline-flex;
