@@ -12,6 +12,7 @@ import {
   getDownloadLinks,
   useGitHubRelease,
 } from "@/hooks/useGitHubRelease";
+import { trackFileDownload, trackViewGamesCatalog } from "@/lib/analytics";
 
 const TYPEWRITER_PHRASES = [
   "без зусиль!",
@@ -67,6 +68,7 @@ export function HeroSection() {
 
   const handleDownload = (url: string | null) => {
     if (url) {
+      trackFileDownload(url);
       fireConfetti();
       // For flatpakref, navigate directly so the OS/Discover can handle it
       if (url.endsWith(".flatpakref")) {
@@ -139,7 +141,11 @@ export function HeroSection() {
           </p>
 
           {/* Games button above download */}
-          <Link href="/games" className="games-link">
+          <Link
+            href="/games"
+            className="games-link"
+            onClick={trackViewGamesCatalog}
+          >
             <i className="fa-solid fa-gamepad" />
             <span>Переглянути всі ігри</span>
             <i className="fa-solid fa-arrow-right" />

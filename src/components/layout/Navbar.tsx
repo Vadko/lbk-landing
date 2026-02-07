@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useCallback } from "react";
 import { useMounted } from "@/hooks/useClientValue";
+import { trackViewGamesCatalog } from "@/lib/analytics";
 
 export function Navbar() {
   const { theme, setTheme } = useTheme();
@@ -49,7 +50,9 @@ export function Navbar() {
             <Link href="/#hero">Головна</Link>
           </li>
           <li>
-            <Link href="/games">Ігри</Link>
+            <Link href="/games" onClick={trackViewGamesCatalog}>
+              Ігри
+            </Link>
           </li>
           <li>
             <Link href="/#gallery">Галерея</Link>

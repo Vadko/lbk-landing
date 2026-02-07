@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { trackViewTranslatorsPage } from "@/lib/analytics";
 
 interface GamesSearchProps {
   value: string;
@@ -78,6 +79,8 @@ export function GamesSearch({
     if (isAuthorOpen) {
       setAuthorSearch("");
       setAuthorsDisplayed(AUTHORS_PER_PAGE);
+    } else {
+      trackViewTranslatorsPage();
     }
     setIsAuthorOpen(!isAuthorOpen);
   }, [isAuthorOpen]);

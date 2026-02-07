@@ -45,6 +45,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
             <ShareButton
               gameSlug={game.slug}
               teamSlug={teamToSlug(game.team)}
+              gameTitle={game.name}
             />
           </>
         )}

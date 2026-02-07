@@ -1,13 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { trackShareLinkCopied } from "@/lib/analytics";
 
 interface ShareButtonProps {
   gameSlug: string;
   teamSlug: string;
+  gameTitle: string;
 }
 
-export function ShareButton({ gameSlug, teamSlug }: ShareButtonProps) {
+export function ShareButton({
+  gameSlug,
+  teamSlug,
+  gameTitle,
+}: ShareButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
@@ -29,6 +35,7 @@ export function ShareButton({ gameSlug, teamSlug }: ShareButtonProps) {
     // Fallback to clipboard
     try {
       await navigator.clipboard.writeText(shareUrl);
+      trackShareLinkCopied(gameTitle);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -41,6 +48,7 @@ export function ShareButton({ gameSlug, teamSlug }: ShareButtonProps) {
       textArea.select();
       document.execCommand("copy");
       document.body.removeChild(textArea);
+      trackShareLinkCopied(gameTitle);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }

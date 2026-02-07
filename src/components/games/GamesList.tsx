@@ -1,9 +1,10 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useGamesInfinite, useTeams } from "@/hooks/useGames";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { trackViewSearchResults } from "@/lib/analytics";
 import { GameCard } from "./GameCard";
 import { GamesSearch } from "./GamesSearch";
 
@@ -90,6 +91,20 @@ export function GamesList() {
 
   const allGames = data?.pages.flatMap((page) => page.games) ?? [];
   const total = data?.pages[0]?.total ?? 0;
+
+  // Track search results when user has a search query and results arrive
+  const lastTrackedSearch = useRef("");
+  useEffect(() => {
+    if (
+      search &&
+      !isLoading &&
+      total > 0 &&
+      lastTrackedSearch.current !== search
+    ) {
+      lastTrackedSearch.current = search;
+      trackViewSearchResults(search, total);
+    }
+  }, [search, isLoading, total]);
 
   return (
     <div>

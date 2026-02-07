@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import {
   FundraisingProgress,
   GameBanner,
@@ -126,6 +127,7 @@ export default async function GameTranslationPage({ params }: PageProps) {
 
   return (
     <article className="game-detail">
+      <PageViewTracker event="view_game_details" gameName={game.name} />
       <GameBanner bannerUrl={bannerUrl} logoUrl={logoUrl} name={game.name} />
 
       <div className="game-content">
