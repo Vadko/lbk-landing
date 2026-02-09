@@ -196,6 +196,25 @@ export function useGamesInfinite(
   });
 }
 
+export function useGamesPaginated(
+  page: number,
+  search?: string,
+  statuses?: string[],
+  authors?: string[]
+) {
+  return useQuery({
+    queryKey: queryKeys.games.list({ search, statuses, authors, page }),
+    queryFn: () =>
+      fetchGamesGrouped({
+        offset: (page - 1) * GAMES_PER_PAGE,
+        limit: GAMES_PER_PAGE,
+        search,
+        statuses,
+        authors,
+      }),
+  });
+}
+
 export function useGamesCount() {
   return useQuery({
     queryKey: queryKeys.games.count(),
