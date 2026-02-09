@@ -119,7 +119,7 @@ export default async function GameTranslationPage({ params }: PageProps) {
 
   const breadcrumbItems = [
     { name: "Головна", url: "https://lbklauncher.com" },
-    { name: "Ігри", url: "https://lbklauncher.com/games" },
+    { name: "Каталог", url: "https://lbklauncher.com/games" },
     { name: game.name, url: `https://lbklauncher.com/games/${slug}` },
     {
       name: game.team,
@@ -138,7 +138,7 @@ export default async function GameTranslationPage({ params }: PageProps) {
           <nav className="game-breadcrumb">
             <Link href="/">Головна</Link>
             <span>/</span>
-            <Link href="/games">Ігри</Link>
+            <Link href="/games">Каталог</Link>
             <span>/</span>
             {otherTranslations.length > 0 ? (
               <>
