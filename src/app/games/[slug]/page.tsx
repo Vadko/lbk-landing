@@ -37,7 +37,9 @@ export async function generateMetadata({
       : `Українські переклади ${game.name} від ${teamNames}. Оберіть переклад та завантажте безкоштовно через LBK Launcher.`;
 
   return {
-    title: `${game.name} українською — Українські переклади гри`,
+    title: {
+      absolute: `${game.name} українською мовою | Скачати в LBK Launcher`,
+    },
     description,
     keywords: [
       `${game.name} українською`,
