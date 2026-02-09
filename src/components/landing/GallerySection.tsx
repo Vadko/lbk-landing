@@ -9,7 +9,7 @@ import "yet-another-react-lightbox/plugins/captions.css";
 
 const GALLERY_ITEMS = [
   {
-    src: "/assets/2.webp",
+    src: "/assets/1.webp",
     alt: "Головний екран LBK Launcher",
     label: "Головний екран",
     description:
@@ -17,11 +17,11 @@ const GALLERY_ITEMS = [
     large: true,
   },
   {
-    src: "/assets/1.webp",
-    alt: "LBK Launcher світла тема",
-    label: "Світла тема",
+    src: "/assets/2.webp",
+    alt: "Сторінка гри в LBK Launcher",
+    label: "Сторінка гри",
     description:
-      "Лаунчер підтримує світлу та темну теми — обирайте те, що зручніше для ваших очей.",
+      "Детальна інформація про гру: опис, скріншоти, системні вимоги та інші деталі.",
   },
   {
     src: "/assets/3.webp",
