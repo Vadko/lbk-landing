@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     description:
       "Найповніша база ігор з українським перекладом. Шукайте українізатори за назвою, жанром або автором. Дізнайтеся прогрес перекладу та встановлюйте локалізації в один клік через лаунчер.",
   },
+  alternates: {
+    canonical: "https://lbklauncher.com/games",
+  },
 };
 
 export default function GamesPage() {
