@@ -843,8 +843,16 @@ a {
   text-align: center;
 }
 
-.section-title.center {
+:is(.section-title, .section-description).center {
   text-align: center;
+}
+
+.section-title:has(+ .section-description) {
+  margin-bottom: 20px;
+}
+
+.section-description {
+  margin-bottom: 60px;
 }
 
 .why-grid {
@@ -1066,7 +1074,7 @@ a {
   margin-bottom: 20px;
 }
 
-.collab-btn {
+:is(.why-btn, .collab-btn) {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1079,7 +1087,7 @@ a {
   transition: all 0.3s ease;
 }
 
-.collab-btn:hover {
+:is(.why-btn, .collab-btn):hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(var(--color-main-rgb), 0.4);
 }
@@ -1090,6 +1098,10 @@ a {
 
 .collab-btn.github:hover {
   box-shadow: 0 8px 25px rgba(100, 100, 100, 0.4);
+}
+
+p + .why-btn {
+  margin-top: 20px;
 }
 
 /* FAQ Section */

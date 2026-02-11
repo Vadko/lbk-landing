@@ -10,6 +10,8 @@ const FEATURES = [
     title: "Підтримуваних ігор",
     description:
       "Велика бібліотека українізованих ігор, яка постійно поповнюється.",
+    link: "/games",
+    linkText: "Перейти до каталогу",
   },
   {
     icon: "fa-solid fa-magnifying-glass",
@@ -124,6 +126,16 @@ function WhyCard({ feature, gamesCount }: WhyCardProps) {
       )}
       <h3>{feature.title}</h3>
       <p>{feature.description}</p>
+      {feature.link && (
+        <a
+          href={feature.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="why-btn"
+        >
+          {feature.linkText}
+        </a>
+      )}
     </div>
   );
 }
@@ -134,7 +146,8 @@ export function ShowcaseSection() {
   return (
     <section id="showcase" className="showcase">
       <div className="container">
-        <h2 className="section-title center">Чому обирають LBK Launcher</h2>
+        <h2 className="section-title center">Чому варто завантажити LBK Launcher?</h2>
+        <p className="section-description center">Забудьте про ручне копіювання файлів та пошук українізаторів на форумах. Ми зібрали все в одному зручному інтерфейсі.</p>
 
         <div className="why-grid">
           {FEATURES.map((feature, index) => (
