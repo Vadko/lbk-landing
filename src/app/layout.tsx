@@ -1,6 +1,6 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
@@ -106,7 +106,7 @@ export default function RootLayout({
                 "Безкоштовний українізатор ігор. Встановлюйте українську локалізацію для ігор в один клац.",
               url: "https://lbklauncher.com",
               downloadUrl:
-                "https://github.com/Vadko/littlebit-launcher/releases/latest",
+                "https://github.com/Vadko/lbk-launcher/releases/latest",
               operatingSystem: "Windows, macOS, Linux",
               applicationCategory: "GameApplication",
               offers: {
