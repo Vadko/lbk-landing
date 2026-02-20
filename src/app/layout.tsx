@@ -1,6 +1,6 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
@@ -23,8 +23,7 @@ export const metadata: Metadata = {
       "LBK Launcher — Ігри українською: автоматичний українізатор та каталог перекладів",
     template: "%s | LBK Launcher",
   },
-  description:
-    `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
+  description: `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
   keywords: [
     "українізатор",
     "українізатор ігор",
@@ -48,8 +47,7 @@ export const metadata: Metadata = {
     url: "https://lbklauncher.com",
     siteName: "LBK Launcher — Ігри українською",
     title: "LBK Launcher — Ігри українською",
-    description:
-      `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
+    description: `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
     images: [
       {
         url: "/assets/og-image.webp",
@@ -62,8 +60,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "LBK Launcher — Ігри українською мовою",
-    description:
-      `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
+    description: `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
     images: ["/assets/og-image.webp"],
   },
   robots: {
@@ -107,8 +104,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
               name: "LBK Launcher",
-              description:
-                `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
+              description: `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
               url: "https://lbklauncher.com",
               downloadUrl:
                 "https://github.com/Vadko/littlebit-launcher/releases/latest",
