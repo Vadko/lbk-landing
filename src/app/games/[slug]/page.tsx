@@ -37,7 +37,9 @@ export async function generateMetadata({
       : `Українські переклади ${game.name} від ${teamNames}. Оберіть переклад та завантажте безкоштовно через LBK Launcher.`;
 
   return {
-    title: `${game.name} українською — Українські переклади гри`,
+    title: {
+      absolute: `${game.name} українською мовою | Скачати в LBK Launcher`,
+    },
     description,
     keywords: [
       `${game.name} українською`,
@@ -100,7 +102,7 @@ export default async function GamePage({ params }: PageProps) {
           <nav className="game-breadcrumb">
             <Link href="/">Головна</Link>
             <span>/</span>
-            <Link href="/games">Ігри</Link>
+            <Link href="/games">каталог</Link>
             <span>/</span>
             <span className="current">{game.name}</span>
           </nav>
@@ -199,7 +201,7 @@ export default async function GamePage({ params }: PageProps) {
           __html: JSON.stringify(
             generateBreadcrumbLD([
               { name: "Головна", url: "https://lbklauncher.com" },
-              { name: "Ігри", url: "https://lbklauncher.com/games" },
+              { name: "Каталог", url: "https://lbklauncher.com/games" },
               { name: game.name, url: `https://lbklauncher.com/games/${slug}` },
             ])
           ),

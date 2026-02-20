@@ -14,7 +14,7 @@ const CARDS = [
     title: "Відкритий код",
     description:
       "Увесь код лаунчера доступний на GitHub — перевіряйте й долучайтеся.",
-    link: "https://github.com/Vadko/littlebit-launcher",
+    link: "https://github.com/Vadko/lbk-launcher",
     linkText: "Переглянути код",
     linkIcon: "fa-brands fa-github",
     isGithub: true,

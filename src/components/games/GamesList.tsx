@@ -2,8 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useGamesInfinite, useTeams } from "@/hooks/useGames";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useGamesPaginated, useTeams } from "@/hooks/useGames";
 import { trackViewSearchResults } from "@/lib/analytics";
 import { GameCard } from "./GameCard";
 import { GamesSearch } from "./GamesSearch";
@@ -13,6 +12,13 @@ export function GamesList() {
   const router = useRouter();
 
   const [search, setSearch] = useState("");
+
+  // Read current page from URL params
+  const currentPage = useMemo(() => {
+    const pageParam = searchParams.get("page");
+    const page = pageParam ? parseInt(pageParam, 10) : 1;
+    return page > 0 ? page : 1;
+  }, [searchParams]);
 
   // Fetch authors list (renamed from teams for clarity)
   const { data: authors = [], isLoading: authorsLoading } = useTeams();
@@ -38,15 +44,18 @@ export function GamesList() {
     return [];
   }, [searchParams]);
 
-  // Update URL with new filter values
+  // Update URL with new filter values and reset to page 1
   const updateFilters = useCallback(
-    (newStatuses: string[], newAuthors: string[]) => {
+    (newStatuses: string[], newAuthors: string[], page?: number) => {
       const params = new URLSearchParams();
       if (newStatuses.length > 0) {
         params.set("statuses", newStatuses.join(","));
       }
       if (newAuthors.length > 0) {
         params.set("authors", newAuthors.join(","));
+      }
+      if (page && page > 1) {
+        params.set("page", page.toString());
       }
       const queryString = params.toString();
       router.push(queryString ? `/games?${queryString}` : "/games");
@@ -56,41 +65,36 @@ export function GamesList() {
 
   const handleStatusesChange = useCallback(
     (newStatuses: string[]) => {
-      updateFilters(newStatuses, selectedAuthors);
+      updateFilters(newStatuses, selectedAuthors, 1);
     },
     [updateFilters, selectedAuthors]
   );
 
   const handleAuthorsChange = useCallback(
     (newAuthors: string[]) => {
-      updateFilters(selectedStatuses, newAuthors);
+      updateFilters(selectedStatuses, newAuthors, 1);
     },
     [updateFilters, selectedStatuses]
   );
 
-  const {
-    data,
-    isLoading,
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
-    error,
-  } = useGamesInfinite(search, selectedStatuses, selectedAuthors);
+  const handlePageChange = useCallback(
+    (page: number) => {
+      updateFilters(selectedStatuses, selectedAuthors, page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    [updateFilters, selectedStatuses, selectedAuthors]
+  );
 
-  const handleLoadMore = useCallback(() => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const { data, isLoading, error } = useGamesPaginated(
+    currentPage,
+    search,
+    selectedStatuses,
+    selectedAuthors
+  );
 
-  const observerTarget = useInfiniteScroll({
-    onLoadMore: handleLoadMore,
-    hasMore: hasNextPage ?? false,
-    isLoading: isFetchingNextPage,
-  });
-
-  const allGames = data?.pages.flatMap((page) => page.games) ?? [];
-  const total = data?.pages[0]?.total ?? 0;
+  const allGames = data?.games ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = Math.ceil(total / 12);
 
   // Track search results when user has a search query and results arrive
   const lastTrackedSearch = useRef("");
@@ -151,12 +155,52 @@ export function GamesList() {
             ))}
           </div>
 
-          {/* Observer for infinite scroll - always at the end */}
-          {hasNextPage && <div ref={observerTarget} style={{ height: 1 }} />}
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                aria-label="Попередня сторінка"
+              >
+                <i className="fa-solid fa-chevron-left" />
+              </button>
 
-          {isFetchingNextPage && (
-            <div className="loading-spinner">
-              <div className="spinner" />
+              {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                let pageNum: number;
+                if (totalPages <= 7) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 4) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 3) {
+                  pageNum = totalPages - 6 + i;
+                } else {
+                  pageNum = currentPage - 3 + i;
+                }
+
+                return (
+                  <button
+                    key={pageNum}
+                    className={`pagination-btn ${
+                      currentPage === pageNum ? "active" : ""
+                    }`}
+                    onClick={() => handlePageChange(pageNum)}
+                    aria-label={`Сторінка ${pageNum}`}
+                    aria-current={currentPage === pageNum ? "page" : undefined}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                aria-label="Наступна сторінка"
+              >
+                <i className="fa-solid fa-chevron-right" />
+              </button>
             </div>
           )}
         </>

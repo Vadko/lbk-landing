@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { Database } from "@/lib/database.types";
 import { queryKeys } from "@/lib/queryKeys";
 import { buildFtsQuery } from "@/lib/search-utils";
@@ -175,24 +175,22 @@ async function fetchGamesGroupedWithFilter({
   };
 }
 
-export function useGamesInfinite(
+export function useGamesPaginated(
+  page: number,
   search?: string,
   statuses?: string[],
   authors?: string[]
 ) {
-  return useInfiniteQuery({
-    queryKey: queryKeys.games.list({ search, statuses, authors }),
-    queryFn: ({ pageParam = 0 }) =>
+  return useQuery({
+    queryKey: queryKeys.games.list({ search, statuses, authors, page }),
+    queryFn: () =>
       fetchGamesGrouped({
-        offset: pageParam,
+        offset: (page - 1) * GAMES_PER_PAGE,
         limit: GAMES_PER_PAGE,
         search,
         statuses,
         authors,
       }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) =>
-      lastPage.hasMore ? lastPage.nextOffset : undefined,
   });
 }
 

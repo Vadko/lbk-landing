@@ -5,6 +5,7 @@ export const queryKeys = {
       search?: string;
       statuses?: string[];
       authors?: string[];
+      page?: number;
     }) => [...queryKeys.games.all, "list", filters] as const,
     detail: (slug: string) => [...queryKeys.games.all, "detail", slug] as const,
     count: () => [...queryKeys.games.all, "count"] as const,
