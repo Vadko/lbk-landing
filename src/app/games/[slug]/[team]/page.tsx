@@ -50,15 +50,17 @@ export async function generateMetadata({
 
   const statusText =
     game.status === "completed"
-      ? "Повний переклад готовий!"
+      ? "100%"
       : game.status === "in-progress"
-        ? `Переклад ${game.translation_progress}% готовий`
-        : "Переклад у розробці";
+        ? `${game.translation_progress}%`
+        : "у розробці";
 
-  const description = `Український переклад ${game.name} від ${game.team}. ${statusText} Завантажте безкоштовно через LBK Launcher та грайте українською.`;
+  const description = `Український переклад ${game.name} від команди ${game.team}. Статус перекладу: ${statusText}. Дізнайтеся, як автоматично встановити українізатор через LBK Launcher та грати українською вже зараз.`;
 
   return {
-    title: `${game.name} українською від ${game.team} — Український переклад гри`,
+    title: {
+      absolute: `${game.name} українською мовою — Переклад від ${game.team} | Скачати в LBK Launcher`,
+    },
     description,
     keywords: [
       `${game.name} українською`,
@@ -117,7 +119,7 @@ export default async function GameTranslationPage({ params }: PageProps) {
 
   const breadcrumbItems = [
     { name: "Головна", url: "https://lbklauncher.com" },
-    { name: "Ігри", url: "https://lbklauncher.com/games" },
+    { name: "Каталог", url: "https://lbklauncher.com/games" },
     { name: game.name, url: `https://lbklauncher.com/games/${slug}` },
     {
       name: game.team,
@@ -136,7 +138,7 @@ export default async function GameTranslationPage({ params }: PageProps) {
           <nav className="game-breadcrumb">
             <Link href="/">Головна</Link>
             <span>/</span>
-            <Link href="/games">Ігри</Link>
+            <Link href="/games">Каталог</Link>
             <span>/</span>
             {otherTranslations.length > 0 ? (
               <>
