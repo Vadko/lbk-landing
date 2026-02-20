@@ -1,19 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "next-themes";
-import { useCallback } from "react";
-import { useMounted } from "@/hooks/useClientValue";
 import { trackViewGamesCatalog } from "@/lib/analytics";
 
 export function Navbar() {
-  const { theme, setTheme } = useTheme();
-  const mounted = useMounted();
-
-  const toggleTheme = useCallback(() => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  }, [theme, setTheme]);
-
   return (
     <nav className="navbar">
       <div className="container nav-container">
@@ -98,17 +88,6 @@ export function Navbar() {
           >
             <i className="fa-brands fa-tiktok" />
           </a>
-
-          {mounted && (
-            <button
-              onClick={toggleTheme}
-              className="theme-toggle"
-              title="Змінити тему"
-            >
-              <i className="fa-solid fa-sun" />
-              <i className="fa-solid fa-moon" />
-            </button>
-          )}
         </div>
       </div>
     </nav>

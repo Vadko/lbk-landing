@@ -7,7 +7,6 @@ import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { QueryProvider } from "@/providers/QueryProvider";
-import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const outfit = Outfit({
   subsets: ["latin", "latin-ext"],
@@ -126,14 +125,12 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased main-bg">
-        <ThemeProvider>
-          <QueryProvider>
-            <Navbar />
-            <main className="relative z-10">{children}</main>
-            <Footer />
-            <ScrollToTop />
-          </QueryProvider>
-        </ThemeProvider>
+        <QueryProvider>
+          <Navbar />
+          <main className="relative z-10">{children}</main>
+          <Footer />
+          <ScrollToTop />
+        </QueryProvider>
       </body>
       <GoogleAnalytics gaId="G-41MBF0G83S" />
     </html>

@@ -31,90 +31,6 @@
   --orb-opacity: 0.2;
 }
 
-/* Світла тема */
-.light {
-  --bg-base: #f5f7fa;
-  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-
-  --accent-blue: #0095cc;
-  --accent-purple: #9000cc;
-  --accent-pink: #e03b73;
-  --accent-green: #00b377;
-
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.08);
-
-  --text-primary: #121213;
-  --text-sec: #939296;
-
-  --card-bg: rgba(255, 255, 255, 0.8);
-  --navbar-bg: rgba(245, 247, 250, 0.9);
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --orb-opacity: 0.15;
-}
-
-/* Світла тема - посилання */
-.light a {
-  color: var(--text-primary);
-}
-
-/* Світла тема - кнопки з градієнтом повинні мати білий текст */
-
-/* Світла тема - картки */
-.light .g-card,
-.light .why-card,
-.light .collab-card,
-.light .faq-item {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.light .g-card::after,
-.light .why-card::after {
-  background: rgba(255, 255, 255, 0.9);
-}
-
-.light .g-card:hover::after,
-.light .why-card:hover::after {
-  background: rgba(255, 255, 255, 0.95);
-}
-
-/* Світла тема - текст у картках */
-.light .g-card,
-.light .g-card h3 {
-  color: var(--text-primary);
-}
-
-/* Світла тема - hero images */
-.light .hero-img {
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-}
-
-/* Світла тема - галерея */
-.light .gallery-item {
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-.light .gallery-item:hover {
-  box-shadow: 0 15px 40px rgba(0, 149, 204, 0.15);
-}
-
-/* Світла тема - stats */
-.light .stats-mini {
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-/* Світла тема - navbar */
-.light .navbar {
-  border-bottom-color: rgba(0, 0, 0, 0.1);
-}
-
-/* Світла тема - tech stack list */
-.light .tech-stack li {
-  border-bottom-color: rgba(0, 0, 0, 0.05);
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -132,20 +48,6 @@ body {
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
-  transition:
-    background 0.3s ease,
-    color 0.3s ease;
-}
-
-/* Плавне перемикання теми */
-body *,
-body *::before,
-body *::after {
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    color 0.3s ease,
-    box-shadow 0.3s ease;
 }
 
 .main-bg {
@@ -371,47 +273,6 @@ a {
   color: var(--color-main);
 }
 
-/* Theme Toggle Button */
-.theme-toggle {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-sec);
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  margin-left: 8px;
-}
-
-.theme-toggle:hover {
-  color: var(--color-main);
-  border-color: var(--color-main);
-  transform: rotate(15deg);
-}
-
-.theme-toggle .fa-sun {
-  display: none;
-}
-
-.theme-toggle .fa-moon {
-  display: block;
-}
-
-.light .theme-toggle .fa-sun {
-  display: block;
-}
-
-.light .theme-toggle .fa-moon {
-  display: none;
-}
-
 /* Hero Section */
 .hero {
   min-height: 100vh;
@@ -530,14 +391,6 @@ a {
   font-size: 0.85rem;
 }
 
-.light .instruction-link {
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.light .instruction-link:hover {
-  color: var(--color-main);
-}
-
 /* Download Buttons Styling */
 .download-row {
   margin-top: 20px;
@@ -623,19 +476,6 @@ a {
   color: white;
   background: rgba(var(--color-accent-rgb), 0.15);
   box-shadow: 0 0 15px rgba(var(--color-accent-rgb), 0.2);
-}
-
-.light .dl-mini {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.15);
-  color: #333;
-}
-
-.light .dl-mini.active,
-.light .dl-mini:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  background: rgba(var(--color-accent-rgb), 0.1);
 }
 
 /* Stats */
@@ -1247,16 +1087,6 @@ a {
   box-shadow: 0 8px 25px rgba(100, 100, 100, 0.4);
 }
 
-.light .collab-btn.github {
-  background: linear-gradient(90deg, #e8e8e8, #f5f5f5);
-  color: #333;
-  border: 1px solid #ddd;
-}
-
-.light .collab-btn.github:hover {
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
 /* FAQ Section */
 .faq-sec {
   padding: 100px 0;
@@ -1396,10 +1226,6 @@ a {
   padding: 60px 0 30px;
   background: rgba(0, 0, 0, 0.2);
   margin-top: 80px;
-}
-
-.light .footer {
-  background: rgba(0, 0, 0, 0.05);
 }
 
 .footer-content {
@@ -2314,48 +2140,6 @@ a {
   color: inherit !important;
 }
 
-/* Light theme checkbox */
-.light .dropdown-item-checkbox span.checkbox {
-  border-color: rgba(0, 0, 0, 0.3);
-}
-
-.light .dropdown-item-checkbox span.checkbox.checked {
-  background: var(--color-main);
-  border-color: var(--color-main);
-}
-
-.light .dropdown-item-checkbox span.checkbox.checked i {
-  color: white;
-}
-
-.light .dropdown-item-clear {
-  border-bottom-color: rgba(0, 0, 0, 0.1);
-}
-
-/* Light theme dropdown */
-.light .dropdown-trigger {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-.light .dropdown-trigger:hover,
-.light .dropdown-trigger.open {
-  border-color: var(--color-main);
-}
-
-.light .dropdown-menu {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: var(--color-main);
-}
-
-.light .dropdown-item:hover {
-  background: rgba(0, 149, 204, 0.1);
-}
-
-.light .dropdown-item.active {
-  background: rgba(0, 149, 204, 0.15);
-}
-
 /* Scrollable Dropdown */
 .dropdown-menu-scrollable {
   max-height: 300px;
@@ -2496,27 +2280,6 @@ a {
   text-align: center;
 }
 
-/* Light theme dropdown search */
-.light .dropdown-search {
-  border-bottom-color: rgba(0, 0, 0, 0.08);
-}
-
-.light .dropdown-search-input {
-  color: var(--text-primary);
-}
-
-.light .dropdown-search-clear {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.light .dropdown-search-clear:hover {
-  background: rgba(224, 59, 115, 0.2);
-}
-
-.light .dropdown-footer {
-  border-top-color: rgba(0, 0, 0, 0.08);
-}
-
 /* Team Filter Chip */
 .team-filter-chip {
   display: flex;
@@ -2561,22 +2324,6 @@ a {
 .team-filter-clear:hover {
   background: rgba(255, 77, 141, 0.3);
   color: var(--accent-pink);
-}
-
-.light .team-filter-chip {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 149, 204, 0.1),
-    rgba(144, 0, 204, 0.1)
-  );
-}
-
-.light .team-filter-clear {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.light .team-filter-clear:hover {
-  background: rgba(224, 59, 115, 0.2);
 }
 
 /* Games Filters Wrapper */
@@ -2633,24 +2380,6 @@ a {
 .filter-chip-remove:hover {
   background: rgba(255, 77, 141, 0.3);
   color: var(--accent-pink);
-}
-
-.light .filter-chip {
-  background: rgba(0, 149, 204, 0.1);
-  border-color: rgba(0, 149, 204, 0.2);
-}
-
-.light .filter-chip-author {
-  background: rgba(144, 0, 204, 0.1);
-  border-color: rgba(144, 0, 204, 0.2);
-}
-
-.light .filter-chip-remove {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.light .filter-chip-remove:hover {
-  background: rgba(224, 59, 115, 0.2);
 }
 
 /* Games Grid */
@@ -3622,10 +3351,6 @@ a {
   box-shadow: 0 10px 30px rgba(27, 40, 56, 0.4);
 }
 
-.light .btn-steam {
-  color: white;
-}
-
 .btn-launcher {
   display: flex;
   align-items: center;
@@ -3869,82 +3594,6 @@ a {
   .game-download-cta {
     display: none;
   }
-}
-
-/* ========================================
-   LIGHT THEME - GAMES PAGES
-   ======================================== */
-
-.light .game-card {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.light .game-card:hover {
-  border-color: rgba(0, 149, 204, 0.3);
-  box-shadow: 0 15px 40px rgba(0, 149, 204, 0.1);
-}
-
-.light .game-card-title {
-  color: var(--text-primary);
-}
-
-.light .game-card-translation {
-  background: rgba(0, 0, 0, 0.03);
-}
-
-.light .game-card-translation:hover {
-  background: rgba(0, 0, 0, 0.06);
-}
-
-.light .game-card-translation-status.in-progress {
-  background: rgba(255, 193, 7, 0.25);
-  color: #b8860b;
-}
-
-.light .game-sidebar {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-.light .game-social-link {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-.light .search-input {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-.light .search-input:focus {
-  border-color: var(--color-main);
-  box-shadow: 0 0 20px rgba(0, 149, 204, 0.1);
-}
-
-.light .progress-bar {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.light .spinner {
-  border-color: rgba(0, 0, 0, 0.1);
-  border-top-color: var(--color-main);
-}
-
-/* Light theme - Game Detail Page */
-.light .game-section,
-.light .game-sidebar-card {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-.light .game-breadcrumb a {
-  color: var(--text-sec);
-}
-
-.light .btn-support {
-  color: white;
 }
 
 /* ===== Setup Page ===== */
@@ -4278,20 +3927,6 @@ a {
   justify-content: center;
 }
 
-/* Light theme */
-.light .setup-platform,
-.light .setup-notes {
-  background: rgba(255, 255, 255, 0.8);
-}
-
-.light .setup-code {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.light .setup-troubleshoot {
-  background: rgba(255, 77, 141, 0.05);
-}
-
 /* ==========================================
    Open in Launcher Page
    ========================================== */
@@ -4543,19 +4178,6 @@ a {
 .btn-share.copied {
   border-color: #4ade80;
   color: #4ade80;
-}
-
-/* Light theme adjustments */
-.light .open-launcher-bg::after {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 255, 255, 0.95) 100%
-  );
-}
-
-.light .open-launcher-content {
-  background: rgba(255, 255, 255, 0.9);
 }
 
 @media (max-width: 768px) {
