@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     description:
       "Покрокова інструкція зі встановлення LBK Launcher на вашу платформу.",
   },
+  alternates: {
+    canonical: "https://lbklauncher.com/setup",
+  },
 };
 
 export default function SetupLayout({

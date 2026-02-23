@@ -41,7 +41,7 @@ export function Navbar() {
           </li>
           <li>
             <Link href="/games" onClick={trackViewGamesCatalog}>
-              Ігри
+              Каталог
             </Link>
           </li>
           <li>

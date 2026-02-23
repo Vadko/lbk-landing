@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getFromCache, setCache } from "@/lib/redis";
 import type { GitHubRelease } from "@/lib/types";
 
-const GITHUB_REPO = "Vadko/littlebit-launcher";
+const GITHUB_REPO = "Vadko/lbk-launcher";
 const CACHE_KEY = "github:releases";
 const CACHE_TTL_SECONDS = 3600;
 
