@@ -51,7 +51,7 @@ export function Navbar() {
             <Link href="/#showcase">Функції</Link>
           </li>
           <li>
-            <Link href="/#collaboration">Співпраця</Link>
+            <Link href="/collaboration">Співпраця</Link>
           </li>
         </ul>
 

@@ -1,6 +1,6 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
@@ -126,7 +126,7 @@ export default function RootLayout({
       <body className="antialiased main-bg">
         <QueryProvider>
           <Navbar />
-          <main className="relative z-10">{children}</main>
+          <main className="relative z-10 header-padding">{children}</main>
           <Footer />
           <ScrollToTop />
         </QueryProvider>

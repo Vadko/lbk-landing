@@ -10,18 +10,13 @@ const FAQ_ITEMS = [
       "Усе дуже просто: завантажте лаунчер — він автоматично знайде встановлені ігри на вашому пристрої. Оберіть потрібну гру й натисніть «Встановити переклад». Готово!",
   },
   {
+    question: "Які ігри підтримуються?",
+    answer: "games-count",
+  },
+  {
     question: "Чи безпечно використовувати LBK Launcher?",
     answer:
       "Так, лаунчер має відкритий вихідний код, що виключає наявність шкідливого ПЗ. Система резервного копіювання гарантує цілісність файлів вашої гри.",
-  },
-  {
-    question: "Як видалити переклад і повернути оригінал?",
-    answer:
-      "Оберіть гру в лаунчері й натисніть кнопку «Видалити переклад». Лаунчер автоматично відновить оригінальні файли з резервної копії.",
-  },
-  {
-    question: "Які ігри підтримуються?",
-    answer: "games-count",
   },
   {
     question: "Лаунчер безкоштовний?",
@@ -29,21 +24,33 @@ const FAQ_ITEMS = [
       "Так, LBK Launcher повністю безкоштовний — і таким залишиться назавжди. Ми робимо це для української спільноти геймерів.",
   },
   {
+    question: "Для яких платформ доступний лаунчер?",
+    answer:
+      "Ви можете завантажити LBK Launcher для Windows, Linux (AppImage) та macOS. Окрему увагу приділено підтримці Steam Deck",
+  },
+  {
     question: "Як додати свій переклад до лаунчера?",
     answer:
       "Напишіть нам у Telegram через бота @lbk_launcher_bot. Обговоримо деталі й допоможемо інтегрувати ваш переклад — швидко та просто!",
+  },
+  {
+    question: "Звідки беруться переклади?",
+    answer:
+      "Ми співпрацюємо з провідними командами перекладачів та інді-авторами. Ви також можете додати свій переклад до нашого каталогу через Telegram-бота.",
   },
   {
     question: "На чому зроблений лаунчер?",
     answer: "tech-stack",
   },
   {
-    question: "Для яких платформ доступний лаунчер?",
-    answer: "Ви можете завантажити LBK Launcher для Windows, Linux (AppImage) та macOS. Окрему увагу приділено підтримці Steam Deck",
+    question: "Як видалити переклад і повернути оригінал?",
+    answer:
+      "Оберіть гру в лаунчері й натисніть кнопку «Видалити переклад». Лаунчер автоматично відновить оригінальні файли з резервної копії.",
   },
   {
-    question: "Звідки беруться переклади?",
-    answer: "Ми співпрацюємо з провідними командами перекладачів та інді-авторами. Ви також можете додати свій переклад до нашого каталогу через Telegram-бота.",
+    question: "Якщо я зіштовхнувся з проблемою?",
+    answer:
+      "Зверніться до нашої служби підтримки через Telegram-бота @lbk_launcher_bot. Ми допоможемо вирішити будь-які проблеми швидко та ефективно.",
   },
 ];
 
@@ -97,25 +104,43 @@ export function FaqSection() {
     return <p>{answer}</p>;
   };
 
+  const column1: typeof FAQ_ITEMS = [];
+  const column2: typeof FAQ_ITEMS = [];
+
+  FAQ_ITEMS.forEach((item, index) => {
+    if (index % 2 === 0) column1.push(item);
+    else column2.push(item);
+  });
+
+  const renderFaqItem = (
+    item: (typeof FAQ_ITEMS)[0],
+    originalIndex: number
+  ) => (
+    <div
+      key={originalIndex}
+      className={`faq-item ${openIndex === originalIndex ? "active" : ""}`}
+    >
+      <button className="faq-question" onClick={() => toggle(originalIndex)}>
+        <span>{item.question}</span>
+        <i className="fa-solid fa-chevron-down" />
+      </button>
+
+      <div className="faq-answer">{renderAnswer(item.answer)}</div>
+    </div>
+  );
+
   return (
     <section id="faq" className="faq-sec">
       <div className="container">
         <h2 className="section-title center">Часті питання</h2>
 
         <div className="faq-list">
-          {FAQ_ITEMS.map((item, index) => (
-            <div
-              key={index}
-              className={`faq-item ${openIndex === index ? "active" : ""}`}
-            >
-              <button className="faq-question" onClick={() => toggle(index)}>
-                <span>{item.question}</span>
-                <i className="fa-solid fa-chevron-down" />
-              </button>
-
-              <div className="faq-answer">{renderAnswer(item.answer)}</div>
-            </div>
-          ))}
+          <div className="faq-column">
+            {column1.map((item, idx) => renderFaqItem(item, idx * 2))}
+          </div>
+          <div className="faq-column">
+            {column2.map((item, idx) => renderFaqItem(item, idx * 2 + 1))}
+          </div>
         </div>
       </div>
     </section>
