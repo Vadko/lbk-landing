@@ -127,7 +127,7 @@ export default function RootLayout({
       <body className="antialiased main-bg">
         <QueryProvider>
           <Navbar />
-          <main className="relative z-10">{children}</main>
+          <main className="relative z-10 header-padding">{children}</main>
           <Footer />
           <ScrollToTop />
         </QueryProvider>

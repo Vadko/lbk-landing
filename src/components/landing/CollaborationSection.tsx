@@ -1,3 +1,5 @@
+import { CardGridSection } from "../ui/CardGridSection";
+
 const CARDS = [
   {
     icon: "fa-solid fa-rocket",
@@ -8,16 +10,6 @@ const CARDS = [
     linkText: "Написати нам",
     linkIcon: "fa-brands fa-telegram",
     isGithub: false,
-  },
-  {
-    icon: "fa-brands fa-github",
-    title: "Відкритий код",
-    description:
-      "Увесь код лаунчера доступний на GitHub — перевіряйте й долучайтеся.",
-    link: "https://github.com/Vadko/lbk-launcher",
-    linkText: "Переглянути код",
-    linkIcon: "fa-brands fa-github",
-    isGithub: true,
   },
   {
     icon: "fa-solid fa-users",
@@ -33,31 +25,30 @@ const CARDS = [
 
 export function CollaborationSection() {
   return (
-    <section id="collaboration" className="collaboration-sec">
-      <div className="container">
-        <h2 className="section-title center">Приєднуйтесь до спільноти</h2>
-
-        <div className="collab-grid">
-          {CARDS.map((card, index) => (
-            <div key={index} className="collab-card">
-              <div className="collab-icon">
-                <i className={card.icon} />
-              </div>
-              <h3>{card.title}</h3>
-              <p>{card.description}</p>
-              <a
-                href={card.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`collab-btn ${card.isGithub ? "github" : ""}`}
-              >
-                <i className={card.linkIcon} />
-                {card.linkText}
-              </a>
-            </div>
-          ))}
+    <CardGridSection
+      id="collaboration"
+      title="Приєднуйтесь до спільноти"
+      columns={2}
+      centerText
+    >
+      {CARDS.map((card, index) => (
+        <div key={index} className="collab-card">
+          <div className="collab-icon">
+            <i className={card.icon} />
+          </div>
+          <h3>{card.title}</h3>
+          <p>{card.description}</p>
+          <a
+            href={card.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`btn-main collab-btn}`}
+          >
+            <i className={card.linkIcon} />
+            {card.linkText}
+          </a>
         </div>
-      </div>
-    </section>
+      ))}
+    </CardGridSection>
   );
 }
