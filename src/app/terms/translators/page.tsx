@@ -18,7 +18,7 @@ export default function TermsTranslatorsPage() {
   return (
     <LegalLayout
       title="Правила користування для перекладачів"
-      lastUpdated="6 лютого 2026"
+      lastUpdated="25 лютого 2026"
     >
       <section>
         <p>
