@@ -2433,6 +2433,17 @@ a {
   transform: scale(1.05);
 }
 
+.game-card-badge {
+  position: absolute;
+  inset: 20px 20px auto auto;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.game-card-badge .translate-type-badge-wrapper {
+  pointer-events: auto;
+}
+
 .game-card-placeholder {
   width: 100%;
   height: 100%;

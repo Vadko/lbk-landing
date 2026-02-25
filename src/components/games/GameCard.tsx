@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AuthorName } from "@/components/ui/AuthorName";
+import { TranslateTypeBadge } from "@/components/ui/TranslateTypeBadge";
 import { getImageUrl } from "@/lib/images";
 import { teamToSlug } from "@/lib/transliterate";
 import type { GameGroup, TranslationItem } from "@/lib/types";
@@ -86,6 +87,11 @@ export function GameCard({ game }: GameCardProps) {
               <i className="fa-solid fa-gamepad" />
             </div>
           )}
+          {/* {badgeType && ( */}
+            <div className="game-card-badge">
+              <TranslateTypeBadge type={"ai"} />
+            </div>
+          {/* )} */}
         </div>
       </Link>
 
