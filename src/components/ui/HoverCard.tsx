@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useCallback, useRef, useMemo } from "react";
+import { type ReactNode, useCallback, useMemo, useRef } from "react";
 
 interface HoverCardProps {
   children: ReactNode;
@@ -14,14 +14,14 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
 
   // Перевірка чи це touch-пристрій (один раз при монтуванні)
   const isTouchDevice = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (typeof window === "undefined") return false;
+    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
   }, []);
 
   const startAnimation = useCallback(() => {
     // Не запускаємо анімацію на touch-пристроях
     if (isTouchDevice) return;
-    
+
     const animate = () => {
       if (!cardRef.current) return;
       angleRef.current += 0.5;
@@ -40,20 +40,23 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
     startAnimation();
   }, [startAnimation, isTouchDevice]);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (isTouchDevice || !cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const posX = (x / rect.width) * 100;
-    const posY = (y / rect.height) * 100;
-    cardRef.current.style.setProperty("--mouse-x", `${posX}%`);
-    cardRef.current.style.setProperty("--mouse-y", `${posY}%`);
-  }, [isTouchDevice]);
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (isTouchDevice || !cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const posX = (x / rect.width) * 100;
+      const posY = (y / rect.height) * 100;
+      cardRef.current.style.setProperty("--mouse-x", `${posX}%`);
+      cardRef.current.style.setProperty("--mouse-y", `${posY}%`);
+    },
+    [isTouchDevice]
+  );
 
   const handleMouseLeave = useCallback(() => {
     if (isTouchDevice) return;
-    
+
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
       animationRef.current = null;

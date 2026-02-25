@@ -1,26 +1,36 @@
-import Image from "next/image";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
+import {
+  GamepadIcon,
+  GlobeIcon,
+  UsersIcon,
+  BuildingIcon,
+  GameConsoleIcon,
+} from "../icons";
+import type { ComponentType, SVGProps } from "react";
 
-const PLATFORM_AUDIENCE = [
+const PLATFORM_AUDIENCE: Array<{
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
+  label: string;
+}> = [
   {
-    icon: "/assets/icons/fi_12250131.svg",
+    icon: GamepadIcon,
     label: "Розробники ігор",
   },
   {
-    icon: "/assets/icons/fi_11502452.svg",
+    icon: GlobeIcon,
     label: "Локалізаційні команди",
   },
   {
-    icon: "/assets/icons/fi_2118701.svg",
+    icon: UsersIcon,
     label: "Фанатські спільноти",
   },
   {
-    icon: "/assets/icons/fi_8621847.svg",
+    icon: BuildingIcon,
     label: "Видавці ігор",
   },
   {
-    icon: "/assets/icons/fi_4489681.svg",
+    icon: GameConsoleIcon,
     label: "Інді-студії",
   },
 ];
@@ -33,19 +43,15 @@ export function PlatformAudienceSection() {
       centerText
       className="collab-platform-audience"
     >
-      {PLATFORM_AUDIENCE.map((item) => (
-        <HoverCard key={item.label} className="collab-audience-card">
-          <Image
-            src={item.icon}
-            alt=""
-            aria-hidden
-            width={32}
-            height={32}
-            className="collab-audience-icon"
-          />
-          <h3>{item.label}</h3>
-        </HoverCard>
-      ))}
+      {PLATFORM_AUDIENCE.map((item) => {
+        const Icon = item.icon;
+        return (
+          <HoverCard key={item.label} className="collab-audience-card">
+            <Icon aria-hidden className="collab-audience-icon" />
+            <h3>{item.label}</h3>
+          </HoverCard>
+        );
+      })}
     </CardGridSection>
   );
 }

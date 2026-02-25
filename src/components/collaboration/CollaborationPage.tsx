@@ -1,7 +1,10 @@
 import Image from "next/image";
+import { PageHeroSection } from "@/components/ui/PageHeroSection";
+import { HoverCard } from "../ui/HoverCard";
+import { CtaSection } from "../ui/CtaSection";
+import { CodeIcon } from "../icons";
 import { PartnerValueSection } from "./PartnerValueSection";
 import { PlatformAudienceSection } from "./PlatformAudienceSection";
-import { HoverCard } from "../ui/HoverCard";
 
 const FLOW_STEPS = [
   "Зареєструватися на платформі та створити профіль",
@@ -14,21 +17,13 @@ const FLOW_STEPS = [
 export function CollaborationPage() {
   return (
     <>
-      <section className="container collab-hero">
-        <h1>Додайте свій переклад у лаунчер</h1>
-        <p>
-          Сучасний дизайн, зручний інтерфейс і все потрібне для комфортної гри
-          українською.
-        </p>
-        <a
-          href="https://t.me/lbk_launcher_bot"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-main btn--big collab-primary-btn"
-        >
-          Стати партнером
-        </a>
-      </section>
+      <PageHeroSection
+        title="Додайте свій переклад у лаунчер"
+        description="Сучасний дизайн, зручний інтерфейс і все потрібне для комфортної гри українською."
+        ctaText="Стати партнером"
+        ctaHref="https://t.me/lbk_launcher_bot"
+        className="collab-hero"
+      />
 
       <PartnerValueSection />
 
@@ -36,13 +31,7 @@ export function CollaborationPage() {
         <HoverCard className="collab-admin-panel">
           <div className="collab-admin-panel-card">
             <div className="hover-card__icon collab-admin-icon">
-              <Image
-                src="/assets/icons/fi_8750790.svg"
-                alt=""
-                aria-hidden
-                width={32}
-                height={32}
-              />
+              <CodeIcon aria-hidden />
             </div>
 
             <h2>
@@ -87,23 +76,12 @@ export function CollaborationPage() {
         </HoverCard>
       </section>
 
-      <section className="container collab-cta">
-        <HoverCard>
-          <h2>Готові до співпраці?</h2>
-          <p>
-            Зв&apos;яжіться з нами, щоб отримати детальну статистику та варіанти
-            інтеграції.
-          </p>
-          <a
-            href="https://t.me/lbk_launcher_bot"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-main btn--big collab-primary-btn"
-          >
-            Зв&apos;язатись з нами
-          </a>
-        </HoverCard>
-      </section>
+      <CtaSection
+        title="Готові до співпраці?"
+        description="Зв'яжіться з нами, щоб отримати детальну статистику та варіанти інтеграції."
+        buttonText="Зв'язатись з нами"
+        buttonHref="https://t.me/lbk_launcher_bot"
+      />
     </>
   );
 }

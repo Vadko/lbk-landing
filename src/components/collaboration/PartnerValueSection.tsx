@@ -1,7 +1,7 @@
 import type { ComponentType, SVGProps } from "react";
+import { DownloadIcon, GrowthIcon, HeartIcon } from "@/components/icons";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
-import { GrowthIcon, DownloadIcon, HeartIcon } from "@/components/icons";
 
 const PARTNER_VALUE_CARDS: Array<{
   Icon: ComponentType<SVGProps<SVGSVGElement>>;
@@ -38,7 +38,10 @@ export function PartnerValueSection() {
       {PARTNER_VALUE_CARDS.map((card) => {
         const { Icon } = card;
         return (
-          <HoverCard key={card.title} className="hover-card--big collab-value-card">
+          <HoverCard
+            key={card.title}
+            className="hover-card--big collab-value-card"
+          >
             <div className="hover-card__icon">
               <Icon width={32} height={32} aria-hidden />
             </div>

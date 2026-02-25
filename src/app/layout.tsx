@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { QueryProvider } from "@/providers/QueryProvider";
+import { BodyClassManager } from "@/components/layout/BodyClassManager";
 
 const outfit = Outfit({
   subsets: ["latin", "latin-ext"],
@@ -125,6 +126,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased main-bg">
+        <BodyClassManager />
         <QueryProvider>
           <Navbar />
           <main className="relative z-10 header-padding">{children}</main>

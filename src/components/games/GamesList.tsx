@@ -166,16 +166,16 @@ export function GamesList() {
                 <i className="fa-solid fa-chevron-left" />
               </button>
 
-              {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+              {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                 let pageNum: number;
-                if (totalPages <= 7) {
+                if (totalPages <= 5) {
                   pageNum = i + 1;
-                } else if (currentPage <= 4) {
+                } else if (currentPage <= 3) {
                   pageNum = i + 1;
-                } else if (currentPage >= totalPages - 3) {
-                  pageNum = totalPages - 6 + i;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
                 } else {
-                  pageNum = currentPage - 3 + i;
+                  pageNum = currentPage - 2 + i;
                 }
 
                 return (
