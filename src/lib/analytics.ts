@@ -49,7 +49,7 @@ export function trackViewSearchResults(
 
 // Anonymous persistent user ID for analytics (no PII)
 const ANALYTICS_UID_KEY = "lb_analytics_uid";
-export function getAnalyticsUid(): string {
+function getAnalyticsUid(): string {
   try {
     const existing = localStorage.getItem(ANALYTICS_UID_KEY);
     if (existing) return existing;

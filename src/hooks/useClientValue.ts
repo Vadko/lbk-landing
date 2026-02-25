@@ -19,15 +19,3 @@ export function useClientValue<T>(getClientValue: () => T, serverValue: T): T {
     () => serverValue
   );
 }
-
-/**
- * Returns true only after the component has mounted on the client.
- * Useful for conditional rendering of client-only content.
- */
-export function useMounted(): boolean {
-  return useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
-}
