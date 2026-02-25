@@ -135,9 +135,10 @@ export function HeroSection() {
           </h1>
 
           <p>
-            Зручний менеджер для встановлення й оновлення перекладів.
-            Автоматичний пошук ігор, світла та темна теми, а також резервні
-            копії.
+            Грайте в улюблені ігри рідною мовою в один клік. <br />
+            LBK Launcher — це безкоштовний інструмент з відкритим кодом, який
+            автоматизує пошук, встановлення та оновлення українських перекладів
+            для вашої ігрової бібліотеки.
           </p>
 
           {/* Games button above download */}
@@ -239,23 +240,23 @@ export function HeroSection() {
           <figure className="hero-figure main-figure">
             <Image
               src="/assets/2.webp"
-              alt="LBK Launcher головний екран — українізатор ігор"
+              alt="LBK Launcher сторінка гри"
               width={600}
               height={400}
               className="hero-img main-shot"
               priority
             />
-            <figcaption className="hero-caption">Темна тема</figcaption>
+            <figcaption className="hero-caption">Сторінка гри</figcaption>
           </figure>
           <figure className="hero-figure back-figure">
             <Image
               src="/assets/1.webp"
-              alt="LBK Launcher світла тема"
+              alt="LBK Launcher головний екран"
               width={540}
               height={360}
               className="hero-img back-shot"
             />
-            <figcaption className="hero-caption">Світла тема</figcaption>
+            <figcaption className="hero-caption">Головний екран</figcaption>
           </figure>
         </div>
       </div>
