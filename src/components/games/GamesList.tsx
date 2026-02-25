@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useGamesPaginated, useTeams } from "@/hooks/useGames";
-import { trackViewSearchResults } from "@/lib/analytics";
+import { trackFailedSearch, trackViewSearchResults } from "@/lib/analytics";
 import { GameCard } from "./GameCard";
 import { GamesSearch } from "./GamesSearch";
 
@@ -107,6 +107,21 @@ export function GamesList() {
     ) {
       lastTrackedSearch.current = search;
       trackViewSearchResults(search, total);
+    }
+  }, [search, isLoading, total]);
+
+  // Track failed searches (0 results)
+  const lastTrackedFailedSearch = useRef("");
+  useEffect(() => {
+    if (
+      search &&
+      search.trim().length >= 2 &&
+      !isLoading &&
+      total === 0 &&
+      lastTrackedFailedSearch.current !== search
+    ) {
+      lastTrackedFailedSearch.current = search;
+      trackFailedSearch(search);
     }
   }, [search, isLoading, total]);
 

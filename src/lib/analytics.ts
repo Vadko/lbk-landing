@@ -46,3 +46,47 @@ export function trackViewSearchResults(
     results_count: resultsCount,
   });
 }
+
+// Anonymous persistent user ID for analytics (no PII)
+const ANALYTICS_UID_KEY = "lb_analytics_uid";
+export function getAnalyticsUid(): string {
+  try {
+    const existing = localStorage.getItem(ANALYTICS_UID_KEY);
+    if (existing) return existing;
+    const uid = crypto.randomUUID();
+    localStorage.setItem(ANALYTICS_UID_KEY, uid);
+    return uid;
+  } catch {
+    return crypto.randomUUID();
+  }
+}
+
+export function trackFailedSearch(searchTerm: string) {
+  try {
+    const trimmed = searchTerm.trim();
+    if (trimmed.length < 2) return;
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseAnonKey) return;
+
+    // Fire-and-forget: don't await, don't block UI
+    fetch(`${supabaseUrl}/functions/v1/track`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseAnonKey,
+      },
+      body: JSON.stringify({
+        type: "failed_search",
+        query: trimmed,
+        source: "web",
+        userIdentifier: getAnalyticsUid(),
+      }),
+    }).catch(() => {
+      // Silently ignore - tracking should never impact UX
+    });
+  } catch {
+    // Never throw from analytics
+  }
+}
