@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Database } from "@/lib/database.types";
 import { queryKeys } from "@/lib/queryKeys";
-import { buildFtsQuery } from "@/lib/search-utils";
+import { buildFtsQuery, getTranslitVariant } from "@/lib/search-utils";
 import { supabase } from "@/lib/supabase/client";
 import type {
   GameGroup,
@@ -68,6 +68,40 @@ function hasActiveFilters(statuses?: string[], authors?: string[]): boolean {
   return Boolean(hasStatuses || hasAuthors);
 }
 
+// Fuzzy search fallback via RPC (when FTS returns 0 results)
+async function fuzzySearchGames(
+  search: string,
+  offset: number,
+  limit: number
+): Promise<GamesGroupedResponse> {
+  const normalized = search.toLowerCase().trim();
+  const translit = getTranslitVariant(search);
+
+  const { data, error } = await supabase.rpc("fuzzy_search_games", {
+    search_query: normalized,
+    search_query_translit: translit ?? undefined,
+    similarity_threshold: 0.15,
+    limit_val: 50,
+  });
+
+  if (error) {
+    console.error("Fuzzy search error:", error.message);
+    return { games: [], total: 0, hasMore: false, nextOffset: offset + limit };
+  }
+
+  const allGames = (data ?? []).filter(isValidGameRow).map(mapRowToGameGroup);
+
+  const total = allGames.length;
+  const paginatedGames = allGames.slice(offset, offset + limit);
+
+  return {
+    games: paginatedGames,
+    total,
+    hasMore: offset + limit < total,
+    nextOffset: offset + limit,
+  };
+}
+
 // Paginated fetch using games_grouped view
 async function fetchGamesGrouped({
   offset,
@@ -95,7 +129,7 @@ async function fetchGamesGrouped({
 
   if (search) {
     const ftsQuery = buildFtsQuery(search);
-    query = query.textSearch("name_fts", ftsQuery);
+    query = query.textSearch("name_fts", ftsQuery, { config: "simple" });
   }
 
   const { data, error, count } = await query;
@@ -107,6 +141,11 @@ async function fetchGamesGrouped({
   const games = (data ?? []).filter(isValidGameRow).map(mapRowToGameGroup);
 
   const total = count ?? 0;
+
+  // Fuzzy fallback when FTS returns 0 results
+  if (search && total === 0) {
+    return fuzzySearchGames(search, offset, limit);
+  }
 
   return {
     games,
@@ -128,7 +167,7 @@ async function fetchGamesGroupedWithFilter({
 
   if (search) {
     const ftsQuery = buildFtsQuery(search);
-    query = query.textSearch("name_fts", ftsQuery);
+    query = query.textSearch("name_fts", ftsQuery, { config: "simple" });
   }
 
   const { data, error } = await query;
@@ -137,8 +176,40 @@ async function fetchGamesGroupedWithFilter({
     throw new Error(error.message);
   }
 
+  const rows = data ?? [];
+
+  // Fuzzy fallback when FTS returns 0 results
+  if (search && rows.length === 0) {
+    const fuzzyResult = await fuzzySearchGames(search, 0, 50);
+    const filteredFuzzy = fuzzyResult.games.filter((game) => {
+      if (statuses && statuses.length > 0) {
+        if (!game.translations.some((t) => statuses.includes(t.status))) {
+          return false;
+        }
+      }
+      if (authors && authors.length > 0) {
+        if (
+          !game.translations.some((t) =>
+            authors.some((author) => t.team?.includes(author))
+          )
+        ) {
+          return false;
+        }
+      }
+      return true;
+    });
+    const total = filteredFuzzy.length;
+    const paginatedGames = filteredFuzzy.slice(offset, offset + limit);
+    return {
+      games: paginatedGames,
+      total,
+      hasMore: offset + limit < total,
+      nextOffset: offset + limit,
+    };
+  }
+
   // Filter groups based on translations
-  const filteredGroups = (data ?? []).filter(isValidGameRow).filter((row) => {
+  const filteredGroups = rows.filter(isValidGameRow).filter((row) => {
     const translations = parseTranslations(row.translations);
 
     // Filter by statuses - game matches if ANY translation has one of selected statuses

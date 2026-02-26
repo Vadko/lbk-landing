@@ -110,19 +110,23 @@ export function GamesList() {
     }
   }, [search, isLoading, total]);
 
-  // Track failed searches (0 results)
+  // Track failed searches (0 results) with delay to avoid tracking intermediate typing states
   const lastTrackedFailedSearch = useRef("");
+  const failedSearchTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   useEffect(() => {
+    clearTimeout(failedSearchTimer.current);
     if (
-      search &&
-      search.trim().length >= 2 &&
+      search.trim().length >= 3 &&
       !isLoading &&
       total === 0 &&
       lastTrackedFailedSearch.current !== search
     ) {
-      lastTrackedFailedSearch.current = search;
-      trackFailedSearch(search);
+      failedSearchTimer.current = setTimeout(() => {
+        lastTrackedFailedSearch.current = search;
+        trackFailedSearch(search);
+      }, 1500);
     }
+    return () => clearTimeout(failedSearchTimer.current);
   }, [search, isLoading, total]);
 
   return (
