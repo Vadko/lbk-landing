@@ -182,19 +182,19 @@ async function fetchGamesGroupedWithFilter({
   if (search && rows.length === 0) {
     const fuzzyResult = await fuzzySearchGames(search, 0, 50);
     const filteredFuzzy = fuzzyResult.games.filter((game) => {
-      if (statuses && statuses.length > 0) {
-        if (!game.translations.some((t) => statuses.includes(t.status))) {
-          return false;
-        }
+      if (
+        statuses?.length &&
+        !game.translations.some((t) => statuses.includes(t.status))
+      ) {
+        return false;
       }
-      if (authors && authors.length > 0) {
-        if (
-          !game.translations.some((t) =>
-            authors.some((author) => t.team?.includes(author))
-          )
-        ) {
-          return false;
-        }
+      if (
+        authors?.length &&
+        !game.translations.some((t) =>
+          authors.some((author) => t.team?.includes(author))
+        )
+      ) {
+        return false;
       }
       return true;
     });
