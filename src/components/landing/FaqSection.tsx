@@ -31,7 +31,7 @@ const FAQ_ITEMS = [
   {
     question: "Як додати свій переклад до лаунчера?",
     answer:
-      "Напишіть нам у Telegram через бота @lbk_launcher_bot. Обговоримо деталі й допоможемо інтегрувати ваш переклад — швидко та просто!",
+      "Напишіть нам у Telegram через бота <a href='https://t.me/lbk_launcher_bot' target='_blank' rel='noopener noreferrer'>@lbk_launcher_bot</a>. Обговоримо деталі й допоможемо інтегрувати ваш переклад — швидко та просто!",
   },
   {
     question: "Звідки беруться переклади?",
@@ -50,7 +50,7 @@ const FAQ_ITEMS = [
   {
     question: "Якщо я зіштовхнувся з проблемою?",
     answer:
-      "Зверніться до нашої служби підтримки через Telegram-бота @lbk_launcher_bot. Ми допоможемо вирішити будь-які проблеми швидко та ефективно.",
+      "Зверніться до нашої служби підтримки через Telegram-бота <a href='https://t.me/lbk_launcher_bot' target='_blank' rel='noopener noreferrer'>@lbk_launcher_bot</a>. Ми допоможемо вирішити будь-які проблеми швидко та ефективно.",
   },
 ];
 
@@ -101,7 +101,7 @@ export function FaqSection() {
         </p>
       );
     }
-    return <p>{answer}</p>;
+    return <p dangerouslySetInnerHTML={{ __html: answer }}></p>;
   };
 
   const column1: typeof FAQ_ITEMS = [];

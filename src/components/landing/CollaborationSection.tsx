@@ -15,7 +15,7 @@ const CARDS = [
     icon: "fa-solid fa-users",
     title: "Спільнота",
     description:
-      "Приєднуйтеся до нашого Telegram-каналу — для новин і спілкування.",
+      "Приєднуйтеся до нашого Telegram-каналу — для новин, пропозицій і спілкування.",
     link: "https://t.me/LittleBitUA",
     linkText: "Приєднатися",
     linkIcon: "fa-brands fa-telegram",

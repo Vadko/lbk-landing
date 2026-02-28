@@ -58,7 +58,13 @@ body {
 }
 
 .header-padding {
-  padding-top: calc(100px + 77px);
+  padding-top: calc(100px + var(--navbar-height));
+}
+
+@media screen and (max-width: 767px) {
+  .header-padding {
+    padding-top: calc(60px + var(--navbar-height));
+  }
 }
 
 /* --- Живий фон (Orbs) --- */
@@ -447,7 +453,7 @@ body.mobile-menu-open {
 
 /* Hero Section */
 .hero {
-  min-height: calc(100vh - 177px);
+  min-height: calc(100vh - 100px - var(--navbar-height));
   display: flex;
   align-items: center;
 }
@@ -512,19 +518,18 @@ body.mobile-menu-open {
 }
 
 /* Games Link Button */
-.games-link {
+.btn-neon {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  width: calc(100% - 185px);
-  margin-top: 30px;
+  width: 100%;
   padding: 18px 28px;
   border-radius: 12px;
   font-weight: 700;
   text-decoration: none;
   justify-content: center;
-  box-shadow: 0px 8px 25px 0px #a8cf9626;
+  box-shadow: 0px 8px 25px 0px rgba(var(--color-main-rgb), 0.15);
   color: transparent;
   background:
     linear-gradient(90deg, #ffa47a -0.63%, #a8cf96 106.68%),
@@ -539,7 +544,16 @@ body.mobile-menu-open {
   transition: all 0.3s ease;
 }
 
-.games-link::before {
+.btn-neon svg {
+  color: var(--color-accent);
+}
+
+.games-link {
+  width: calc(100% - 185px);
+  margin-top: 30px;
+}
+
+.btn-neon::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -557,16 +571,21 @@ body.mobile-menu-open {
   pointer-events: none;
 }
 
-.games-link:hover {
-  transform: translateX(5px);
+.btn-neon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(var(--color-main-rgb), 0.3);
   --games-link-bg-opacity: 0.2;
 }
 
-.games-link i:first-child {
+.games-link:hover {
+  transform: translateX(5px);
+}
+
+.btn-neon i:first-child {
   font-size: 1.3rem;
 }
 
-.games-link i:last-child {
+.btn-neon i:last-child {
   font-size: 0.9rem;
   transition: transform 0.3s ease;
 }
@@ -1773,7 +1792,7 @@ p + .why-btn {
   gap: 0.75rem;
   padding: 1rem 2rem;
   background: linear-gradient(135deg, var(--color-main), var(--color-accent));
-  color: white;
+  color: var(--color-black);
   font-weight: 600;
   border-radius: 12px;
   transition: all 0.3s ease;
@@ -1859,7 +1878,7 @@ p + .why-btn {
   }
 
   .hero {
-    padding-top: 61px;
+    min-height: calc(100vh - 60px - var(--navbar-height));
   }
 
   .nav-container {
@@ -1897,13 +1916,11 @@ p + .why-btn {
   .hero-wrapper {
     flex-direction: column;
     text-align: center;
-    padding-top: 40px;
     gap: 30px;
   }
 
   .hero-content {
     max-width: 100%;
-    padding: 0 10px;
   }
 
   .hero-visual {
@@ -3587,8 +3604,8 @@ p + .why-btn {
   gap: 8px;
   width: 100%;
   padding: 14px 24px;
-  background: linear-gradient(135deg, #f59e0b, #ef4444);
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-black);
   font-weight: 600;
   border-radius: 12px;
   transition: all 0.3s ease;
@@ -3596,47 +3613,17 @@ p + .why-btn {
 
 .btn-support:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 10px 30px rgba(var(--color-accent-rgb), 0.4);
 }
 
 /* Steam Button */
 .btn-steam {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 8px;
   width: 100%;
-  padding: 14px 24px;
-  background: linear-gradient(135deg, #1b2838, #2a475e);
-  color: white;
-  font-weight: 600;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.btn-steam:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(27, 40, 56, 0.4);
 }
 
 .btn-launcher {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  margin-top: 12px;
-  padding: 14px 24px;
-  background: linear-gradient(135deg, var(--color-accent), var(--color-main));
-  color: var(--color-black);
-  font-weight: 600;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.btn-launcher:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(var(--color-accent-rgb), 0.3);
+  margin-top: 14px;
 }
 
 @media (max-width: 768px) {
@@ -4417,33 +4404,9 @@ p + .why-btn {
   color: var(--color-main);
 }
 
-/* Share button for game sidebar */
 .btn-share {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 10px 16px;
-  background: transparent;
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  color: var(--text-sec);
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-}
-
-.btn-share:hover {
-  border-color: var(--color-main);
-  color: var(--color-main);
-}
-
-.btn-share.copied {
-  border-color: #4ade80;
-  color: #4ade80;
+  margin-top: 14px;
+  
 }
 
 @media (max-width: 768px) {

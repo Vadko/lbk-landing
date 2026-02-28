@@ -146,7 +146,7 @@ export function HeroSection() {
           {/* Games button above download */}
           <Link
             href="/games"
-            className="games-link"
+            className="btn-neon games-link"
             onClick={trackViewGamesCatalog}
           >
             <i className="fa-solid fa-gamepad" />

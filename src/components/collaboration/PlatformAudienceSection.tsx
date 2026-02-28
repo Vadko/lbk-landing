@@ -13,10 +13,10 @@ const PLATFORM_AUDIENCE: Array<{
   icon: ComponentType<SVGProps<SVGSVGElement>>;
   label: string;
 }> = [
-  {
-    icon: GamepadIcon,
-    label: "Розробники ігор",
-  },
+  // {
+  //   icon: GamepadIcon,
+  //   label: "Розробники ігор",
+  // },
   {
     icon: GlobeIcon,
     label: "Локалізаційні команди",
@@ -25,10 +25,10 @@ const PLATFORM_AUDIENCE: Array<{
     icon: UsersIcon,
     label: "Фанатські спільноти",
   },
-  {
-    icon: BuildingIcon,
-    label: "Видавці ігор",
-  },
+  // {
+  //   icon: BuildingIcon,
+  //   label: "Видавці ігор",
+  // },
   {
     icon: GameConsoleIcon,
     label: "Інді-студії",
@@ -39,7 +39,7 @@ export function PlatformAudienceSection() {
   return (
     <CardGridSection
       title="Для кого ця платформа"
-      columns={5}
+      columns={3}
       centerText
       className="collab-platform-audience"
     >
