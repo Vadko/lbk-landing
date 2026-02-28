@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { AdvertisersPage } from "@/components/advertisers/AdvertisersPage";
+import { notFound } from "next/navigation";
+// import { AdvertisersPage } from "@/components/advertisers/AdvertisersPage";
 
 export const metadata: Metadata = {
   title: "Реклама в LBK Launcher",
@@ -8,5 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function AdvertisersRoutePage() {
-  return <AdvertisersPage />;
+  // TODO: Uncomment when advertisers page is ready
+  notFound();
+  // return <AdvertisersPage />;
 }
