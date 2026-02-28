@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { PageHeroSection } from "@/components/ui/PageHeroSection";
-import { HoverCard } from "../ui/HoverCard";
-import { CtaSection } from "../ui/CtaSection";
 import { CodeIcon } from "../icons";
+import { CtaSection } from "../ui/CtaSection";
+import { HoverCard } from "../ui/HoverCard";
 import { PartnerValueSection } from "./PartnerValueSection";
 import { PlatformAudienceSection } from "./PlatformAudienceSection";
 

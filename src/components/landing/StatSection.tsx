@@ -37,7 +37,9 @@ export function StatSection() {
       {statsData.map((feature, index) => (
         <HoverCard key={index} className="hover-card--big">
           <div className="hover-card__number">
-            {feature.number ?? <div className="spinner" style={{ margin: "0 auto" }} />}
+            {feature.number ?? (
+              <div className="spinner" style={{ margin: "0 auto" }} />
+            )}
           </div>
           <h3>{feature.title}</h3>
           <p>{feature.description}</p>

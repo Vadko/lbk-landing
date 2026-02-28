@@ -1,13 +1,13 @@
+import type { ComponentType, SVGProps } from "react";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
 import {
+  BuildingIcon,
+  GameConsoleIcon,
   GamepadIcon,
   GlobeIcon,
   UsersIcon,
-  BuildingIcon,
-  GameConsoleIcon,
 } from "../icons";
-import type { ComponentType, SVGProps } from "react";
 
 const PLATFORM_AUDIENCE: Array<{
   icon: ComponentType<SVGProps<SVGSVGElement>>;

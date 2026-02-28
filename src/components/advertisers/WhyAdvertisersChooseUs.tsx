@@ -1,7 +1,7 @@
-import { HoverCard } from "@/components/ui/HoverCard";
 import Image from "next/image";
-import { UsersIcon, GlobeIcon, GamepadIcon } from "@/components/icons";
 import type { ComponentType, SVGProps } from "react";
+import { GamepadIcon, GlobeIcon, UsersIcon } from "@/components/icons";
+import { HoverCard } from "@/components/ui/HoverCard";
 
 interface ValueCard {
   Icon: ComponentType<SVGProps<SVGSVGElement>>;
@@ -36,7 +36,12 @@ export function WhyAdvertisersChooseUs() {
         </h2>
         <div className="why-advertisers__grid">
           <HoverCard className="why-advertisers__main-card">
-            <Image src="/assets/abstract-stat-image.svg" alt="+35% органічне зростання аудиторії" width={411} height={512} />
+            <Image
+              src="/assets/abstract-stat-image.svg"
+              alt="+35% органічне зростання аудиторії"
+              width={411}
+              height={512}
+            />
           </HoverCard>
 
           {/* Права колонка з трьома картками */}
