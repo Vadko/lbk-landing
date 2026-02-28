@@ -3,27 +3,40 @@
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { useTeams } from "@/hooks/useGames";
+import { useLandingStats } from "@/hooks/useLandingStats";
 
-const METRICS = [
-  {
-    number: '15K+',
-    title: "Гравців загалом",
-    description: "Уся база активних гравців",
-  },
-  {
-    number: "3.2K",
-    title: "DAU",
-    description: "Активна аудиторія кожного дня",
-  },
-  {
-    number: "243",
-    title: "Творців",
-    description: "Високе короткострокове та довгострокове утримання",
-  },
-];
+function formatCompactNumber(num: number): string {
+  if (num >= 1000) {
+    const value = num / 1000;
+    const formatted = value % 1 === 0 ? value.toString() : value.toFixed(1);
+    return `${formatted}K`;
+  }
+  return num.toString();
+}
 
 export function MetricSection() {
   const { data: teams } = useTeams();
+  const { data: stats } = useLandingStats();
+
+  const metrics = [
+    {
+      number: stats
+        ? `${formatCompactNumber(stats.totalUniquePlayers)}+`
+        : undefined,
+      title: "Гравців загалом",
+      description: "Уся база активних гравців",
+    },
+    {
+      number: stats ? formatCompactNumber(stats.dau) : undefined,
+      title: "DAU",
+      description: "Активна аудиторія кожного дня",
+    },
+    {
+      number: teams ? `${teams.length}+` : undefined,
+      title: "Творців",
+      description: "Високе короткострокове та довгострокове утримання",
+    },
+  ];
 
   return (
     <CardGridSection
@@ -31,10 +44,10 @@ export function MetricSection() {
       columns={3}
       centerText
     >
-      {METRICS.map((feature, index) => (
+      {metrics.map((feature, index) => (
         <HoverCard key={index} className="hover-card--big">
           <div className="hover-card__number">
-            {index === 2 ? `${teams?.length}+` : feature.number}
+            {feature.number ?? "—"}
           </div>
           <h3>{feature.title}</h3>
           <p>{feature.description}</p>
