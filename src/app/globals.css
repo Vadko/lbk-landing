@@ -558,16 +558,20 @@ body.mobile-menu-open {
   position: absolute;
   inset: 0;
   border-radius: 12px;
-  padding: 1px;
+  border: 1px solid transparent;
   background: linear-gradient(90deg, #ffa47a -0.63%, #a8cf96 106.68%);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
+  background-origin: border-box;
+  background-clip: border-box;
   mask:
-    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
     linear-gradient(#fff 0 0);
   mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
   pointer-events: none;
 }
 
@@ -4406,7 +4410,6 @@ p + .why-btn {
 
 .btn-share {
   margin-top: 14px;
-  
 }
 
 @media (max-width: 768px) {
