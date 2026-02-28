@@ -2,7 +2,13 @@
 
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
+import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
+
+function AnimatedGamesCount({ count }: { count: number }) {
+  const { value: animatedValue, ref } = useCountUp({ end: count, duration: 2000 });
+  return <span ref={ref}>{animatedValue}</span>;
+}
 
 const FEATURES = [
   {
@@ -41,8 +47,7 @@ const FEATURES = [
   {
     icon: "fa-solid fa-gamepad",
     title: "Повна підтримка Linux, MacOS та Steam Deck",
-    description:
-      "Оптимізовано для комфортної гри на популярних системах.",
+    description: "Оптимізовано для комфортної гри на популярних системах.",
   },
   {
     icon: "fa-solid fa-handshake",
@@ -76,7 +81,9 @@ export function ShowcaseSection() {
       {FEATURES.map((feature, index) => (
         <HoverCard key={index}>
           {feature.number ? (
-            <div className="hover-card__number">{gamesCount ?? 80}+</div>
+            <div className="hover-card__number">
+              {gamesCount ? <AnimatedGamesCount count={gamesCount} /> : 80}+
+            </div>
           ) : (
             <div className="hover-card__icon">
               <i className={feature.icon!} />

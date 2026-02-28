@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useClientValue } from "@/hooks/useClientValue";
+import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
 import {
   detectOS,
@@ -14,6 +15,14 @@ import {
 } from "@/hooks/useGitHubRelease";
 import { useLandingStats } from "@/hooks/useLandingStats";
 import { trackFileDownload, trackViewGamesCatalog } from "@/lib/analytics";
+
+function AnimatedStat({ value }: { value: number }) {
+  const { value: animatedValue, ref } = useCountUp({
+    end: value,
+    duration: 2000,
+  });
+  return <span ref={ref}>{animatedValue}</span>;
+}
 
 const TYPEWRITER_PHRASES = [
   "без зусиль!",
@@ -224,13 +233,15 @@ export function HeroSection() {
           <div className="stats-mini">
             <div>
               <i className="fa-solid fa-gamepad" />
-              <span>{gamesCount ?? "80"}+ Ігор</span>
+              <span>
+                {gamesCount ? <AnimatedStat value={gamesCount} /> : "80"}+ Ігор
+              </span>
             </div>
             {stats?.totalUniquePlayers && (
               <div>
                 <i className="fa-solid fa-users" />
                 <span>
-                  {stats.totalUniquePlayers.toLocaleString("uk-UA")}+
+                  <AnimatedStat value={stats.totalUniquePlayers} />+
                   Користувачів
                 </span>
               </div>

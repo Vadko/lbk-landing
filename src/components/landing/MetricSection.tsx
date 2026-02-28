@@ -2,6 +2,7 @@
 
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
+import { useCountUp } from "@/hooks/useCountUp";
 import { useTeams } from "@/hooks/useGames";
 import { useLandingStats } from "@/hooks/useLandingStats";
 
@@ -14,25 +15,48 @@ function formatCompactNumber(num: number): string {
   return num.toString();
 }
 
+function AnimatedMetric({
+  value,
+  formatFn,
+  suffix = "",
+}: {
+  value: number;
+  formatFn?: (num: number) => string;
+  suffix?: string;
+}) {
+  const { value: animatedValue, ref } = useCountUp({ end: value, duration: 2000 });
+  const displayValue = formatFn
+    ? formatFn(Number(animatedValue))
+    : animatedValue;
+  return (
+    <div ref={ref}>
+      {displayValue}
+      {suffix}
+    </div>
+  );
+}
+
 export function MetricSection() {
   const { data: teams } = useTeams();
   const { data: stats } = useLandingStats();
 
   const metrics = [
     {
-      number: stats
-        ? `${formatCompactNumber(stats.totalUniquePlayers)}+`
-        : undefined,
+      number: stats?.totalUniquePlayers,
+      formatFn: formatCompactNumber,
+      suffix: "+",
       title: "Гравців загалом",
       description: "Уся база активних гравців",
     },
     {
-      number: stats ? formatCompactNumber(stats.dau) : undefined,
+      number: stats?.dau,
+      formatFn: formatCompactNumber,
       title: "DAU",
       description: "Активна аудиторія кожного дня",
     },
     {
-      number: teams ? `${teams.length}+` : undefined,
+      number: teams?.length,
+      suffix: "+",
       title: "Творців",
       description: "Високе короткострокове та довгострокове утримання",
     },
@@ -43,7 +67,13 @@ export function MetricSection() {
       {metrics.map((feature, index) => (
         <HoverCard key={index} className="hover-card--big">
           <div className="hover-card__number">
-            {feature.number ?? (
+            {typeof feature.number === "number" ? (
+              <AnimatedMetric
+                value={feature.number}
+                formatFn={feature.formatFn}
+                suffix={feature.suffix}
+              />
+            ) : (
               <div className="spinner" style={{ margin: "0 auto" }} />
             )}
           </div>
