@@ -6,7 +6,10 @@ import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
 
 function AnimatedGamesCount({ count }: { count: number }) {
-  const { value: animatedValue, ref } = useCountUp({ end: count, duration: 2000 });
+  const { value: animatedValue, ref } = useCountUp({
+    end: count,
+    duration: 2000,
+  });
   return <span ref={ref}>{animatedValue}</span>;
 }
 

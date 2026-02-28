@@ -9,6 +9,7 @@ interface LandingStats {
   totalDownloads: number;
   totalPlaytimeHours: number;
   totalUniquePlayers: number;
+  totalCreators: number;
   dau: number;
 }
 
@@ -24,6 +25,7 @@ async function fetchFromSupabase(): Promise<LandingStats> {
     totalDownloads: Number(data.total_downloads),
     totalPlaytimeHours: Math.round(Number(data.total_playtime_hours)),
     totalUniquePlayers: Number(data.total_unique_players),
+    totalCreators: Number(data.total_creators),
     dau: Number(data.dau),
   };
 }

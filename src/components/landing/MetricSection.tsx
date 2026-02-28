@@ -3,7 +3,6 @@
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { useCountUp } from "@/hooks/useCountUp";
-import { useTeams } from "@/hooks/useGames";
 import { useLandingStats } from "@/hooks/useLandingStats";
 
 function formatCompactNumber(num: number): string {
@@ -24,7 +23,10 @@ function AnimatedMetric({
   formatFn?: (num: number) => string;
   suffix?: string;
 }) {
-  const { value: animatedValue, ref } = useCountUp({ end: value, duration: 2000 });
+  const { value: animatedValue, ref } = useCountUp({
+    end: value,
+    duration: 2000,
+  });
   const displayValue = formatFn
     ? formatFn(Number(animatedValue))
     : animatedValue;
@@ -37,7 +39,6 @@ function AnimatedMetric({
 }
 
 export function MetricSection() {
-  const { data: teams } = useTeams();
   const { data: stats } = useLandingStats();
 
   const metrics = [
@@ -55,10 +56,9 @@ export function MetricSection() {
       description: "Активна аудиторія кожного дня",
     },
     {
-      number: teams?.length,
-      suffix: "+",
+      number: stats?.totalCreators,
       title: "Творців",
-      description: "Високе короткострокове та довгострокове утримання",
+      description: "Скільки творців перекладу з нами",
     },
   ];
 

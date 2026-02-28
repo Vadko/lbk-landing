@@ -7,6 +7,7 @@ interface LandingStats {
   totalDownloads: number;
   totalPlaytimeHours: number;
   totalUniquePlayers: number;
+  totalCreators: number;
   dau: number;
 }
 

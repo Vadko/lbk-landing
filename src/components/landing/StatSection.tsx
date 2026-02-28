@@ -4,7 +4,6 @@ import type { ComponentType, SVGProps } from "react";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { useCountUp } from "@/hooks/useCountUp";
-import { useTeams } from "@/hooks/useGames";
 import { useLandingStats } from "@/hooks/useLandingStats";
 
 function AnimatedNumber({
@@ -14,7 +13,10 @@ function AnimatedNumber({
   value: number;
   suffix?: string;
 }) {
-  const { value: animatedValue, ref } = useCountUp({ end: value, duration: 2000 });
+  const { value: animatedValue, ref } = useCountUp({
+    end: value,
+    duration: 2000,
+  });
   return (
     <div ref={ref}>
       {animatedValue}
@@ -24,7 +26,6 @@ function AnimatedNumber({
 }
 
 export function StatSection() {
-  const { data: teams } = useTeams();
   const { data: stats } = useLandingStats();
 
   const statsData: Array<{
@@ -35,9 +36,9 @@ export function StatSection() {
     description: string;
   }> = [
     {
-      number: stats?.totalUniquePlayers,
-      title: "Користувачів",
-      description: "Унікальних користувачів лаунчера",
+      number: stats?.totalDownloads,
+      title: "Завантажень",
+      description: "Скільки завантажили перекладів за весь час",
     },
     {
       number: stats?.totalPlaytimeHours,
@@ -45,8 +46,7 @@ export function StatSection() {
       description: "Скільки часу награно з нашим лаунчером",
     },
     {
-      number: teams?.length,
-      suffix: "+",
+      number: stats?.totalCreators,
       title: "Творців",
       description: "Скільки творців перекладу з нами",
     },
