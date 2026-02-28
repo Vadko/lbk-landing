@@ -1,5 +1,7 @@
 "use client";
 
+import type { ComponentType, SVGProps } from "react";
+import { UsersIcon } from "@/components/icons";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { useTeams } from "@/hooks/useGames";
@@ -9,11 +11,17 @@ export function StatSection() {
   const { data: teams } = useTeams();
   const { data: stats } = useLandingStats();
 
-  const statsData = [
+  const statsData: Array<{
+    Icon?: ComponentType<SVGProps<SVGSVGElement>>;
+    number?: string | number;
+    title: string;
+    description: string;
+  }> = [
     {
-      number: stats?.totalDownloads,
-      title: "Перекладів",
-      description: "Скільки завантажили перекладів за весь час",
+      Icon: UsersIcon,
+      number: stats?.totalUniquePlayers,
+      title: "Користувачів",
+      description: "Унікальних користувачів лаунчера",
     },
     {
       number: stats?.totalPlaytimeHours,
@@ -34,17 +42,25 @@ export function StatSection() {
       columns={3}
       centerText
     >
-      {statsData.map((feature, index) => (
-        <HoverCard key={index} className="hover-card--big">
-          <div className="hover-card__number">
-            {feature.number ?? (
-              <div className="spinner" style={{ margin: "0 auto" }} />
+      {statsData.map((feature, index) => {
+        const { Icon } = feature;
+        return (
+          <HoverCard key={index} className="hover-card--big">
+            {Icon && (
+              <div className="hover-card__icon">
+                <Icon width={32} height={32} aria-hidden />
+              </div>
             )}
-          </div>
-          <h3>{feature.title}</h3>
-          <p>{feature.description}</p>
-        </HoverCard>
-      ))}
+            <div className="hover-card__number">
+              {feature.number ?? (
+                <div className="spinner" style={{ margin: "0 auto" }} />
+              )}
+            </div>
+            <h3>{feature.title}</h3>
+            <p>{feature.description}</p>
+          </HoverCard>
+        );
+      })}
     </CardGridSection>
   );
 }
