@@ -12,6 +12,7 @@ import {
   getDownloadLinks,
   useGitHubRelease,
 } from "@/hooks/useGitHubRelease";
+import { useLandingStats } from "@/hooks/useLandingStats";
 import { trackFileDownload, trackViewGamesCatalog } from "@/lib/analytics";
 
 const TYPEWRITER_PHRASES = [
@@ -24,6 +25,7 @@ const TYPEWRITER_PHRASES = [
 export function HeroSection() {
   const { data: release, isLoading: isReleaseLoading } = useGitHubRelease();
   const { data: gamesCount } = useGamesCount();
+  const { data: stats } = useLandingStats();
   const downloadLinks = getDownloadLinks(release);
   const os = useClientValue(detectOS, "windows");
   const [typewriterText, setTypewriterText] = useState("");
@@ -224,12 +226,12 @@ export function HeroSection() {
               <i className="fa-solid fa-gamepad" />
               <span>{gamesCount ?? "80"}+ Ігор</span>
             </div>
-            {downloadLinks.totalDownloads > 0 && (
+            {stats?.totalUniquePlayers && (
               <div>
-                <i className="fa-solid fa-download" />
+                <i className="fa-solid fa-users" />
                 <span>
-                  {downloadLinks.totalDownloads.toLocaleString("uk-UA")}+
-                  Завантажень
+                  {stats.totalUniquePlayers.toLocaleString("uk-UA")}+
+                  Користувачів
                 </span>
               </div>
             )}
