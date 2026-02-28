@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useGamesPaginated, useTeams } from "@/hooks/useGames";
-import { trackViewSearchResults } from "@/lib/analytics";
+import { trackFailedSearch, trackViewSearchResults } from "@/lib/analytics";
 import { GameCard } from "./GameCard";
 import { GamesSearch } from "./GamesSearch";
 
@@ -108,6 +108,25 @@ export function GamesList() {
       lastTrackedSearch.current = search;
       trackViewSearchResults(search, total);
     }
+  }, [search, isLoading, total]);
+
+  // Track failed searches (0 results) with delay to avoid tracking intermediate typing states
+  const lastTrackedFailedSearch = useRef("");
+  const failedSearchTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => {
+    clearTimeout(failedSearchTimer.current);
+    if (
+      search.trim().length >= 3 &&
+      !isLoading &&
+      total === 0 &&
+      lastTrackedFailedSearch.current !== search
+    ) {
+      failedSearchTimer.current = setTimeout(() => {
+        lastTrackedFailedSearch.current = search;
+        trackFailedSearch(search);
+      }, 1500);
+    }
+    return () => clearTimeout(failedSearchTimer.current);
   }, [search, isLoading, total]);
 
   return (
