@@ -1,11 +1,27 @@
 "use client";
 
 import type { ComponentType, SVGProps } from "react";
-import { UsersIcon } from "@/components/icons";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
+import { useCountUp } from "@/hooks/useCountUp";
 import { useTeams } from "@/hooks/useGames";
 import { useLandingStats } from "@/hooks/useLandingStats";
+
+function AnimatedNumber({
+  value,
+  suffix = "",
+}: {
+  value: number;
+  suffix?: string;
+}) {
+  const { value: animatedValue, ref } = useCountUp({ end: value, duration: 2000 });
+  return (
+    <div ref={ref}>
+      {animatedValue}
+      {suffix}
+    </div>
+  );
+}
 
 export function StatSection() {
   const { data: teams } = useTeams();
@@ -13,12 +29,12 @@ export function StatSection() {
 
   const statsData: Array<{
     Icon?: ComponentType<SVGProps<SVGSVGElement>>;
-    number?: string | number;
+    number?: number;
+    suffix?: string;
     title: string;
     description: string;
   }> = [
     {
-      Icon: UsersIcon,
       number: stats?.totalUniquePlayers,
       title: "Користувачів",
       description: "Унікальних користувачів лаунчера",
@@ -29,7 +45,8 @@ export function StatSection() {
       description: "Скільки часу награно з нашим лаунчером",
     },
     {
-      number: teams ? `${teams.length}+` : undefined,
+      number: teams?.length,
+      suffix: "+",
       title: "Творців",
       description: "Скільки творців перекладу з нами",
     },
@@ -52,7 +69,12 @@ export function StatSection() {
               </div>
             )}
             <div className="hover-card__number">
-              {feature.number ?? (
+              {typeof feature.number === "number" ? (
+                <AnimatedNumber
+                  value={feature.number}
+                  suffix={feature.suffix}
+                />
+              ) : (
                 <div className="spinner" style={{ margin: "0 auto" }} />
               )}
             </div>
