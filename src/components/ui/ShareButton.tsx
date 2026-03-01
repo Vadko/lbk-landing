@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { trackShareLinkCopied } from "@/lib/analytics";
+import { ShareIcon } from "../icons";
 
 interface ShareButtonProps {
   gameSlug: string;
@@ -57,10 +58,10 @@ export function ShareButton({
   return (
     <button
       onClick={handleShare}
-      className={`btn-share ${copied ? "copied" : ""}`}
+      className={`btn-neon btn-share ${copied ? "copied" : ""}`}
       type="button"
     >
-      <i className={copied ? "fa-solid fa-check" : "fa-solid fa-share-nodes"} />
+      <ShareIcon />
       {copied ? "Скопійовано!" : "Поділитись"}
     </button>
   );

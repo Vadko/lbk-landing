@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useClientValue } from "@/hooks/useClientValue";
+import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
 import {
   detectOS,
@@ -12,7 +13,16 @@ import {
   getDownloadLinks,
   useGitHubRelease,
 } from "@/hooks/useGitHubRelease";
+import { useLandingStats } from "@/hooks/useLandingStats";
 import { trackFileDownload, trackViewGamesCatalog } from "@/lib/analytics";
+
+function AnimatedStat({ value }: { value: number }) {
+  const { value: animatedValue, ref } = useCountUp({
+    end: value,
+    duration: 2000,
+  });
+  return <span ref={ref}>{animatedValue}</span>;
+}
 
 const TYPEWRITER_PHRASES = [
   "без зусиль!",
@@ -24,6 +34,7 @@ const TYPEWRITER_PHRASES = [
 export function HeroSection() {
   const { data: release, isLoading: isReleaseLoading } = useGitHubRelease();
   const { data: gamesCount } = useGamesCount();
+  const { data: stats } = useLandingStats();
   const downloadLinks = getDownloadLinks(release);
   const os = useClientValue(detectOS, "windows");
   const [typewriterText, setTypewriterText] = useState("");
@@ -144,7 +155,7 @@ export function HeroSection() {
           {/* Games button above download */}
           <Link
             href="/games"
-            className="games-link"
+            className="btn-neon games-link"
             onClick={trackViewGamesCatalog}
           >
             <i className="fa-solid fa-gamepad" />
@@ -222,14 +233,16 @@ export function HeroSection() {
           <div className="stats-mini">
             <div>
               <i className="fa-solid fa-gamepad" />
-              <span>{gamesCount ?? "80"}+ Ігор</span>
+              <span>
+                {gamesCount ? <AnimatedStat value={gamesCount} /> : "80"}+ Ігор
+              </span>
             </div>
-            {downloadLinks.totalDownloads > 0 && (
+            {stats?.totalUniquePlayers && (
               <div>
-                <i className="fa-solid fa-download" />
+                <i className="fa-solid fa-users" />
                 <span>
-                  {downloadLinks.totalDownloads.toLocaleString("uk-UA")}+
-                  Завантажень
+                  <AnimatedStat value={stats.totalUniquePlayers} />+
+                  Користувачів
                 </span>
               </div>
             )}

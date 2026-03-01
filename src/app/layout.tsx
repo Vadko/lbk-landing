@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
+import { BodyClassManager } from "@/components/layout/BodyClassManager";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
@@ -125,9 +126,10 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased main-bg">
+        <BodyClassManager />
         <QueryProvider>
           <Navbar />
-          <main className="relative z-10">{children}</main>
+          <main className="relative z-10 header-padding">{children}</main>
           <Footer />
           <ScrollToTop />
         </QueryProvider>
