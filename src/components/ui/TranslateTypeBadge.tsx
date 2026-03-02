@@ -26,7 +26,9 @@ export function TranslateTypeBadge({
       onFocus={() => setShowTooltip(true)}
       onBlur={() => setShowTooltip(false)}
     >
-      <span className="translate-type-badge">{type === "edited" ? <AIEditedBadgeIcon /> : <AIBadgeIcon />}</span>
+      <span className="translate-type-badge">
+        {type === "edited" ? <AIEditedBadgeIcon /> : <AIBadgeIcon />}
+      </span>
       {showTooltip && (
         <div className="translate-type-badge__tooltip" role="tooltip">
           {type === "edited" ? "ШІ + редактура людиною" : "Переклад ШІ"}

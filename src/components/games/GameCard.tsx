@@ -87,10 +87,10 @@ export function GameCard({ game }: GameCardProps) {
               <i className="fa-solid fa-gamepad" />
             </div>
           )}
-          {(game.ai === 'edited' || game.ai === 'non-edited') && (
-          <div className="game-card-badge">
-            <TranslateTypeBadge type={game.ai} />
-          </div>
+          {(game.ai === "edited" || game.ai === "non-edited") && (
+            <div className="game-card-badge">
+              <TranslateTypeBadge type={game.ai} />
+            </div>
           )}
         </div>
       </Link>
