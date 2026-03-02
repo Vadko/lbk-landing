@@ -8,6 +8,7 @@ import { useClientValue } from "@/hooks/useClientValue";
 import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
 import {
+  detectMacArch,
   detectOS,
   formatDate,
   getDownloadLinks,
@@ -37,6 +38,7 @@ export function HeroSection() {
   const { data: stats } = useLandingStats();
   const downloadLinks = getDownloadLinks(release);
   const os = useClientValue(detectOS, "windows");
+  const macArch = useClientValue(detectMacArch, "arm64");
   const [typewriterText, setTypewriterText] = useState("");
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -97,7 +99,10 @@ export function HeroSection() {
 
   const getMainDownloadUrl = () => {
     if (isSteamDeck) return FLATPAKREF_URL;
-    if (os === "macos") return downloadLinks.macos;
+    if (os === "macos")
+      return macArch === "x64"
+        ? (downloadLinks.macosX64 ?? downloadLinks.macos)
+        : (downloadLinks.macosArm ?? downloadLinks.macos);
     if (os === "linux") return downloadLinks.linux;
     return downloadLinks.windows;
   };
@@ -111,7 +116,8 @@ export function HeroSection() {
 
   const getMainDownloadSubtitle = () => {
     if (isSteamDeck) return "Flatpak";
-    if (os === "macos") return ".dmg";
+    if (os === "macos")
+      return macArch === "x64" ? ".dmg (Intel)" : ".dmg (Apple Silicon)";
     if (os === "linux") return "AppImage";
     return "x64 Installer";
   };
@@ -204,6 +210,30 @@ export function HeroSection() {
                   <i className="fa-solid fa-box" />
                 </button>
               )}
+              {os === "macos" &&
+                macArch === "arm64" &&
+                downloadLinks.macosX64 && (
+                  <button
+                    onClick={() => handleDownload(downloadLinks.macosX64)}
+                    className="dl-mini"
+                    title="macOS (Intel)"
+                  >
+                    <i className="fa-brands fa-apple" />
+                    <small style={{ fontSize: "0.6em" }}>x64</small>
+                  </button>
+                )}
+              {os === "macos" &&
+                macArch === "x64" &&
+                downloadLinks.macosArm && (
+                  <button
+                    onClick={() => handleDownload(downloadLinks.macosArm)}
+                    className="dl-mini"
+                    title="macOS (Apple Silicon)"
+                  >
+                    <i className="fa-brands fa-apple" />
+                    <small style={{ fontSize: "0.6em" }}>M</small>
+                  </button>
+                )}
               {os !== "macos" && downloadLinks.macos && (
                 <button
                   onClick={() => handleDownload(downloadLinks.macos)}

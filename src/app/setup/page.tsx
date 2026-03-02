@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
-import { detectOS } from "@/hooks/useGitHubRelease";
+import {
+  detectOS,
+  getDownloadLinks,
+  useGitHubRelease,
+} from "@/hooks/useGitHubRelease";
 
 type Platform = "windows" | "macos" | "linux" | "steamdeck";
 
@@ -31,6 +35,8 @@ export default function SetupPage() {
   );
   const [activePlatform, setActivePlatform] =
     useState<Platform>(detectedPlatform);
+  const { data: releaseData } = useGitHubRelease();
+  const downloadLinks = getDownloadLinks(releaseData);
 
   return (
     <section className="setup-page">
@@ -62,9 +68,22 @@ export default function SetupPage() {
 
         {/* Content */}
         <div className="setup-content">
-          {activePlatform === "windows" && <WindowsInstructions />}
-          {activePlatform === "macos" && <MacOSInstructions />}
-          {activePlatform === "linux" && <LinuxInstructions />}
+          {activePlatform === "windows" && (
+            <WindowsInstructions
+              setupUrl={downloadLinks.windows}
+              version={downloadLinks.version}
+            />
+          )}
+          {activePlatform === "macos" && (
+            <MacOSInstructions
+              armUrl={downloadLinks.macosArm}
+              x64Url={downloadLinks.macosX64}
+              version={downloadLinks.version}
+            />
+          )}
+          {activePlatform === "linux" && (
+            <LinuxInstructions appImageUrl={downloadLinks.linux} />
+          )}
           {activePlatform === "steamdeck" && <SteamDeckInstructions />}
         </div>
 
@@ -96,7 +115,13 @@ export default function SetupPage() {
   );
 }
 
-function WindowsInstructions() {
+function WindowsInstructions({
+  setupUrl,
+  version,
+}: {
+  setupUrl: string | null;
+  version: string | null;
+}) {
   return (
     <div className="setup-platform">
       <h2>
@@ -108,7 +133,14 @@ function WindowsInstructions() {
         <h3>Варіанти завантаження</h3>
         <ul className="setup-files">
           <li>
-            <code>LBK-Launcher-win-Setup.exe</code> — інсталятор
+            {setupUrl ? (
+              <a href={setupUrl} className="setup-link">
+                <code>LBK-Launcher-win-Setup.exe</code>
+              </a>
+            ) : (
+              <code>LBK-Launcher-win-Setup.exe</code>
+            )}{" "}
+            — інсталятор{version ? ` (v${version})` : ""}
           </li>
           <li>
             <code>LBK-Launcher-win-Portable.exe</code> — портативна версія
@@ -175,7 +207,15 @@ function WindowsInstructions() {
   );
 }
 
-function MacOSInstructions() {
+function MacOSInstructions({
+  armUrl,
+  x64Url,
+  version,
+}: {
+  armUrl: string | null;
+  x64Url: string | null;
+  version: string | null;
+}) {
   return (
     <div className="setup-platform">
       <h2>
@@ -187,10 +227,24 @@ function MacOSInstructions() {
         <h3>Варіанти завантаження</h3>
         <ul className="setup-files">
           <li>
-            <code>LBK-Launcher-*-arm64.dmg</code> — для Apple Silicon
+            {armUrl ? (
+              <a href={armUrl} className="setup-link">
+                <code>LBK-Launcher-{version ?? "*"}-arm64.dmg</code>
+              </a>
+            ) : (
+              <code>LBK-Launcher-*-arm64.dmg</code>
+            )}{" "}
+            — для Apple Silicon (M1/M2/M3)
           </li>
           <li>
-            <code>LBK-Launcher-*-x64.dmg</code> — для Intel
+            {x64Url ? (
+              <a href={x64Url} className="setup-link">
+                <code>LBK-Launcher-{version ?? "*"}-x64.dmg</code>
+              </a>
+            ) : (
+              <code>LBK-Launcher-*-x64.dmg</code>
+            )}{" "}
+            — для Intel
           </li>
         </ul>
       </div>
@@ -198,7 +252,7 @@ function MacOSInstructions() {
       <div className="setup-section">
         <h3>Кроки встановлення</h3>
         <ol className="setup-steps">
-          <li>Завантажте відповідний DMG файл</li>
+          <li>Завантажте відповідний DMG файл (Apple Silicon або Intel)</li>
           <li>Відкрийте DMG файл</li>
           <li>Перетягніть програму до папки Applications</li>
         </ol>
@@ -207,7 +261,7 @@ function MacOSInstructions() {
   );
 }
 
-function LinuxInstructions() {
+function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
   const flatpakrefUrl =
     "https://flatpak.lbklauncher.com/com.lbk.launcher.flatpakref";
 
@@ -226,7 +280,14 @@ function LinuxInstructions() {
             дистрибутивів з підтримкою Flatpak
           </li>
           <li>
-            <code>LBK-Launcher-linux.AppImage</code> — універсальний формат
+            {appImageUrl ? (
+              <a href={appImageUrl} className="setup-link">
+                <code>LBK-Launcher-linux.AppImage</code>
+              </a>
+            ) : (
+              <code>LBK-Launcher-linux.AppImage</code>
+            )}{" "}
+            — універсальний формат
           </li>
           <li>
             <code>LBK-Launcher-linux.rpm</code> — для Fedora/RHEL
