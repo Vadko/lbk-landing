@@ -36,6 +36,7 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
   if (!data) {
     return {
       windows: null,
+      windowsPortable: null,
       macos: null,
       macosArm: null,
       macosX64: null,
@@ -50,6 +51,7 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
   const assets = release.assets;
 
   const windows = assets.find((a) => a.name.endsWith("Setup.exe"));
+  const windowsPortable = assets.find((a) => a.name.endsWith("Portable.exe"));
   const macosArm = assets.find(
     (a) => a.name.includes("arm64") && a.name.endsWith(".dmg")
   );
@@ -63,6 +65,7 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
 
   return {
     windows: windows?.browser_download_url ?? null,
+    windowsPortable: windowsPortable?.browser_download_url ?? null,
     macos: macos?.browser_download_url ?? null,
     macosArm: macosArm?.browser_download_url ?? null,
     macosX64: macosX64?.browser_download_url ?? null,

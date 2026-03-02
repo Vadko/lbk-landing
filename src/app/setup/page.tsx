@@ -35,7 +35,7 @@ export default function SetupPage() {
   );
   const [activePlatform, setActivePlatform] =
     useState<Platform>(detectedPlatform);
-  const { data: releaseData } = useGitHubRelease();
+  const { data: releaseData, isLoading } = useGitHubRelease();
   const downloadLinks = getDownloadLinks(releaseData);
 
   return (
@@ -71,6 +71,7 @@ export default function SetupPage() {
           {activePlatform === "windows" && (
             <WindowsInstructions
               setupUrl={downloadLinks.windows}
+              portableUrl={downloadLinks.windowsPortable}
               version={downloadLinks.version}
             />
           )}
@@ -86,6 +87,9 @@ export default function SetupPage() {
           )}
           {activePlatform === "steamdeck" && <SteamDeckInstructions />}
         </div>
+
+        {/* Release Files */}
+        <ReleaseFilesBlock links={downloadLinks} isLoading={isLoading} />
 
         {/* General Notes */}
         <div className="setup-notes">
@@ -117,9 +121,11 @@ export default function SetupPage() {
 
 function WindowsInstructions({
   setupUrl,
+  portableUrl,
   version,
 }: {
   setupUrl: string | null;
+  portableUrl: string | null;
   version: string | null;
 }) {
   return (
@@ -143,7 +149,14 @@ function WindowsInstructions({
             — інсталятор{version ? ` (v${version})` : ""}
           </li>
           <li>
-            <code>LBK-Launcher-win-Portable.exe</code> — портативна версія
+            {portableUrl ? (
+              <a href={portableUrl} className="setup-link">
+                <code>LBK-Launcher-win-Portable.exe</code>
+              </a>
+            ) : (
+              <code>LBK-Launcher-win-Portable.exe</code>
+            )}{" "}
+            — портативна версія (без встановлення)
           </li>
         </ul>
       </div>
@@ -471,6 +484,103 @@ function SteamDeckInstructions() {
           </span>
         </div>
       </div>
+    </div>
+  );
+}
+
+type DownloadLinks = ReturnType<typeof getDownloadLinks>;
+
+function ReleaseFilesBlock({
+  links,
+  isLoading,
+}: {
+  links: DownloadLinks;
+  isLoading: boolean;
+}) {
+  const v = links.version ?? "...";
+
+  const files: {
+    name: string;
+    url: string | null;
+    platform: string;
+    icon: string;
+    desc: string;
+  }[] = [
+    {
+      name: "LBK-Launcher-win-Setup.exe",
+      url: links.windows,
+      platform: "Windows",
+      icon: "fa-brands fa-windows",
+      desc: "Інсталятор — рекомендовано для більшості користувачів",
+    },
+    {
+      name: "LBK-Launcher-win-Portable.exe",
+      url: links.windowsPortable,
+      platform: "Windows",
+      icon: "fa-brands fa-windows",
+      desc: "Портативна версія — без встановлення, запускається з будь-якого місця",
+    },
+    {
+      name: `LBK-Launcher-${v}-arm64.dmg`,
+      url: links.macosArm,
+      platform: "macOS",
+      icon: "fa-brands fa-apple",
+      desc: "Apple Silicon (M1/M2/M3/M4)",
+    },
+    {
+      name: `LBK-Launcher-${v}-x64.dmg`,
+      url: links.macosX64,
+      platform: "macOS",
+      icon: "fa-brands fa-apple",
+      desc: "Intel Mac",
+    },
+    {
+      name: "LBK-Launcher-linux.AppImage",
+      url: links.linux,
+      platform: "Linux",
+      icon: "fa-brands fa-linux",
+      desc: "Універсальний формат — працює на більшості дистрибутивів",
+    },
+    {
+      name: "LBK-Launcher-linux.rpm",
+      url: null,
+      platform: "Linux",
+      icon: "fa-brands fa-linux",
+      desc: "RPM пакет для Fedora / RHEL",
+    },
+  ];
+
+  return (
+    <div className="setup-release-files">
+      <h2>
+        <i className="fa-solid fa-file-arrow-down" />
+        Файли релізу{links.version ? ` v${links.version}` : ""}
+      </h2>
+      {isLoading ? (
+        <p className="setup-loading">Завантаження...</p>
+      ) : (
+        <div className="release-files-grid">
+          {files.map((f) => (
+            <div key={f.name} className="release-file-card">
+              <div className="release-file-header">
+                <i className={f.icon} />
+                <span className="release-file-platform">{f.platform}</span>
+              </div>
+              {f.url ? (
+                <a href={f.url} className="release-file-name">
+                  <code>{f.name}</code>
+                  <i className="fa-solid fa-download" />
+                </a>
+              ) : (
+                <span className="release-file-name no-link">
+                  <code>{f.name}</code>
+                </span>
+              )}
+              <p className="release-file-desc">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
