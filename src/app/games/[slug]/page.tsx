@@ -42,6 +42,7 @@ export async function generateMetadata({
     },
     description,
     keywords: [
+      `${game.name}`,
       `${game.name} українською`,
       `${game.name} український переклад`,
       `${game.name} українізатор`,
