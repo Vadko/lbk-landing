@@ -1,5 +1,4 @@
 import type { Database } from "./database.types";
-import type { TranslateTypeBadgeType } from "@/components/ui/TranslateTypeBadge";
 
 export type Platform = Database["public"]["Enums"]["install_source"];
 
@@ -17,7 +16,7 @@ export type TranslationItem = Pick<
   | "updated_at"
   | "achievements_archive_path"
 > & {
-  badge_type?: TranslateTypeBadgeType;
+  badge_type?: 'edited' | 'non-edited';
 };
 
 // Grouped game with multiple translations
@@ -26,6 +25,7 @@ export interface GameGroup {
   name: string;
   banner_path: string | null;
   thumbnail_path: string | null;
+  ai: string | null;
   is_adult: boolean;
   updated_at: string;
   translations: TranslationItem[];

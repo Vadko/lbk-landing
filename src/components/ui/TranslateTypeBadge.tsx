@@ -1,14 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import {
-  TRANSLATE_TYPE_BADGE_CONFIGS,
-  type TranslateTypeBadgeType,
-} from "./translateTypeBadgeConfig";
-import "./translateTypeBadge.css";
+import { AIBadgeIcon } from "./icons/AIBadgeIcon";
+import { AIEditedBadgeIcon } from "./icons/AIEditedBadgeIcon";
 
 interface TranslateTypeBadgeProps {
-  type: TranslateTypeBadgeType;
+  type: "edited" | "non-edited";
   className?: string;
 }
 
@@ -17,9 +14,7 @@ export function TranslateTypeBadge({
   className = "",
 }: TranslateTypeBadgeProps) {
   const [showTooltip, setShowTooltip] = useState(false);
-  const config = TRANSLATE_TYPE_BADGE_CONFIGS[type];
-
-  if (!config) {
+  if (!type) {
     return null;
   }
 
@@ -31,10 +26,10 @@ export function TranslateTypeBadge({
       onFocus={() => setShowTooltip(true)}
       onBlur={() => setShowTooltip(false)}
     >
-      <span className="translate-type-badge">{config.icon}</span>
+      <span className="translate-type-badge">{type === "edited" ? <AIEditedBadgeIcon /> : <AIBadgeIcon />}</span>
       {showTooltip && (
         <div className="translate-type-badge__tooltip" role="tooltip">
-          {config.tooltip}
+          {type === "edited" ? "ШІ + редактура людиною" : "Переклад ШІ"}
         </div>
       )}
     </div>
