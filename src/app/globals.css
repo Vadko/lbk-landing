@@ -4141,6 +4141,37 @@ p + .why-btn {
   margin: 0 auto 48px;
 }
 
+.setup-release-files-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.setup-release-files-header h2 {
+  margin-bottom: 0;
+}
+
+.setup-github-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-sec);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.setup-github-link:hover {
+  color: var(--color-main);
+}
+
+.setup-github-link i {
+  font-size: 1rem;
+}
+
 .setup-release-files h2 {
   display: flex;
   align-items: center;
@@ -4148,7 +4179,7 @@ p + .why-btn {
   font-size: 1.3rem;
   font-weight: 600;
   color: var(--text-main);
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .setup-release-files h2 i {

@@ -552,10 +552,21 @@ function ReleaseFilesBlock({
 
   return (
     <div className="setup-release-files">
-      <h2>
-        <i className="fa-solid fa-file-arrow-down" />
-        Файли релізу{links.version ? ` v${links.version}` : ""}
-      </h2>
+      <div className="setup-release-files-header">
+        <h2>
+          <i className="fa-solid fa-file-arrow-down" />
+          Файли релізу{links.version ? ` v${links.version}` : ""}
+        </h2>
+        <a
+          href="https://github.com/Vadko/lbk-launcher/releases"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="setup-github-link"
+        >
+          <i className="fa-brands fa-github" />
+          Всі релізи на GitHub
+        </a>
+      </div>
       {isLoading ? (
         <p className="setup-loading">Завантаження...</p>
       ) : (
