@@ -210,30 +210,6 @@ export function HeroSection() {
                   <i className="fa-solid fa-box" />
                 </button>
               )}
-              {os === "macos" &&
-                macArch === "arm64" &&
-                downloadLinks.macosX64 && (
-                  <button
-                    onClick={() => handleDownload(downloadLinks.macosX64)}
-                    className="dl-mini"
-                    title="macOS (Intel)"
-                  >
-                    <i className="fa-brands fa-apple" />
-                    <small style={{ fontSize: "0.6em" }}>x64</small>
-                  </button>
-                )}
-              {os === "macos" &&
-                macArch === "x64" &&
-                downloadLinks.macosArm && (
-                  <button
-                    onClick={() => handleDownload(downloadLinks.macosArm)}
-                    className="dl-mini"
-                    title="macOS (Apple Silicon)"
-                  >
-                    <i className="fa-brands fa-apple" />
-                    <small style={{ fontSize: "0.6em" }}>M</small>
-                  </button>
-                )}
               {os !== "macos" && downloadLinks.macos && (
                 <button
                   onClick={() => handleDownload(downloadLinks.macos)}
