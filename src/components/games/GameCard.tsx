@@ -38,6 +38,11 @@ function TranslationRow({
     >
       <span className="game-card-translation-team">
         <AuthorName team={translation.team} />
+        {(translation.ai === "edited" || translation.ai === "non-edited") && (
+          <div className="game-card-translation-badge">
+            <TranslateTypeBadge type={translation.ai} />
+          </div>
+        )}
       </span>
       <div className="game-card-translation-info">
         <span className={`game-card-translation-status ${status.className}`}>

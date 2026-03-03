@@ -2848,6 +2848,7 @@ p + .why-btn {
   font-weight: 500;
   color: var(--text);
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 0.375rem;
 }
@@ -4589,16 +4590,23 @@ a.release-file-name i {
   align-items: center;
 }
 
+.game-card-translation-badge {
+  display: flex;
+}
+
 .translate-type-badge {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
   padding: 0;
   border-radius: 50%;
   cursor: help;
   pointer-events: all;
+}
+
+.game-card-badge .translate-type-badge {
+  width: 36px;
+  height: 36px;
   background: rgba(255, 255, 255, 0.8);
   outline: 6px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px);
@@ -4610,9 +4618,15 @@ a.release-file-name i {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: #ffffff;
+}
+
+.game-card-badge .translate-type-badge > svg {
   width: 24px;
   height: 24px;
-  flex-shrink: 0;
   color: #121213;
 }
 
