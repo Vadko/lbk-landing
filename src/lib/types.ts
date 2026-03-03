@@ -16,9 +16,7 @@ export type TranslationItem = Pick<
   | "updated_at"
   | "achievements_archive_path"
   | "ai"
-> & {
-  badge_type?: "edited" | "non-edited";
-};
+>;
 
 // Grouped game with multiple translations
 export interface GameGroup {
