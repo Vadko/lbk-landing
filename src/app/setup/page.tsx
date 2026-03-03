@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
-import { detectOS } from "@/hooks/useGitHubRelease";
+import {
+  detectOS,
+  getDownloadLinks,
+  useGitHubRelease,
+} from "@/hooks/useGitHubRelease";
 
 type Platform = "windows" | "macos" | "linux" | "steamdeck";
 
@@ -31,6 +35,8 @@ export default function SetupPage() {
   );
   const [activePlatform, setActivePlatform] =
     useState<Platform>(detectedPlatform);
+  const { data: releaseData, isLoading } = useGitHubRelease();
+  const downloadLinks = getDownloadLinks(releaseData);
 
   return (
     <section className="setup-page">
@@ -62,11 +68,28 @@ export default function SetupPage() {
 
         {/* Content */}
         <div className="setup-content">
-          {activePlatform === "windows" && <WindowsInstructions />}
-          {activePlatform === "macos" && <MacOSInstructions />}
-          {activePlatform === "linux" && <LinuxInstructions />}
+          {activePlatform === "windows" && (
+            <WindowsInstructions
+              setupUrl={downloadLinks.windows}
+              portableUrl={downloadLinks.windowsPortable}
+              version={downloadLinks.version}
+            />
+          )}
+          {activePlatform === "macos" && (
+            <MacOSInstructions
+              armUrl={downloadLinks.macosArm}
+              x64Url={downloadLinks.macosX64}
+              version={downloadLinks.version}
+            />
+          )}
+          {activePlatform === "linux" && (
+            <LinuxInstructions appImageUrl={downloadLinks.linux} />
+          )}
           {activePlatform === "steamdeck" && <SteamDeckInstructions />}
         </div>
+
+        {/* Release Files */}
+        <ReleaseFilesBlock links={downloadLinks} isLoading={isLoading} />
 
         {/* General Notes */}
         <div className="setup-notes">
@@ -96,7 +119,15 @@ export default function SetupPage() {
   );
 }
 
-function WindowsInstructions() {
+function WindowsInstructions({
+  setupUrl,
+  portableUrl,
+  version,
+}: {
+  setupUrl: string | null;
+  portableUrl: string | null;
+  version: string | null;
+}) {
   return (
     <div className="setup-platform">
       <h2>
@@ -108,10 +139,24 @@ function WindowsInstructions() {
         <h3>Варіанти завантаження</h3>
         <ul className="setup-files">
           <li>
-            <code>LBK-Launcher-win-Setup.exe</code> — інсталятор
+            {setupUrl ? (
+              <a href={setupUrl} className="setup-link">
+                <code>LBK-Launcher-win-Setup.exe</code>
+              </a>
+            ) : (
+              <code>LBK-Launcher-win-Setup.exe</code>
+            )}{" "}
+            — інсталятор{version ? ` (v${version})` : ""}
           </li>
           <li>
-            <code>LBK-Launcher-win-Portable.exe</code> — портативна версія
+            {portableUrl ? (
+              <a href={portableUrl} className="setup-link">
+                <code>LBK-Launcher-win-Portable.exe</code>
+              </a>
+            ) : (
+              <code>LBK-Launcher-win-Portable.exe</code>
+            )}{" "}
+            — портативна версія (без встановлення)
           </li>
         </ul>
       </div>
@@ -175,7 +220,15 @@ function WindowsInstructions() {
   );
 }
 
-function MacOSInstructions() {
+function MacOSInstructions({
+  armUrl,
+  x64Url,
+  version,
+}: {
+  armUrl: string | null;
+  x64Url: string | null;
+  version: string | null;
+}) {
   return (
     <div className="setup-platform">
       <h2>
@@ -187,10 +240,24 @@ function MacOSInstructions() {
         <h3>Варіанти завантаження</h3>
         <ul className="setup-files">
           <li>
-            <code>LBK-Launcher-*-arm64.dmg</code> — для Apple Silicon
+            {armUrl ? (
+              <a href={armUrl} className="setup-link">
+                <code>LBK-Launcher-{version ?? "*"}-arm64.dmg</code>
+              </a>
+            ) : (
+              <code>LBK-Launcher-*-arm64.dmg</code>
+            )}{" "}
+            — для Apple Silicon (M1/M2/M3)
           </li>
           <li>
-            <code>LBK-Launcher-*-x64.dmg</code> — для Intel
+            {x64Url ? (
+              <a href={x64Url} className="setup-link">
+                <code>LBK-Launcher-{version ?? "*"}-x64.dmg</code>
+              </a>
+            ) : (
+              <code>LBK-Launcher-*-x64.dmg</code>
+            )}{" "}
+            — для Intel
           </li>
         </ul>
       </div>
@@ -198,7 +265,7 @@ function MacOSInstructions() {
       <div className="setup-section">
         <h3>Кроки встановлення</h3>
         <ol className="setup-steps">
-          <li>Завантажте відповідний DMG файл</li>
+          <li>Завантажте відповідний DMG файл (Apple Silicon або Intel)</li>
           <li>Відкрийте DMG файл</li>
           <li>Перетягніть програму до папки Applications</li>
         </ol>
@@ -207,7 +274,7 @@ function MacOSInstructions() {
   );
 }
 
-function LinuxInstructions() {
+function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
   const flatpakrefUrl =
     "https://flatpak.lbklauncher.com/com.lbk.launcher.flatpakref";
 
@@ -226,7 +293,14 @@ function LinuxInstructions() {
             дистрибутивів з підтримкою Flatpak
           </li>
           <li>
-            <code>LBK-Launcher-linux.AppImage</code> — універсальний формат
+            {appImageUrl ? (
+              <a href={appImageUrl} className="setup-link">
+                <code>LBK-Launcher-linux.AppImage</code>
+              </a>
+            ) : (
+              <code>LBK-Launcher-linux.AppImage</code>
+            )}{" "}
+            — універсальний формат
           </li>
           <li>
             <code>LBK-Launcher-linux.rpm</code> — для Fedora/RHEL
@@ -410,6 +484,114 @@ function SteamDeckInstructions() {
           </span>
         </div>
       </div>
+    </div>
+  );
+}
+
+type DownloadLinks = ReturnType<typeof getDownloadLinks>;
+
+function ReleaseFilesBlock({
+  links,
+  isLoading,
+}: {
+  links: DownloadLinks;
+  isLoading: boolean;
+}) {
+  const v = links.version ?? "...";
+
+  const files: {
+    name: string;
+    url: string | null;
+    platform: string;
+    icon: string;
+    desc: string;
+  }[] = [
+    {
+      name: "LBK-Launcher-win-Setup.exe",
+      url: links.windows,
+      platform: "Windows",
+      icon: "fa-brands fa-windows",
+      desc: "Інсталятор — рекомендовано для більшості користувачів",
+    },
+    {
+      name: "LBK-Launcher-win-Portable.exe",
+      url: links.windowsPortable,
+      platform: "Windows",
+      icon: "fa-brands fa-windows",
+      desc: "Портативна версія — без встановлення, запускається з будь-якого місця",
+    },
+    {
+      name: `LBK-Launcher-${v}-arm64.dmg`,
+      url: links.macosArm,
+      platform: "macOS",
+      icon: "fa-brands fa-apple",
+      desc: "Apple Silicon (M1/M2/M3/M4)",
+    },
+    {
+      name: `LBK-Launcher-${v}-x64.dmg`,
+      url: links.macosX64,
+      platform: "macOS",
+      icon: "fa-brands fa-apple",
+      desc: "Intel Mac",
+    },
+    {
+      name: "LBK-Launcher-linux.AppImage",
+      url: links.linux,
+      platform: "Linux",
+      icon: "fa-brands fa-linux",
+      desc: "Універсальний формат — працює на більшості дистрибутивів",
+    },
+    {
+      name: "LBK-Launcher-linux.rpm",
+      url: null,
+      platform: "Linux",
+      icon: "fa-brands fa-linux",
+      desc: "RPM пакет для Fedora / RHEL",
+    },
+  ];
+
+  return (
+    <div className="setup-release-files">
+      <div className="setup-release-files-header">
+        <h2>
+          <i className="fa-solid fa-file-arrow-down" />
+          Файли релізу{links.version ? ` v${links.version}` : ""}
+        </h2>
+        <a
+          href="https://github.com/Vadko/lbk-launcher/releases"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="setup-github-link"
+        >
+          <i className="fa-brands fa-github" />
+          Всі релізи на GitHub
+        </a>
+      </div>
+      {isLoading ? (
+        <p className="setup-loading">Завантаження...</p>
+      ) : (
+        <div className="release-files-grid">
+          {files.map((f) => (
+            <div key={f.name} className="release-file-card">
+              <div className="release-file-header">
+                <i className={f.icon} />
+                <span className="release-file-platform">{f.platform}</span>
+              </div>
+              {f.url ? (
+                <a href={f.url} className="release-file-name">
+                  <code>{f.name}</code>
+                  <i className="fa-solid fa-download" />
+                </a>
+              ) : (
+                <span className="release-file-name no-link">
+                  <code>{f.name}</code>
+                </span>
+              )}
+              <p className="release-file-desc">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
