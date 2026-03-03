@@ -1262,6 +1262,7 @@ export type Database = {
     Views: {
       games_grouped: {
         Row: {
+          ai: string | null
           banner_path: string | null
           is_adult: boolean | null
           latest_updated_at: string | null
@@ -1316,6 +1317,7 @@ export type Database = {
           similarity_threshold?: number
         }
         Returns: {
+          ai: string | null
           banner_path: string
           is_adult: boolean
           latest_updated_at: string
