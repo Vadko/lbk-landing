@@ -121,6 +121,12 @@ async function fetchGamesGrouped({
     });
   }
 
+  // Short queries (1-2 chars): skip FTS, go directly to fuzzy search
+  // FTS prefix matching can be unreliable with very short terms
+  if (search && search.trim().length < 3) {
+    return fuzzySearchGames(search, offset, limit);
+  }
+
   let query = supabase
     .from("games_grouped")
     .select("*", { count: "exact" })
@@ -163,6 +169,33 @@ async function fetchGamesGroupedWithFilter({
   statuses,
   authors,
 }: FetchGamesParams): Promise<GamesGroupedResponse> {
+  // Short queries (1-2 chars): skip FTS, go directly to fuzzy search
+  if (search && search.trim().length < 3) {
+    const fuzzyResult = await fuzzySearchGames(search, 0, 50);
+    const filteredFuzzy = fuzzyResult.games.filter((game) => {
+      if (
+        statuses?.length &&
+        !game.translations.some((t) => statuses.includes(t.status))
+      ) {
+        return false;
+      }
+      return !(
+        authors?.length &&
+        !game.translations.some((t) =>
+          authors.some((author) => t.team?.includes(author))
+        )
+      );
+    });
+    const total = filteredFuzzy.length;
+    const paginatedGames = filteredFuzzy.slice(offset, offset + limit);
+    return {
+      games: paginatedGames,
+      total,
+      hasMore: offset + limit < total,
+      nextOffset: offset + limit,
+    };
+  }
+
   let query = supabase.from("games_grouped").select("*").order("name");
 
   if (search) {
