@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import {
   FundraisingProgress,
@@ -24,6 +24,7 @@ import {
   getGamesBySlug,
 } from "@/lib/games";
 import { getImageUrl } from "@/lib/images";
+import { getRedirect } from "@/lib/redirects";
 import { teamToSlug } from "@/lib/transliterate";
 
 interface PageProps {
@@ -106,6 +107,10 @@ export default async function GameTranslationPage({ params }: PageProps) {
   const game = await getGameBySlugAndTeamSlug(slug, teamSlugParam);
 
   if (!game) {
+    const newPath = await getRedirect(`/games/${slug}/${teamSlugParam}`);
+    if (newPath) {
+      permanentRedirect(newPath);
+    }
     notFound();
   }
 

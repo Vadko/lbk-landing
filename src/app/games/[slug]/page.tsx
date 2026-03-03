@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { GameBanner } from "@/components/game-detail";
 import { STATUS_LABELS } from "@/lib/constants";
 import { generateBreadcrumbLD } from "@/lib/game-jsonld";
 import { getAllGameSlugs, getGamesBySlug } from "@/lib/games";
 import { getImageUrl } from "@/lib/images";
+import { getRedirect } from "@/lib/redirects";
 import { teamToSlug } from "@/lib/transliterate";
 
 interface PageProps {
@@ -80,6 +81,10 @@ export default async function GamePage({ params }: PageProps) {
   const translations = await getGamesBySlug(slug);
 
   if (translations.length === 0) {
+    const newPath = await getRedirect(`/games/${slug}`);
+    if (newPath) {
+      permanentRedirect(newPath);
+    }
     notFound();
   }
 
