@@ -64,7 +64,7 @@ function getAnalyticsUid(): string {
 export function trackFailedSearch(searchTerm: string) {
   try {
     const trimmed = searchTerm.trim();
-    if (trimmed.length < 2) return;
+    if (trimmed.length < 3) return;
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

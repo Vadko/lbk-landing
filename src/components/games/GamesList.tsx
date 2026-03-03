@@ -110,19 +110,23 @@ export function GamesList() {
     }
   }, [search, isLoading, total]);
 
-  // Track failed searches (0 results)
+  // Track failed searches (0 results) with delay to avoid tracking intermediate typing states
   const lastTrackedFailedSearch = useRef("");
+  const failedSearchTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   useEffect(() => {
+    clearTimeout(failedSearchTimer.current);
     if (
-      search &&
-      search.trim().length >= 2 &&
+      search.trim().length >= 3 &&
       !isLoading &&
       total === 0 &&
       lastTrackedFailedSearch.current !== search
     ) {
-      lastTrackedFailedSearch.current = search;
-      trackFailedSearch(search);
+      failedSearchTimer.current = setTimeout(() => {
+        lastTrackedFailedSearch.current = search;
+        trackFailedSearch(search);
+      }, 1500);
     }
+    return () => clearTimeout(failedSearchTimer.current);
   }, [search, isLoading, total]);
 
   return (
@@ -181,16 +185,16 @@ export function GamesList() {
                 <i className="fa-solid fa-chevron-left" />
               </button>
 
-              {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+              {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                 let pageNum: number;
-                if (totalPages <= 7) {
+                if (totalPages <= 5) {
                   pageNum = i + 1;
-                } else if (currentPage <= 4) {
+                } else if (currentPage <= 3) {
                   pageNum = i + 1;
-                } else if (currentPage >= totalPages - 3) {
-                  pageNum = totalPages - 6 + i;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
                 } else {
-                  pageNum = currentPage - 3 + i;
+                  pageNum = currentPage - 2 + i;
                 }
 
                 return (

@@ -15,12 +15,6 @@ export function LegalLayout({
   return (
     <section className="legal-page">
       <div className="container">
-        <nav className="legal-breadcrumb">
-          <Link href="/">Головна</Link>
-          <span>/</span>
-          <span className="current">{title}</span>
-        </nav>
-
         <div className="legal-content">
           <header className="legal-header">
             <h1>{title}</h1>

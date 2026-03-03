@@ -15,6 +15,7 @@ export type TranslationItem = Pick<
   | "banner_path"
   | "updated_at"
   | "achievements_archive_path"
+  | "ai"
 > & {
   badge_type?: "edited" | "non-edited";
 };

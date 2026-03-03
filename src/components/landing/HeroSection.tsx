@@ -5,14 +5,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useClientValue } from "@/hooks/useClientValue";
+import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
 import {
+  detectMacArch,
   detectOS,
   formatDate,
   getDownloadLinks,
   useGitHubRelease,
 } from "@/hooks/useGitHubRelease";
+import { useLandingStats } from "@/hooks/useLandingStats";
 import { trackFileDownload, trackViewGamesCatalog } from "@/lib/analytics";
+
+function AnimatedStat({ value }: { value: number }) {
+  const { value: animatedValue, ref } = useCountUp({
+    end: value,
+    duration: 2000,
+  });
+  return <span ref={ref}>{animatedValue}</span>;
+}
 
 const TYPEWRITER_PHRASES = [
   "без зусиль!",
@@ -24,8 +35,10 @@ const TYPEWRITER_PHRASES = [
 export function HeroSection() {
   const { data: release, isLoading: isReleaseLoading } = useGitHubRelease();
   const { data: gamesCount } = useGamesCount();
+  const { data: stats } = useLandingStats();
   const downloadLinks = getDownloadLinks(release);
   const os = useClientValue(detectOS, "windows");
+  const macArch = useClientValue(detectMacArch, "arm64");
   const [typewriterText, setTypewriterText] = useState("");
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -86,7 +99,10 @@ export function HeroSection() {
 
   const getMainDownloadUrl = () => {
     if (isSteamDeck) return FLATPAKREF_URL;
-    if (os === "macos") return downloadLinks.macos;
+    if (os === "macos")
+      return macArch === "x64"
+        ? (downloadLinks.macosX64 ?? downloadLinks.macos)
+        : (downloadLinks.macosArm ?? downloadLinks.macos);
     if (os === "linux") return downloadLinks.linux;
     return downloadLinks.windows;
   };
@@ -100,7 +116,8 @@ export function HeroSection() {
 
   const getMainDownloadSubtitle = () => {
     if (isSteamDeck) return "Flatpak";
-    if (os === "macos") return ".dmg";
+    if (os === "macos")
+      return macArch === "x64" ? ".dmg (Intel)" : ".dmg (Apple Silicon)";
     if (os === "linux") return "AppImage";
     return "x64 Installer";
   };
@@ -135,15 +152,16 @@ export function HeroSection() {
           </h1>
 
           <p>
-            Зручний менеджер для встановлення й оновлення перекладів.
-            Автоматичний пошук ігор, світла та темна теми, а також резервні
-            копії.
+            Грайте в улюблені ігри рідною мовою в один клік. <br />
+            LBK Launcher — це безкоштовний інструмент з відкритим кодом, який
+            автоматизує пошук, встановлення та оновлення українських перекладів
+            для вашої ігрової бібліотеки.
           </p>
 
           {/* Games button above download */}
           <Link
             href="/games"
-            className="games-link"
+            className="btn-neon games-link"
             onClick={trackViewGamesCatalog}
           >
             <i className="fa-solid fa-gamepad" />
@@ -221,14 +239,16 @@ export function HeroSection() {
           <div className="stats-mini">
             <div>
               <i className="fa-solid fa-gamepad" />
-              <span>{gamesCount ?? "80"}+ Ігор</span>
+              <span>
+                {gamesCount ? <AnimatedStat value={gamesCount} /> : "80"}+ Ігор
+              </span>
             </div>
-            {downloadLinks.totalDownloads > 0 && (
+            {stats?.totalUniquePlayers && (
               <div>
-                <i className="fa-solid fa-download" />
+                <i className="fa-solid fa-users" />
                 <span>
-                  {downloadLinks.totalDownloads.toLocaleString("uk-UA")}+
-                  Завантажень
+                  <AnimatedStat value={stats.totalUniquePlayers} />+
+                  Користувачів
                 </span>
               </div>
             )}
@@ -239,23 +259,23 @@ export function HeroSection() {
           <figure className="hero-figure main-figure">
             <Image
               src="/assets/2.webp"
-              alt="LBK Launcher головний екран — українізатор ігор"
+              alt="LBK Launcher сторінка гри"
               width={600}
               height={400}
               className="hero-img main-shot"
               priority
             />
-            <figcaption className="hero-caption">Темна тема</figcaption>
+            <figcaption className="hero-caption">Сторінка гри</figcaption>
           </figure>
           <figure className="hero-figure back-figure">
             <Image
               src="/assets/1.webp"
-              alt="LBK Launcher світла тема"
+              alt="LBK Launcher головний екран"
               width={540}
               height={360}
               className="hero-img back-shot"
             />
-            <figcaption className="hero-caption">Світла тема</figcaption>
+            <figcaption className="hero-caption">Головний екран</figcaption>
           </figure>
         </div>
       </div>

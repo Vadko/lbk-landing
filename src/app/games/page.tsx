@@ -3,26 +3,46 @@ import { Suspense } from "react";
 import { GamesList } from "@/components/games/GamesList";
 
 const translateCount = 500;
-export const metadata: Metadata = {
-  title: `Каталог ігор з українською локалізацією — ${translateCount}+ перекладів`,
-  description:
-    "Найповніша база ігор з українським перекладом. Шукайте українізатори за назвою, жанром або автором. Дізнайтеся прогрес перекладу та встановлюйте локалізації в один клік через лаунчер.",
-  keywords: [
-    "каталог українських ігор",
-    "список ігор українською",
-    "українізатор ігор список",
-    "ігри з українською локалізацією",
-    "українські переклади ігор каталог",
-  ],
-  openGraph: {
-    title: `Каталог ігор з українською локалізацією — ${translateCount}+ перекладів | LBK Launcher`,
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { team?: string };
+}): Promise<Metadata> {
+  const baseMetadata: Metadata = {
+    title: `Каталог ігор з українською локалізацією — ${translateCount}+ перекладів`,
     description:
       "Найповніша база ігор з українським перекладом. Шукайте українізатори за назвою, жанром або автором. Дізнайтеся прогрес перекладу та встановлюйте локалізації в один клік через лаунчер.",
-  },
-  alternates: {
-    canonical: "https://lbklauncher.com/games",
-  },
-};
+    keywords: [
+      "каталог українських ігор",
+      "список ігор українською",
+      "українізатор ігор список",
+      "ігри з українською локалізацією",
+      "українські переклади ігор каталог",
+    ],
+    openGraph: {
+      title: `Каталог ігор з українською локалізацією — ${translateCount}+ перекладів | LBK Launcher`,
+      description:
+        "Найповніша база ігор з українським перекладом. Шукайте українізатори за назвою, жанром або автором. Дізнайтеся прогрес перекладу та встановлюйте локалізації в один клік через лаунчер.",
+    },
+    alternates: {
+      canonical: "https://lbklauncher.com/games",
+    },
+  };
+
+  // Якщо є query параметри (фільтри), забороняємо індексацію
+  if (searchParams && Object.keys(searchParams).length > 0) {
+    return {
+      ...baseMetadata,
+      robots: {
+        index: false,
+        follow: true,
+      },
+    };
+  }
+
+  return baseMetadata;
+}
 
 export default function GamesPage() {
   return (

@@ -845,6 +845,27 @@ export type Database = {
           },
         ]
       }
+      slug_redirects: {
+        Row: {
+          created_at: string | null
+          id: string
+          new_path: string
+          old_path: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          new_path: string
+          old_path: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          new_path?: string
+          old_path?: string
+        }
+        Relationships: []
+      }
       steam_apps: {
         Row: {
           app_id: number
@@ -1287,6 +1308,25 @@ export type Database = {
       }
       cleanup_steam_library_rate_limits: { Args: never; Returns: number }
       each: { Args: { hs: unknown }; Returns: Record<string, unknown>[] }
+      fuzzy_search_games: {
+        Args: {
+          limit_val?: number
+          search_query: string
+          search_query_translit?: string
+          similarity_threshold?: number
+        }
+        Returns: {
+          banner_path: string
+          is_adult: boolean
+          latest_updated_at: string
+          name: string
+          name_fts: unknown
+          slug: string
+          thumbnail_path: string
+          translations: Json
+          translations_count: number
+        }[]
+      }
       generate_author_slug: { Args: { author_name: string }; Returns: string }
       get_active_users: {
         Args: { p_end_date?: string; p_start_date?: string }
@@ -1330,6 +1370,16 @@ export type Database = {
           conversion_rate: number
           first_session_downloads: number
           total_first_launches: number
+        }[]
+      }
+      get_landing_stats: {
+        Args: never
+        Returns: {
+          dau: number
+          total_creators: number
+          total_downloads: number
+          total_playtime_hours: number
+          total_unique_players: number
         }[]
       }
       get_players_with_downloads: {

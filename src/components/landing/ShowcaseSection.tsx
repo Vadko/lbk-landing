@@ -1,45 +1,45 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { CardGridSection } from "@/components/ui/CardGridSection";
+import { HoverCard } from "@/components/ui/HoverCard";
+import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
+
+function AnimatedGamesCount({ count }: { count: number }) {
+  const { value: animatedValue, ref } = useCountUp({
+    end: count,
+    duration: 2000,
+  });
+  return <span ref={ref}>{animatedValue}</span>;
+}
 
 const FEATURES = [
   {
     icon: null,
     number: true,
-    title: "Підтримуваних ігор",
+    title: "Величезний каталог",
     description:
-      "Велика бібліотека українізованих ігор, яка постійно поповнюється.",
+      "Доступ до <strong>[count] українізаторів</strong> для AAA-тайтлів, інді-проєктів та класики.",
+    link: "/games",
+    linkText: "Перейти до каталогу",
   },
   {
     icon: "fa-solid fa-magnifying-glass",
-    title: "Автоматичний пошук",
+    title: "Автоматичний пошук ігор",
     description:
-      "Лаунчер сам знаходить усі встановлені ігри у ваших бібліотеках.",
+      "Лаунчер самостійно сканує ваші бібліотеки у <strong>Steam, Epic Games Store</strong> та інших сервісах, знаходячи встановлені ігри.",
+  },
+  {
+    icon: "fa-solid fa-download",
+    title: "Встановлення в один клік:",
+    description:
+      "Обирайте гру, натискайте «Встановти переклад» — і все готово до запуску українською мовою.",
   },
   {
     icon: "fa-solid fa-floppy-disk",
-    title: "Резервні копії",
+    title: "Безпека та резервні копії",
     description:
-      "Автоматично створюємо резервні копії оригінальних файлів перед встановленням.",
-  },
-  {
-    icon: "fa-brands fa-github",
-    title: "Відкритий код",
-    description:
-      "Повна прозорість і можливість перевірити безпеку. Ми нічого не приховуємо.",
-  },
-  {
-    icon: "fa-solid fa-palette",
-    title: "Налаштуйте під себе",
-    description:
-      "Приємний дизайн, гнучкі налаштування інтерфейсу та сповіщень.",
-  },
-  {
-    icon: "fa-solid fa-gamepad",
-    title: "Геймпад і Steam Deck",
-    description:
-      "Повна підтримка керування геймпадом та оптимізація для Steam Deck.",
+      "Сервіс автоматично створює бекапи оригінальних файлів, щоб ви могли все повернути назад у будь-який момент.",
   },
   {
     icon: "fa-solid fa-rotate",
@@ -48,100 +48,72 @@ const FEATURES = [
       "Лаунчер автоматично знаходить нові версії перекладів і сповіщає про оновлення.",
   },
   {
+    icon: "fa-solid fa-gamepad",
+    title: "Повна підтримка Linux, MacOS та Steam Deck",
+    description: "Оптимізовано для комфортної гри на популярних системах.",
+  },
+  {
     icon: "fa-solid fa-handshake",
     title: "Зручна співпраця",
     description:
       "Легко додавайте свої переклади в лаунчер і співпрацюйте з іншими командами.",
+    link: "/collaboration",
+    linkText: "Співпрацювати",
+  },
+  {
+    icon: "fa-brands fa-github",
+    title: "Відкритий код",
+    description:
+      "Повна прозорість і можливість перевірити безпеку. Ми нічого не приховуємо.",
+    link: "https://github.com/Vadko/lbk-launcher",
+    linkText: "Подивитись код",
   },
 ];
-
-interface WhyCardProps {
-  feature: (typeof FEATURES)[0];
-  gamesCount?: number | null;
-}
-
-function WhyCard({ feature, gamesCount }: WhyCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const angleRef = useRef(0);
-  const animationRef = useRef<number | null>(null);
-
-  const startAnimation = useCallback(() => {
-    const animate = () => {
-      if (!cardRef.current) return;
-      angleRef.current += 0.5;
-      if (angleRef.current >= 360) angleRef.current = 0;
-      cardRef.current.style.setProperty(
-        "--gradient-angle",
-        String(angleRef.current)
-      );
-      animationRef.current = requestAnimationFrame(animate);
-    };
-    animate();
-  }, []);
-
-  const handleMouseEnter = useCallback(() => {
-    startAnimation();
-  }, [startAnimation]);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const posX = (x / rect.width) * 100;
-    const posY = (y / rect.height) * 100;
-    cardRef.current.style.setProperty("--mouse-x", `${posX}%`);
-    cardRef.current.style.setProperty("--mouse-y", `${posY}%`);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
-    if (cardRef.current) {
-      cardRef.current.style.setProperty("--mouse-x", "50%");
-      cardRef.current.style.setProperty("--mouse-y", "50%");
-      angleRef.current = 0;
-      cardRef.current.style.setProperty("--gradient-angle", "0");
-    }
-  }, []);
-
-  return (
-    <div
-      ref={cardRef}
-      className="why-card"
-      onMouseEnter={handleMouseEnter}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      {feature.number ? (
-        <div className="why-number">{gamesCount ?? 80}+</div>
-      ) : (
-        <div className="why-icon">
-          <i className={feature.icon!} />
-        </div>
-      )}
-      <h3>{feature.title}</h3>
-      <p>{feature.description}</p>
-    </div>
-  );
-}
 
 export function ShowcaseSection() {
   const { data: gamesCount } = useGamesCount();
 
   return (
-    <section id="showcase" className="showcase">
-      <div className="container">
-        <h2 className="section-title center">Чому обирають LBK Launcher</h2>
-
-        <div className="why-grid">
-          {FEATURES.map((feature, index) => (
-            <WhyCard key={index} feature={feature} gamesCount={gamesCount} />
-          ))}
-        </div>
-      </div>
-    </section>
+    <CardGridSection
+      id="showcase"
+      title="Чому варто завантажити LBK Launcher?"
+      description="Забудьте про ручне копіювання файлів та пошук українізаторів на форумах. Ми зібрали все в одному зручному інтерфейсі."
+      columns={4}
+      centerText
+    >
+      {FEATURES.map((feature, index) => (
+        <HoverCard key={index}>
+          {feature.number ? (
+            <div className="hover-card__number">
+              {gamesCount ? <AnimatedGamesCount count={gamesCount} /> : 80}+
+            </div>
+          ) : (
+            <div className="hover-card__icon">
+              <i className={feature.icon!} />
+            </div>
+          )}
+          <h3>{feature.title}</h3>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: feature.description.replace(
+                "[count]",
+                `${gamesCount ?? 80}`
+              ),
+            }}
+          ></p>
+          {feature.link && (
+            <a
+              href={feature.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="why-btn"
+            >
+              {feature.linkText}
+              <i className="fa-solid fa-arrow-right" />
+            </a>
+          )}
+        </HoverCard>
+      ))}
+    </CardGridSection>
   );
 }

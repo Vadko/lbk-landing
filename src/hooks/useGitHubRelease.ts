@@ -36,7 +36,10 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
   if (!data) {
     return {
       windows: null,
+      windowsPortable: null,
       macos: null,
+      macosArm: null,
+      macosX64: null,
       linux: null,
       version: null,
       publishedAt: null,
@@ -48,17 +51,60 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
   const assets = release.assets;
 
   const windows = assets.find((a) => a.name.endsWith("Setup.exe"));
-  const macos = assets.find((a) => a.name.endsWith(".dmg"));
+  const windowsPortable = assets.find((a) => a.name.endsWith("Portable.exe"));
+  const macosArm = assets.find(
+    (a) => a.name.includes("arm64") && a.name.endsWith(".dmg")
+  );
+  const macosX64 = assets.find(
+    (a) =>
+      (a.name.includes("x64") || a.name.includes("x86")) &&
+      a.name.endsWith(".dmg")
+  );
+  const macos = macosArm ?? macosX64;
   const linux = assets.find((a) => a.name.endsWith(".AppImage"));
 
   return {
     windows: windows?.browser_download_url ?? null,
+    windowsPortable: windowsPortable?.browser_download_url ?? null,
     macos: macos?.browser_download_url ?? null,
+    macosArm: macosArm?.browser_download_url ?? null,
+    macosX64: macosX64?.browser_download_url ?? null,
     linux: linux?.browser_download_url ?? null,
     version: release.tag_name.replace("v", ""),
     publishedAt: release.published_at,
     totalDownloads,
   };
+}
+
+export function detectMacArch(): "arm64" | "x64" {
+  if (typeof window === "undefined") return "arm64";
+
+  try {
+    const canvas = document.createElement("canvas");
+    const gl = canvas.getContext("webgl") as WebGLRenderingContext | null;
+    if (gl) {
+      const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+      if (debugInfo) {
+        const renderer = (
+          gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string
+        ).toLowerCase();
+        // Apple Silicon shows "apple gpu" in WebGL renderer
+        if (renderer.includes("apple")) return "arm64";
+        // Intel/AMD indicate Intel Mac (x64)
+        if (
+          renderer.includes("intel") ||
+          renderer.includes("amd") ||
+          renderer.includes("radeon")
+        )
+          return "x64";
+      }
+    }
+  } catch {
+    // ignore WebGL errors
+  }
+
+  // Default to arm64 (majority of Macs sold since 2020)
+  return "arm64";
 }
 
 export function detectOS():

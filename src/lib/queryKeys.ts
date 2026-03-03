@@ -14,4 +14,7 @@ export const queryKeys = {
   github: {
     release: ["github", "release"] as const,
   },
+  landing: {
+    stats: ["landing", "stats"] as const,
+  },
 } as const;

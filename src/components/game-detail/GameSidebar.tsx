@@ -3,6 +3,7 @@ import { ShareButton } from "@/components/ui/ShareButton";
 import { getReadablePlatform } from "@/helpers/getReadablePlatform";
 import { teamToSlug } from "@/lib/transliterate";
 import type { Game } from "@/lib/types";
+import { RocketIcon } from "../icons";
 
 interface GameSidebarProps {
   game: Game;
@@ -37,9 +38,9 @@ export function GameSidebar({ game }: GameSidebarProps) {
           <>
             <a
               href={`lbk://games/${game.slug}/${encodeURIComponent(game.team)}`}
-              className="btn-launcher"
+              className="btn-neon btn-launcher"
             >
-              <i className="fa-solid fa-rocket" />
+              <RocketIcon />
               Відкрити в лаунчері
             </a>
             <ShareButton
@@ -51,6 +52,22 @@ export function GameSidebar({ game }: GameSidebarProps) {
         )}
       </div>
 
+      {/* Support */}
+      {game.support_url && (
+        <div className="game-sidebar-card game-support-card">
+          <h3>Підтримка</h3>
+          <a
+            href={game.support_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-support"
+          >
+            <i className="fa-solid fa-heart" />
+            Підтримати переклад
+          </a>
+        </div>
+      )}
+
       {/* Steam Link */}
       {game.steam_app_id && (
         <div className="game-sidebar-card game-steam-card">
@@ -58,7 +75,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
             href={`https://store.steampowered.com/app/${game.steam_app_id}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-steam"
+            className="btn-secondary btn-steam"
           >
             <i className="fa-brands fa-steam" />
             Сторінка в Steam
@@ -137,22 +154,6 @@ export function GameSidebar({ game }: GameSidebarProps) {
               </a>
             ))}
           </div>
-        </div>
-      )}
-
-      {/* Support */}
-      {game.support_url && (
-        <div className="game-sidebar-card game-support-card">
-          <h3>Підтримка</h3>
-          <a
-            href={game.support_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-support"
-          >
-            <i className="fa-solid fa-heart" />
-            Підтримати переклад
-          </a>
         </div>
       )}
     </aside>

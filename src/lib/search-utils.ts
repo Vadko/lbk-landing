@@ -24,6 +24,13 @@ function getTransliteration(input: string): string | null {
 }
 
 /**
+ * Get transliteration variant for fuzzy search RPC
+ */
+export function getTranslitVariant(input: string): string | null {
+  return getTransliteration(input);
+}
+
+/**
  * Build FTS query with transliteration support
  * "batman" → "'batman':* | 'батман':*"
  */
