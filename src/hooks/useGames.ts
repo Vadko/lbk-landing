@@ -55,7 +55,6 @@ function mapRowToGameGroup(
     name: row.name,
     banner_path: row.banner_path,
     thumbnail_path: row.thumbnail_path,
-    ai: row.ai ?? null,
     is_adult: row.is_adult ?? false,
     updated_at: getLatestUpdatedAt(translations),
     translations,

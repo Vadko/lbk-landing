@@ -24,7 +24,6 @@ export interface GameGroup {
   name: string;
   banner_path: string | null;
   thumbnail_path: string | null;
-  ai: string | null;
   is_adult: boolean;
   updated_at: string;
   translations: TranslationItem[];
