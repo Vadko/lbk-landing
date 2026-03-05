@@ -97,10 +97,14 @@ export function GameSidebar({ game }: GameSidebarProps) {
       <div className="game-sidebar-card game-stats-card">
         <h3>Статистика</h3>
         <div className="game-stats-list">
-          {game.downloads && game.downloads > 0 ? (
+          {!game.status || game.status !== "planned" ? (
             <div className="game-stat">
               <span>Завантажень</span>
-              <strong>{game.downloads.toLocaleString("uk-UA")}</strong>
+              <strong>
+                {!game.downloads || game.downloads < 20
+                  ? "до 20"
+                  : game.downloads.toLocaleString("uk-UA")}
+              </strong>
             </div>
           ) : null}
           {game.platforms && game.platforms.length > 0 && (
