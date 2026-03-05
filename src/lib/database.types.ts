@@ -887,6 +887,52 @@ export type Database = {
         }
         Relationships: []
       }
+      steam_curator_sync: {
+        Row: {
+          blurb: string | null
+          game_id: string | null
+          id: number
+          link_url: string | null
+          recommendation_state: number | null
+          status: string | null
+          steam_app_id: number
+          synced_at: string | null
+        }
+        Insert: {
+          blurb?: string | null
+          game_id?: string | null
+          id?: number
+          link_url?: string | null
+          recommendation_state?: number | null
+          status?: string | null
+          steam_app_id: number
+          synced_at?: string | null
+        }
+        Update: {
+          blurb?: string | null
+          game_id?: string | null
+          id?: number
+          link_url?: string | null
+          recommendation_state?: number | null
+          status?: string | null
+          steam_app_id?: number
+          synced_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "steam_curator_sync_game_id_fkey"
+            columns: ["game_id"]
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "steam_curator_sync_game_id_fkey"
+            columns: ["game_id"]
+            referencedRelation: "trending_games_cache"
+            referencedColumns: ["game_id"]
+          },
+        ]
+      }
       steam_guide_status_history: {
         Row: {
           changed_by: string | null
@@ -1262,7 +1308,9 @@ export type Database = {
     Views: {
       games_grouped: {
         Row: {
+          approved_at: string | null
           banner_path: string | null
+          downloads: number | null
           is_adult: boolean | null
           latest_updated_at: string | null
           name: string | null
