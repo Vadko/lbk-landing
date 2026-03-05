@@ -44,15 +44,29 @@ export function GamesList() {
     return [];
   }, [searchParams]);
 
+  // Read sort option from URL params
+  const sortBy = useMemo(() => {
+    const sortParam = searchParams.get("sort");
+    return sortParam || "name";
+  }, [searchParams]);
+
   // Update URL with new filter values and reset to page 1
   const updateFilters = useCallback(
-    (newStatuses: string[], newAuthors: string[], page?: number) => {
+    (
+      newStatuses: string[],
+      newAuthors: string[],
+      page?: number,
+      newSortBy?: string
+    ) => {
       const params = new URLSearchParams();
       if (newStatuses.length > 0) {
         params.set("statuses", newStatuses.join(","));
       }
       if (newAuthors.length > 0) {
         params.set("authors", newAuthors.join(","));
+      }
+      if (newSortBy && newSortBy !== "name") {
+        params.set("sort", newSortBy);
       }
       if (page && page > 1) {
         params.set("page", page.toString());
@@ -65,31 +79,39 @@ export function GamesList() {
 
   const handleStatusesChange = useCallback(
     (newStatuses: string[]) => {
-      updateFilters(newStatuses, selectedAuthors, 1);
+      updateFilters(newStatuses, selectedAuthors, 1, sortBy);
     },
-    [updateFilters, selectedAuthors]
+    [updateFilters, selectedAuthors, sortBy]
   );
 
   const handleAuthorsChange = useCallback(
     (newAuthors: string[]) => {
-      updateFilters(selectedStatuses, newAuthors, 1);
+      updateFilters(selectedStatuses, newAuthors, 1, sortBy);
     },
-    [updateFilters, selectedStatuses]
+    [updateFilters, selectedStatuses, sortBy]
+  );
+
+  const handleSortChange = useCallback(
+    (newSortBy: string) => {
+      updateFilters(selectedStatuses, selectedAuthors, 1, newSortBy);
+    },
+    [updateFilters, selectedStatuses, selectedAuthors]
   );
 
   const handlePageChange = useCallback(
     (page: number) => {
-      updateFilters(selectedStatuses, selectedAuthors, page);
+      updateFilters(selectedStatuses, selectedAuthors, page, sortBy);
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
-    [updateFilters, selectedStatuses, selectedAuthors]
+    [updateFilters, selectedStatuses, selectedAuthors, sortBy]
   );
 
   const { data, isLoading, error } = useGamesPaginated(
     currentPage,
     search,
     selectedStatuses,
-    selectedAuthors
+    selectedAuthors,
+    sortBy
   );
 
   const allGames = data?.games ?? [];
@@ -135,10 +157,17 @@ export function GamesList() {
     if (search !== prevSearch.current) {
       prevSearch.current = search;
       if (currentPage > 1) {
-        updateFilters(selectedStatuses, selectedAuthors, 1);
+        updateFilters(selectedStatuses, selectedAuthors, 1, sortBy);
       }
     }
-  }, [search, currentPage, selectedStatuses, selectedAuthors, updateFilters]);
+  }, [
+    search,
+    currentPage,
+    selectedStatuses,
+    selectedAuthors,
+    sortBy,
+    updateFilters,
+  ]);
 
   return (
     <div>
@@ -151,6 +180,8 @@ export function GamesList() {
         onAuthorsChange={handleAuthorsChange}
         authors={authors}
         authorsLoading={authorsLoading}
+        sortBy={sortBy}
+        onSortChange={handleSortChange}
       />
 
       {!isLoading && (

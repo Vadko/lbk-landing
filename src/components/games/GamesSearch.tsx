@@ -15,6 +15,9 @@ interface GamesSearchProps {
   // Available authors list
   authors: string[];
   authorsLoading?: boolean;
+  // Sort by
+  sortBy: string;
+  onSortChange: (sortBy: string) => void;
 }
 
 const AUTHORS_PER_PAGE = 20;
@@ -23,6 +26,25 @@ const STATUS_OPTIONS = [
   { value: "completed", label: "Готово", icon: "fa-solid fa-check-circle" },
   { value: "in-progress", label: "У розробці", icon: "fa-solid fa-spinner" },
   { value: "planned", label: "Заплановано", icon: "fa-solid fa-clock" },
+];
+
+const SORT_OPTIONS = [
+  { value: "name", label: "За назвою", icon: "fa-solid fa-arrow-down-a-z" },
+  {
+    value: "approved_at",
+    label: "За датою додавання",
+    icon: "fa-solid fa-calendar-plus",
+  },
+  {
+    value: "latest_updated_at",
+    label: "За новизною",
+    icon: "fa-solid fa-clock-rotate-left",
+  },
+  {
+    value: "downloads",
+    label: "За популярністю",
+    icon: "fa-solid fa-download",
+  },
 ];
 
 export function GamesSearch({
@@ -34,14 +56,18 @@ export function GamesSearch({
   onAuthorsChange,
   authors,
   authorsLoading,
+  sortBy,
+  onSortChange,
 }: GamesSearchProps) {
   const [localValue, setLocalValue] = useState(value);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isAuthorOpen, setIsAuthorOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
   const [authorSearch, setAuthorSearch] = useState("");
   const [authorsDisplayed, setAuthorsDisplayed] = useState(AUTHORS_PER_PAGE);
   const statusDropdownRef = useRef<HTMLDivElement>(null);
   const authorDropdownRef = useRef<HTMLDivElement>(null);
+  const sortDropdownRef = useRef<HTMLDivElement>(null);
   const authorListRef = useRef<HTMLDivElement>(null);
   const authorSearchInputRef = useRef<HTMLInputElement>(null);
 
@@ -120,6 +146,12 @@ export function GamesSearch({
         setAuthorSearch("");
         setAuthorsDisplayed(AUTHORS_PER_PAGE);
       }
+      if (
+        sortDropdownRef.current &&
+        !sortDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsSortOpen(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -172,6 +204,12 @@ export function GamesSearch({
     if (selectedAuthors.length === 1) return selectedAuthors[0];
     return `${selectedAuthors.length} авторів`;
   }, [selectedAuthors]);
+
+  // Sort button label
+  const sortLabel = useMemo(() => {
+    const option = SORT_OPTIONS.find((o) => o.value === sortBy);
+    return option?.label || "За назвою";
+  }, [sortBy]);
 
   return (
     <div className="games-filters-wrapper">
@@ -250,7 +288,7 @@ export function GamesSearch({
           </button>
 
           {isAuthorOpen && (
-            <div className="dropdown-menu dropdown-menu-with-search dropdown-menu--right">
+            <div className="dropdown-menu dropdown-menu-with-search">
               {/* Search Input */}
               <div className="dropdown-search">
                 <i className="fa-solid fa-magnifying-glass" />
@@ -339,6 +377,46 @@ export function GamesSearch({
                   </span>
                 </div>
               )}
+            </div>
+          )}
+        </div>
+
+        {/* Sort Dropdown */}
+        <div className="custom-dropdown" ref={sortDropdownRef}>
+          <button
+            type="button"
+            className={`dropdown-trigger ${isSortOpen ? "open" : ""}`}
+            onClick={() => setIsSortOpen(!isSortOpen)}
+          >
+            <i className="fa-solid fa-arrow-down-wide-short" />
+            <span>{sortLabel}</span>
+            <i
+              className={`fa-solid fa-chevron-down dropdown-arrow ${isSortOpen ? "rotated" : ""}`}
+            />
+          </button>
+
+          {isSortOpen && (
+            <div className="dropdown-menu dropdown-menu-with-search dropdown-menu--right">
+              {SORT_OPTIONS.map((option) => {
+                const isSelected = sortBy === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`dropdown-item ${isSelected ? "active" : ""}`}
+                    onClick={() => {
+                      onSortChange(option.value);
+                      setIsSortOpen(false);
+                    }}
+                  >
+                    <i className={option.icon} />
+                    <span>{option.label}</span>
+                    {isSelected && (
+                      <i className="fa-solid fa-check dropdown-item-check" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>

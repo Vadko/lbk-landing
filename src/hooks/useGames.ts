@@ -21,6 +21,7 @@ interface FetchGamesParams {
   search?: string;
   statuses?: string[];
   authors?: string[];
+  sortBy?: string;
 }
 
 // Type guard to check if row has required non-null fields
@@ -72,17 +73,22 @@ function hasActiveFilters(statuses?: string[], authors?: string[]): boolean {
 async function fuzzySearchGames(
   search: string,
   offset: number,
-  limit: number
+  limit: number,
+  sortBy?: string
 ): Promise<GamesGroupedResponse> {
   const normalized = search.toLowerCase().trim();
   const translit = getTranslitVariant(search);
 
-  const { data, error } = await supabase.rpc("fuzzy_search_games", {
-    search_query: normalized,
-    search_query_translit: translit ?? undefined,
-    similarity_threshold: 0.15,
-    limit_val: 50,
-  });
+  const orderAscending = sortBy === "name" || !sortBy;
+
+  const { data, error } = await supabase
+    .rpc("fuzzy_search_games", {
+      search_query: normalized,
+      search_query_translit: translit ?? undefined,
+      similarity_threshold: 0.15,
+      limit_val: 50,
+    })
+    .order(sortBy || "name", { ascending: orderAscending });
 
   if (error) {
     console.error("Fuzzy search error:", error.message);
@@ -109,6 +115,7 @@ async function fetchGamesGrouped({
   search,
   statuses,
   authors,
+  sortBy,
 }: FetchGamesParams): Promise<GamesGroupedResponse> {
   // If filtering by statuses or authors, we need to filter by checking translations JSON
   if (hasActiveFilters(statuses, authors)) {
@@ -118,19 +125,23 @@ async function fetchGamesGrouped({
       search,
       statuses,
       authors,
+      sortBy,
     });
   }
 
   // Short queries (1-2 chars): skip FTS, go directly to fuzzy search
   // FTS prefix matching can be unreliable with very short terms
   if (search && search.trim().length < 3) {
-    return fuzzySearchGames(search, offset, limit);
+    return fuzzySearchGames(search, offset, limit, sortBy);
   }
+
+  // Determine order field and direction based on sortBy
+  const orderAscending = sortBy === "name" || !sortBy;
 
   let query = supabase
     .from("games_grouped")
     .select("*", { count: "exact" })
-    .order("name")
+    .order(sortBy || "name", { ascending: orderAscending })
     .range(offset, offset + limit - 1);
 
   if (search) {
@@ -150,7 +161,7 @@ async function fetchGamesGrouped({
 
   // Fuzzy fallback when FTS returns 0 results
   if (search && total === 0) {
-    return fuzzySearchGames(search, offset, limit);
+    return fuzzySearchGames(search, offset, limit, sortBy);
   }
 
   return {
@@ -168,10 +179,11 @@ async function fetchGamesGroupedWithFilter({
   search,
   statuses,
   authors,
+  sortBy,
 }: FetchGamesParams): Promise<GamesGroupedResponse> {
   // Short queries (1-2 chars): skip FTS, go directly to fuzzy search
   if (search && search.trim().length < 3) {
-    const fuzzyResult = await fuzzySearchGames(search, 0, 50);
+    const fuzzyResult = await fuzzySearchGames(search, 0, 50, sortBy);
     const filteredFuzzy = fuzzyResult.games.filter((game) => {
       if (
         statuses?.length &&
@@ -196,7 +208,17 @@ async function fetchGamesGroupedWithFilter({
     };
   }
 
-  let query = supabase.from("games_grouped").select("*").order("name");
+  // Determine order field and direction based on sortBy
+  let orderAscending = true;
+  if (sortBy === "latest_updated_at") {
+    orderAscending = false; // newest first
+  }
+  // Note: created and downloads sorting will be done client-side below
+
+  let query = supabase
+    .from("games_grouped")
+    .select("*")
+    .order(sortBy || "name", { ascending: orderAscending });
 
   if (search) {
     const ftsQuery = buildFtsQuery(search);
@@ -213,7 +235,7 @@ async function fetchGamesGroupedWithFilter({
 
   // Fuzzy fallback when FTS returns 0 results
   if (search && rows.length === 0) {
-    const fuzzyResult = await fuzzySearchGames(search, 0, 50);
+    const fuzzyResult = await fuzzySearchGames(search, 0, 50, sortBy);
     const filteredFuzzy = fuzzyResult.games.filter((game) => {
       if (
         statuses?.length &&
@@ -283,10 +305,11 @@ export function useGamesPaginated(
   page: number,
   search?: string,
   statuses?: string[],
-  authors?: string[]
+  authors?: string[],
+  sortBy?: string
 ) {
   return useQuery({
-    queryKey: queryKeys.games.list({ search, statuses, authors, page }),
+    queryKey: queryKeys.games.list({ search, statuses, authors, page, sortBy }),
     queryFn: () =>
       fetchGamesGrouped({
         offset: (page - 1) * GAMES_PER_PAGE,
@@ -294,6 +317,7 @@ export function useGamesPaginated(
         search,
         statuses,
         authors,
+        sortBy,
       }),
   });
 }
