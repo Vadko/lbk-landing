@@ -30,13 +30,13 @@ const STATUS_OPTIONS = [
 
 const SORT_OPTIONS = [
   { value: "name", label: "За назвою", icon: "fa-solid fa-arrow-down-a-z" },
-  // { value: "approved_at", label: "За датою додавання", icon: "fa-solid fa-calendar-plus" },
+  { value: "approved_at", label: "За датою додавання", icon: "fa-solid fa-calendar-plus" },
   {
     value: "latest_updated_at",
     label: "За новизною",
     icon: "fa-solid fa-clock-rotate-left",
   },
-  // { value: "downloads", label: "За популярністю", icon: "fa-solid fa-download" },
+  { value: "downloads", label: "За популярністю", icon: "fa-solid fa-download" },
 ];
 
 export function GamesSearch({

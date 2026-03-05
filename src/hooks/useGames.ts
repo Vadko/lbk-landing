@@ -79,10 +79,7 @@ async function fuzzySearchGames(
   const normalized = search.toLowerCase().trim();
   const translit = getTranslitVariant(search);
 
-  let orderAscending = true;
-  if (sortBy === "latest_updated_at") {
-    orderAscending = false;
-  }
+  const orderAscending = sortBy === "name" || !sortBy;
 
   const { data, error } = await supabase
     .rpc("fuzzy_search_games", {
@@ -139,10 +136,7 @@ async function fetchGamesGrouped({
   }
 
   // Determine order field and direction based on sortBy
-  let orderAscending = true;
-  if (sortBy === "latest_updated_at") {
-    orderAscending = false;
-  }
+  const orderAscending = sortBy === "name" || !sortBy;
 
   let query = supabase
     .from("games_grouped")
