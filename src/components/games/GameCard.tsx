@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AuthorName } from "@/components/ui/AuthorName";
+import { TranslateTypeBadge } from "@/components/ui/TranslateTypeBadge";
 import { getImageUrl } from "@/lib/images";
 import { teamToSlug } from "@/lib/transliterate";
 import type { GameGroup, TranslationItem } from "@/lib/types";
@@ -37,6 +38,11 @@ function TranslationRow({
     >
       <span className="game-card-translation-team">
         <AuthorName team={translation.team} />
+        {(translation.ai === "edited" || translation.ai === "non-edited") && (
+          <div className="game-card-translation-badge">
+            <TranslateTypeBadge type={translation.ai} />
+          </div>
+        )}
       </span>
       <div className="game-card-translation-info">
         <span className={`game-card-translation-status ${status.className}`}>

@@ -129,6 +129,17 @@ export function GamesList() {
     return () => clearTimeout(failedSearchTimer.current);
   }, [search, isLoading, total]);
 
+  // Reset to page 1 when search query changes
+  const prevSearch = useRef(search);
+  useEffect(() => {
+    if (search !== prevSearch.current) {
+      prevSearch.current = search;
+      if (currentPage > 1) {
+        updateFilters(selectedStatuses, selectedAuthors, 1);
+      }
+    }
+  }, [search, currentPage, selectedStatuses, selectedAuthors, updateFilters]);
+
   return (
     <div>
       <GamesSearch
