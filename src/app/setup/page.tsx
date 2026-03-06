@@ -543,7 +543,7 @@ function ReleaseFilesBlock({
     },
     {
       name: "LBK-Launcher-linux.rpm",
-      url: null,
+      url: links.linuxRpm,
       platform: "Linux",
       icon: "fa-brands fa-linux",
       desc: "RPM пакет для Fedora / RHEL",
