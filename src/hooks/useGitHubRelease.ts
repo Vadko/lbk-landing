@@ -41,6 +41,7 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
       macosArm: null,
       macosX64: null,
       linux: null,
+      linuxRpm: null,
       version: null,
       publishedAt: null,
       totalDownloads: 0,
