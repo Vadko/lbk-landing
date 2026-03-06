@@ -41,6 +41,7 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
       macosArm: null,
       macosX64: null,
       linux: null,
+      linuxRpm: null,
       version: null,
       publishedAt: null,
       totalDownloads: 0,
@@ -62,6 +63,7 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
   );
   const macos = macosArm ?? macosX64;
   const linux = assets.find((a) => a.name.endsWith(".AppImage"));
+  const linuxRpm = assets.find((a) => a.name.endsWith(".rpm"));
 
   return {
     windows: windows?.browser_download_url ?? null,
@@ -70,6 +72,7 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
     macosArm: macosArm?.browser_download_url ?? null,
     macosX64: macosX64?.browser_download_url ?? null,
     linux: linux?.browser_download_url ?? null,
+    linuxRpm: linuxRpm?.browser_download_url ?? null,
     version: release.tag_name.replace("v", ""),
     publishedAt: release.published_at,
     totalDownloads,
