@@ -7,8 +7,9 @@ const translateCount = 500;
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: { team?: string };
+  searchParams: Promise<{ team?: string }>;
 }): Promise<Metadata> {
+  const params = await searchParams;
   const baseMetadata: Metadata = {
     title: `Каталог ігор з українською локалізацією — ${translateCount}+ перекладів`,
     description:
@@ -31,7 +32,7 @@ export async function generateMetadata({
   };
 
   // Якщо є query параметри (фільтри), забороняємо індексацію
-  if (searchParams && Object.keys(searchParams).length > 0) {
+  if (params && Object.keys(params).length > 0) {
     return {
       ...baseMetadata,
       robots: {
