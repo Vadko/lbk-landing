@@ -88,7 +88,7 @@ async function fuzzySearchGames(
       similarity_threshold: 0.15,
       limit_val: 50,
     })
-    .order(sortBy || "name", { ascending: orderAscending });
+    .order(sortBy || "name", { ascending: orderAscending, nullsFirst: false });
 
   if (error) {
     console.error("Fuzzy search error:", error.message);
@@ -141,7 +141,7 @@ async function fetchGamesGrouped({
   let query = supabase
     .from("games_grouped")
     .select("*", { count: "exact" })
-    .order(sortBy || "name", { ascending: orderAscending })
+    .order(sortBy || "name", { ascending: orderAscending, nullsFirst: false })
     .range(offset, offset + limit - 1);
 
   if (search) {
@@ -208,17 +208,12 @@ async function fetchGamesGroupedWithFilter({
     };
   }
 
-  // Determine order field and direction based on sortBy
-  let orderAscending = true;
-  if (sortBy === "latest_updated_at") {
-    orderAscending = false; // newest first
-  }
-  // Note: created and downloads sorting will be done client-side below
+  const orderAscending = sortBy === "name" || !sortBy;
 
   let query = supabase
     .from("games_grouped")
     .select("*")
-    .order(sortBy || "name", { ascending: orderAscending });
+    .order(sortBy || "name", { ascending: orderAscending, nullsFirst: false });
 
   if (search) {
     const ftsQuery = buildFtsQuery(search);

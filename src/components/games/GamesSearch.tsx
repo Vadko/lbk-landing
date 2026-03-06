@@ -31,7 +31,7 @@ const STATUS_OPTIONS = [
 const SORT_OPTIONS = [
   { value: "name", label: "За назвою", icon: "fa-solid fa-arrow-down-a-z" },
   {
-    value: "approved_at",
+    value: "created_at",
     label: "За датою додавання",
     icon: "fa-solid fa-calendar-plus",
   },
