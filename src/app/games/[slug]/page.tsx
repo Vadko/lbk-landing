@@ -180,7 +180,7 @@ export default async function GamePage({ params }: PageProps) {
 
                       <p className="game-translation-card-updated">
                         Оновлено:{" "}
-                        {new Date(translation.updated_at).toLocaleString(
+                        {new Date(translation.translation_updated_at).toLocaleString(
                           "uk-UA",
                           {
                             day: "numeric",
@@ -188,6 +188,7 @@ export default async function GamePage({ params }: PageProps) {
                             year: "numeric",
                             hour: "2-digit",
                             minute: "2-digit",
+                            timeZone: "Europe/Kyiv",
                           }
                         )}
                       </p>
