@@ -4338,13 +4338,17 @@ a.release-file-name i {
 /* ==========================================
    Open in Launcher Page
    ========================================== */
+main:has(.open-launcher-page) {
+  padding-top: var(--navbar-height);
+}
+
 .open-launcher-page {
-  min-height: 100vh;
+  min-height: calc(100svh - var(--navbar-height));
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 100px 20px 20px;
+  padding: 20px;
 }
 
 .open-launcher-bg {
