@@ -14,6 +14,7 @@ export type TranslationItem = Pick<
   | "version"
   | "banner_path"
   | "updated_at"
+  | "translation_updated_at"
   | "achievements_archive_path"
   | "ai"
 >;

@@ -122,18 +122,20 @@ export function GameSidebar({ game }: GameSidebarProps) {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
+                timeZone: "Europe/Kyiv",
               })}
             </strong>
           </div>
           <div className="game-stat">
             <span>Оновлено</span>
             <strong>
-              {new Date(game.updated_at).toLocaleString("uk-UA", {
+              {new Date(game.translation_updated_at).toLocaleString("uk-UA", {
                 day: "numeric",
                 month: "short",
                 year: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
+                timeZone: "Europe/Kyiv",
               })}
             </strong>
           </div>
