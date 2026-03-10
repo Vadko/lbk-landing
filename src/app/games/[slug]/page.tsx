@@ -90,7 +90,7 @@ export default async function GamePage({ params }: PageProps) {
 
   // If only one translation, redirect to the specific translation page
   if (translations.length === 1) {
-    redirect(`/games/${slug}/${teamToSlug(translations[0].team)}`);
+    permanentRedirect(`/games/${slug}/${teamToSlug(translations[0].team)}`);
   }
 
   // Multiple translations - show selection page
