@@ -15,7 +15,7 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
-const translateCount = 500;
+const translateCount = 600;
 export const metadata: Metadata = {
   metadataBase: new URL("https://lbklauncher.com"),
   title: {
@@ -31,6 +31,8 @@ export const metadata: Metadata = {
     "грати українською",
     "ігри українською",
     "український переклад ігор",
+    "LBK",
+    "LBK лаунчер",
     "LBK Launcher",
     "локалізація ігор",
     "переклад ігор українською",
