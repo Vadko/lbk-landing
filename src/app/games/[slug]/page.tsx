@@ -37,7 +37,7 @@ export async function generateMetadata({
       ? `Український переклад ${game.name} від ${game.team}. Завантажте безкоштовно через LBK Launcher.`
       : `Українські переклади ${game.name} від ${teamNames}. Оберіть переклад та завантажте безкоштовно через LBK Launcher.`;
 
-  const metadata: Metadata = {
+  return {
     title: {
       absolute: `${game.name} українською мовою | Скачати в LBK Launcher`,
     },
@@ -72,14 +72,6 @@ export async function generateMetadata({
       canonical: `https://lbklauncher.com/games/${slug}`,
     },
   };
-
-  if (translations.length === 1) {
-    metadata.robots = {
-      index: false,
-    };
-  }
-
-  return metadata;
 }
 
 export const revalidate = 3600;
