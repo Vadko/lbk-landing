@@ -6,6 +6,7 @@ import "./globals.css";
 import { BodyClassManager } from "@/components/layout/BodyClassManager";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
+import { RouteScrollTop } from "@/components/layout/RouteScrollTop";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { QueryProvider } from "@/providers/QueryProvider";
 
@@ -131,6 +132,7 @@ export default function RootLayout({
           <Navbar />
           <main className="relative z-10 header-padding">{children}</main>
           <Footer />
+          <RouteScrollTop />
           <ScrollToTop />
         </QueryProvider>
       </body>

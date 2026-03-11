@@ -106,7 +106,7 @@ export default function SetupPage() {
 
         {/* Download CTA */}
         <div className="setup-download-cta">
-          <Link href="/#hero" className="dl-btn">
+          <Link href="/" className="dl-btn">
             <i className="fa-solid fa-download" />
             <div className="dl-info">
               <span>Завантажити LBK Launcher</span>

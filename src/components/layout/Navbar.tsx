@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { trackViewGamesCatalog } from "@/lib/analytics";
 import { NavbarLogo } from "../icons/NavbarLogo";
 
 const navbarLinks = [
   {
-    href: "/#hero",
+    href: "/",
     label: "Головна",
     track: null,
   },
@@ -63,6 +64,7 @@ const navbarSocials = [
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLDivElement | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleResize = () => {
@@ -70,7 +72,7 @@ export function Navbar() {
         setIsMobileMenuOpen(false);
       }
       if (navbarRef.current) {
-        document.body.style.setProperty(
+        document.documentElement.style.setProperty(
           "--navbar-height",
           `${navbarRef.current.offsetHeight}px`
         );
@@ -79,7 +81,7 @@ export function Navbar() {
 
     window.addEventListener("resize", handleResize);
     if (navbarRef.current) {
-      document.body.style.setProperty(
+      document.documentElement.style.setProperty(
         "--navbar-height",
         `${navbarRef.current.offsetHeight}px`
       );
@@ -114,11 +116,16 @@ export function Navbar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  onClick={
-                    link.track === "trackViewGamesCatalog"
-                      ? trackViewGamesCatalog
-                      : undefined
-                  }
+                  onClick={(e) => {
+                    if (link.track === "trackViewGamesCatalog") {
+                      trackViewGamesCatalog();
+                    }
+                    if (link.href === "/" && pathname === "/") {
+                      e.preventDefault();
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      window.history.replaceState(null, "", "/");
+                    }
+                  }}
                 >
                   {link.label}
                 </Link>
@@ -177,14 +184,17 @@ export function Navbar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  onClick={
-                    link.track === "trackViewGamesCatalog"
-                      ? () => {
-                          trackViewGamesCatalog();
-                          closeMobileMenu();
-                        }
-                      : closeMobileMenu
-                  }
+                  onClick={(e) => {
+                    if (link.track === "trackViewGamesCatalog") {
+                      trackViewGamesCatalog();
+                    }
+                    if (link.href === "/" && pathname === "/") {
+                      e.preventDefault();
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      window.history.replaceState(null, "", "/");
+                    }
+                    closeMobileMenu();
+                  }}
                 >
                   {link.label}
                 </Link>

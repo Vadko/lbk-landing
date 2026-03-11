@@ -24,22 +24,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const gameUrls: MetadataRoute.Sitemap = [];
 
   for (const [slug, translations] of slugGroups) {
-    // Get the most recent update date for the slug page
-    const latestUpdate = translations.reduce(
-      (latest, t) =>
-        new Date(t.updated_at) > latest ? new Date(t.updated_at) : latest,
-      new Date(0)
-    );
+    if (translations.length > 1) {
+      const latestUpdate = translations.reduce(
+        (latest, t) =>
+          new Date(t.updated_at) > latest ? new Date(t.updated_at) : latest,
+        new Date(0)
+      );
+      gameUrls.push({
+        url: `https://lbklauncher.com/games/${slug}`,
+        lastModified: latestUpdate,
+        changeFrequency: "weekly",
+        priority: 0.7,
+      });
+    }
 
-    // Add slug page (shows all translations or redirects if single)
-    gameUrls.push({
-      url: `https://lbklauncher.com/games/${slug}`,
-      lastModified: latestUpdate,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    });
-
-    // Add individual translation pages
     for (const translation of translations) {
       gameUrls.push({
         url: `https://lbklauncher.com/games/${slug}/${teamToSlug(translation.team)}`,

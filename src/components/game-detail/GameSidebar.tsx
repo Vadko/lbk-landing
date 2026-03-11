@@ -27,7 +27,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
           <h3>Встановіть переклад</h3>
         </div>
         <p>Завантажте LBK Launcher і встановіть переклад в один клац</p>
-        <Link href="/#hero" className="dl-btn game-dl-btn">
+        <Link href="/" className="dl-btn game-dl-btn">
           <i className="fa-brands fa-windows" />
           <div className="dl-info">
             <span>Завантажити лаунчер</span>
