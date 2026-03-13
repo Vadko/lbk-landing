@@ -72,6 +72,10 @@ main.header-padding:has(.open-launcher-page) {
 }
 
 @media screen and (max-width: 767px) {
+  :root {
+    --navbar-height: 72px;
+  }
+
   .header-padding {
     padding-top: calc(60px + var(--navbar-height));
   }
