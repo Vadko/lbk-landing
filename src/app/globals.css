@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  --navbar-height: 77px;
+
   /* Темна тема (Deep Space) - за замовчуванням */
   --bg-base: #0f0f10;
   --bg-gradient: linear-gradient(135deg, #0f0f10 0%, #15162c 100%);
@@ -39,6 +41,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--navbar-height, 80px);
 }
 
 body {
@@ -48,6 +51,8 @@ body {
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-bg {
@@ -59,9 +64,18 @@ body {
 
 .header-padding {
   padding-top: calc(100px + var(--navbar-height));
+  flex: 1 0 auto;
+}
+
+main.header-padding:has(.open-launcher-page) {
+  flex: 0 0 auto;
 }
 
 @media screen and (max-width: 767px) {
+  :root {
+    --navbar-height: 72px;
+  }
+
   .header-padding {
     padding-top: calc(60px + var(--navbar-height));
   }
@@ -1526,6 +1540,8 @@ p + .why-btn {
 
 /* Footer */
 .footer {
+  position: relative;
+  z-index: 10;
   border-top: 1px solid var(--glass-border);
   padding: 60px 0 30px;
   background: rgba(0, 0, 0, 0.2);
@@ -4338,13 +4354,17 @@ a.release-file-name i {
 /* ==========================================
    Open in Launcher Page
    ========================================== */
+main.header-padding:has(.open-launcher-page) {
+  padding-top: 0;
+  flex: 0 0 auto;
+}
+
 .open-launcher-page {
-  min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   position: relative;
-  padding: 100px 20px 20px;
+  padding: calc(var(--navbar-height, 77px) + 40px) 20px 40px;
 }
 
 .open-launcher-bg {

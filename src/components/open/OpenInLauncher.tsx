@@ -170,7 +170,7 @@ export function OpenInLauncher({
             <p>Щоб грати в {gameName} українською, вам потрібен LBK Launcher</p>
 
             <div className="open-launcher-actions">
-              <Link href="/#hero" className="dl-btn open-launcher-download">
+              <Link href="/" className="dl-btn open-launcher-download">
                 <i className="fa-brands fa-windows" />
                 <div className="dl-info">
                   <span>Завантажити лаунчер</span>
