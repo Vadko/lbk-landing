@@ -7,6 +7,7 @@ const release = commit ? `${version}-${commit}` : version;
 
 const nextConfig: NextConfig = {
   experimental: {
+    inlineCss: true,
     optimizePackageImports: [
       "@fortawesome/free-solid-svg-icons",
       "@fortawesome/free-brands-svg-icons",

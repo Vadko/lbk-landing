@@ -214,9 +214,9 @@ export function GamesList() {
       ) : (
         <>
           <div className="games-grid">
-            {allGames.map((game) => (
+            {allGames.map((game, index) => (
               <div key={game.slug} className="game-card-wrapper">
-                <GameCard game={game} />
+                <GameCard game={game} priority={index < 4} />
               </div>
             ))}
           </div>

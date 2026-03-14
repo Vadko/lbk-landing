@@ -12,6 +12,7 @@ import type { GameGroup, TranslationItem } from "@/lib/types";
 
 interface GameCardProps {
   game: GameGroup;
+  priority?: boolean;
 }
 
 const STATUS_LABELS: Record<string, { label: string; className: string }> = {
@@ -66,7 +67,7 @@ function TranslationRow({
   );
 }
 
-export function GameCard({ game }: GameCardProps) {
+export function GameCard({ game, priority }: GameCardProps) {
   const imageUrl =
     getImageUrl(game.banner_path, game.updated_at) ||
     getImageUrl(game.thumbnail_path, game.updated_at);
@@ -88,6 +89,7 @@ export function GameCard({ game }: GameCardProps) {
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
+              priority={priority}
             />
           ) : (
             <div className="game-card-placeholder">
