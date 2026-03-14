@@ -16,7 +16,12 @@ export function SvgIcon({ icon, className }: SvgIconProps) {
       fill="currentColor"
       aria-hidden="true"
       className={className}
-      style={{ width: "1em", height: "1em", display: "inline-block", verticalAlign: "-0.125em" }}
+      style={{
+        width: "1em",
+        height: "1em",
+        display: "inline-block",
+        verticalAlign: "-0.125em",
+      }}
     >
       {typeof path === "string" ? (
         <path d={path} />
