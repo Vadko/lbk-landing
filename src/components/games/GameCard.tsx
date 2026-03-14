@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AuthorName } from "@/components/ui/AuthorName";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { TranslateTypeBadge } from "@/components/ui/TranslateTypeBadge";
 import { getImageUrl } from "@/lib/images";
 import { teamToSlug } from "@/lib/transliterate";
@@ -89,7 +90,7 @@ export function GameCard({ game }: GameCardProps) {
             />
           ) : (
             <div className="game-card-placeholder">
-              <i className="fa-solid fa-gamepad" />
+              <FaIcon icon="fa-solid fa-gamepad" />
             </div>
           )}
         </div>

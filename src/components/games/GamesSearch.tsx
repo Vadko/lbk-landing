@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { trackViewTranslatorsPage } from "@/lib/analytics";
 
 interface GamesSearchProps {
@@ -215,7 +216,7 @@ export function GamesSearch({
     <div className="games-filters-wrapper">
       <div className="games-filters">
         <div className="search-wrapper">
-          <i className="fa-solid fa-magnifying-glass" />
+          <FaIcon icon="fa-solid fa-magnifying-glass" />
           <input
             type="text"
             value={localValue}
@@ -232,10 +233,11 @@ export function GamesSearch({
             className={`dropdown-trigger ${isStatusOpen ? "open" : ""} ${selectedStatuses.length > 0 ? "has-value" : ""}`}
             onClick={() => setIsStatusOpen(!isStatusOpen)}
           >
-            <i className="fa-solid fa-gamepad" />
+            <FaIcon icon="fa-solid fa-gamepad" />
             <span>{statusLabel}</span>
-            <i
-              className={`fa-solid fa-chevron-down dropdown-arrow ${isStatusOpen ? "rotated" : ""}`}
+            <FaIcon
+              icon="fa-solid fa-chevron-down"
+              className={`dropdown-arrow ${isStatusOpen ? "rotated" : ""}`}
             />
           </button>
 
@@ -248,7 +250,7 @@ export function GamesSearch({
                   className="dropdown-item dropdown-item-clear"
                   onClick={handleClearStatuses}
                 >
-                  <i className="fa-solid fa-xmark" />
+                  <FaIcon icon="fa-solid fa-xmark" />
                   <span>Очистити фільтр</span>
                 </button>
               )}
@@ -262,9 +264,9 @@ export function GamesSearch({
                     onClick={() => handleStatusToggle(option.value)}
                   >
                     <span className={`checkbox ${isSelected ? "checked" : ""}`}>
-                      {isSelected && <i className="fa-solid fa-check" />}
+                      {isSelected && <FaIcon icon="fa-solid fa-check" />}
                     </span>
-                    <i className={option.icon} />
+                    <FaIcon icon={option.icon} />
                     <span>{option.label}</span>
                   </button>
                 );
@@ -280,10 +282,11 @@ export function GamesSearch({
             className={`dropdown-trigger ${isAuthorOpen ? "open" : ""} ${selectedAuthors.length > 0 ? "has-value" : ""}`}
             onClick={handleAuthorDropdownToggle}
           >
-            <i className="fa-solid fa-user" />
+            <FaIcon icon="fa-solid fa-user" />
             <span>{authorLabel}</span>
-            <i
-              className={`fa-solid fa-chevron-down dropdown-arrow ${isAuthorOpen ? "rotated" : ""}`}
+            <FaIcon
+              icon="fa-solid fa-chevron-down"
+              className={`dropdown-arrow ${isAuthorOpen ? "rotated" : ""}`}
             />
           </button>
 
@@ -291,7 +294,7 @@ export function GamesSearch({
             <div className="dropdown-menu dropdown-menu-with-search">
               {/* Search Input */}
               <div className="dropdown-search">
-                <i className="fa-solid fa-magnifying-glass" />
+                <FaIcon icon="fa-solid fa-magnifying-glass" />
                 <input
                   ref={authorSearchInputRef}
                   type="text"
@@ -306,7 +309,7 @@ export function GamesSearch({
                     className="dropdown-search-clear"
                     onClick={() => setAuthorSearch("")}
                   >
-                    <i className="fa-solid fa-xmark" />
+                    <FaIcon icon="fa-solid fa-xmark" />
                   </button>
                 )}
               </div>
@@ -318,7 +321,7 @@ export function GamesSearch({
                   className="dropdown-item dropdown-item-clear"
                   onClick={handleClearAuthors}
                 >
-                  <i className="fa-solid fa-xmark" />
+                  <FaIcon icon="fa-solid fa-xmark" />
                   <span>Очистити фільтр ({selectedAuthors.length})</span>
                 </button>
               )}
@@ -351,9 +354,9 @@ export function GamesSearch({
                           <span
                             className={`checkbox ${isSelected ? "checked" : ""}`}
                           >
-                            {isSelected && <i className="fa-solid fa-check" />}
+                            {isSelected && <FaIcon icon="fa-solid fa-check" />}
                           </span>
-                          <i className="fa-solid fa-user" />
+                          <FaIcon icon="fa-solid fa-user" />
                           <span>{authorName}</span>
                         </button>
                       );
@@ -388,10 +391,11 @@ export function GamesSearch({
             className={`dropdown-trigger ${isSortOpen ? "open" : ""}`}
             onClick={() => setIsSortOpen(!isSortOpen)}
           >
-            <i className="fa-solid fa-arrow-down-wide-short" />
+            <FaIcon icon="fa-solid fa-arrow-down-wide-short" />
             <span>{sortLabel}</span>
-            <i
-              className={`fa-solid fa-chevron-down dropdown-arrow ${isSortOpen ? "rotated" : ""}`}
+            <FaIcon
+              icon="fa-solid fa-chevron-down"
+              className={`dropdown-arrow ${isSortOpen ? "rotated" : ""}`}
             />
           </button>
 
@@ -409,10 +413,13 @@ export function GamesSearch({
                       setIsSortOpen(false);
                     }}
                   >
-                    <i className={option.icon} />
+                    <FaIcon icon={option.icon} />
                     <span>{option.label}</span>
                     {isSelected && (
-                      <i className="fa-solid fa-check dropdown-item-check" />
+                      <FaIcon
+                        icon="fa-solid fa-check"
+                        className="dropdown-item-check"
+                      />
                     )}
                   </button>
                 );
@@ -435,7 +442,7 @@ export function GamesSearch({
                   onClick={() => handleStatusToggle(s)}
                   className="filter-chip-remove"
                 >
-                  <i className="fa-solid fa-xmark" />
+                  <FaIcon icon="fa-solid fa-xmark" />
                 </button>
               </span>
             );
@@ -448,7 +455,7 @@ export function GamesSearch({
                 onClick={() => handleAuthorToggle(a)}
                 className="filter-chip-remove"
               >
-                <i className="fa-solid fa-xmark" />
+                <FaIcon icon="fa-solid fa-xmark" />
               </button>
             </span>
           ))}

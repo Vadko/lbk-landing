@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useReducer, useRef } from "react";
+import { FaIcon } from "@/components/ui/FaIcon";
 
 interface OpenInLauncherProps {
   gameName: string;
@@ -155,7 +156,7 @@ export function OpenInLauncher({
 
         {state.status === "opened" && (
           <div className="open-launcher-status open-launcher-success">
-            <i className="fa-solid fa-check-circle" />
+            <FaIcon icon="fa-solid fa-check-circle" />
             <p>Лаунчер відкрито!</p>
             <Link href={gamePageUrl} className="open-launcher-link">
               Перейти на сторінку гри
@@ -165,13 +166,13 @@ export function OpenInLauncher({
 
         {state.status === "failed" && (
           <div className="open-launcher-status open-launcher-failed">
-            <i className="fa-solid fa-download" />
+            <FaIcon icon="fa-solid fa-download" />
             <h2>LBK Launcher не встановлено</h2>
             <p>Щоб грати в {gameName} українською, вам потрібен LBK Launcher</p>
 
             <div className="open-launcher-actions">
               <Link href="/" className="dl-btn open-launcher-download">
-                <i className="fa-brands fa-windows" />
+                <FaIcon icon="fa-brands fa-windows" />
                 <div className="dl-info">
                   <span>Завантажити лаунчер</span>
                   <small>Windows / macOS / Linux</small>
@@ -183,13 +184,13 @@ export function OpenInLauncher({
                 className="open-launcher-retry"
                 type="button"
               >
-                <i className="fa-solid fa-rotate" />
+                <FaIcon icon="fa-solid fa-rotate" />
                 Спробувати знову
               </button>
             </div>
 
             <Link href={gamePageUrl} className="open-launcher-game-link">
-              Детальніше про переклад <i className="fa-solid fa-arrow-right" />
+              Детальніше про переклад <FaIcon icon="fa-solid fa-arrow-right" />
             </Link>
           </div>
         )}
@@ -199,7 +200,7 @@ export function OpenInLauncher({
           className="open-launcher-share"
           type="button"
         >
-          <i className="fa-solid fa-share-nodes" />
+          <FaIcon icon="fa-solid fa-share-nodes" />
           Копіювати посилання
         </button>
       </div>

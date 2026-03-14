@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaIcon } from "@/components/ui/FaIcon";
 
 export default function NotFound() {
   return (
@@ -11,11 +12,11 @@ export default function NotFound() {
         </p>
         <div className="not-found-buttons">
           <Link href="/" className="btn-primary">
-            <i className="fa-solid fa-home" />
+            <FaIcon icon="fa-solid fa-home" />
             На головну
           </Link>
           <Link href="/games" className="btn-secondary">
-            <i className="fa-solid fa-gamepad" />
+            <FaIcon icon="fa-solid fa-gamepad" />
             Каталог ігор
           </Link>
         </div>

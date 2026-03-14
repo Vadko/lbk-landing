@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FaIcon } from "@/components/ui/FaIcon";
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
@@ -27,7 +28,7 @@ export function ScrollToTop() {
       onClick={scrollToTop}
       title="Наверх"
     >
-      <i className="fa-solid fa-arrow-up" />
+      <FaIcon icon="fa-solid fa-arrow-up" />
     </button>
   );
 }

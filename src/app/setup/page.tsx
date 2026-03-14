@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
+import { FaIcon } from "@/components/ui/FaIcon";
 import {
   detectOS,
   getDownloadLinks,
@@ -43,7 +44,7 @@ export default function SetupPage() {
       <div className="container">
         <div className="setup-header">
           <Link href="/" className="back-link">
-            <i className="fa-solid fa-arrow-left" />
+            <FaIcon icon="fa-solid fa-arrow-left" />
             На головну
           </Link>
           <h1>Встановлення LBK Launcher</h1>
@@ -60,7 +61,7 @@ export default function SetupPage() {
               className={`setup-tab ${activePlatform === platform.id ? "active" : ""}`}
               onClick={() => setActivePlatform(platform.id)}
             >
-              <i className={platform.icon} />
+              <FaIcon icon={platform.icon} />
               <span>{platform.label}</span>
             </button>
           ))}
@@ -94,7 +95,7 @@ export default function SetupPage() {
         {/* General Notes */}
         <div className="setup-notes">
           <h2>
-            <i className="fa-solid fa-circle-info" />
+            <FaIcon icon="fa-solid fa-circle-info" />
             Загальна інформація
           </h2>
           <ul>
@@ -107,7 +108,7 @@ export default function SetupPage() {
         {/* Download CTA */}
         <div className="setup-download-cta">
           <Link href="/" className="dl-btn">
-            <i className="fa-solid fa-download" />
+            <FaIcon icon="fa-solid fa-download" />
             <div className="dl-info">
               <span>Завантажити LBK Launcher</span>
               <small>Windows / macOS / Linux</small>
@@ -131,7 +132,7 @@ function WindowsInstructions({
   return (
     <div className="setup-platform">
       <h2>
-        <i className="fa-brands fa-windows" />
+        <FaIcon icon="fa-brands fa-windows" />
         Встановлення на Windows
       </h2>
 
@@ -172,7 +173,7 @@ function WindowsInstructions({
 
       <div className="setup-section setup-troubleshoot">
         <h3>
-          <i className="fa-solid fa-triangle-exclamation" />
+          <FaIcon icon="fa-solid fa-triangle-exclamation" />
           Вирішення проблем
         </h3>
 
@@ -232,7 +233,7 @@ function MacOSInstructions({
   return (
     <div className="setup-platform">
       <h2>
-        <i className="fa-brands fa-apple" />
+        <FaIcon icon="fa-brands fa-apple" />
         Встановлення на macOS
       </h2>
 
@@ -281,7 +282,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
   return (
     <div className="setup-platform">
       <h2>
-        <i className="fa-brands fa-linux" />
+        <FaIcon icon="fa-brands fa-linux" />
         Встановлення на Linux
       </h2>
 
@@ -310,7 +311,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
 
       <div className="setup-section">
         <h3>
-          <i className="fa-solid fa-star" /> Встановлення Flatpak
+          <FaIcon icon="fa-solid fa-star" /> Встановлення Flatpak
           (рекомендовано)
         </h3>
         <p>
@@ -331,7 +332,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
               )
             }
           >
-            <i className="fa-solid fa-copy" />
+            <FaIcon icon="fa-solid fa-copy" />
           </button>
         </div>
       </div>
@@ -364,7 +365,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
               )
             }
           >
-            <i className="fa-solid fa-copy" />
+            <FaIcon icon="fa-solid fa-copy" />
           </button>
         </div>
       </div>
@@ -379,14 +380,14 @@ function SteamDeckInstructions() {
   return (
     <div className="setup-platform">
       <h2>
-        <i className="fa-brands fa-steam" />
+        <FaIcon icon="fa-brands fa-steam" />
         Встановлення на Steam Deck
       </h2>
 
       {/* Recommended: Flatpak */}
       <div className="setup-section">
         <h3>
-          <i className="fa-solid fa-star" /> Спосіб 1: Flatpak (рекомендовано)
+          <FaIcon icon="fa-solid fa-star" /> Спосіб 1: Flatpak (рекомендовано)
         </h3>
         <p>
           Найпростіший спосіб — встановити через Flatpak. Відкрийте{" "}
@@ -432,7 +433,7 @@ function SteamDeckInstructions() {
               )
             }
           >
-            <i className="fa-solid fa-copy" />
+            <FaIcon icon="fa-solid fa-copy" />
           </button>
         </div>
       </div>
@@ -477,7 +478,7 @@ function SteamDeckInstructions() {
 
       <div className="setup-section">
         <div className="setup-tip">
-          <i className="fa-solid fa-gamepad" />
+          <FaIcon icon="fa-solid fa-gamepad" />
           <span>
             Лаунчер автоматично підтримує навігацію геймпадом при натисканні
             будь-якої кнопки контролера.
@@ -554,7 +555,7 @@ function ReleaseFilesBlock({
     <div className="setup-release-files">
       <div className="setup-release-files-header">
         <h2>
-          <i className="fa-solid fa-file-arrow-down" />
+          <FaIcon icon="fa-solid fa-file-arrow-down" />
           Файли релізу{links.version ? ` v${links.version}` : ""}
         </h2>
         <a
@@ -563,7 +564,7 @@ function ReleaseFilesBlock({
           rel="noopener noreferrer"
           className="setup-github-link"
         >
-          <i className="fa-brands fa-github" />
+          <FaIcon icon="fa-brands fa-github" />
           Всі релізи на GitHub
         </a>
       </div>
@@ -574,13 +575,13 @@ function ReleaseFilesBlock({
           {files.map((f) => (
             <div key={f.name} className="release-file-card">
               <div className="release-file-header">
-                <i className={f.icon} />
+                <FaIcon icon={f.icon} />
                 <span className="release-file-platform">{f.platform}</span>
               </div>
               {f.url ? (
                 <a href={f.url} className="release-file-name">
                   <code>{f.name}</code>
-                  <i className="fa-solid fa-download" />
+                  <FaIcon icon="fa-solid fa-download" />
                 </a>
               ) : (
                 <span className="release-file-name no-link">

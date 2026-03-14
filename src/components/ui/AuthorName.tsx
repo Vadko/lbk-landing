@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { getSpecialTranslatorInfo } from "@/lib/specialTranslators";
 import { Tooltip } from "./Tooltip";
 
@@ -34,7 +35,7 @@ export function AuthorName({
           {author}
           {isSpecial && specialInfo && (
             <Tooltip content={specialInfo.description}>
-              <i className="fa-solid fa-star special-author-star" />
+              <FaIcon icon="fa-solid fa-star" className="special-author-star" />
             </Tooltip>
           )}
         </span>
@@ -80,7 +81,10 @@ export function AuthorName({
                       </span>
                       {isSpecial && specialInfo && (
                         <Tooltip content={specialInfo.description}>
-                          <i className="fa-solid fa-star special-author-star" />
+                          <FaIcon
+                            icon="fa-solid fa-star"
+                            className="special-author-star"
+                          />
                         </Tooltip>
                       )}
                     </div>

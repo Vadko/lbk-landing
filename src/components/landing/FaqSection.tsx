@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { useGamesCount } from "@/hooks/useGames";
 
 const FAQ_ITEMS = [
@@ -122,7 +123,7 @@ export function FaqSection() {
     >
       <button className="faq-question" onClick={() => toggle(originalIndex)}>
         <span>{item.question}</span>
-        <i className="fa-solid fa-chevron-down" />
+        <FaIcon icon="fa-solid fa-chevron-down" />
       </button>
 
       <div className="faq-answer">{renderAnswer(item.answer)}</div>

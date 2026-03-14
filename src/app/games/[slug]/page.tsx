@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { GameBanner } from "@/components/game-detail";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { STATUS_LABELS } from "@/lib/constants";
 import { generateBreadcrumbLD } from "@/lib/game-jsonld";
 import { getAllGameSlugs, getGamesBySlug } from "@/lib/games";
@@ -144,7 +145,7 @@ export default async function GamePage({ params }: PageProps) {
                         />
                       ) : (
                         <div className="game-card-placeholder">
-                          <i className="fa-solid fa-gamepad" />
+                          <FaIcon icon="fa-solid fa-gamepad" />
                         </div>
                       )}
                     </div>

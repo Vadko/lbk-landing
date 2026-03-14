@@ -1,3 +1,4 @@
+import { FaIcon } from "@/components/ui/FaIcon";
 import { CardGridSection } from "../ui/CardGridSection";
 
 const CARDS = [
@@ -34,7 +35,7 @@ export function CollaborationSection() {
       {CARDS.map((card, index) => (
         <div key={index} className="collab-card">
           <div className="collab-icon">
-            <i className={card.icon} />
+            <FaIcon icon={card.icon} />
           </div>
           <h3>{card.title}</h3>
           <p>{card.description}</p>
@@ -44,7 +45,7 @@ export function CollaborationSection() {
             rel="noopener noreferrer"
             className={`btn-main collab-btn}`}
           >
-            <i className={card.linkIcon} />
+            <FaIcon icon={card.linkIcon} />
             {card.linkText}
           </a>
         </div>

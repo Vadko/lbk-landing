@@ -1,8 +1,7 @@
 "use client";
 
-import { motion, useMotionValue, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface GameBannerProps {
   bannerUrl: string | null;
@@ -11,38 +10,43 @@ interface GameBannerProps {
 }
 
 export function GameBanner({ bannerUrl, logoUrl, name }: GameBannerProps) {
-  const scrollY = useMotionValue(0);
-  const scale = useTransform(scrollY, [-150, 0], [1.5, 1]);
+  const bannerInnerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const el = bannerInnerRef.current;
+    if (!el) return;
+
     const handleScroll = () => {
-      // Only works in Safari/iOS where scrollY can be negative
-      scrollY.set(Math.min(window.scrollY, 0));
+      const y = Math.min(window.scrollY, 0);
+      const scale = 1 + (-y / 150) * 0.5;
+      el.style.transform = `scale(${scale})`;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [scrollY]);
+  }, []);
 
   return (
     <div className="game-banner">
       {bannerUrl ? (
-        <motion.div
+        <div
+          ref={bannerInnerRef}
           style={{
-            scale,
             transformOrigin: "center top",
             position: "absolute",
             inset: 0,
+            willChange: "transform",
           }}
         >
           <Image
             src={bannerUrl}
             alt={`${name} — український переклад`}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />
-        </motion.div>
+        </div>
       ) : (
         <div className="game-banner-placeholder" />
       )}

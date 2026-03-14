@@ -1,9 +1,9 @@
 "use client";
 
-import confetti from "canvas-confetti";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { useClientValue } from "@/hooks/useClientValue";
 import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
@@ -71,11 +71,13 @@ export function HeroSection() {
   }, [typewriterText, isDeleting, phraseIndex]);
 
   const fireConfetti = useCallback(() => {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ["#00C2FF", "#BD00FF", "#ffffff"],
+    import("canvas-confetti").then((mod) => {
+      mod.default({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ["#00C2FF", "#BD00FF", "#ffffff"],
+      });
     });
   }, []);
 
@@ -141,7 +143,7 @@ export function HeroSection() {
         <div className="hero-content">
           <div className="badge">
             <div className="badge-icon">
-              <i className="fa-solid fa-rocket" />
+              <FaIcon icon="fa-solid fa-rocket" />
             </div>
             <span>{versionText}</span>
           </div>
@@ -164,9 +166,9 @@ export function HeroSection() {
             className="btn-neon games-link"
             onClick={trackViewGamesCatalog}
           >
-            <i className="fa-solid fa-gamepad" />
+            <FaIcon icon="fa-solid fa-gamepad" />
             <span>Переглянути всі ігри</span>
-            <i className="fa-solid fa-arrow-right" />
+            <FaIcon icon="fa-solid fa-arrow-right" />
           </Link>
 
           <div className="download-row">
@@ -175,7 +177,7 @@ export function HeroSection() {
               className="dl-btn"
               disabled={!getMainDownloadUrl()}
             >
-              <i className={`fa-brands ${getMainDownloadIcon()}`} />
+              <FaIcon icon={`fa-brands ${getMainDownloadIcon()}`} />
               <div className="dl-info">
                 <span>{getMainDownloadLabel()}</span>
                 <small>{getMainDownloadSubtitle()}</small>
@@ -189,7 +191,7 @@ export function HeroSection() {
                   className="dl-mini"
                   title="Flatpak (Steam Deck)"
                 >
-                  <i className="fa-solid fa-box" />
+                  <FaIcon icon="fa-solid fa-box" />
                 </button>
               )}
               {os !== "linux" && !isSteamDeck && downloadLinks.linux && (
@@ -198,7 +200,7 @@ export function HeroSection() {
                   className="dl-mini"
                   title="Linux (AppImage)"
                 >
-                  <i className="fa-brands fa-linux" />
+                  <FaIcon icon="fa-brands fa-linux" />
                 </button>
               )}
               {os !== "linux" && !isSteamDeck && (
@@ -207,7 +209,7 @@ export function HeroSection() {
                   className="dl-mini"
                   title="Flatpak (Steam Deck)"
                 >
-                  <i className="fa-solid fa-box" />
+                  <FaIcon icon="fa-solid fa-box" />
                 </button>
               )}
               {os !== "macos" && downloadLinks.macos && (
@@ -216,7 +218,7 @@ export function HeroSection() {
                   className="dl-mini"
                   title="macOS"
                 >
-                  <i className="fa-brands fa-apple" />
+                  <FaIcon icon="fa-brands fa-apple" />
                 </button>
               )}
               {os !== "windows" && downloadLinks.windows && (
@@ -225,27 +227,27 @@ export function HeroSection() {
                   className="dl-mini"
                   title="Windows"
                 >
-                  <i className="fa-brands fa-windows" />
+                  <FaIcon icon="fa-brands fa-windows" />
                 </button>
               )}
             </div>
           </div>
 
           <Link href="/setup" className="instruction-link">
-            <i className="fa-solid fa-book" />
+            <FaIcon icon="fa-solid fa-book" />
             <span>Інструкція зі встановлення</span>
           </Link>
 
           <div className="stats-mini">
             <div>
-              <i className="fa-solid fa-gamepad" />
+              <FaIcon icon="fa-solid fa-gamepad" />
               <span>
                 {gamesCount ? <AnimatedStat value={gamesCount} /> : "80"}+ Ігор
               </span>
             </div>
             {stats?.totalUniquePlayers && (
               <div>
-                <i className="fa-solid fa-users" />
+                <FaIcon icon="fa-solid fa-users" />
                 <span>
                   <AnimatedStat value={stats.totalUniquePlayers} />+
                   Користувачів

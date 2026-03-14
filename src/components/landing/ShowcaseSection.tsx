@@ -1,6 +1,7 @@
 "use client";
 
 import { CardGridSection } from "@/components/ui/CardGridSection";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
@@ -89,7 +90,7 @@ export function ShowcaseSection() {
             </div>
           ) : (
             <div className="hover-card__icon">
-              <i className={feature.icon!} />
+              <FaIcon icon={feature.icon!} />
             </div>
           )}
           <h3>{feature.title}</h3>
@@ -109,7 +110,7 @@ export function ShowcaseSection() {
               className="why-btn"
             >
               {feature.linkText}
-              <i className="fa-solid fa-arrow-right" />
+              <FaIcon icon="fa-solid fa-arrow-right" />
             </a>
           )}
         </HoverCard>

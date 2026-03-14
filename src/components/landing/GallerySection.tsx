@@ -1,11 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
-import Lightbox from "yet-another-react-lightbox";
-import Captions from "yet-another-react-lightbox/plugins/captions";
-import "yet-another-react-lightbox/styles.css";
-import "yet-another-react-lightbox/plugins/captions.css";
+
+const GalleryLightbox = dynamic(
+  () => import("@/components/ui/GalleryLightbox"),
+  { ssr: false }
+);
 
 const GALLERY_ITEMS = [
   {
@@ -97,23 +99,14 @@ export function GallerySection() {
         </div>
       </div>
 
-      <Lightbox
-        open={lightboxIndex >= 0}
-        index={lightboxIndex}
-        close={() => setLightboxIndex(-1)}
-        slides={slides}
-        plugins={[Captions]}
-        captions={{ showToggle: true, descriptionTextAlign: "center" }}
-        carousel={{
-          imageFit: "contain",
-          padding: "16px",
-          preload: 1,
-          spacing: "100%",
-        }}
-        styles={{
-          container: { backgroundColor: "rgba(0, 0, 0, 0.95)" },
-        }}
-      />
+      {lightboxIndex >= 0 && (
+        <GalleryLightbox
+          open
+          index={lightboxIndex}
+          close={() => setLightboxIndex(-1)}
+          slides={slides}
+        />
+      )}
     </section>
   );
 }

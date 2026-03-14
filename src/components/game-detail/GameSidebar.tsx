@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { ShareButton } from "@/components/ui/ShareButton";
 import { getReadablePlatform } from "@/helpers/getReadablePlatform";
 import { teamToSlug } from "@/lib/transliterate";
@@ -23,12 +24,12 @@ export function GameSidebar({ game }: GameSidebarProps) {
       {/* Download CTA */}
       <div className="game-sidebar-card game-download-cta">
         <div className="game-download-header">
-          <i className="fa-solid fa-download" />
+          <FaIcon icon="fa-solid fa-download" />
           <h3>Встановіть переклад</h3>
         </div>
         <p>Завантажте LBK Launcher і встановіть переклад в один клац</p>
         <Link href="/" className="dl-btn game-dl-btn">
-          <i className="fa-brands fa-windows" />
+          <FaIcon icon="fa-brands fa-windows" />
           <div className="dl-info">
             <span>Завантажити лаунчер</span>
             <small>Windows / macOS / Linux</small>
@@ -62,7 +63,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
             rel="noopener noreferrer"
             className="btn-support"
           >
-            <i className="fa-solid fa-heart" />
+            <FaIcon icon="fa-solid fa-heart" />
             Підтримати переклад
           </a>
         </div>
@@ -77,7 +78,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
             rel="noopener noreferrer"
             className="btn-secondary btn-steam"
           >
-            <i className="fa-brands fa-steam" />
+            <FaIcon icon="fa-brands fa-steam" />
             Сторінка в Steam
           </a>
         </div>
@@ -87,7 +88,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
       {game.achievements_archive_path && (
         <div className="game-sidebar-card game-achievements-card">
           <div className="game-achievements-badge">
-            <i className="fa-solid fa-trophy" />
+            <FaIcon icon="fa-solid fa-trophy" />
             <span>Включає переклад досягнень</span>
           </div>
         </div>
@@ -156,7 +157,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
                 className="game-social-link"
                 title={link.label}
               >
-                <i className={link.icon} />
+                <FaIcon icon={link.icon} />
               </a>
             ))}
           </div>

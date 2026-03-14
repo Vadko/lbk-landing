@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaIcon } from "@/components/ui/FaIcon";
 
 export function Footer() {
   return (
@@ -34,7 +35,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fa-brands fa-telegram" /> Telegram
+                  <FaIcon icon="fa-brands fa-telegram" /> Telegram
                 </a>
               </li>
               <li>
@@ -43,7 +44,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fa-brands fa-x-twitter" /> X (Twitter)
+                  <FaIcon icon="fa-brands fa-x-twitter" /> X (Twitter)
                 </a>
               </li>
               <li>
@@ -52,7 +53,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fa-brands fa-youtube" /> YouTube
+                  <FaIcon icon="fa-brands fa-youtube" /> YouTube
                 </a>
               </li>
               <li>
@@ -61,7 +62,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fa-brands fa-tiktok" /> TikTok
+                  <FaIcon icon="fa-brands fa-tiktok" /> TikTok
                 </a>
               </li>
             </ul>
@@ -86,7 +87,8 @@ export function Footer() {
         <div className="footer-bottom">
           <p>
             &copy; 2026 LB Team & GGL Studio. Зроблено з{" "}
-            <i className="fa-solid fa-heart highlight" /> до рідного.
+            <FaIcon icon="fa-solid fa-heart" className="highlight" /> до
+            рідного.
           </p>
         </div>
       </div>

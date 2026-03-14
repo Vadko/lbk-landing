@@ -10,6 +10,7 @@ import {
   GameProgress,
   GameSidebar,
 } from "@/components/game-detail";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { GameTeamLink } from "@/components/ui/GameTeamLink";
 import { STATUS_LABELS } from "@/lib/constants";
 import { getFeaturedInfo } from "@/lib/featuredTranslations";
@@ -166,7 +167,7 @@ export default async function GameTranslationPage({ params }: PageProps) {
                 </div>
                 {featuredInfo && (
                   <div className="featured-badge-block">
-                    <i className="fa-solid fa-trophy" />
+                    <FaIcon icon="fa-solid fa-trophy" />
                     {featuredInfo.description}
                   </div>
                 )}

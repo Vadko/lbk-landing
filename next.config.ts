@@ -7,7 +7,6 @@ const release = commit ? `${version}-${commit}` : version;
 
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",

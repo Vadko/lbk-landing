@@ -62,6 +62,12 @@ body {
   background-repeat: no-repeat;
 }
 
+@media screen and (max-width: 768px) {
+  .main-bg {
+    background-image: url("/assets/main-bg-mobile.webp");
+  }
+}
+
 .header-padding {
   padding-top: calc(100px + var(--navbar-height));
   flex: 1 0 auto;
@@ -78,6 +84,10 @@ main.header-padding:has(.open-launcher-page) {
 
   .header-padding {
     padding-top: calc(60px + var(--navbar-height));
+  }
+
+  .navbar {
+    backdrop-filter: blur(6px);
   }
 }
 

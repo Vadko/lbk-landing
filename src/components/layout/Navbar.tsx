@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { trackViewGamesCatalog } from "@/lib/analytics";
 import { NavbarLogo } from "../icons/NavbarLogo";
 
@@ -142,7 +143,7 @@ export function Navbar() {
                 rel="noopener noreferrer"
                 title={social.title}
               >
-                <i className={social.iconClass} />
+                <FaIcon icon={social.iconClass} />
               </a>
             ))}
           </div>
@@ -156,10 +157,10 @@ export function Navbar() {
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
           >
             <span className="mobile-menu-toggle__icon" aria-hidden="true">
-              <i className="fa-solid fa-bars" />
+              <FaIcon icon="fa-solid fa-bars" />
             </span>
             <span className="mobile-menu-toggle__close" aria-hidden="true">
-              <i className="fa-solid fa-xmark" />
+              <FaIcon icon="fa-solid fa-xmark" />
               <span />
             </span>
           </button>
@@ -219,7 +220,7 @@ export function Navbar() {
                 title={social.title}
                 onClick={closeMobileMenu}
               >
-                <i className={social.iconClass} />
+                <FaIcon icon={social.iconClass} />
               </a>
             ))}
           </div>

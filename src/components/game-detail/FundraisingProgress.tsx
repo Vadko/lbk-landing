@@ -1,3 +1,5 @@
+import { FaIcon } from "@/components/ui/FaIcon";
+
 interface FundraisingProgressProps {
   current: number | null;
   goal: number | null;
@@ -23,7 +25,7 @@ export function FundraisingProgress({
   return (
     <section className="game-section game-fundraising">
       <h2>
-        <i className="fa-solid fa-hand-holding-heart" /> Збір коштів
+        <FaIcon icon="fa-solid fa-hand-holding-heart" /> Збір коштів
       </h2>
       <div className="fundraising-content">
         <div className="fundraising-header">
@@ -48,7 +50,7 @@ export function FundraisingProgress({
         </div>
         {isCompleted && (
           <p className="fundraising-message success">
-            <i className="fa-solid fa-check-circle" /> Збір завершено! Дякуємо
+            <FaIcon icon="fa-solid fa-check-circle" /> Збір завершено! Дякуємо
             всім, хто підтримав!
           </p>
         )}

@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FaIcon } from "@/components/ui/FaIcon";
 import { useGamesPaginated, useTeams } from "@/hooks/useGames";
 import { trackFailedSearch, trackViewSearchResults } from "@/lib/analytics";
 import { GameCard } from "./GameCard";
@@ -196,13 +197,13 @@ export function GamesList() {
         </div>
       ) : error ? (
         <div className="games-empty">
-          <i className="fa-solid fa-exclamation-triangle" />
+          <FaIcon icon="fa-solid fa-exclamation-triangle" />
           <h3>Помилка</h3>
           <p>Помилка завантаження ігор</p>
         </div>
       ) : allGames.length === 0 ? (
         <div className="games-empty">
-          <i className="fa-solid fa-gamepad" />
+          <FaIcon icon="fa-solid fa-gamepad" />
           <h3>Ігор не знайдено</h3>
           <p>Спробуйте змінити параметри пошуку</p>
         </div>
@@ -224,7 +225,7 @@ export function GamesList() {
                 disabled={currentPage === 1}
                 aria-label="Попередня сторінка"
               >
-                <i className="fa-solid fa-chevron-left" />
+                <FaIcon icon="fa-solid fa-chevron-left" />
               </button>
 
               {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
@@ -260,7 +261,7 @@ export function GamesList() {
                 disabled={currentPage === totalPages}
                 aria-label="Наступна сторінка"
               >
-                <i className="fa-solid fa-chevron-right" />
+                <FaIcon icon="fa-solid fa-chevron-right" />
               </button>
             </div>
           )}

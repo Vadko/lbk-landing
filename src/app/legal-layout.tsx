@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { FaIcon } from "@/components/ui/FaIcon";
 
 interface LegalLayoutProps {
   children: ReactNode;
@@ -27,7 +28,7 @@ export function LegalLayout({
 
           <div className="legal-footer">
             <Link href="/" className="back-link">
-              <i className="fa-solid fa-arrow-left" />
+              <FaIcon icon="fa-solid fa-arrow-left" />
               Повернутися на головну
             </Link>
           </div>
