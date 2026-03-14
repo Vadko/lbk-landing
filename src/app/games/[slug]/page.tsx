@@ -1,9 +1,10 @@
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { GameBanner } from "@/components/game-detail";
-import { FaIcon } from "@/components/ui/FaIcon";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { STATUS_LABELS } from "@/lib/constants";
 import { generateBreadcrumbLD } from "@/lib/game-jsonld";
 import { getAllGameSlugs, getGamesBySlug } from "@/lib/games";
@@ -145,7 +146,7 @@ export default async function GamePage({ params }: PageProps) {
                         />
                       ) : (
                         <div className="game-card-placeholder">
-                          <FaIcon icon="fa-solid fa-gamepad" />
+                          <SvgIcon icon={faGamepad} />
                         </div>
                       )}
                     </div>

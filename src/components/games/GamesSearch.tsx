@@ -1,7 +1,21 @@
 "use client";
 
+import { faArrowDownAZ } from "@fortawesome/free-solid-svg-icons/faArrowDownAZ";
+import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons/faArrowDownWideShort";
+import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons/faCalendarPlus";
+import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
+import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons/faClockRotateLeft";
+import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { FaIcon } from "@/components/ui/FaIcon";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { trackViewTranslatorsPage } from "@/lib/analytics";
 
 interface GamesSearchProps {
@@ -24,27 +38,27 @@ interface GamesSearchProps {
 const AUTHORS_PER_PAGE = 20;
 
 const STATUS_OPTIONS = [
-  { value: "completed", label: "Готово", icon: "fa-solid fa-check-circle" },
-  { value: "in-progress", label: "У розробці", icon: "fa-solid fa-spinner" },
-  { value: "planned", label: "Заплановано", icon: "fa-solid fa-clock" },
+  { value: "completed", label: "Готово", icon: faCheckCircle },
+  { value: "in-progress", label: "У розробці", icon: faSpinner },
+  { value: "planned", label: "Заплановано", icon: faClock },
 ];
 
 const SORT_OPTIONS = [
-  { value: "name", label: "За назвою", icon: "fa-solid fa-arrow-down-a-z" },
+  { value: "name", label: "За назвою", icon: faArrowDownAZ },
   {
     value: "created_at",
     label: "За датою додавання",
-    icon: "fa-solid fa-calendar-plus",
+    icon: faCalendarPlus,
   },
   {
     value: "latest_updated_at",
     label: "За новизною",
-    icon: "fa-solid fa-clock-rotate-left",
+    icon: faClockRotateLeft,
   },
   {
     value: "downloads",
     label: "За популярністю",
-    icon: "fa-solid fa-download",
+    icon: faDownload,
   },
 ];
 
@@ -216,7 +230,7 @@ export function GamesSearch({
     <div className="games-filters-wrapper">
       <div className="games-filters">
         <div className="search-wrapper">
-          <FaIcon icon="fa-solid fa-magnifying-glass" />
+          <SvgIcon icon={faMagnifyingGlass} />
           <input
             type="text"
             value={localValue}
@@ -233,10 +247,10 @@ export function GamesSearch({
             className={`dropdown-trigger ${isStatusOpen ? "open" : ""} ${selectedStatuses.length > 0 ? "has-value" : ""}`}
             onClick={() => setIsStatusOpen(!isStatusOpen)}
           >
-            <FaIcon icon="fa-solid fa-gamepad" />
+            <SvgIcon icon={faGamepad} />
             <span>{statusLabel}</span>
-            <FaIcon
-              icon="fa-solid fa-chevron-down"
+            <SvgIcon
+              icon={faChevronDown}
               className={`dropdown-arrow ${isStatusOpen ? "rotated" : ""}`}
             />
           </button>
@@ -250,7 +264,7 @@ export function GamesSearch({
                   className="dropdown-item dropdown-item-clear"
                   onClick={handleClearStatuses}
                 >
-                  <FaIcon icon="fa-solid fa-xmark" />
+                  <SvgIcon icon={faXmark} />
                   <span>Очистити фільтр</span>
                 </button>
               )}
@@ -264,9 +278,9 @@ export function GamesSearch({
                     onClick={() => handleStatusToggle(option.value)}
                   >
                     <span className={`checkbox ${isSelected ? "checked" : ""}`}>
-                      {isSelected && <FaIcon icon="fa-solid fa-check" />}
+                      {isSelected && <SvgIcon icon={faCheck} />}
                     </span>
-                    <FaIcon icon={option.icon} />
+                    <SvgIcon icon={option.icon} />
                     <span>{option.label}</span>
                   </button>
                 );
@@ -282,10 +296,10 @@ export function GamesSearch({
             className={`dropdown-trigger ${isAuthorOpen ? "open" : ""} ${selectedAuthors.length > 0 ? "has-value" : ""}`}
             onClick={handleAuthorDropdownToggle}
           >
-            <FaIcon icon="fa-solid fa-user" />
+            <SvgIcon icon={faUser} />
             <span>{authorLabel}</span>
-            <FaIcon
-              icon="fa-solid fa-chevron-down"
+            <SvgIcon
+              icon={faChevronDown}
               className={`dropdown-arrow ${isAuthorOpen ? "rotated" : ""}`}
             />
           </button>
@@ -294,7 +308,7 @@ export function GamesSearch({
             <div className="dropdown-menu dropdown-menu-with-search">
               {/* Search Input */}
               <div className="dropdown-search">
-                <FaIcon icon="fa-solid fa-magnifying-glass" />
+                <SvgIcon icon={faMagnifyingGlass} />
                 <input
                   ref={authorSearchInputRef}
                   type="text"
@@ -309,7 +323,7 @@ export function GamesSearch({
                     className="dropdown-search-clear"
                     onClick={() => setAuthorSearch("")}
                   >
-                    <FaIcon icon="fa-solid fa-xmark" />
+                    <SvgIcon icon={faXmark} />
                   </button>
                 )}
               </div>
@@ -321,7 +335,7 @@ export function GamesSearch({
                   className="dropdown-item dropdown-item-clear"
                   onClick={handleClearAuthors}
                 >
-                  <FaIcon icon="fa-solid fa-xmark" />
+                  <SvgIcon icon={faXmark} />
                   <span>Очистити фільтр ({selectedAuthors.length})</span>
                 </button>
               )}
@@ -354,9 +368,9 @@ export function GamesSearch({
                           <span
                             className={`checkbox ${isSelected ? "checked" : ""}`}
                           >
-                            {isSelected && <FaIcon icon="fa-solid fa-check" />}
+                            {isSelected && <SvgIcon icon={faCheck} />}
                           </span>
-                          <FaIcon icon="fa-solid fa-user" />
+                          <SvgIcon icon={faUser} />
                           <span>{authorName}</span>
                         </button>
                       );
@@ -391,10 +405,10 @@ export function GamesSearch({
             className={`dropdown-trigger ${isSortOpen ? "open" : ""}`}
             onClick={() => setIsSortOpen(!isSortOpen)}
           >
-            <FaIcon icon="fa-solid fa-arrow-down-wide-short" />
+            <SvgIcon icon={faArrowDownWideShort} />
             <span>{sortLabel}</span>
-            <FaIcon
-              icon="fa-solid fa-chevron-down"
+            <SvgIcon
+              icon={faChevronDown}
               className={`dropdown-arrow ${isSortOpen ? "rotated" : ""}`}
             />
           </button>
@@ -413,13 +427,10 @@ export function GamesSearch({
                       setIsSortOpen(false);
                     }}
                   >
-                    <FaIcon icon={option.icon} />
+                    <SvgIcon icon={option.icon} />
                     <span>{option.label}</span>
                     {isSelected && (
-                      <FaIcon
-                        icon="fa-solid fa-check"
-                        className="dropdown-item-check"
-                      />
+                      <SvgIcon icon={faCheck} className="dropdown-item-check" />
                     )}
                   </button>
                 );
@@ -442,7 +453,7 @@ export function GamesSearch({
                   onClick={() => handleStatusToggle(s)}
                   className="filter-chip-remove"
                 >
-                  <FaIcon icon="fa-solid fa-xmark" />
+                  <SvgIcon icon={faXmark} />
                 </button>
               </span>
             );
@@ -455,7 +466,7 @@ export function GamesSearch({
                 onClick={() => handleAuthorToggle(a)}
                 className="filter-chip-remove"
               >
-                <FaIcon icon="fa-solid fa-xmark" />
+                <SvgIcon icon={faXmark} />
               </button>
             </span>
           ))}

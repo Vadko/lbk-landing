@@ -1,5 +1,7 @@
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
+import { faHome } from "@fortawesome/free-solid-svg-icons/faHome";
 import Link from "next/link";
-import { FaIcon } from "@/components/ui/FaIcon";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 
 export default function NotFound() {
   return (
@@ -12,11 +14,11 @@ export default function NotFound() {
         </p>
         <div className="not-found-buttons">
           <Link href="/" className="btn-primary">
-            <FaIcon icon="fa-solid fa-home" />
+            <SvgIcon icon={faHome} />
             На головну
           </Link>
           <Link href="/games" className="btn-secondary">
-            <FaIcon icon="fa-solid fa-gamepad" />
+            <SvgIcon icon={faGamepad} />
             Каталог ігор
           </Link>
         </div>

@@ -1,12 +1,7 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
 import "./globals.css";
-
-config.autoAddCss = false;
-
 import { BodyClassManager } from "@/components/layout/BodyClassManager";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
@@ -98,12 +93,6 @@ export default function RootLayout({
   return (
     <html lang="uk" suppressHydrationWarning className={outfit.variable}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
         <link rel="dns-prefetch" href="https://images.lbklauncher.com" />
         <link rel="preconnect" href="https://images.lbklauncher.com" />
         <script

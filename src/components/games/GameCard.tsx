@@ -1,9 +1,10 @@
 "use client";
 
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import Image from "next/image";
 import Link from "next/link";
 import { AuthorName } from "@/components/ui/AuthorName";
-import { FaIcon } from "@/components/ui/FaIcon";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { TranslateTypeBadge } from "@/components/ui/TranslateTypeBadge";
 import { getImageUrl } from "@/lib/images";
 import { teamToSlug } from "@/lib/transliterate";
@@ -90,7 +91,7 @@ export function GameCard({ game }: GameCardProps) {
             />
           ) : (
             <div className="game-card-placeholder">
-              <FaIcon icon="fa-solid fa-gamepad" />
+              <SvgIcon icon={faGamepad} />
             </div>
           )}
         </div>

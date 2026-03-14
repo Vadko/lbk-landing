@@ -1,6 +1,16 @@
+import { faDiscord } from "@fortawesome/free-brands-svg-icons/faDiscord";
+import { faSteam } from "@fortawesome/free-brands-svg-icons/faSteam";
+import { faTelegram } from "@fortawesome/free-brands-svg-icons/faTelegram";
+import { faWindows } from "@fortawesome/free-brands-svg-icons/faWindows";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
+import { faYoutube } from "@fortawesome/free-brands-svg-icons/faYoutube";
+import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons/faGlobe";
+import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
+import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import Link from "next/link";
-import { FaIcon } from "@/components/ui/FaIcon";
 import { ShareButton } from "@/components/ui/ShareButton";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { getReadablePlatform } from "@/helpers/getReadablePlatform";
 import { teamToSlug } from "@/lib/transliterate";
 import type { Game } from "@/lib/types";
@@ -12,11 +22,11 @@ interface GameSidebarProps {
 
 export function GameSidebar({ game }: GameSidebarProps) {
   const socialLinks = [
-    { url: game.telegram, icon: "fa-brands fa-telegram", label: "Telegram" },
-    { url: game.discord, icon: "fa-brands fa-discord", label: "Discord" },
-    { url: game.youtube, icon: "fa-brands fa-youtube", label: "YouTube" },
-    { url: game.twitter, icon: "fa-brands fa-x-twitter", label: "X" },
-    { url: game.website, icon: "fa-solid fa-globe", label: "Веб-сайт" },
+    { url: game.telegram, icon: faTelegram, label: "Telegram" },
+    { url: game.discord, icon: faDiscord, label: "Discord" },
+    { url: game.youtube, icon: faYoutube, label: "YouTube" },
+    { url: game.twitter, icon: faXTwitter, label: "X" },
+    { url: game.website, icon: faGlobe, label: "Веб-сайт" },
   ].filter((link) => link.url);
 
   return (
@@ -24,12 +34,12 @@ export function GameSidebar({ game }: GameSidebarProps) {
       {/* Download CTA */}
       <div className="game-sidebar-card game-download-cta">
         <div className="game-download-header">
-          <FaIcon icon="fa-solid fa-download" />
+          <SvgIcon icon={faDownload} />
           <h3>Встановіть переклад</h3>
         </div>
         <p>Завантажте LBK Launcher і встановіть переклад в один клац</p>
         <Link href="/" className="dl-btn game-dl-btn">
-          <FaIcon icon="fa-brands fa-windows" />
+          <SvgIcon icon={faWindows} />
           <div className="dl-info">
             <span>Завантажити лаунчер</span>
             <small>Windows / macOS / Linux</small>
@@ -63,7 +73,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
             rel="noopener noreferrer"
             className="btn-support"
           >
-            <FaIcon icon="fa-solid fa-heart" />
+            <SvgIcon icon={faHeart} />
             Підтримати переклад
           </a>
         </div>
@@ -78,7 +88,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
             rel="noopener noreferrer"
             className="btn-secondary btn-steam"
           >
-            <FaIcon icon="fa-brands fa-steam" />
+            <SvgIcon icon={faSteam} />
             Сторінка в Steam
           </a>
         </div>
@@ -88,7 +98,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
       {game.achievements_archive_path && (
         <div className="game-sidebar-card game-achievements-card">
           <div className="game-achievements-badge">
-            <FaIcon icon="fa-solid fa-trophy" />
+            <SvgIcon icon={faTrophy} />
             <span>Включає переклад досягнень</span>
           </div>
         </div>
@@ -157,7 +167,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
                 className="game-social-link"
                 title={link.label}
               >
-                <FaIcon icon={link.icon} />
+                <SvgIcon icon={link.icon} />
               </a>
             ))}
           </div>

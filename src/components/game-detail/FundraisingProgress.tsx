@@ -1,4 +1,6 @@
-import { FaIcon } from "@/components/ui/FaIcon";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
+import { faHandHoldingHeart } from "@fortawesome/free-solid-svg-icons/faHandHoldingHeart";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 
 interface FundraisingProgressProps {
   current: number | null;
@@ -25,7 +27,7 @@ export function FundraisingProgress({
   return (
     <section className="game-section game-fundraising">
       <h2>
-        <FaIcon icon="fa-solid fa-hand-holding-heart" /> Збір коштів
+        <SvgIcon icon={faHandHoldingHeart} /> Збір коштів
       </h2>
       <div className="fundraising-content">
         <div className="fundraising-header">
@@ -50,8 +52,8 @@ export function FundraisingProgress({
         </div>
         {isCompleted && (
           <p className="fundraising-message success">
-            <FaIcon icon="fa-solid fa-check-circle" /> Збір завершено! Дякуємо
-            всім, хто підтримав!
+            <SvgIcon icon={faCheckCircle} /> Збір завершено! Дякуємо всім, хто
+            підтримав!
           </p>
         )}
       </div>

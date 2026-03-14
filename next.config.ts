@@ -6,6 +6,12 @@ const commit = process.env.SOURCE_COMMIT?.slice(0, 7);
 const release = commit ? `${version}-${commit}` : version;
 
 const nextConfig: NextConfig = {
+  experimental: {
+    optimizePackageImports: [
+      "@fortawesome/free-solid-svg-icons",
+      "@fortawesome/free-brands-svg-icons",
+    ],
+  },
   images: {
     remotePatterns: [
       {
@@ -26,5 +32,12 @@ export default withSentryConfig(nextConfig, {
   widenClientFileUpload: true,
   release: {
     name: release,
+  },
+  bundleSizeOptimizations: {
+    excludeDebugStatements: true,
+    excludeReplayIframe: true,
+    excludeReplayShadowDom: true,
+    excludeReplayWorker: true,
+    excludeTracing: true,
   },
 });

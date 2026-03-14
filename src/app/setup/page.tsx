@@ -1,8 +1,21 @@
 "use client";
 
+import { faApple } from "@fortawesome/free-brands-svg-icons/faApple";
+import { faGithub } from "@fortawesome/free-brands-svg-icons/faGithub";
+import { faLinux } from "@fortawesome/free-brands-svg-icons/faLinux";
+import { faSteam } from "@fortawesome/free-brands-svg-icons/faSteam";
+import { faWindows } from "@fortawesome/free-brands-svg-icons/faWindows";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
+import { faCircleInfo } from "@fortawesome/free-solid-svg-icons/faCircleInfo";
+import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
+import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
+import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons/faFileArrowDown";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
+import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons/faTriangleExclamation";
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
-import { FaIcon } from "@/components/ui/FaIcon";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import {
   detectOS,
   getDownloadLinks,
@@ -11,11 +24,11 @@ import {
 
 type Platform = "windows" | "macos" | "linux" | "steamdeck";
 
-const PLATFORMS: { id: Platform; label: string; icon: string }[] = [
-  { id: "windows", label: "Windows", icon: "fa-brands fa-windows" },
-  { id: "macos", label: "macOS", icon: "fa-brands fa-apple" },
-  { id: "linux", label: "Linux", icon: "fa-brands fa-linux" },
-  { id: "steamdeck", label: "Steam Deck", icon: "fa-brands fa-steam" },
+const PLATFORMS: { id: Platform; label: string; icon: typeof faWindows }[] = [
+  { id: "windows", label: "Windows", icon: faWindows },
+  { id: "macos", label: "macOS", icon: faApple },
+  { id: "linux", label: "Linux", icon: faLinux },
+  { id: "steamdeck", label: "Steam Deck", icon: faSteam },
 ];
 
 const getOSPlatform = (): Platform => {
@@ -44,7 +57,7 @@ export default function SetupPage() {
       <div className="container">
         <div className="setup-header">
           <Link href="/" className="back-link">
-            <FaIcon icon="fa-solid fa-arrow-left" />
+            <SvgIcon icon={faArrowLeft} />
             На головну
           </Link>
           <h1>Встановлення LBK Launcher</h1>
@@ -61,7 +74,7 @@ export default function SetupPage() {
               className={`setup-tab ${activePlatform === platform.id ? "active" : ""}`}
               onClick={() => setActivePlatform(platform.id)}
             >
-              <FaIcon icon={platform.icon} />
+              <SvgIcon icon={platform.icon} />
               <span>{platform.label}</span>
             </button>
           ))}
@@ -95,7 +108,7 @@ export default function SetupPage() {
         {/* General Notes */}
         <div className="setup-notes">
           <h2>
-            <FaIcon icon="fa-solid fa-circle-info" />
+            <SvgIcon icon={faCircleInfo} />
             Загальна інформація
           </h2>
           <ul>
@@ -108,7 +121,7 @@ export default function SetupPage() {
         {/* Download CTA */}
         <div className="setup-download-cta">
           <Link href="/" className="dl-btn">
-            <FaIcon icon="fa-solid fa-download" />
+            <SvgIcon icon={faDownload} />
             <div className="dl-info">
               <span>Завантажити LBK Launcher</span>
               <small>Windows / macOS / Linux</small>
@@ -132,7 +145,7 @@ function WindowsInstructions({
   return (
     <div className="setup-platform">
       <h2>
-        <FaIcon icon="fa-brands fa-windows" />
+        <SvgIcon icon={faWindows} />
         Встановлення на Windows
       </h2>
 
@@ -173,7 +186,7 @@ function WindowsInstructions({
 
       <div className="setup-section setup-troubleshoot">
         <h3>
-          <FaIcon icon="fa-solid fa-triangle-exclamation" />
+          <SvgIcon icon={faTriangleExclamation} />
           Вирішення проблем
         </h3>
 
@@ -233,7 +246,7 @@ function MacOSInstructions({
   return (
     <div className="setup-platform">
       <h2>
-        <FaIcon icon="fa-brands fa-apple" />
+        <SvgIcon icon={faApple} />
         Встановлення на macOS
       </h2>
 
@@ -282,7 +295,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
   return (
     <div className="setup-platform">
       <h2>
-        <FaIcon icon="fa-brands fa-linux" />
+        <SvgIcon icon={faLinux} />
         Встановлення на Linux
       </h2>
 
@@ -311,8 +324,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
 
       <div className="setup-section">
         <h3>
-          <FaIcon icon="fa-solid fa-star" /> Встановлення Flatpak
-          (рекомендовано)
+          <SvgIcon icon={faStar} /> Встановлення Flatpak (рекомендовано)
         </h3>
         <p>
           Найпростіший спосіб встановити лаунчер. Відкрийте{" "}
@@ -332,7 +344,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
               )
             }
           >
-            <FaIcon icon="fa-solid fa-copy" />
+            <SvgIcon icon={faCopy} />
           </button>
         </div>
       </div>
@@ -365,7 +377,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
               )
             }
           >
-            <FaIcon icon="fa-solid fa-copy" />
+            <SvgIcon icon={faCopy} />
           </button>
         </div>
       </div>
@@ -380,14 +392,14 @@ function SteamDeckInstructions() {
   return (
     <div className="setup-platform">
       <h2>
-        <FaIcon icon="fa-brands fa-steam" />
+        <SvgIcon icon={faSteam} />
         Встановлення на Steam Deck
       </h2>
 
       {/* Recommended: Flatpak */}
       <div className="setup-section">
         <h3>
-          <FaIcon icon="fa-solid fa-star" /> Спосіб 1: Flatpak (рекомендовано)
+          <SvgIcon icon={faStar} /> Спосіб 1: Flatpak (рекомендовано)
         </h3>
         <p>
           Найпростіший спосіб — встановити через Flatpak. Відкрийте{" "}
@@ -433,7 +445,7 @@ function SteamDeckInstructions() {
               )
             }
           >
-            <FaIcon icon="fa-solid fa-copy" />
+            <SvgIcon icon={faCopy} />
           </button>
         </div>
       </div>
@@ -478,7 +490,7 @@ function SteamDeckInstructions() {
 
       <div className="setup-section">
         <div className="setup-tip">
-          <FaIcon icon="fa-solid fa-gamepad" />
+          <SvgIcon icon={faGamepad} />
           <span>
             Лаунчер автоматично підтримує навігацію геймпадом при натисканні
             будь-якої кнопки контролера.
@@ -504,49 +516,49 @@ function ReleaseFilesBlock({
     name: string;
     url: string | null;
     platform: string;
-    icon: string;
+    icon: typeof faWindows;
     desc: string;
   }[] = [
     {
       name: "LBK-Launcher-win-Setup.exe",
       url: links.windows,
       platform: "Windows",
-      icon: "fa-brands fa-windows",
+      icon: faWindows,
       desc: "Інсталятор — рекомендовано для більшості користувачів",
     },
     {
       name: "LBK-Launcher-win-Portable.exe",
       url: links.windowsPortable,
       platform: "Windows",
-      icon: "fa-brands fa-windows",
+      icon: faWindows,
       desc: "Портативна версія — без встановлення, запускається з будь-якого місця",
     },
     {
       name: `LBK-Launcher-${v}-arm64.dmg`,
       url: links.macosArm,
       platform: "macOS",
-      icon: "fa-brands fa-apple",
+      icon: faApple,
       desc: "Apple Silicon (M1/M2/M3/M4)",
     },
     {
       name: `LBK-Launcher-${v}-x64.dmg`,
       url: links.macosX64,
       platform: "macOS",
-      icon: "fa-brands fa-apple",
+      icon: faApple,
       desc: "Intel Mac",
     },
     {
       name: "LBK-Launcher-linux.AppImage",
       url: links.linux,
       platform: "Linux",
-      icon: "fa-brands fa-linux",
+      icon: faLinux,
       desc: "Універсальний формат — працює на більшості дистрибутивів",
     },
     {
       name: "LBK-Launcher-linux.rpm",
       url: links.linuxRpm,
       platform: "Linux",
-      icon: "fa-brands fa-linux",
+      icon: faLinux,
       desc: "RPM пакет для Fedora / RHEL",
     },
   ];
@@ -555,7 +567,7 @@ function ReleaseFilesBlock({
     <div className="setup-release-files">
       <div className="setup-release-files-header">
         <h2>
-          <FaIcon icon="fa-solid fa-file-arrow-down" />
+          <SvgIcon icon={faFileArrowDown} />
           Файли релізу{links.version ? ` v${links.version}` : ""}
         </h2>
         <a
@@ -564,7 +576,7 @@ function ReleaseFilesBlock({
           rel="noopener noreferrer"
           className="setup-github-link"
         >
-          <FaIcon icon="fa-brands fa-github" />
+          <SvgIcon icon={faGithub} />
           Всі релізи на GitHub
         </a>
       </div>
@@ -575,13 +587,13 @@ function ReleaseFilesBlock({
           {files.map((f) => (
             <div key={f.name} className="release-file-card">
               <div className="release-file-header">
-                <FaIcon icon={f.icon} />
+                <SvgIcon icon={f.icon} />
                 <span className="release-file-platform">{f.platform}</span>
               </div>
               {f.url ? (
                 <a href={f.url} className="release-file-name">
                   <code>{f.name}</code>
-                  <FaIcon icon="fa-solid fa-download" />
+                  <SvgIcon icon={faDownload} />
                 </a>
               ) : (
                 <span className="release-file-name no-link">

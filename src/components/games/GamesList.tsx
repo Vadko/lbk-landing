@@ -1,8 +1,12 @@
 "use client";
 
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { FaIcon } from "@/components/ui/FaIcon";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesPaginated, useTeams } from "@/hooks/useGames";
 import { trackFailedSearch, trackViewSearchResults } from "@/lib/analytics";
 import { GameCard } from "./GameCard";
@@ -197,13 +201,13 @@ export function GamesList() {
         </div>
       ) : error ? (
         <div className="games-empty">
-          <FaIcon icon="fa-solid fa-exclamation-triangle" />
+          <SvgIcon icon={faExclamationTriangle} />
           <h3>Помилка</h3>
           <p>Помилка завантаження ігор</p>
         </div>
       ) : allGames.length === 0 ? (
         <div className="games-empty">
-          <FaIcon icon="fa-solid fa-gamepad" />
+          <SvgIcon icon={faGamepad} />
           <h3>Ігор не знайдено</h3>
           <p>Спробуйте змінити параметри пошуку</p>
         </div>
@@ -225,7 +229,7 @@ export function GamesList() {
                 disabled={currentPage === 1}
                 aria-label="Попередня сторінка"
               >
-                <FaIcon icon="fa-solid fa-chevron-left" />
+                <SvgIcon icon={faChevronLeft} />
               </button>
 
               {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
@@ -261,7 +265,7 @@ export function GamesList() {
                 disabled={currentPage === totalPages}
                 aria-label="Наступна сторінка"
               >
-                <FaIcon icon="fa-solid fa-chevron-right" />
+                <SvgIcon icon={faChevronRight} />
               </button>
             </div>
           )}
