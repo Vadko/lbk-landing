@@ -93,8 +93,6 @@ export default function RootLayout({
   return (
     <html lang="uk" suppressHydrationWarning className={outfit.variable}>
       <head>
-        <link rel="dns-prefetch" href="https://images.lbklauncher.com" />
-        <link rel="preconnect" href="https://images.lbklauncher.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
