@@ -529,7 +529,7 @@ body.mobile-menu-open {
   z-index: 1;
 }
 
-.badge-icon i {
+.badge-icon svg {
   font-size: 0.75rem;
   color: var(--color-black);
   transform: rotate(-45deg);
@@ -634,7 +634,7 @@ body.mobile-menu-open {
   color: var(--color-main);
 }
 
-.instruction-link i {
+.instruction-link svg {
   font-size: 0.85rem;
 }
 
@@ -673,7 +673,7 @@ body.mobile-menu-open {
   transform: none;
 }
 
-.dl-btn i {
+.dl-btn svg {
   font-size: 2rem;
 }
 
@@ -736,7 +736,7 @@ body.mobile-menu-open {
   padding-top: 20px;
 }
 
-.stats-mini i {
+.stats-mini svg {
   color: var(--color-accent);
   margin-right: 8px;
 }
@@ -1464,13 +1464,13 @@ p + .why-btn {
   color: var(--color-main);
 }
 
-.faq-question i {
+.faq-question svg {
   color: var(--color-main);
   font-size: 0.9rem;
   transition: transform 0.3s ease;
 }
 
-.faq-item.active .faq-question i {
+.faq-item.active .faq-question svg {
   transform: rotate(180deg);
 }
 
@@ -1749,11 +1749,11 @@ p + .why-btn {
   transform: translateY(-2px);
 }
 
-.legal-footer .back-link i {
+.legal-footer .back-link svg {
   transition: transform 0.3s ease;
 }
 
-.legal-footer .back-link:hover i {
+.legal-footer .back-link:hover svg {
   transform: translateX(-4px);
 }
 
@@ -2114,7 +2114,7 @@ p + .why-btn {
     height: 20px;
   }
 
-  .badge-icon i {
+  .badge-icon svg {
     font-size: 0.65rem;
   }
 
@@ -2122,7 +2122,7 @@ p + .why-btn {
     padding: 12px 15px;
   }
 
-  .dl-btn i {
+  .dl-btn svg {
     font-size: 1.5rem;
   }
 
@@ -2262,7 +2262,7 @@ p + .why-btn {
   min-width: 250px;
 }
 
-.search-wrapper i {
+.search-wrapper svg {
   position: absolute;
   left: 18px;
   top: 50%;
@@ -2424,7 +2424,7 @@ p + .why-btn {
   background: transparent;
 }
 
-.dropdown-item-checkbox span.checkbox i {
+.dropdown-item-checkbox span.checkbox svg {
   font-size: 10px;
   color: white;
   width: auto !important;
@@ -2450,7 +2450,7 @@ p + .why-btn {
   color: #ff6b6b;
 }
 
-.dropdown-item-clear i {
+.dropdown-item-clear svg {
   color: inherit !important;
 }
 
@@ -2768,7 +2768,7 @@ p + .why-btn {
   opacity: 0.3;
 }
 
-.game-card-placeholder i {
+.game-card-placeholder svg {
   font-size: 3rem;
   color: white;
 }
@@ -2936,7 +2936,7 @@ p + .why-btn {
   margin-bottom: 12px;
 }
 
-.featured-badge-block i {
+.featured-badge-block svg {
   font-size: 0.85rem;
 }
 
@@ -2980,7 +2980,7 @@ p + .why-btn {
   padding: 80px 20px;
 }
 
-.games-empty i {
+.games-empty svg {
   font-size: 4rem;
   color: var(--text-sec);
   margin-bottom: 20px;
@@ -3348,7 +3348,7 @@ p + .why-btn {
   gap: 10px;
 }
 
-.game-fundraising h2 i {
+.game-fundraising h2 svg {
   color: var(--accent-pink);
 }
 
@@ -3416,7 +3416,7 @@ p + .why-btn {
   color: var(--accent-main);
 }
 
-.fundraising-message i {
+.fundraising-message svg {
   font-size: 1rem;
 }
 
@@ -3574,7 +3574,7 @@ p + .why-btn {
   font-size: 0.9rem;
 }
 
-.game-achievements-badge i {
+.game-achievements-badge svg {
   font-size: 1.1rem;
 }
 
@@ -3591,7 +3591,7 @@ p + .why-btn {
   margin-bottom: 12px;
 }
 
-.game-download-header i {
+.game-download-header svg {
   font-size: 1.5rem;
   color: var(--color-main);
 }
@@ -3964,7 +3964,7 @@ p + .why-btn {
   color: var(--text-primary);
 }
 
-.setup-tab i {
+.setup-tab svg {
   font-size: 1.2rem;
 }
 
@@ -3993,7 +3993,7 @@ p + .why-btn {
   border-bottom: 1px solid var(--glass-border);
 }
 
-.setup-platform > h2 i {
+.setup-platform > h2 svg {
   font-size: 1.8rem;
   color: var(--color-main);
 }
@@ -4073,7 +4073,7 @@ p + .why-btn {
   color: var(--color-accent);
 }
 
-.setup-troubleshoot h3 i {
+.setup-troubleshoot h3 svg {
   color: var(--color-accent);
 }
 
@@ -4150,7 +4150,7 @@ p + .why-btn {
   font-size: 0.9rem;
 }
 
-.setup-warning i {
+.setup-warning svg {
   margin-top: 2px;
 }
 
@@ -4167,7 +4167,7 @@ p + .why-btn {
   font-size: 0.95rem;
 }
 
-.setup-tip i {
+.setup-tip svg {
   margin-top: 2px;
 }
 
@@ -4205,7 +4205,7 @@ p + .why-btn {
   color: var(--color-main);
 }
 
-.setup-github-link i {
+.setup-github-link svg {
   font-size: 1rem;
 }
 
@@ -4219,7 +4219,7 @@ p + .why-btn {
   margin-bottom: 0;
 }
 
-.setup-release-files h2 i {
+.setup-release-files h2 svg {
   color: var(--color-main);
 }
 
@@ -4257,7 +4257,7 @@ p + .why-btn {
   font-size: 0.85rem;
 }
 
-.release-file-header i {
+.release-file-header svg {
   font-size: 1rem;
   color: var(--color-main);
 }
@@ -4295,7 +4295,7 @@ a.release-file-name:hover {
   text-decoration: underline;
 }
 
-a.release-file-name i {
+a.release-file-name svg {
   flex-shrink: 0;
   font-size: 0.8rem;
   opacity: 0.7;
@@ -4331,7 +4331,7 @@ a.release-file-name i {
   margin-bottom: 16px;
 }
 
-.setup-notes h2 i {
+.setup-notes h2 svg {
   color: var(--color-main);
 }
 
@@ -4479,7 +4479,7 @@ main.header-padding:has(.open-launcher-page) {
   color: #4ade80;
 }
 
-.open-launcher-success i {
+.open-launcher-success svg {
   font-size: 3rem;
 }
 
@@ -4502,7 +4502,7 @@ main.header-padding:has(.open-launcher-page) {
   margin-bottom: 8px;
 }
 
-.open-launcher-failed > i {
+.open-launcher-failed > svg {
   font-size: 3rem;
   color: var(--color-main);
   margin-bottom: 10px;
@@ -4560,12 +4560,12 @@ main.header-padding:has(.open-launcher-page) {
   color: var(--color-main);
 }
 
-.open-launcher-game-link i {
+.open-launcher-game-link svg {
   font-size: 0.8rem;
   transition: transform 0.3s ease;
 }
 
-.open-launcher-game-link:hover i {
+.open-launcher-game-link:hover svg {
   transform: translateX(3px);
 }
 

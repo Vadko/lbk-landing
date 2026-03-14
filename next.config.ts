@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.lbklauncher.com",
+        hostname: "supabase.lbklauncher.com",
       },
     ],
   },
