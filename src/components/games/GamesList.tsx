@@ -9,10 +9,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesPaginated, useTeams } from "@/hooks/useGames";
 import { trackFailedSearch, trackViewSearchResults } from "@/lib/analytics";
+import type { GamesGroupedResponse } from "@/lib/types";
 import { GameCard } from "./GameCard";
 import { GamesSearch } from "./GamesSearch";
 
-export function GamesList() {
+interface GamesListProps {
+  initialData?: GamesGroupedResponse;
+}
+
+export function GamesList({ initialData }: GamesListProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -111,12 +116,20 @@ export function GamesList() {
     [updateFilters, selectedStatuses, selectedAuthors, sortBy]
   );
 
+  const isDefaultView =
+    currentPage === 1 &&
+    !search &&
+    selectedStatuses.length === 0 &&
+    selectedAuthors.length === 0 &&
+    (sortBy === "name" || !sortBy);
+
   const { data, isLoading, error } = useGamesPaginated(
     currentPage,
     search,
     selectedStatuses,
     selectedAuthors,
-    sortBy
+    sortBy,
+    isDefaultView ? initialData : undefined
   );
 
   const allGames = data?.games ?? [];
