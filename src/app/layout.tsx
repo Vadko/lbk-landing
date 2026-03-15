@@ -90,6 +90,7 @@ export default function RootLayout({
   return (
     <html lang="uk" suppressHydrationWarning className={outfit.variable}>
       <head>
+        <script src="/cdn-cgi/zaraz/i.js" referrerPolicy="origin" defer />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
