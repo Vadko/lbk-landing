@@ -33,6 +33,7 @@ export function GameBanner({ bannerUrl, logoUrl, name }: GameBannerProps) {
           width={400}
           height={200}
           className="game-banner-logo"
+          priority
           style={{
             objectFit: "contain",
             width: "auto",

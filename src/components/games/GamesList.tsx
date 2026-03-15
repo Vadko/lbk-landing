@@ -229,7 +229,7 @@ export function GamesList({ initialData }: GamesListProps) {
           <div className="games-grid">
             {allGames.map((game, index) => (
               <div key={game.slug} className="game-card-wrapper">
-                <GameCard game={game} priority={index < 4} />
+                <GameCard game={game} priority={index < 6} />
               </div>
             ))}
           </div>
