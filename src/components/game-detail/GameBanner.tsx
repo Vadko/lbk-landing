@@ -1,7 +1,5 @@
-"use client";
-
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { BannerParallax } from "./BannerParallax";
 
 interface GameBannerProps {
   bannerUrl: string | null;
@@ -10,34 +8,10 @@ interface GameBannerProps {
 }
 
 export function GameBanner({ bannerUrl, logoUrl, name }: GameBannerProps) {
-  const bannerInnerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = bannerInnerRef.current;
-    if (!el) return;
-
-    const handleScroll = () => {
-      const y = Math.min(window.scrollY, 0);
-      const scale = 1 + (-y / 150) * 0.5;
-      el.style.transform = `scale(${scale})`;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <div className="game-banner">
       {bannerUrl ? (
-        <div
-          ref={bannerInnerRef}
-          style={{
-            transformOrigin: "center top",
-            position: "absolute",
-            inset: 0,
-            willChange: "transform",
-          }}
-        >
+        <BannerParallax>
           <Image
             src={bannerUrl}
             alt={`${name} — український переклад`}
@@ -46,7 +20,7 @@ export function GameBanner({ bannerUrl, logoUrl, name }: GameBannerProps) {
             className="object-cover"
             priority
           />
-        </div>
+        </BannerParallax>
       ) : (
         <div className="game-banner-placeholder" />
       )}

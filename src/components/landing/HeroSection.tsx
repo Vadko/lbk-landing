@@ -1,11 +1,45 @@
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight";
+import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import Image from "next/image";
-import { HeroClient } from "./HeroClient";
+import Link from "next/link";
+import { SvgIcon } from "@/components/ui/SvgIcon";
+import { HeroDownload } from "./hero/HeroDownload";
+import { HeroStats } from "./hero/HeroStats";
+import { TypewriterText } from "./hero/TypewriterText";
 
 export function HeroSection() {
   return (
     <section id="hero" className="hero">
       <div className="container hero-wrapper">
-        <HeroClient />
+        <div className="hero-content">
+          <HeroDownload />
+
+          <h1>
+            Ігри українською —<br />
+            <TypewriterText />
+          </h1>
+
+          <p>
+            Грайте в улюблені ігри рідною мовою в один клік. <br />
+            LBK Launcher — це безкоштовний інструмент з відкритим кодом, який
+            автоматизує пошук, встановлення та оновлення українських перекладів
+            для вашої ігрової бібліотеки.
+          </p>
+
+          <Link href="/games" className="btn-neon games-link">
+            <SvgIcon icon={faGamepad} />
+            <span>Переглянути всі ігри</span>
+            <SvgIcon icon={faArrowRight} />
+          </Link>
+
+          <Link href="/setup" className="instruction-link">
+            <SvgIcon icon={faBook} />
+            <span>Інструкція зі встановлення</span>
+          </Link>
+
+          <HeroStats />
+        </div>
 
         <div className="hero-visual">
           <figure className="hero-figure main-figure">
