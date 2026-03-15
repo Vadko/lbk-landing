@@ -5,21 +5,19 @@ import { faLinux } from "@fortawesome/free-brands-svg-icons/faLinux";
 import { faSteam } from "@fortawesome/free-brands-svg-icons/faSteam";
 import { faWindows } from "@fortawesome/free-brands-svg-icons/faWindows";
 import { faBox } from "@fortawesome/free-solid-svg-icons/faBox";
-import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
 import { useCallback } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useClientValue } from "@/hooks/useClientValue";
 import {
   detectMacArch,
   detectOS,
-  formatDate,
   getDownloadLinks,
   useGitHubRelease,
 } from "@/hooks/useGitHubRelease";
 import { trackFileDownload } from "@/lib/analytics";
 
 export function HeroDownload() {
-  const { data: release, isLoading } = useGitHubRelease();
+  const { data: release } = useGitHubRelease();
   const downloadLinks = getDownloadLinks(release);
   const os = useClientValue(detectOS, "windows");
   const macArch = useClientValue(detectMacArch, "arm64");
@@ -83,82 +81,67 @@ export function HeroDownload() {
     return faWindows;
   };
 
-  const versionText = isLoading
-    ? "Завантаження..."
-    : downloadLinks.version && downloadLinks.publishedAt
-      ? `Версія ${downloadLinks.version} від ${formatDate(downloadLinks.publishedAt)}`
-      : "Версія ...";
-
   return (
-    <>
-      <div className="badge">
-        <div className="badge-icon">
-          <SvgIcon icon={faRocket} />
+    <div className="download-row">
+      <button
+        onClick={() => handleDownload(getMainDownloadUrl())}
+        className="dl-btn"
+        disabled={!getMainDownloadUrl()}
+      >
+        <SvgIcon icon={getMainDownloadIcon()} />
+        <div className="dl-info">
+          <span>{getMainDownloadLabel()}</span>
+          <small>{getMainDownloadSubtitle()}</small>
         </div>
-        <span>{versionText}</span>
-      </div>
+      </button>
 
-      <div className="download-row">
-        <button
-          onClick={() => handleDownload(getMainDownloadUrl())}
-          className="dl-btn"
-          disabled={!getMainDownloadUrl()}
-        >
-          <SvgIcon icon={getMainDownloadIcon()} />
-          <div className="dl-info">
-            <span>{getMainDownloadLabel()}</span>
-            <small>{getMainDownloadSubtitle()}</small>
-          </div>
-        </button>
-
-        <div className="dl-others">
-          {os === "linux" && (
-            <button
-              onClick={() => handleDownload(FLATPAKREF_URL)}
-              className="dl-mini"
-              title="Flatpak (Steam Deck)"
-            >
-              <SvgIcon icon={faBox} />
-            </button>
-          )}
-          {os !== "linux" && !isSteamDeck && downloadLinks.linux && (
-            <button
-              onClick={() => handleDownload(downloadLinks.linux)}
-              className="dl-mini"
-              title="Linux (AppImage)"
-            >
-              <SvgIcon icon={faLinux} />
-            </button>
-          )}
-          {os !== "linux" && !isSteamDeck && (
-            <button
-              onClick={() => handleDownload(FLATPAKREF_URL)}
-              className="dl-mini"
-              title="Flatpak (Steam Deck)"
-            >
-              <SvgIcon icon={faBox} />
-            </button>
-          )}
-          {os !== "macos" && downloadLinks.macos && (
-            <button
-              onClick={() => handleDownload(downloadLinks.macos)}
-              className="dl-mini"
-              title="macOS"
-            >
-              <SvgIcon icon={faApple} />
-            </button>
-          )}
-          {os !== "windows" && downloadLinks.windows && (
-            <button
-              onClick={() => handleDownload(downloadLinks.windows)}
-              className="dl-mini"
-              title="Windows"
-            >
-              <SvgIcon icon={faWindows} />
-            </button>
-          )}
-        </div>
+      <div className="dl-others">
+        {os === "linux" && (
+          <button
+            onClick={() => handleDownload(FLATPAKREF_URL)}
+            className="dl-mini"
+            title="Flatpak (Steam Deck)"
+          >
+            <SvgIcon icon={faBox} />
+          </button>
+        )}
+        {os !== "linux" && !isSteamDeck && downloadLinks.linux && (
+          <button
+            onClick={() => handleDownload(downloadLinks.linux)}
+            className="dl-mini"
+            title="Linux (AppImage)"
+          >
+            <SvgIcon icon={faLinux} />
+          </button>
+        )}
+        {os !== "linux" && !isSteamDeck && (
+          <button
+            onClick={() => handleDownload(FLATPAKREF_URL)}
+            className="dl-mini"
+            title="Flatpak (Steam Deck)"
+          >
+            <SvgIcon icon={faBox} />
+          </button>
+        )}
+        {os !== "macos" && downloadLinks.macos && (
+          <button
+            onClick={() => handleDownload(downloadLinks.macos)}
+            className="dl-mini"
+            title="macOS"
+          >
+            <SvgIcon icon={faApple} />
+          </button>
+        )}
+        {os !== "windows" && downloadLinks.windows && (
+          <button
+            onClick={() => handleDownload(downloadLinks.windows)}
+            className="dl-mini"
+            title="Windows"
+          >
+            <SvgIcon icon={faWindows} />
+          </button>
+        )}
       </div>
-    </>
+    </div>
   );
 }

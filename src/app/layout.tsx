@@ -1,4 +1,3 @@
-import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
@@ -127,7 +126,6 @@ export default function RootLayout({
         </QueryProvider>
         <Footer />
       </body>
-      <GoogleAnalytics gaId="G-41MBF0G83S" />
     </html>
   );
 }

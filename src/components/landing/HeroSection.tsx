@@ -4,6 +4,7 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import Image from "next/image";
 import Link from "next/link";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { HeroBadge } from "./hero/HeroBadge";
 import { HeroDownload } from "./hero/HeroDownload";
 import { HeroStats } from "./hero/HeroStats";
 import { TypewriterText } from "./hero/TypewriterText";
@@ -13,7 +14,7 @@ export function HeroSection() {
     <section id="hero" className="hero">
       <div className="container hero-wrapper">
         <div className="hero-content">
-          <HeroDownload />
+          <HeroBadge />
 
           <h1>
             Ігри українською —<br />
@@ -32,6 +33,8 @@ export function HeroSection() {
             <span>Переглянути всі ігри</span>
             <SvgIcon icon={faArrowRight} />
           </Link>
+
+          <HeroDownload />
 
           <Link href="/setup" className="instruction-link">
             <SvgIcon icon={faBook} />
