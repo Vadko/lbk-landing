@@ -6,12 +6,18 @@ const commit = process.env.SOURCE_COMMIT?.slice(0, 7);
 const release = commit ? `${version}-${commit}` : version;
 
 const nextConfig: NextConfig = {
+  experimental: {
+    inlineCss: true,
+    optimizePackageImports: [
+      "@fortawesome/free-solid-svg-icons",
+      "@fortawesome/free-brands-svg-icons",
+    ],
+  },
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.lbklauncher.com",
+        hostname: "supabase.lbklauncher.com",
       },
     ],
   },
@@ -27,5 +33,12 @@ export default withSentryConfig(nextConfig, {
   widenClientFileUpload: true,
   release: {
     name: release,
+  },
+  bundleSizeOptimizations: {
+    excludeDebugStatements: true,
+    excludeReplayIframe: true,
+    excludeReplayShadowDom: true,
+    excludeReplayWorker: true,
+    excludeTracing: true,
   },
 });

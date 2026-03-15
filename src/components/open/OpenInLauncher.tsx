@@ -1,8 +1,15 @@
 "use client";
 
+import { faWindows } from "@fortawesome/free-brands-svg-icons/faWindows";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
+import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
+import { faRotate } from "@fortawesome/free-solid-svg-icons/faRotate";
+import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useReducer, useRef } from "react";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 
 interface OpenInLauncherProps {
   gameName: string;
@@ -155,7 +162,7 @@ export function OpenInLauncher({
 
         {state.status === "opened" && (
           <div className="open-launcher-status open-launcher-success">
-            <i className="fa-solid fa-check-circle" />
+            <SvgIcon icon={faCheckCircle} />
             <p>Лаунчер відкрито!</p>
             <Link href={gamePageUrl} className="open-launcher-link">
               Перейти на сторінку гри
@@ -165,13 +172,13 @@ export function OpenInLauncher({
 
         {state.status === "failed" && (
           <div className="open-launcher-status open-launcher-failed">
-            <i className="fa-solid fa-download" />
+            <SvgIcon icon={faDownload} />
             <h2>LBK Launcher не встановлено</h2>
             <p>Щоб грати в {gameName} українською, вам потрібен LBK Launcher</p>
 
             <div className="open-launcher-actions">
               <Link href="/" className="dl-btn open-launcher-download">
-                <i className="fa-brands fa-windows" />
+                <SvgIcon icon={faWindows} />
                 <div className="dl-info">
                   <span>Завантажити лаунчер</span>
                   <small>Windows / macOS / Linux</small>
@@ -183,13 +190,13 @@ export function OpenInLauncher({
                 className="open-launcher-retry"
                 type="button"
               >
-                <i className="fa-solid fa-rotate" />
+                <SvgIcon icon={faRotate} />
                 Спробувати знову
               </button>
             </div>
 
             <Link href={gamePageUrl} className="open-launcher-game-link">
-              Детальніше про переклад <i className="fa-solid fa-arrow-right" />
+              Детальніше про переклад <SvgIcon icon={faArrowRight} />
             </Link>
           </div>
         )}
@@ -199,7 +206,7 @@ export function OpenInLauncher({
           className="open-launcher-share"
           type="button"
         >
-          <i className="fa-solid fa-share-nodes" />
+          <SvgIcon icon={faShareNodes} />
           Копіювати посилання
         </button>
       </div>

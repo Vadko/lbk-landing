@@ -1,7 +1,9 @@
 "use client";
 
+import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { getSpecialTranslatorInfo } from "@/lib/specialTranslators";
 import { Tooltip } from "./Tooltip";
 
@@ -34,7 +36,7 @@ export function GameTeamLink({ team, maxVisible = 3 }: GameTeamLinkProps) {
         </Link>
         {isSpecial && specialInfo && (
           <Tooltip content={specialInfo.description}>
-            <i className="fa-solid fa-star special-author-star" />
+            <SvgIcon icon={faStar} className="special-author-star" />
           </Tooltip>
         )}
         {showComma && ", "}
@@ -82,7 +84,10 @@ export function GameTeamLink({ team, maxVisible = 3 }: GameTeamLinkProps) {
                       </Link>
                       {isSpecial && specialInfo && (
                         <Tooltip content={specialInfo.description}>
-                          <i className="fa-solid fa-star special-author-star" />
+                          <SvgIcon
+                            icon={faStar}
+                            className="special-author-star"
+                          />
                         </Tooltip>
                       )}
                     </div>

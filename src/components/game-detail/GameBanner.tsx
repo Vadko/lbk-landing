@@ -1,8 +1,5 @@
-"use client";
-
-import { motion, useMotionValue, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useEffect } from "react";
+import { BannerParallax } from "./BannerParallax";
 
 interface GameBannerProps {
   bannerUrl: string | null;
@@ -11,38 +8,19 @@ interface GameBannerProps {
 }
 
 export function GameBanner({ bannerUrl, logoUrl, name }: GameBannerProps) {
-  const scrollY = useMotionValue(0);
-  const scale = useTransform(scrollY, [-150, 0], [1.5, 1]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Only works in Safari/iOS where scrollY can be negative
-      scrollY.set(Math.min(window.scrollY, 0));
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [scrollY]);
-
   return (
     <div className="game-banner">
       {bannerUrl ? (
-        <motion.div
-          style={{
-            scale,
-            transformOrigin: "center top",
-            position: "absolute",
-            inset: 0,
-          }}
-        >
+        <BannerParallax>
           <Image
             src={bannerUrl}
             alt={`${name} — український переклад`}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />
-        </motion.div>
+        </BannerParallax>
       ) : (
         <div className="game-banner-placeholder" />
       )}
@@ -55,6 +33,7 @@ export function GameBanner({ bannerUrl, logoUrl, name }: GameBannerProps) {
           width={400}
           height={200}
           className="game-banner-logo"
+          priority
           style={{
             objectFit: "contain",
             width: "auto",

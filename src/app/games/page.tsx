@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { GamesList } from "@/components/games/GamesList";
+import { getInitialGames } from "@/lib/games";
 
 const translateCount = 500;
 
@@ -45,7 +46,8 @@ export async function generateMetadata({
   return baseMetadata;
 }
 
-export default function GamesPage() {
+export default async function GamesPage() {
+  const initialGames = await getInitialGames();
   return (
     <section className="games-page">
       <div className="container">
@@ -64,7 +66,7 @@ export default function GamesPage() {
             </div>
           }
         >
-          <GamesList />
+          <GamesList initialData={initialGames} />
         </Suspense>
       </div>
     </section>

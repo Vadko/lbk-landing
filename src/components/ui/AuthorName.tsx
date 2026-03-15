@@ -1,6 +1,8 @@
 "use client";
 
+import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
 import { useRef, useState } from "react";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { getSpecialTranslatorInfo } from "@/lib/specialTranslators";
 import { Tooltip } from "./Tooltip";
 
@@ -34,7 +36,7 @@ export function AuthorName({
           {author}
           {isSpecial && specialInfo && (
             <Tooltip content={specialInfo.description}>
-              <i className="fa-solid fa-star special-author-star" />
+              <SvgIcon icon={faStar} className="special-author-star" />
             </Tooltip>
           )}
         </span>
@@ -80,7 +82,10 @@ export function AuthorName({
                       </span>
                       {isSpecial && specialInfo && (
                         <Tooltip content={specialInfo.description}>
-                          <i className="fa-solid fa-star special-author-star" />
+                          <SvgIcon
+                            icon={faStar}
+                            className="special-author-star"
+                          />
                         </Tooltip>
                       )}
                     </div>

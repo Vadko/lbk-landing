@@ -1,8 +1,15 @@
 "use client";
 
+import { faTelegram } from "@fortawesome/free-brands-svg-icons/faTelegram";
+import { faTiktok } from "@fortawesome/free-brands-svg-icons/faTiktok";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
+import { faYoutube } from "@fortawesome/free-brands-svg-icons/faYoutube";
+import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
+import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { trackViewGamesCatalog } from "@/lib/analytics";
 import { NavbarLogo } from "../icons/NavbarLogo";
 
@@ -38,25 +45,25 @@ const navbarSocials = [
   {
     name: "Telegram",
     href: "https://t.me/LittleBitUA",
-    iconClass: "fa-brands fa-telegram",
+    icon: faTelegram,
     title: "Telegram",
   },
   {
     name: "X",
     href: "https://x.com/LittleBitUA",
-    iconClass: "fa-brands fa-x-twitter",
+    icon: faXTwitter,
     title: "X",
   },
   {
     name: "YouTube",
     href: "https://www.youtube.com/@UA_LittleBit",
-    iconClass: "fa-brands fa-youtube",
+    icon: faYoutube,
     title: "YouTube",
   },
   {
     name: "TikTok",
     href: "https://www.tiktok.com/@littlebit_ua",
-    iconClass: "fa-brands fa-tiktok",
+    icon: faTiktok,
     title: "TikTok",
   },
 ];
@@ -142,7 +149,7 @@ export function Navbar() {
                 rel="noopener noreferrer"
                 title={social.title}
               >
-                <i className={social.iconClass} />
+                <SvgIcon icon={social.icon} />
               </a>
             ))}
           </div>
@@ -156,10 +163,10 @@ export function Navbar() {
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
           >
             <span className="mobile-menu-toggle__icon" aria-hidden="true">
-              <i className="fa-solid fa-bars" />
+              <SvgIcon icon={faBars} />
             </span>
             <span className="mobile-menu-toggle__close" aria-hidden="true">
-              <i className="fa-solid fa-xmark" />
+              <SvgIcon icon={faXmark} />
               <span />
             </span>
           </button>
@@ -219,7 +226,7 @@ export function Navbar() {
                 title={social.title}
                 onClick={closeMobileMenu}
               >
-                <i className={social.iconClass} />
+                <SvgIcon icon={social.icon} />
               </a>
             ))}
           </div>

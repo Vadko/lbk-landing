@@ -1,3 +1,4 @@
+import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -11,6 +12,7 @@ import {
   GameSidebar,
 } from "@/components/game-detail";
 import { GameTeamLink } from "@/components/ui/GameTeamLink";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { STATUS_LABELS } from "@/lib/constants";
 import { getFeaturedInfo } from "@/lib/featuredTranslations";
 import {
@@ -166,7 +168,7 @@ export default async function GameTranslationPage({ params }: PageProps) {
                 </div>
                 {featuredInfo && (
                   <div className="featured-badge-block">
-                    <i className="fa-solid fa-trophy" />
+                    <SvgIcon icon={faTrophy} />
                     {featuredInfo.description}
                   </div>
                 )}

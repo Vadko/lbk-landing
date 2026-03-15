@@ -1,4 +1,10 @@
+import { faTelegram } from "@fortawesome/free-brands-svg-icons/faTelegram";
+import { faTiktok } from "@fortawesome/free-brands-svg-icons/faTiktok";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
+import { faYoutube } from "@fortawesome/free-brands-svg-icons/faYoutube";
+import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import Link from "next/link";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 
 export function Footer() {
   return (
@@ -34,7 +40,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fa-brands fa-telegram" /> Telegram
+                  <SvgIcon icon={faTelegram} /> Telegram
                 </a>
               </li>
               <li>
@@ -43,7 +49,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fa-brands fa-x-twitter" /> X (Twitter)
+                  <SvgIcon icon={faXTwitter} /> X (Twitter)
                 </a>
               </li>
               <li>
@@ -52,7 +58,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fa-brands fa-youtube" /> YouTube
+                  <SvgIcon icon={faYoutube} /> YouTube
                 </a>
               </li>
               <li>
@@ -61,7 +67,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fa-brands fa-tiktok" /> TikTok
+                  <SvgIcon icon={faTiktok} /> TikTok
                 </a>
               </li>
             </ul>
@@ -86,7 +92,7 @@ export function Footer() {
         <div className="footer-bottom">
           <p>
             &copy; 2026 LB Team & GGL Studio. Зроблено з{" "}
-            <i className="fa-solid fa-heart highlight" /> до рідного.
+            <SvgIcon icon={faHeart} className="highlight" /> до рідного.
           </p>
         </div>
       </div>

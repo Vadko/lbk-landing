@@ -1,5 +1,7 @@
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 
 interface LegalLayoutProps {
   children: ReactNode;
@@ -27,7 +29,7 @@ export function LegalLayout({
 
           <div className="legal-footer">
             <Link href="/" className="back-link">
-              <i className="fa-solid fa-arrow-left" />
+              <SvgIcon icon={faArrowLeft} />
               Повернутися на головну
             </Link>
           </div>

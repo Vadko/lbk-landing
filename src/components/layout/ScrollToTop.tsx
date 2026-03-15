@@ -1,6 +1,8 @@
 "use client";
 
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons/faArrowUp";
 import { useEffect, useState } from "react";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
@@ -27,7 +29,7 @@ export function ScrollToTop() {
       onClick={scrollToTop}
       title="Наверх"
     >
-      <i className="fa-solid fa-arrow-up" />
+      <SvgIcon icon={faArrowUp} />
     </button>
   );
 }

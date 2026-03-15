@@ -1,154 +1,24 @@
-"use client";
-
-import confetti from "canvas-confetti";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight";
+import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
-import { useClientValue } from "@/hooks/useClientValue";
-import { useCountUp } from "@/hooks/useCountUp";
-import { useGamesCount } from "@/hooks/useGames";
-import {
-  detectMacArch,
-  detectOS,
-  formatDate,
-  getDownloadLinks,
-  useGitHubRelease,
-} from "@/hooks/useGitHubRelease";
-import { useLandingStats } from "@/hooks/useLandingStats";
-import { trackFileDownload, trackViewGamesCatalog } from "@/lib/analytics";
-
-function AnimatedStat({ value }: { value: number }) {
-  const { value: animatedValue, ref } = useCountUp({
-    end: value,
-    duration: 2000,
-  });
-  return <span ref={ref}>{animatedValue}</span>;
-}
-
-const TYPEWRITER_PHRASES = [
-  "без зусиль!",
-  "в один клац!",
-  "це просто!",
-  "це топ!",
-];
+import { SvgIcon } from "@/components/ui/SvgIcon";
+import { HeroBadge } from "./hero/HeroBadge";
+import { HeroDownload } from "./hero/HeroDownload";
+import { HeroStats } from "./hero/HeroStats";
+import { TypewriterText } from "./hero/TypewriterText";
 
 export function HeroSection() {
-  const { data: release, isLoading: isReleaseLoading } = useGitHubRelease();
-  const { data: gamesCount } = useGamesCount();
-  const { data: stats } = useLandingStats();
-  const downloadLinks = getDownloadLinks(release);
-  const os = useClientValue(detectOS, "windows");
-  const macArch = useClientValue(detectMacArch, "arm64");
-  const [typewriterText, setTypewriterText] = useState("");
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const currentPhrase = TYPEWRITER_PHRASES[phraseIndex];
-    const timeout = setTimeout(
-      () => {
-        if (!isDeleting) {
-          if (typewriterText.length < currentPhrase.length) {
-            setTypewriterText(
-              currentPhrase.slice(0, typewriterText.length + 1)
-            );
-          } else {
-            setTimeout(() => setIsDeleting(true), 2000);
-          }
-        } else {
-          if (typewriterText.length > 0) {
-            setTypewriterText(typewriterText.slice(0, -1));
-          } else {
-            setIsDeleting(false);
-            setPhraseIndex((prev) => (prev + 1) % TYPEWRITER_PHRASES.length);
-          }
-        }
-      },
-      isDeleting ? 50 : 100
-    );
-
-    return () => clearTimeout(timeout);
-  }, [typewriterText, isDeleting, phraseIndex]);
-
-  const fireConfetti = useCallback(() => {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ["#00C2FF", "#BD00FF", "#ffffff"],
-    });
-  }, []);
-
-  const handleDownload = (url: string | null) => {
-    if (url) {
-      trackFileDownload(url);
-      fireConfetti();
-      // For flatpakref, navigate directly so the OS/Discover can handle it
-      if (url.endsWith(".flatpakref")) {
-        window.location.assign(url);
-      } else {
-        window.open(url, "_blank");
-      }
-    }
-  };
-
-  const FLATPAKREF_URL =
-    "https://flatpak.lbklauncher.com/com.lbk.launcher.flatpakref";
-
-  const isSteamDeck = os === "steamdeck";
-
-  const getMainDownloadUrl = () => {
-    if (isSteamDeck) return FLATPAKREF_URL;
-    if (os === "macos")
-      return macArch === "x64"
-        ? (downloadLinks.macosX64 ?? downloadLinks.macos)
-        : (downloadLinks.macosArm ?? downloadLinks.macos);
-    if (os === "linux") return downloadLinks.linux;
-    return downloadLinks.windows;
-  };
-
-  const getMainDownloadLabel = () => {
-    if (isSteamDeck) return "Встановити на Steam Deck";
-    if (os === "macos") return "Завантажити для macOS";
-    if (os === "linux") return "Завантажити для Linux";
-    return "Завантажити для Windows";
-  };
-
-  const getMainDownloadSubtitle = () => {
-    if (isSteamDeck) return "Flatpak";
-    if (os === "macos")
-      return macArch === "x64" ? ".dmg (Intel)" : ".dmg (Apple Silicon)";
-    if (os === "linux") return "AppImage";
-    return "x64 Installer";
-  };
-
-  const getMainDownloadIcon = () => {
-    if (isSteamDeck) return "fa-steam";
-    if (os === "macos") return "fa-apple";
-    if (os === "linux") return "fa-linux";
-    return "fa-windows";
-  };
-
-  const versionText = isReleaseLoading
-    ? "Завантаження..."
-    : downloadLinks.version && downloadLinks.publishedAt
-      ? `Версія ${downloadLinks.version} від ${formatDate(downloadLinks.publishedAt)}`
-      : "Версія ...";
-
   return (
     <section id="hero" className="hero">
       <div className="container hero-wrapper">
         <div className="hero-content">
-          <div className="badge">
-            <div className="badge-icon">
-              <i className="fa-solid fa-rocket" />
-            </div>
-            <span>{versionText}</span>
-          </div>
+          <HeroBadge />
 
           <h1>
             Ігри українською —<br />
-            <span className="text-gradient typewriter">{typewriterText}</span>
+            <TypewriterText />
           </h1>
 
           <p>
@@ -158,101 +28,20 @@ export function HeroSection() {
             для вашої ігрової бібліотеки.
           </p>
 
-          {/* Games button above download */}
-          <Link
-            href="/games"
-            className="btn-neon games-link"
-            onClick={trackViewGamesCatalog}
-          >
-            <i className="fa-solid fa-gamepad" />
+          <Link href="/games" className="btn-neon games-link">
+            <SvgIcon icon={faGamepad} />
             <span>Переглянути всі ігри</span>
-            <i className="fa-solid fa-arrow-right" />
+            <SvgIcon icon={faArrowRight} />
           </Link>
 
-          <div className="download-row">
-            <button
-              onClick={() => handleDownload(getMainDownloadUrl())}
-              className="dl-btn"
-              disabled={!getMainDownloadUrl()}
-            >
-              <i className={`fa-brands ${getMainDownloadIcon()}`} />
-              <div className="dl-info">
-                <span>{getMainDownloadLabel()}</span>
-                <small>{getMainDownloadSubtitle()}</small>
-              </div>
-            </button>
-
-            <div className="dl-others">
-              {os === "linux" && (
-                <button
-                  onClick={() => handleDownload(FLATPAKREF_URL)}
-                  className="dl-mini"
-                  title="Flatpak (Steam Deck)"
-                >
-                  <i className="fa-solid fa-box" />
-                </button>
-              )}
-              {os !== "linux" && !isSteamDeck && downloadLinks.linux && (
-                <button
-                  onClick={() => handleDownload(downloadLinks.linux)}
-                  className="dl-mini"
-                  title="Linux (AppImage)"
-                >
-                  <i className="fa-brands fa-linux" />
-                </button>
-              )}
-              {os !== "linux" && !isSteamDeck && (
-                <button
-                  onClick={() => handleDownload(FLATPAKREF_URL)}
-                  className="dl-mini"
-                  title="Flatpak (Steam Deck)"
-                >
-                  <i className="fa-solid fa-box" />
-                </button>
-              )}
-              {os !== "macos" && downloadLinks.macos && (
-                <button
-                  onClick={() => handleDownload(downloadLinks.macos)}
-                  className="dl-mini"
-                  title="macOS"
-                >
-                  <i className="fa-brands fa-apple" />
-                </button>
-              )}
-              {os !== "windows" && downloadLinks.windows && (
-                <button
-                  onClick={() => handleDownload(downloadLinks.windows)}
-                  className="dl-mini"
-                  title="Windows"
-                >
-                  <i className="fa-brands fa-windows" />
-                </button>
-              )}
-            </div>
-          </div>
+          <HeroDownload />
 
           <Link href="/setup" className="instruction-link">
-            <i className="fa-solid fa-book" />
+            <SvgIcon icon={faBook} />
             <span>Інструкція зі встановлення</span>
           </Link>
 
-          <div className="stats-mini">
-            <div>
-              <i className="fa-solid fa-gamepad" />
-              <span>
-                {gamesCount ? <AnimatedStat value={gamesCount} /> : "80"}+ Ігор
-              </span>
-            </div>
-            {stats?.totalUniquePlayers && (
-              <div>
-                <i className="fa-solid fa-users" />
-                <span>
-                  <AnimatedStat value={stats.totalUniquePlayers} />+
-                  Користувачів
-                </span>
-              </div>
-            )}
-          </div>
+          <HeroStats />
         </div>
 
         <div className="hero-visual">

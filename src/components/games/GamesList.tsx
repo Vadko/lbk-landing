@@ -1,13 +1,23 @@
 "use client";
 
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesPaginated, useTeams } from "@/hooks/useGames";
 import { trackFailedSearch, trackViewSearchResults } from "@/lib/analytics";
+import type { GamesGroupedResponse } from "@/lib/types";
 import { GameCard } from "./GameCard";
 import { GamesSearch } from "./GamesSearch";
 
-export function GamesList() {
+interface GamesListProps {
+  initialData?: GamesGroupedResponse;
+}
+
+export function GamesList({ initialData }: GamesListProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -106,12 +116,20 @@ export function GamesList() {
     [updateFilters, selectedStatuses, selectedAuthors, sortBy]
   );
 
+  const isDefaultView =
+    currentPage === 1 &&
+    !search &&
+    selectedStatuses.length === 0 &&
+    selectedAuthors.length === 0 &&
+    (sortBy === "name" || !sortBy);
+
   const { data, isLoading, error } = useGamesPaginated(
     currentPage,
     search,
     selectedStatuses,
     selectedAuthors,
-    sortBy
+    sortBy,
+    isDefaultView ? initialData : undefined
   );
 
   const allGames = data?.games ?? [];
@@ -196,22 +214,22 @@ export function GamesList() {
         </div>
       ) : error ? (
         <div className="games-empty">
-          <i className="fa-solid fa-exclamation-triangle" />
+          <SvgIcon icon={faExclamationTriangle} />
           <h3>Помилка</h3>
           <p>Помилка завантаження ігор</p>
         </div>
       ) : allGames.length === 0 ? (
         <div className="games-empty">
-          <i className="fa-solid fa-gamepad" />
+          <SvgIcon icon={faGamepad} />
           <h3>Ігор не знайдено</h3>
           <p>Спробуйте змінити параметри пошуку</p>
         </div>
       ) : (
         <>
           <div className="games-grid">
-            {allGames.map((game) => (
+            {allGames.map((game, index) => (
               <div key={game.slug} className="game-card-wrapper">
-                <GameCard game={game} />
+                <GameCard game={game} priority={index < 6} />
               </div>
             ))}
           </div>
@@ -224,7 +242,7 @@ export function GamesList() {
                 disabled={currentPage === 1}
                 aria-label="Попередня сторінка"
               >
-                <i className="fa-solid fa-chevron-left" />
+                <SvgIcon icon={faChevronLeft} />
               </button>
 
               {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
@@ -260,7 +278,7 @@ export function GamesList() {
                 disabled={currentPage === totalPages}
                 aria-label="Наступна сторінка"
               >
-                <i className="fa-solid fa-chevron-right" />
+                <SvgIcon icon={faChevronRight} />
               </button>
             </div>
           )}

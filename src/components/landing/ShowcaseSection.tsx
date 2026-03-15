@@ -1,7 +1,16 @@
 "use client";
 
+import { faGithub } from "@fortawesome/free-brands-svg-icons/faGithub";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight";
+import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
+import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons/faFloppyDisk";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
+import { faHandshake } from "@fortawesome/free-solid-svg-icons/faHandshake";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
+import { faRotate } from "@fortawesome/free-solid-svg-icons/faRotate";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
+import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
 
@@ -24,36 +33,36 @@ const FEATURES = [
     linkText: "Перейти до каталогу",
   },
   {
-    icon: "fa-solid fa-magnifying-glass",
+    icon: faMagnifyingGlass,
     title: "Автоматичний пошук ігор",
     description:
       "Лаунчер самостійно сканує ваші бібліотеки у <strong>Steam, Epic Games Store</strong> та інших сервісах, знаходячи встановлені ігри.",
   },
   {
-    icon: "fa-solid fa-download",
+    icon: faDownload,
     title: "Встановлення в один клік:",
     description:
       "Обирайте гру, натискайте «Встановти переклад» — і все готово до запуску українською мовою.",
   },
   {
-    icon: "fa-solid fa-floppy-disk",
+    icon: faFloppyDisk,
     title: "Безпека та резервні копії",
     description:
       "Сервіс автоматично створює бекапи оригінальних файлів, щоб ви могли все повернути назад у будь-який момент.",
   },
   {
-    icon: "fa-solid fa-rotate",
+    icon: faRotate,
     title: "Автооновлення",
     description:
       "Лаунчер автоматично знаходить нові версії перекладів і сповіщає про оновлення.",
   },
   {
-    icon: "fa-solid fa-gamepad",
+    icon: faGamepad,
     title: "Повна підтримка Linux, MacOS та Steam Deck",
     description: "Оптимізовано для комфортної гри на популярних системах.",
   },
   {
-    icon: "fa-solid fa-handshake",
+    icon: faHandshake,
     title: "Зручна співпраця",
     description:
       "Легко додавайте свої переклади в лаунчер і співпрацюйте з іншими командами.",
@@ -61,7 +70,7 @@ const FEATURES = [
     linkText: "Співпрацювати",
   },
   {
-    icon: "fa-brands fa-github",
+    icon: faGithub,
     title: "Відкритий код",
     description:
       "Повна прозорість і можливість перевірити безпеку. Ми нічого не приховуємо.",
@@ -89,7 +98,7 @@ export function ShowcaseSection() {
             </div>
           ) : (
             <div className="hover-card__icon">
-              <i className={feature.icon!} />
+              <SvgIcon icon={feature.icon!} />
             </div>
           )}
           <h3>{feature.title}</h3>
@@ -109,7 +118,7 @@ export function ShowcaseSection() {
               className="why-btn"
             >
               {feature.linkText}
-              <i className="fa-solid fa-arrow-right" />
+              <SvgIcon icon={faArrowRight} />
             </a>
           )}
         </HoverCard>
