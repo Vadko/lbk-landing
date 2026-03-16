@@ -2,8 +2,8 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, permanentRedirect, redirect } from "next/navigation";
-import { GameBanner } from "@/components/game-detail";
+import { notFound, permanentRedirect } from "next/navigation";
+import { GameBanner, GameDetailArticle } from "@/components/game-detail";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { STATUS_LABELS } from "@/lib/constants";
 import { generateBreadcrumbLD } from "@/lib/game-jsonld";
@@ -32,12 +32,50 @@ export async function generateMetadata({
   }
 
   const game = translations[0];
-  const teamNames = translations.map((t) => t.team).join(", ");
 
-  const description =
-    translations.length === 1
-      ? `Український переклад ${game.name} від ${game.team}. Завантажте безкоштовно через LBK Launcher.`
-      : `Українські переклади ${game.name} від ${teamNames}. Оберіть переклад та завантажте безкоштовно через LBK Launcher.`;
+  // Single translation — canonical points to the team page
+  if (translations.length === 1) {
+    const description = `Український переклад ${game.name} від ${game.team}. Завантажте безкоштовно через LBK Launcher.`;
+    return {
+      title: {
+        absolute: `${game.name} українською мовою | Скачати в LBK Launcher`,
+      },
+      description,
+      keywords: [
+        `${game.name}`,
+        `${game.name} українською`,
+        `${game.name} український переклад`,
+        `${game.name} українізатор`,
+        `${game.name} локалізація`,
+        "українізатор ігор",
+        "LBK Launcher",
+      ],
+      openGraph: {
+        title: `${game.name} українською | LBK Launcher`,
+        description,
+        images: game.banner_path
+          ? [getImageUrl(game.banner_path, game.updated_at)!]
+          : undefined,
+        type: "article",
+        locale: "uk_UA",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${game.name} українською`,
+        description,
+        images: game.banner_path
+          ? [getImageUrl(game.banner_path, game.updated_at)!]
+          : undefined,
+      },
+      alternates: {
+        canonical: `https://lbklauncher.com/games/${slug}/${teamToSlug(game.team)}`,
+      },
+    };
+  }
+
+  // Multiple translations
+  const teamNames = translations.map((t) => t.team).join(", ");
+  const description = `Українські переклади ${game.name} від ${teamNames}. Оберіть переклад та завантажте безкоштовно через LBK Launcher.`;
 
   return {
     title: {
@@ -90,13 +128,19 @@ export default async function GamePage({ params }: PageProps) {
     notFound();
   }
 
-  // If only one translation, redirect to the specific translation page
+  // Single translation — render detail page (no redirect)
   if (translations.length === 1) {
-    redirect(`/games/${slug}/${teamToSlug(translations[0].team)}`);
+    return (
+      <GameDetailArticle
+        game={translations[0]}
+        slug={slug}
+        otherTranslations={[]}
+      />
+    );
   }
 
-  // Multiple translations - show selection page
-  const game = translations[0]; // Use first translation for banner/name
+  // Multiple translations — show selection page
+  const game = translations[0];
   const bannerUrl = getImageUrl(game.banner_path, game.updated_at);
   const logoUrl = getImageUrl(game.logo_path, game.updated_at);
 
@@ -106,7 +150,6 @@ export default async function GamePage({ params }: PageProps) {
 
       <div className="game-content">
         <div className="container">
-          {/* Breadcrumb */}
           <nav className="game-breadcrumb">
             <Link href="/">Головна</Link>
             <span>/</span>
@@ -202,7 +245,6 @@ export default async function GamePage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* JSON-LD BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

@@ -1,3 +1,4 @@
+export { GameDetailArticle } from "./GameDetailArticle";
 export { FundraisingProgress } from "./FundraisingProgress";
 export { GameBanner } from "./GameBanner";
 export { GameFAQ } from "./GameFAQ";
