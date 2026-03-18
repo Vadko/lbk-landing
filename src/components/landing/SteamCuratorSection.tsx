@@ -1,0 +1,36 @@
+"use client";
+
+import React from "react";
+import { HoverCard } from "../ui/HoverCard";
+import { SteamSearchIcon } from "../icons/SteamSearchIcon";
+
+export function SteamCuratorSection() {
+  return (
+    <section className="container steam-curator">
+      <HoverCard className="steam-curator--wrapper">
+        <div>
+          <h2 className="section-title">LBK стежить за перекладами</h2>
+          <p className="section-description">
+            Ми ваш надійний куратор у Steam — підпишіться і не пропустіть
+            жодного оновлення.
+          </p>
+          <div className="steam-curator--btn-wrapper">
+            <a
+              className="btn-neon"
+              href="https://store.steampowered.com/curator/15334209-LBK-Launcher/"
+            >
+              Вступити до групи
+            </a>
+            <a
+              className="btn-main"
+              href="https://store.steampowered.com/curator/15334209-LBK-Launcher/"
+            >
+              Підписатись на куратора
+            </a>
+          </div>
+        </div>
+        <SteamSearchIcon aria-hidden className="steam-search-icon" />
+      </HoverCard>
+    </section>
+  );
+}

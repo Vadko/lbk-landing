@@ -4594,6 +4594,10 @@ main.header-padding:has(.open-launcher-page) {
   cursor: pointer;
 }
 
+.btn-share.copied {
+  background-color: #a8cf96;
+}
+
 .btn-neon {
   cursor: pointer;
 }
@@ -4696,6 +4700,17 @@ main.header-padding:has(.open-launcher-page) {
   border-bottom: 6px solid transparent;
   border-left: 6px solid rgba(255, 255, 255, 0.8);
   filter: drop-shadow(2px 0 4px rgba(0, 0, 0, 0.1));
+}
+
+.game-ai-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #333333;
+  padding: 4px 12px;
+  margin-top: 12px;
+  border-radius: 20px;
+  width: fit-content;
 }
 
 @keyframes tooltipFadeIn {
@@ -5053,3 +5068,86 @@ main.header-padding:has(.open-launcher-page) {
     gap: 16px;
   }
 }
+
+.steam-curator--wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 20px;
+}
+
+.steam-curator--btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  > * {
+    flex: 1;
+    padding-block: 12px;
+  }
+}
+
+.steam-curator .section-description {
+  margin-bottom: 32px;
+}
+
+@media (max-width: 768px) {
+  .steam-search-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .steam-curator .section-description {
+    margin-bottom: 24px;
+  }
+}
+
+@media (min-width: 769px) {
+  .steam-curator--wrapper {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 120px 60px 60px;
+  }
+
+  .steam-curator :is(.section-title, .section-description) {
+    text-align: left;
+    max-width: 741px;
+  }
+
+  .steam-curator--btn-wrapper {
+    flex-direction: row;
+    display: flex;
+    gap: 32px;
+  }
+}
+
+.steam-search-icon {
+  position: relative;
+  filter: blur(3px) brightness(0.5);
+}
+
+/* 
+<section className="container steam-curator">
+      <HoverCard className="steam-curator--wrapper">
+        <h2 className="section-title">LBK стежить за перекладами</h2>
+        <p className="section-description">
+          Ми ваш надійний куратор у Steam — підпишіться і не пропустіть жодного
+          оновлення.
+        </p>
+        <div className="steam-curator--btn-wrapper">
+          <a
+            className="btn-neon"
+            href="https://store.steampowered.com/curator/15334209-LBK-Launcher/"
+          >
+            Вступити до групи
+          </a>
+          <a
+            className="btn-main"
+            href="https://store.steampowered.com/curator/15334209-LBK-Launcher/"
+          >
+            Підписатись на куратора
+          </a>
+        </div>
+        <SteamSearchIcon aria-hidden className="steam-search-icon" />
+      </HoverCard>
+    </section> */

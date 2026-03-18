@@ -42,7 +42,7 @@ const FEATURES = [
     icon: faDownload,
     title: "Встановлення в один клік:",
     description:
-      "Обирайте гру, натискайте «Встановти переклад» — і все готово до запуску українською мовою.",
+      "Обирайте гру, натискайте «Встановити переклад» — і все готово до запуску українською мовою.",
   },
   {
     icon: faFloppyDisk,
@@ -113,8 +113,9 @@ export function ShowcaseSection() {
           {feature.link && (
             <a
               href={feature.link}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...(feature.link.startsWith("http")
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
               className="why-btn"
             >
               {feature.linkText}

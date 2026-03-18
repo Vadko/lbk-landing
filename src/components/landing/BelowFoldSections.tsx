@@ -34,6 +34,14 @@ const CollaborationSection = dynamic(
   { ssr: false }
 );
 
+const SteamCuratorSection = dynamic(
+  () =>
+    import("@/components/landing/SteamCuratorSection").then((m) => ({
+      default: m.SteamCuratorSection,
+    })),
+  { ssr: false }
+);
+
 const FaqSection = dynamic(
   () =>
     import("@/components/landing/FaqSection").then((m) => ({
@@ -49,6 +57,7 @@ export function BelowFoldSections() {
       <GallerySection />
       <ShowcaseSection />
       <CollaborationSection />
+      <SteamCuratorSection />
       <FaqSection />
     </>
   );
