@@ -17,13 +17,17 @@ export function SteamCuratorSection() {
           <div className="steam-curator--btn-wrapper">
             <a
               className="btn-neon"
-              href="https://store.steampowered.com/curator/15334209-LBK-Launcher/"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://steamcommunity.com/groups/LBKLauncher"
             >
               Вступити до групи
             </a>
             <a
               className="btn-main"
-              href="https://store.steampowered.com/curator/15334209-LBK-Launcher/"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://store.steampowered.com/curator/46014434-LBK-Launcher"
             >
               Підписатись на куратора
             </a>
