@@ -62,7 +62,7 @@ export function ShareButton({
       type="button"
     >
       <ShareIcon />
-      {copied ? "Скопійовано!" : "Поділитись"}
+      {copied ? "Скопійовано!" : "Поділитися"}
     </button>
   );
 }

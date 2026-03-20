@@ -21,6 +21,8 @@ import {
 import { getImageUrl } from "@/lib/images";
 import { teamToSlug } from "@/lib/transliterate";
 import type { Game } from "@/lib/types";
+import { AIEditedBadgeIcon } from "../ui/icons/AIEditedBadgeIcon";
+import { AIBadgeIcon } from "../ui/icons/AIBadgeIcon";
 
 interface GameDetailArticleProps {
   game: Game;
@@ -92,6 +94,18 @@ export function GameDetailArticle({
                   Переклад від <GameTeamLink team={game.team} />
                   {game.version && ` • Версія ${game.version}`}
                 </p>
+                {(game.ai === "edited" || game.ai === "non-edited") && (
+                  <div className="game-ai-badge">
+                    {game.ai === "edited" ? (
+                      <AIEditedBadgeIcon size={16} />
+                    ) : (
+                      <AIBadgeIcon size={16} />
+                    )}
+                    {game.ai === "edited"
+                      ? "ШІ + редактура людиною"
+                      : "Переклад ШІ"}
+                  </div>
+                )}
               </header>
 
               {otherTranslations.length > 0 && (

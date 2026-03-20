@@ -106,7 +106,7 @@ export default function TermsPlayersPage() {
         </p>
         <p className="text-sm text-text-main font-semibold leading-relaxed">
           ВИ ВИКОРИСТОВУЄТЕ ЛАУНЧЕР НА ВЛАСНИЙ РИЗИК. МИ НЕ ГАРАНТУЄМО
-          ВІДСУТНІСТЬ БАНІВ В ОНЛАЙН-ІГРАХ
+          ВІДСУТНІСТЬ БАНІВ В ОНЛАЙН-ІГРАХ.
         </p>
       </section>
 

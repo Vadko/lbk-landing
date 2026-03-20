@@ -34,7 +34,7 @@ export default function TermsTranslatorsPage() {
           <strong>1. Права на контент та доповнення</strong>
         </h2>
         <p>
-          Додаючи свій переклад на платформу
+          Додаючи свій переклад на платформу{" "}
           <a href="https://lbklauncher.com/">https://lbklauncher.com/</a>, ви
           погоджуєтесь з наступним:
         </p>
@@ -122,10 +122,10 @@ export default function TermsTranslatorsPage() {
             спричинені файлами перекладу автора.
           </li>
           <li>
-            <strong>Право на вилучення:</strong> За вашим запитом через бот
+            <strong>Право на вилучення:</strong> За вашим запитом через бот{" "}
             <a href="https://t.me/lbk_launcher_bot">
               https://t.me/lbk_launcher_bot
-            </a>
+            </a>{" "}
             ми можемо повністю вилучити вашу роботу.
           </li>
         </ul>
@@ -152,13 +152,13 @@ export default function TermsTranslatorsPage() {
         <p>Якщо у вас є запитання, не вагайтеся зв’язатися з нами:</p>
         <ul>
           <li>
-            <strong>Email:</strong>
+            <strong>Email: </strong>
             <a href="mailto:pr@gameglobe-localisation.com">
               pr@gameglobe-localisation.com
             </a>
           </li>
           <li>
-            <strong>Telegram:</strong>
+            <strong>Telegram: </strong>
             <a href="https://t.me/lbk_launcher_bot">
               https://t.me/lbk_launcher_bot
             </a>
