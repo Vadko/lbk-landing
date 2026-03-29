@@ -477,7 +477,6 @@ body.mobile-menu-open {
 
 /* Hero Section */
 .hero {
-  min-height: calc(100vh - 100px - var(--navbar-height));
   display: flex;
   align-items: center;
 }
