@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/games?*"],
+      disallow: ["/api/"],
     },
     sitemap: "https://lbklauncher.com/sitemap.xml",
   };
