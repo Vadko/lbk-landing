@@ -21,8 +21,8 @@ import {
 import { getImageUrl } from "@/lib/images";
 import { teamToSlug } from "@/lib/transliterate";
 import type { Game } from "@/lib/types";
-import { AIEditedBadgeIcon } from "../ui/icons/AIEditedBadgeIcon";
 import { AIBadgeIcon } from "../ui/icons/AIBadgeIcon";
+import { AIEditedBadgeIcon } from "../ui/icons/AIEditedBadgeIcon";
 
 interface GameDetailArticleProps {
   game: Game;

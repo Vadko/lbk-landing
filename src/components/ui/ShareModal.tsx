@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  faTelegram,
-  faWhatsapp,
   faDiscord,
-  faYoutube,
   faSignalMessenger,
+  faTelegram,
   faThreads,
+  faWhatsapp,
   faXTwitter,
+  faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import { faCopy, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useEffect, useState } from "react";
@@ -108,7 +108,7 @@ export function ShareModal({
   const isMobile =
     typeof window !== "undefined" &&
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent,
+      navigator.userAgent
     );
 
   const handleNativeShare = useCallback(async () => {
@@ -260,6 +260,6 @@ export function ShareModal({
         </div>
       </div>
     </div>,
-    document.body,
+    document.body
   );
 }

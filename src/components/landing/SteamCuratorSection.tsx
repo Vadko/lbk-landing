@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { HoverCard } from "../ui/HoverCard";
 import { SteamSearchIcon } from "../icons/SteamSearchIcon";
+import { HoverCard } from "../ui/HoverCard";
 
 export function SteamCuratorSection() {
   return (
