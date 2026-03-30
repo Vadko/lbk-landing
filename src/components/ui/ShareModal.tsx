@@ -1,0 +1,265 @@
+"use client";
+
+import {
+  faTelegram,
+  faWhatsapp,
+  faDiscord,
+  faYoutube,
+  faSignalMessenger,
+  faThreads,
+  faXTwitter,
+} from "@fortawesome/free-brands-svg-icons";
+import { faCopy, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { trackShareLinkCopied } from "@/lib/analytics";
+import { SvgIcon } from "./SvgIcon";
+
+interface ShareModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  gameSlug: string;
+  teamSlug: string;
+  gameName: string;
+  teamName: string;
+}
+
+interface SocialPlatform {
+  key: string;
+  name: string;
+  icon:
+    | typeof faTelegram
+    | typeof faWhatsapp
+    | typeof faDiscord
+    | typeof faYoutube
+    | typeof faSignalMessenger
+    | typeof faThreads
+    | typeof faXTwitter;
+  getShareUrl: (shareUrl: string, shareText: string) => string;
+}
+
+const socialPlatforms: SocialPlatform[] = [
+  {
+    key: "telegram",
+    name: "Telegram",
+    icon: faTelegram,
+    getShareUrl: (shareUrl, shareText) =>
+      `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}&type=custom_url&app_absent=0`,
+  },
+  {
+    key: "whatsapp",
+    name: "WhatsApp",
+    icon: faWhatsapp,
+    getShareUrl: (shareUrl, shareText) =>
+      `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + " " + shareUrl)}`,
+  },
+  {
+    key: "discord",
+    name: "Discord",
+    icon: faDiscord,
+    // Discord doesn't have a direct share URL, but we can copy for paste
+    getShareUrl: (shareUrl, shareText) =>
+      `https://discord.com/channels/@me?message=${encodeURIComponent(shareText + "\n" + shareUrl)}`,
+  },
+  {
+    key: "youtube",
+    name: "YouTube",
+    icon: faYoutube,
+    // YouTube Community post
+    getShareUrl: (shareUrl, shareText) =>
+      `https://www.youtube.com/post_create?content=${encodeURIComponent(shareText + "\n" + shareUrl)}`,
+  },
+  {
+    key: "signal",
+    name: "Signal",
+    icon: faSignalMessenger,
+    getShareUrl: (shareUrl, shareText) =>
+      `https://signal.me/#p/${encodeURIComponent(shareText + " " + shareUrl)}`,
+  },
+  {
+    key: "threads",
+    name: "Threads",
+    icon: faThreads,
+    getShareUrl: (shareUrl, shareText) =>
+      `https://www.threads.net/intent/post?text=${encodeURIComponent(shareText + "\n" + shareUrl)}`,
+  },
+  {
+    key: "x",
+    name: "X",
+    icon: faXTwitter,
+    getShareUrl: (shareUrl, shareText) =>
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
+  },
+];
+
+export function ShareModal({
+  isOpen,
+  onClose,
+  gameSlug,
+  teamSlug,
+  gameName,
+  teamName,
+}: ShareModalProps) {
+  const [copied, setCopied] = useState(false);
+  const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
+  const shareText = `${gameName} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
+
+  // Detect mobile device
+  const isMobile =
+    typeof window !== "undefined" &&
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    );
+
+  const handleNativeShare = useCallback(async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Відкрити в LBK Launcher",
+          text: shareText,
+          url: shareUrl,
+        });
+        onClose();
+        return true;
+      } catch {
+        // User cancelled or share failed
+        return false;
+      }
+    }
+    return false;
+  }, [shareText, shareUrl, onClose]);
+
+  // On mobile, trigger native share immediately
+  useEffect(() => {
+    if (isOpen && isMobile) {
+      handleNativeShare();
+    }
+  }, [isOpen, isMobile, handleNativeShare]);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      trackShareLinkCopied(gameName);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback for older browsers
+      const textArea = document.createElement("textarea");
+      textArea.value = shareUrl;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      trackShareLinkCopied(gameName);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleShare = (platform: SocialPlatform) => {
+    const url = platform.getShareUrl(shareUrl, shareText);
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isOpen, onClose]);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  // On mobile, don't render modal UI - native share handles it
+  if (isMobile) {
+    return null;
+  }
+
+  if (!isOpen) {
+    return null;
+  }
+
+  return createPortal(
+    <div className="share-modal-overlay" onClick={handleBackdropClick}>
+      <div className="share-modal">
+        <button
+          className="share-modal-close"
+          onClick={onClose}
+          type="button"
+          aria-label="Закрити"
+        >
+          <SvgIcon icon={faXmark} />
+        </button>
+
+        <div className="share-modal-header">
+          <h2>Поширити</h2>
+        </div>
+
+        <div className="share-modal-section">
+          <p className="share-modal-section-title">Поділитися в:</p>
+          <div className="share-modal-socials">
+            {socialPlatforms.map((platform) => (
+              <button
+                key={platform.key}
+                className="share-modal-social-btn"
+                onClick={() => handleShare(platform)}
+                type="button"
+                title={platform.name}
+              >
+                {platform.icon === "signal" ? (
+                  <SignalIcon />
+                ) : (
+                  <SvgIcon icon={platform.icon} />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="share-modal-section">
+          <p className="share-modal-section-title">Або скопіюйте посилання:</p>
+          <div className="share-modal-link-container">
+            <input
+              type="text"
+              value={shareUrl}
+              readOnly
+              className="share-modal-link-input"
+              onClick={(e) => e.currentTarget.select()}
+            />
+            <button
+              className={`share-modal-copy-btn ${copied ? "copied" : ""}`}
+              onClick={handleCopy}
+              type="button"
+            >
+              <SvgIcon icon={faCopy} />
+              {copied ? "Скопійовано!" : "Копіювати"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}

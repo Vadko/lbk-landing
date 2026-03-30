@@ -5150,3 +5150,212 @@ main.header-padding:has(.open-launcher-page) {
         <SteamSearchIcon aria-hidden className="steam-search-icon" />
       </HoverCard>
     </section> */
+
+/* Share Modal */
+.share-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.share-modal {
+  position: relative;
+  width: 90%;
+  max-width: 512px;
+  padding: 23px;
+  background: var(--bg-base);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.share-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.share-modal-close:hover {
+  color: var(--text-primary);
+}
+
+.share-modal-header {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(51, 51, 51, 1);
+}
+
+.share-modal-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.share-modal-section {
+  margin-bottom: 56px;
+}
+
+.share-modal-section:last-child {
+  margin-bottom: 0;
+}
+
+.share-modal-section-title {
+  font-size: 14px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--text-sec);
+  margin-bottom: 12px;
+}
+
+.share-modal-link-container {
+  display: flex;
+  gap: 16px;
+}
+
+.share-modal-link-input {
+  flex: 1;
+  padding: 11px 16px;
+  background: var(--glass-bg);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 24px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.share-modal-link-input:focus {
+  border-color: var(--color-main);
+}
+
+.share-modal-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  background: var(--color-main);
+  border: none;
+  border-radius: 12px;
+  color: var(--color-black);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.share-modal-copy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(var(--color-main-rgb), 0.3);
+}
+
+.share-modal-copy-btn.copied {
+  background: var(--color-accent);
+}
+
+.share-modal-socials {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+  gap: 12px;
+}
+
+.share-modal-social-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+.share-modal-social-btn svg {
+  font-size: 24px;
+}
+
+.share-modal-social-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--text-sec);
+  transform: translateY(-2px);
+}
+
+.share-modal-social-btn:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--color-main);
+  color: var(--color-main);
+  outline: none;
+}
+
+.share-modal-social-btn:active {
+  background: rgba(168, 207, 150, 0.15);
+  border-color: var(--color-main);
+  color: var(--color-main);
+  transform: translateY(0);
+}
+
+@media (max-width: 540px) {
+  .share-modal {
+    padding: 24px 20px;
+    margin: 16px;
+  }
+
+  .share-modal-link-container {
+    flex-direction: column;
+  }
+
+  .share-modal-copy-btn {
+    justify-content: center;
+  }
+
+  .share-modal-socials {
+    grid-template-columns: repeat(4, 1fr);
+    width: fit-content;
+  }
+}
