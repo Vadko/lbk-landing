@@ -108,7 +108,7 @@ export function ShareModal({
   const isMobile =
     typeof window !== "undefined" &&
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
+      navigator.userAgent,
     );
 
   const handleNativeShare = useCallback(async () => {
@@ -228,11 +228,7 @@ export function ShareModal({
                 type="button"
                 title={platform.name}
               >
-                {platform.icon === "signal" ? (
-                  <SignalIcon />
-                ) : (
-                  <SvgIcon icon={platform.icon} />
-                )}
+                <SvgIcon icon={platform.icon} />
               </button>
             ))}
           </div>
@@ -260,6 +256,6 @@ export function ShareModal({
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }
