@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  faDiscord,
+  faFacebook,
+  faReddit,
   faSignalMessenger,
   faTelegram,
   faThreads,
   faWhatsapp,
   faXTwitter,
-  faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import { faCopy, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useEffect, useState } from "react";
@@ -30,8 +30,8 @@ interface SocialPlatform {
   icon:
     | typeof faTelegram
     | typeof faWhatsapp
-    | typeof faDiscord
-    | typeof faYoutube
+    | typeof faReddit
+    | typeof faFacebook
     | typeof faSignalMessenger
     | typeof faThreads
     | typeof faXTwitter;
@@ -54,20 +54,19 @@ const socialPlatforms: SocialPlatform[] = [
       `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + " " + shareUrl)}`,
   },
   {
-    key: "discord",
-    name: "Discord",
-    icon: faDiscord,
-    // Discord doesn't have a direct share URL, but we can copy for paste
+    key: "reddit",
+    name: "Reddit",
+    icon: faReddit,
     getShareUrl: (shareUrl, shareText) =>
-      `https://discord.com/channels/@me?message=${encodeURIComponent(shareText + "\n" + shareUrl)}`,
+      `https://www.reddit.com/submit?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(shareText)}`,
   },
   {
-    key: "youtube",
-    name: "YouTube",
-    icon: faYoutube,
-    // YouTube Community post
+    key: "facebook",
+    name: "Facebook",
+    icon: faFacebook,
+    // Facebook share
     getShareUrl: (shareUrl, shareText) =>
-      `https://www.youtube.com/post_create?content=${encodeURIComponent(shareText + "\n" + shareUrl)}`,
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`,
   },
   {
     key: "signal",
@@ -100,7 +99,7 @@ export function ShareModal({
   gameName,
   teamName,
 }: ShareModalProps) {
-  const [copied, setCopied] = useState(false);
+  const [copiedField, setCopiedField] = useState<"url" | "text" | null>(null);
   const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
   const shareText = `${gameName} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
 
@@ -136,16 +135,16 @@ export function ShareModal({
     }
   }, [isOpen, isMobile, handleNativeShare]);
 
-  const handleCopy = async () => {
+  const handleCopy = async (text: string, field: "url" | "text") => {
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(text);
       trackShareLinkCopied(gameName);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopiedField(field);
+      setTimeout(() => setCopiedField(null), 2000);
     } catch {
       // Fallback for older browsers
       const textArea = document.createElement("textarea");
-      textArea.value = shareUrl;
+      textArea.value = text;
       textArea.style.position = "fixed";
       textArea.style.opacity = "0";
       document.body.appendChild(textArea);
@@ -153,8 +152,8 @@ export function ShareModal({
       document.execCommand("copy");
       document.body.removeChild(textArea);
       trackShareLinkCopied(gameName);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopiedField(field);
+      setTimeout(() => setCopiedField(null), 2000);
     }
   };
 
@@ -235,7 +234,7 @@ export function ShareModal({
         </div>
 
         <div className="share-modal-section">
-          <p className="share-modal-section-title">Або скопіюйте посилання:</p>
+          <p className="share-modal-section-title">Або скопіюйте посилання чи текст:</p>
           <div className="share-modal-link-container">
             <input
               type="text"
@@ -245,12 +244,29 @@ export function ShareModal({
               onClick={(e) => e.currentTarget.select()}
             />
             <button
-              className={`share-modal-copy-btn ${copied ? "copied" : ""}`}
-              onClick={handleCopy}
+              className={`share-modal-copy-btn ${copiedField === "url" ? "copied" : ""}`}
+              onClick={() => handleCopy(shareUrl, "url")}
               type="button"
             >
               <SvgIcon icon={faCopy} />
-              {copied ? "Скопійовано!" : "Копіювати"}
+              {copiedField === "url" ? "Скопійовано!" : "Копіювати"}
+            </button>
+          </div>
+          <div className="share-modal-link-container">
+            <input
+              type="text"
+              value={shareText + "\n" + shareUrl}
+              readOnly
+              className="share-modal-link-input"
+              onClick={(e) => e.currentTarget.select()}
+            />
+            <button
+              className={`share-modal-copy-btn ${copiedField === "text" ? "copied" : ""}`}
+              onClick={() => handleCopy(shareText + "\n" + shareUrl, "text")}
+              type="button"
+            >
+              <SvgIcon icon={faCopy} />
+              {copiedField === "text" ? "Скопійовано!" : "Копіювати"}
             </button>
           </div>
         </div>

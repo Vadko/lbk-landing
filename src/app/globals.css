@@ -3884,9 +3884,17 @@ p + .why-btn {
     order: 12;
   }
 
-  /* Приховати "Встановіть переклад" на мобільних */
-  .game-download-cta {
+  .game-sidebar-card.game-download-cta {
+    order: 9;
+  }
+
+  /* Приховати Все окрім поділитись на мобільних */
+  .game-download-cta > *:not(.share-btn) {
     display: none;
+  }
+
+  .btn-share.btn-share {
+    margin-top: 0;
   }
 }
 
@@ -5248,6 +5256,10 @@ main.header-padding:has(.open-launcher-page) {
 .share-modal-link-container {
   display: flex;
   gap: 16px;
+}
+
+.share-modal-link-container + .share-modal-link-container {
+  margin-top: 16px;
 }
 
 .share-modal-link-input {
