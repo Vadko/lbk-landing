@@ -10,7 +10,7 @@ import {
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { faCopy, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { trackShareLinkCopied } from "@/lib/analytics";
 import { SvgIcon } from "./SvgIcon";
@@ -18,10 +18,9 @@ import { SvgIcon } from "./SvgIcon";
 interface ShareModalProps {
   isOpen: boolean;
   onClose: () => void;
-  gameSlug: string;
-  teamSlug: string;
   gameName: string;
-  teamName: string;
+  shareUrl: string;
+  shareText: string;
 }
 
 interface SocialPlatform {
@@ -94,37 +93,11 @@ const socialPlatforms: SocialPlatform[] = [
 export function ShareModal({
   isOpen,
   onClose,
-  gameSlug,
-  teamSlug,
   gameName,
-  teamName,
+  shareUrl,
+  shareText
 }: ShareModalProps) {
   const [copiedField, setCopiedField] = useState<"url" | "text" | null>(null);
-  const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
-  const shareText = `${gameName} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
-
-  // Try native share on mobile when modal opens
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-
-    if (isMobile && navigator.share) {
-      navigator
-        .share({
-          title: "Відкрити в LBK Launcher",
-          text: shareText,
-          url: shareUrl,
-        })
-        .then(() => onClose())
-        .catch(() => {
-          // User cancelled - modal stays open as fallback
-        });
-    }
-  }, [isOpen, shareText, shareUrl, onClose]);
 
   const handleCopy = async (text: string, field: "url" | "text") => {
     try {

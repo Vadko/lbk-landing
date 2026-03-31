@@ -19,7 +19,28 @@ export function ShareButton({
 }: ShareButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleClick = () => {
+  // Detect mobile device
+  const isMobile =
+    typeof window !== "undefined" &&
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    );
+  const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
+  const shareText = `${gameTitle} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
+
+  const handleClick = async () => {
+    if (isMobile && navigator.share) {
+      try {
+        await navigator.share({
+          title: "Відкрити в LBK Launcher",
+          text: shareText,
+          url: shareUrl,
+        });
+        return;
+      } catch {
+        return;
+      }
+    }
     // On mobile, ShareModal will handle native share automatically
     setIsModalOpen(true);
   };
@@ -37,10 +58,9 @@ export function ShareButton({
       <ShareModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        gameSlug={gameSlug}
-        teamSlug={teamSlug}
         gameName={gameTitle}
-        teamName={teamName}
+        shareUrl={shareUrl}
+        shareText={shareText}
       />
     </>
   );
