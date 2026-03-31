@@ -10,7 +10,7 @@ import {
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { faCopy, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { trackShareLinkCopied } from "@/lib/analytics";
 import { SvgIcon } from "./SvgIcon";
@@ -103,37 +103,28 @@ export function ShareModal({
   const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
   const shareText = `${gameName} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
 
-  // Detect mobile device
-  const isMobile =
-    typeof window !== "undefined" &&
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
+  // Try native share on mobile when modal opens
+  useEffect(() => {
+    if (!isOpen) return;
 
-  const handleNativeShare = useCallback(async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+
+    if (isMobile && navigator.share) {
+      navigator
+        .share({
           title: "Відкрити в LBK Launcher",
           text: shareText,
           url: shareUrl,
+        })
+        .then(() => onClose())
+        .catch(() => {
+          // User cancelled - modal stays open as fallback
         });
-        onClose();
-        return true;
-      } catch {
-        // User cancelled or share failed
-        return false;
-      }
     }
-    return false;
-  }, [shareText, shareUrl, onClose]);
-
-  // On mobile, trigger native share immediately
-  useEffect(() => {
-    if (isOpen && isMobile) {
-      handleNativeShare();
-    }
-  }, [isOpen, isMobile, handleNativeShare]);
+  }, [isOpen, shareText, shareUrl, onClose]);
 
   const handleCopy = async (text: string, field: "url" | "text") => {
     try {
@@ -190,11 +181,6 @@ export function ShareModal({
       document.body.style.overflow = "";
     };
   }, [isOpen]);
-
-  // On mobile, don't render modal UI - native share handles it
-  if (isMobile) {
-    return null;
-  }
 
   if (!isOpen) {
     return null;
