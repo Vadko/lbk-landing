@@ -22,6 +22,7 @@ const STATUS_LABELS: Record<string, { label: string; className: string }> = {
     className: "game-card-status in-progress",
   },
   planned: { label: "Заплановано", className: "game-card-status planned" },
+  "tech-improvement": { label: "Технічна доробка", className: "game-card-status tech-improvement" },
 };
 
 function TranslationRow({
