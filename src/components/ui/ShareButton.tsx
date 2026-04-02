@@ -23,7 +23,7 @@ export function ShareButton({
   const isMobile =
     typeof window !== "undefined" &&
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent,
+      navigator.userAgent
     );
   const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
   const shareText = `${gameTitle} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;

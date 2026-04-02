@@ -95,7 +95,7 @@ export function ShareModal({
   onClose,
   gameName,
   shareUrl,
-  shareText
+  shareText,
 }: ShareModalProps) {
   const [copied, setCopied] = useState(false);
 
@@ -193,11 +193,13 @@ export function ShareModal({
         </div>
 
         <div className="share-modal-section">
-          <p className="share-modal-section-title">Або скопіюйте посилання чи текст:</p>
+          <p className="share-modal-section-title">
+            Або скопіюйте посилання чи текст:
+          </p>
           <div className="share-modal-link-container">
             <input
               type="text"
-              value={shareText + "\n" + shareUrl}
+              value={shareUrl}
               readOnly
               className="share-modal-link-input"
               onClick={(e) => e.currentTarget.select()}
