@@ -29,7 +29,7 @@ export function ShareButton({
   const shareText = `${gameTitle} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
 
   const handleClick = () => {
-    // if (isMobile && navigator.share) {
+    if (isMobile && navigator.share) {
       navigator
         .share({
           title: "Відкрити в LBK Launcher",
@@ -42,9 +42,9 @@ export function ShareButton({
         .catch((error) => {
           alert(`Помилка при поширенні: ${error}`);
         });
-    // }
+    }
     // On mobile, ShareModal will handle native share automatically
-    // setIsModalOpen(true);
+    setIsModalOpen(true);
   };
 
   return (
