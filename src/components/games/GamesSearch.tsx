@@ -13,6 +13,7 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
@@ -41,6 +42,7 @@ const STATUS_OPTIONS = [
   { value: "completed", label: "Готово", icon: faCheckCircle },
   { value: "in-progress", label: "У розробці", icon: faSpinner },
   { value: "planned", label: "Заплановано", icon: faClock },
+  { value: "tech-improvement", label: "Технічна доробка", icon: faWrench },
 ];
 
 const SORT_OPTIONS = [

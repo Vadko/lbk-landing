@@ -2826,6 +2826,11 @@ p + .why-btn {
   color: #ab47bc;
 }
 
+.game-card-status.tech-improvement {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
 .game-card-progress {
   flex: 1;
   max-width: 100px;
@@ -3208,6 +3213,10 @@ p + .why-btn {
 
 .game-status-badge.planned {
   background: var(--color-mixed);
+}
+
+.game-status-badge.tech-improvement {
+  background: #3b82f6;
 }
 
 /* Game Section */
