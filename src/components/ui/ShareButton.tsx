@@ -28,10 +28,10 @@ export function ShareButton({
   const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
   const shareText = `${gameTitle} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
 
-  const handleClick = async () => {
+  const handleClick = () => {
     if (isMobile && navigator.share) {
       try {
-        await navigator.share({
+        navigator.share({
           title: "Відкрити в LBK Launcher",
           text: shareText,
           url: shareUrl,
