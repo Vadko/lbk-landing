@@ -30,20 +30,18 @@ export function ShareButton({
 
   const handleClick = () => {
     if (isMobile && navigator.share) {
-      try {
-        navigator.share({
+      navigator
+        .share({
           title: "Відкрити в LBK Launcher",
           text: shareText,
           url: shareUrl,
+        })
+        .then(() => {
+          return;
+        })
+        .catch((error) => {
+          alert(`Помилка при поширенні: ${error}`);
         });
-        return;
-      } catch (error) {
-        alert(`Помилка при поширенні: ${error}`);
-        if (error instanceof Error && error.name !== "AbortError") {
-          setIsModalOpen(true);
-        }
-        return;
-      }
     }
     // On mobile, ShareModal will handle native share automatically
     setIsModalOpen(true);
