@@ -29,12 +29,6 @@ export function ShareButton({
   const shareText = `${gameTitle} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
 
   const handleClick = async () => {
-    if (!navigator.share) {
-    alert("Ваш браузер взагалі не підтримує Web Share API або ви використовуєте HTTP");
-    setIsModalOpen(true);
-    return;
-  }
-  alert(isMobile);
     if (isMobile && navigator.share) {
       try {
         await navigator.share({
