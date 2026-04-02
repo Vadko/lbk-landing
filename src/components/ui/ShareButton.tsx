@@ -23,12 +23,18 @@ export function ShareButton({
   const isMobile =
     typeof window !== "undefined" &&
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
+      navigator.userAgent,
     );
   const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
   const shareText = `${gameTitle} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
 
   const handleClick = async () => {
+    if (!navigator.share) {
+    alert("Ваш браузер взагалі не підтримує Web Share API або ви використовуєте HTTP");
+    setIsModalOpen(true);
+    return;
+  }
+  alert(isMobile);
     if (isMobile && navigator.share) {
       try {
         await navigator.share({
@@ -37,7 +43,11 @@ export function ShareButton({
           url: shareUrl,
         });
         return;
-      } catch {
+      } catch (error) {
+        alert(`Помилка при поширенні: ${error}`);
+        if (error instanceof Error && error.name !== "AbortError") {
+          setIsModalOpen(true);
+        }
         return;
       }
     }
