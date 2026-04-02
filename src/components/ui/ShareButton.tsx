@@ -44,7 +44,7 @@ export function ShareButton({
         });
     }
     // On mobile, ShareModal will handle native share automatically
-    setIsModalOpen(true);
+    // setIsModalOpen(true);
   };
 
   return (
