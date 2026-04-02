@@ -10,7 +10,7 @@ import {
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { faCopy, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { trackShareLinkCopied } from "@/lib/analytics";
 import { SvgIcon } from "./SvgIcon";
@@ -97,14 +97,14 @@ export function ShareModal({
   shareUrl,
   shareText
 }: ShareModalProps) {
-  const [copiedField, setCopiedField] = useState<"url" | "text" | null>(null);
+  const [copied, setCopied] = useState(false);
 
-  const handleCopy = async (text: string, field: "url" | "text") => {
+  const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
       trackShareLinkCopied(gameName);
-      setCopiedField(field);
-      setTimeout(() => setCopiedField(null), 2000);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
       // Fallback for older browsers
       const textArea = document.createElement("textarea");
@@ -116,8 +116,8 @@ export function ShareModal({
       document.execCommand("copy");
       document.body.removeChild(textArea);
       trackShareLinkCopied(gameName);
-      setCopiedField(field);
-      setTimeout(() => setCopiedField(null), 2000);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -197,35 +197,18 @@ export function ShareModal({
           <div className="share-modal-link-container">
             <input
               type="text"
-              value={shareUrl}
-              readOnly
-              className="share-modal-link-input"
-              onClick={(e) => e.currentTarget.select()}
-            />
-            <button
-              className={`share-modal-copy-btn ${copiedField === "url" ? "copied" : ""}`}
-              onClick={() => handleCopy(shareUrl, "url")}
-              type="button"
-            >
-              <SvgIcon icon={faCopy} />
-              {copiedField === "url" ? "Скопійовано!" : "Копіювати"}
-            </button>
-          </div>
-          <div className="share-modal-link-container">
-            <input
-              type="text"
               value={shareText + "\n" + shareUrl}
               readOnly
               className="share-modal-link-input"
               onClick={(e) => e.currentTarget.select()}
             />
             <button
-              className={`share-modal-copy-btn ${copiedField === "text" ? "copied" : ""}`}
-              onClick={() => handleCopy(shareText + "\n" + shareUrl, "text")}
+              className={`share-modal-copy-btn ${copied ? "copied" : ""}`}
+              onClick={() => handleCopy(shareText + "\n" + shareUrl)}
               type="button"
             >
               <SvgIcon icon={faCopy} />
-              {copiedField === "text" ? "Скопійовано!" : "Копіювати"}
+              {copied ? "Скопійовано!" : "Копіювати текст"}
             </button>
           </div>
         </div>
