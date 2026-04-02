@@ -39,8 +39,8 @@ export function ShareButton({
         .then(() => {
           return;
         })
-        .catch((error) => {
-          alert(`Помилка при поширенні: ${error}`);
+        .catch(() => {
+          // ignore errors and fallback to modal
         });
     }
     // On mobile, ShareModal will handle native share automatically
