@@ -1,68 +1,69 @@
 "use client";
 
 import { useState } from "react";
-import { trackShareLinkCopied } from "@/lib/analytics";
 import { ShareIcon } from "../icons";
+import { ShareModal } from "./ShareModal";
 
 interface ShareButtonProps {
   gameSlug: string;
   teamSlug: string;
   gameTitle: string;
+  teamName: string;
 }
 
 export function ShareButton({
   gameSlug,
   teamSlug,
   gameTitle,
+  teamName,
 }: ShareButtonProps) {
-  const [copied, setCopied] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleShare = async () => {
-    const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
+  // Detect mobile device
+  const isMobile =
+    typeof window !== "undefined" &&
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
+  const shareText = `${gameTitle} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
 
-    // Try native share API first (mobile)
-    if (navigator.share) {
-      try {
-        await navigator.share({
+  const handleClick = () => {
+    if (isMobile && navigator.share) {
+      navigator
+        .share({
           title: "Відкрити в LBK Launcher",
+          text: shareText,
           url: shareUrl,
+        })
+        .then(() => {
+          return;
+        })
+        .catch(() => {
+          // ignore errors and fallback to modal
         });
-        return;
-      } catch {
-        // User cancelled or share failed, fall through to clipboard
-      }
     }
-
-    // Fallback to clipboard
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      trackShareLinkCopied(gameTitle);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Last resort fallback
-      const textArea = document.createElement("textarea");
-      textArea.value = shareUrl;
-      textArea.style.position = "fixed";
-      textArea.style.opacity = "0";
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textArea);
-      trackShareLinkCopied(gameTitle);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+    // On mobile, ShareModal will handle native share automatically
+    setIsModalOpen(true);
   };
 
   return (
-    <button
-      onClick={handleShare}
-      className={`btn-neon btn-share ${copied ? "copied" : ""}`}
-      type="button"
-    >
-      <ShareIcon />
-      {copied ? "Скопійовано!" : "Поділитися"}
-    </button>
+    <>
+      <button
+        onClick={handleClick}
+        className="share-btn btn-neon btn-share"
+        type="button"
+      >
+        <ShareIcon />
+        Поділитися
+      </button>
+      <ShareModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        gameName={gameTitle}
+        shareUrl={shareUrl}
+        shareText={shareText}
+      />
+    </>
   );
 }

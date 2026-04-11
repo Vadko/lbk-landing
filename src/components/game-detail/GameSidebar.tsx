@@ -58,6 +58,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
               gameSlug={game.slug}
               teamSlug={teamToSlug(game.team)}
               gameTitle={game.name}
+              teamName={game.team}
             />
           </>
         )}
