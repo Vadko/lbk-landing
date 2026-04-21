@@ -10,29 +10,36 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { slug, team } = await request.json();
+    const { slug, team, oldTeam } = await request.json();
 
     if (!slug) {
       return NextResponse.json({ error: "slug is required" }, { status: 400 });
     }
 
+    const paths: string[] = [];
+
     // Revalidate game pages
     const teamSlug = team ? teamToSlug(team) : null;
     if (teamSlug) {
-      // Specific team page
       revalidatePath(`/games/${slug}/${teamSlug}`);
+      paths.push(`/games/${slug}/${teamSlug}`);
     }
+
+    // Revalidate old team page so it picks up the redirect
+    const oldTeamSlug = oldTeam ? teamToSlug(oldTeam) : null;
+    if (oldTeamSlug && oldTeamSlug !== teamSlug) {
+      revalidatePath(`/games/${slug}/${oldTeamSlug}`);
+      paths.push(`/games/${slug}/${oldTeamSlug}`);
+    }
+
     // Game overview page (all teams)
     revalidatePath(`/games/${slug}`);
+    paths.push(`/games/${slug}`);
     // Games list page
     revalidatePath("/games");
+    paths.push("/games");
 
-    return NextResponse.json({
-      revalidated: true,
-      paths: teamSlug
-        ? [`/games/${slug}/${teamSlug}`, `/games/${slug}`, "/games"]
-        : [`/games/${slug}`, "/games"],
-    });
+    return NextResponse.json({ revalidated: true, paths });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to revalidate", message: (error as Error).message },
