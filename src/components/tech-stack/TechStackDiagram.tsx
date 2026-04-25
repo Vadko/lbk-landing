@@ -10,8 +10,8 @@ import {
   useNodesState,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { memo } from "react";
 import type { Edge, Node, NodeProps } from "@xyflow/react";
+import { memo } from "react";
 
 // ━━━ Colors ━━━
 const C = {
@@ -123,9 +123,7 @@ type InfraNodeType = Node<{
   color: string;
 }>;
 
-const InfraNode = memo(function InfraNode({
-  data,
-}: NodeProps<InfraNodeType>) {
+const InfraNode = memo(function InfraNode({ data }: NodeProps<InfraNodeType>) {
   return (
     <div
       className="ts-node ts-node--infra"
@@ -256,13 +254,7 @@ const initialNodes: Node[] = [
       label: "Supabase",
       subtitle: "Self-hosted Supabase",
       color: C.supabase,
-      features: [
-        "PostgreSQL",
-        "Auth",
-        "Storage",
-        "Edge Functions",
-        "Realtime",
-      ],
+      features: ["PostgreSQL", "Auth", "Storage", "Edge Functions", "Realtime"],
     },
   },
 
