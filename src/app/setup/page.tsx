@@ -45,7 +45,7 @@ export default function SetupPage() {
   const detectedPlatform = useSyncExternalStore(
     emptySubscribe,
     getOSPlatform,
-    () => "windows" as Platform
+    () => "windows" as Platform,
   );
   const [activePlatform, setActivePlatform] =
     useState<Platform>(detectedPlatform);
@@ -203,18 +203,18 @@ function WindowsInstructions({
           <h4>Windows SmartScreen блокує запуск</h4>
           <ol>
             <li>
-              Натисніть <strong>&quot;Докладніше&quot;</strong> у вікні
+              Натисніть &quot;Докладніше&quot; у вікні
               попередження
             </li>
             <li>
-              Оберіть <strong>&quot;Усе одно запустити&quot;</strong>
+              Оберіть &quot;Усе одно запустити&quot;
             </li>
           </ol>
           <p>Або через властивості файлу:</p>
           <ol>
             <li>Клацніть правою кнопкою на файлі → &quot;Властивості&quot;</li>
             <li>
-              Поставте галочку <strong>&quot;Розблокувати&quot;</strong> внизу
+              Поставте галочку &quot;Розблокувати&quot; внизу
             </li>
             <li>Натисніть &quot;OK&quot; та спробуйте знову</li>
           </ol>
@@ -261,7 +261,7 @@ function MacOSInstructions({
             ) : (
               <code>LBK-Launcher-*-arm64.dmg</code>
             )}{" "}
-            — для Apple Silicon (M1/M2/M3)
+            — для Apple Silicon
           </li>
           <li>
             {x64Url ? (
@@ -340,7 +340,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
             className="copy-btn"
             onClick={() =>
               navigator.clipboard.writeText(
-                `flatpak install --user ${flatpakrefUrl}`
+                `flatpak install --user ${flatpakrefUrl}`,
               )
             }
           >
@@ -373,7 +373,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
             className="copy-btn"
             onClick={() =>
               navigator.clipboard.writeText(
-                "sudo rpm -i LBK-Launcher-linux.rpm"
+                "sudo rpm -i LBK-Launcher-linux.rpm",
               )
             }
           >
@@ -441,7 +441,7 @@ function SteamDeckInstructions() {
             className="copy-btn"
             onClick={() =>
               navigator.clipboard.writeText(
-                `flatpak install --user ${flatpakrefUrl}`
+                `flatpak install --user ${flatpakrefUrl}`,
               )
             }
           >
@@ -484,6 +484,12 @@ function SteamDeckInstructions() {
               <li>Перейдіть до завантажень та оберіть AppImage</li>
               <li>Підтвердіть додавання</li>
             </ul>
+            <p>
+              За бажанням можна завантажити медіа для оформлення бібліотеки:{" "}
+              <a href="https://github.com/Vadko/lbk-launcher/releases/download/v2.5.0/Steam.media.zip">
+                Steam media.zip
+              </a>
+            </p>
           </li>
         </ol>
       </div>
@@ -538,7 +544,7 @@ function ReleaseFilesBlock({
       url: links.macosArm,
       platform: "macOS",
       icon: faApple,
-      desc: "Apple Silicon (M1/M2/M3/M4)",
+      desc: "Apple Silicon",
     },
     {
       name: `LBK-Launcher-${v}-x64.dmg`,
