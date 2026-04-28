@@ -45,7 +45,7 @@ export default function SetupPage() {
   const detectedPlatform = useSyncExternalStore(
     emptySubscribe,
     getOSPlatform,
-    () => "windows" as Platform,
+    () => "windows" as Platform
   );
   const [activePlatform, setActivePlatform] =
     useState<Platform>(detectedPlatform);
@@ -202,20 +202,13 @@ function WindowsInstructions({
         <div className="setup-issue">
           <h4>Windows SmartScreen блокує запуск</h4>
           <ol>
-            <li>
-              Натисніть &quot;Докладніше&quot; у вікні
-              попередження
-            </li>
-            <li>
-              Оберіть &quot;Усе одно запустити&quot;
-            </li>
+            <li>Натисніть &quot;Докладніше&quot; у вікні попередження</li>
+            <li>Оберіть &quot;Усе одно запустити&quot;</li>
           </ol>
           <p>Або через властивості файлу:</p>
           <ol>
             <li>Клацніть правою кнопкою на файлі → &quot;Властивості&quot;</li>
-            <li>
-              Поставте галочку &quot;Розблокувати&quot; внизу
-            </li>
+            <li>Поставте галочку &quot;Розблокувати&quot; внизу</li>
             <li>Натисніть &quot;OK&quot; та спробуйте знову</li>
           </ol>
         </div>
@@ -340,7 +333,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
             className="copy-btn"
             onClick={() =>
               navigator.clipboard.writeText(
-                `flatpak install --user ${flatpakrefUrl}`,
+                `flatpak install --user ${flatpakrefUrl}`
               )
             }
           >
@@ -373,7 +366,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
             className="copy-btn"
             onClick={() =>
               navigator.clipboard.writeText(
-                "sudo rpm -i LBK-Launcher-linux.rpm",
+                "sudo rpm -i LBK-Launcher-linux.rpm"
               )
             }
           >
@@ -441,7 +434,7 @@ function SteamDeckInstructions() {
             className="copy-btn"
             onClick={() =>
               navigator.clipboard.writeText(
-                `flatpak install --user ${flatpakrefUrl}`,
+                `flatpak install --user ${flatpakrefUrl}`
               )
             }
           >
