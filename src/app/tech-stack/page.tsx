@@ -22,7 +22,7 @@ const PROJECTS = [
       Дані: "TanStack Query v5, Supabase",
       Кеш: "Redis (ioredis)",
       SEO: "JSON-LD, OpenGraph, динамічний Sitemap",
-      UI: "FontAwesome, Lightbox, canvas-confetti",
+      UI: "FontAwesome, Lightbox",
       Деплой: "Coolify (next start)",
     },
   },
@@ -40,7 +40,7 @@ const PROJECTS = [
       UI: "Recharts, PhotoSwipe, Lucide Icons",
       Тести: "Vitest, Testing Library",
       Workers: "Media, Steam Guides, Steam Curator, Telegram Bot",
-      Деплой: "Coolify (standalone + Docker workers)",
+      Деплой: "Coolify",
     },
   },
   {
@@ -49,12 +49,11 @@ const PROJECTS = [
     color: "#ffa47a",
     description: "Десктопний додаток для встановлення українських перекладів",
     stack: {
-      Фреймворк: "Electron 40, React 18, Vite 6",
+      Фреймворк: "Electron 40, React 19, Vite 6",
       Стилі: "Tailwind CSS 3, Framer Motion",
-      Стейт: "Zustand (7 stores), TanStack Query v5",
+      Стейт: "Zustand, TanStack Query v5",
       "Локальна БД": "SQLite (better-sqlite3, worker threads, spellfix1)",
       Синхронізація: "Supabase REST + Realtime WebSocket",
-      "Ігрові платформи": "Steam, Epic, GOG, Rockstar, Heroic, Lutris",
       Аналітика: "Mixpanel",
       Збірка: "electron-builder (Win / Mac / Linux)",
       Оновлення: "electron-updater (GitHub Releases)",
@@ -64,11 +63,9 @@ const PROJECTS = [
 ];
 
 const SUPABASE = {
-  "База даних": "PostgreSQL (137+ міграцій)",
+  "База даних": "PostgreSQL",
   Автентифікація: "Email + Google OAuth",
-  Сховище: "game-images, game-archives, feedback-screenshots",
-  "Edge Functions":
-    "track, submit-logs, submit-feedback, telegram-bot, steam-library, get-banners, kuli-sync, sync-steam-apps, get-download-url",
+  Сховище: "game-images, game-archives",
   Realtime: "WebSocket підписки для синхронізації лаунчера",
 };
 
