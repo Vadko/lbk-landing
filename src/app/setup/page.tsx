@@ -180,7 +180,7 @@ function WindowsInstructions({
         <ol className="setup-steps">
           <li>Завантажте файл інсталятора або портативну версію</li>
           <li>Запустіть завантажений файл</li>
-          <li>Дотримуйтесь інструкцій на екрані</li>
+          <li>Дотримуйтеся інструкцій на екрані</li>
         </ol>
       </div>
 
@@ -202,20 +202,13 @@ function WindowsInstructions({
         <div className="setup-issue">
           <h4>Windows SmartScreen блокує запуск</h4>
           <ol>
-            <li>
-              Натисніть <strong>&quot;Докладніше&quot;</strong> у вікні
-              попередження
-            </li>
-            <li>
-              Оберіть <strong>&quot;Усе одно запустити&quot;</strong>
-            </li>
+            <li>Натисніть &quot;Докладніше&quot; у вікні попередження</li>
+            <li>Оберіть &quot;Усе одно запустити&quot;</li>
           </ol>
           <p>Або через властивості файлу:</p>
           <ol>
             <li>Клацніть правою кнопкою на файлі → &quot;Властивості&quot;</li>
-            <li>
-              Поставте галочку <strong>&quot;Розблокувати&quot;</strong> внизу
-            </li>
+            <li>Поставте галочку &quot;Розблокувати&quot; внизу</li>
             <li>Натисніть &quot;OK&quot; та спробуйте знову</li>
           </ol>
         </div>
@@ -261,7 +254,7 @@ function MacOSInstructions({
             ) : (
               <code>LBK-Launcher-*-arm64.dmg</code>
             )}{" "}
-            — для Apple Silicon (M1/M2/M3)
+            — для Apple Silicon
           </li>
           <li>
             {x64Url ? (
@@ -484,6 +477,12 @@ function SteamDeckInstructions() {
               <li>Перейдіть до завантажень та оберіть AppImage</li>
               <li>Підтвердіть додавання</li>
             </ul>
+            <p>
+              За бажанням можна завантажити медіа для оформлення бібліотеки:{" "}
+              <a href="https://github.com/Vadko/lbk-launcher/releases/download/v2.5.0/Steam.media.zip">
+                Steam media.zip
+              </a>
+            </p>
           </li>
         </ol>
       </div>
@@ -538,7 +537,7 @@ function ReleaseFilesBlock({
       url: links.macosArm,
       platform: "macOS",
       icon: faApple,
-      desc: "Apple Silicon (M1/M2/M3/M4)",
+      desc: "Apple Silicon",
     },
     {
       name: `LBK-Launcher-${v}-x64.dmg`,

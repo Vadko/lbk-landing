@@ -31,7 +31,7 @@ export function CollaborationSection() {
   return (
     <CardGridSection
       id="collaboration"
-      title="Приєднуйтесь до спільноти"
+      title="Приєднуйтеся до спільноти"
       columns={2}
       centerText
     >

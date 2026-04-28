@@ -79,7 +79,7 @@ export function CollaborationPage() {
       <CtaSection
         title="Готові до співпраці?"
         description="Зв'яжіться з нами, щоб отримати детальну статистику та варіанти інтеграції."
-        buttonText="Зв'язатись з нами"
+        buttonText="Зв'язатися з нами"
         buttonHref="https://t.me/lbk_launcher_bot"
       />
     </>
