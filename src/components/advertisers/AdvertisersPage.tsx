@@ -9,7 +9,7 @@ export function AdvertisersPage() {
       <PageHeroSection
         title="Рекламуйтеся там, де грають щодня"
         description="Досягайте активних гравців із високою щоденною активністю та стійким довгостроковим утриманням."
-        ctaText="Зв'язатись з нами"
+        ctaText="Зв'язатися з нами"
         ctaHref="https://t.me/lbk_launcher_bot"
         className="advertisers-hero"
       />

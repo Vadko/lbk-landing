@@ -75,7 +75,7 @@ const FEATURES = [
     description:
       "Повна прозорість і можливість перевірити безпеку. Ми нічого не приховуємо.",
     link: "https://github.com/Vadko/lbk-launcher",
-    linkText: "Подивитись код",
+    linkText: "Подивитися код",
   },
 ];
 

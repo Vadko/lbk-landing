@@ -19,7 +19,7 @@ export function GameInstallSteps({ gameName }: GameInstallStepsProps) {
           автоматично завантажиться та встановиться
         </li>
         <li>
-          <strong>Запустіть гру</strong> та насолоджуйтесь українською
+          <strong>Запустіть гру</strong> та насолоджуйтеся українською
           локалізацією!
         </li>
       </ol>

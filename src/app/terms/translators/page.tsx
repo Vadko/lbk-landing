@@ -36,7 +36,7 @@ export default function TermsTranslatorsPage() {
         <p>
           Додаючи свій переклад на платформу{" "}
           <a href="https://lbklauncher.com/">https://lbklauncher.com/</a>, ви
-          погоджуєтесь з наступним:
+          погоджуєтеся з наступним:
         </p>
         <ul>
           <li>

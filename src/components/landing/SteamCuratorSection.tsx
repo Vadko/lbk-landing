@@ -29,7 +29,7 @@ export function SteamCuratorSection() {
               rel="noopener noreferrer"
               href="https://store.steampowered.com/curator/46014434-LBK-Launcher"
             >
-              Підписатись на куратора
+              Підписатися на куратора
             </a>
           </div>
         </div>
