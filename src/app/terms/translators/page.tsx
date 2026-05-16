@@ -80,7 +80,7 @@ export default function TermsTranslatorsPage() {
             буде допущений до публікації.
           </li>
           <li>
-            <strong>Заміна ШІ:</strong> Якщо на гру, з&#39;являється не-ШІ
+            <strong>Заміна ШІ: </strong> Якщо на гру, з&#39;являється не-ШІ
             переклад, то він замінює ШІ. Адміністрація LBK може робити заміну
             без попередніх попереджень. Виключення стосуються додаткових робіт -
             текстур та/чи дубляжу. Тобто, якщо ШІ переклад має текстури та/чи
@@ -159,13 +159,13 @@ export default function TermsTranslatorsPage() {
         <p>Якщо у вас є запитання, не вагайтеся зв’язатися з нами:</p>
         <ul>
           <li>
-            <strong>Email: </strong>
+            <strong>Email:</strong>{" "}
             <a href="mailto:pr@gameglobe-localisation.com">
               pr@gameglobe-localisation.com
             </a>
           </li>
           <li>
-            <strong>Telegram: </strong>
+            <strong>Telegram:</strong>{" "}
             <a href="https://t.me/lbk_launcher_bot">
               https://t.me/lbk_launcher_bot
             </a>
