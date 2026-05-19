@@ -50,6 +50,10 @@ export async function generateMetadata({
         "українізатор ігор",
         "LBK Launcher",
       ],
+      robots: {
+        index: false,
+        follow: true,
+      },
       openGraph: {
         title: `${game.name} українською | LBK Launcher`,
         description,
