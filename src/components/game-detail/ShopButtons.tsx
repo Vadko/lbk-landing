@@ -9,7 +9,7 @@ interface ShopButtonsProps {
 
 export function ShopButtons({ game }: ShopButtonsProps) {
   return (
-    <div className="game-sidebar-card game-steam-card">
+    <div className="game-sidebar-card game-steam-card store-list">
       {game.steam_app_id && (
         <a
           href={`https://store.steampowered.com/app/${game.steam_app_id}`}
