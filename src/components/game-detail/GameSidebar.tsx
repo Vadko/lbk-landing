@@ -1,5 +1,4 @@
 import { faDiscord } from "@fortawesome/free-brands-svg-icons/faDiscord";
-import { faSteam } from "@fortawesome/free-brands-svg-icons/faSteam";
 import { faTelegram } from "@fortawesome/free-brands-svg-icons/faTelegram";
 import { faWindows } from "@fortawesome/free-brands-svg-icons/faWindows";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
@@ -15,6 +14,7 @@ import { getReadablePlatform } from "@/helpers/getReadablePlatform";
 import { teamToSlug } from "@/lib/transliterate";
 import type { Game } from "@/lib/types";
 import { RocketIcon } from "../icons";
+import { ShopButtons } from "./ShopButtons";
 
 interface GameSidebarProps {
   game: Game;
@@ -80,20 +80,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
         </div>
       )}
 
-      {/* Steam Link */}
-      {game.steam_app_id && (
-        <div className="game-sidebar-card game-steam-card">
-          <a
-            href={`https://store.steampowered.com/app/${game.steam_app_id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary btn-steam"
-          >
-            <SvgIcon icon={faSteam} />
-            Сторінка в Steam
-          </a>
-        </div>
-      )}
+      <ShopButtons game={game} />
 
       {/* Achievements */}
       {game.achievements_archive_path && (
