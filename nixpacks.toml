@@ -1,4 +1,5 @@
-providers = ["node"]
+[phases.setup]
+nixpkgsArchive = "25f2aaa926f81aaf03398a2364b61fac2df38dd4"
 
 [phases.install]
 cmds = [
