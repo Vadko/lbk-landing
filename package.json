@@ -2,14 +2,6 @@
   "name": "lb-landing",
   "version": "0.1.0",
   "private": true,
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp",
-      "unrs-resolver",
-      "workerd"
-    ]
-  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
