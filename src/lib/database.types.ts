@@ -750,6 +750,7 @@ export type Database = {
           xbox_archive_path: string | null
           xbox_archive_size: string | null
           youtube: string | null
+          screenshots: string[] | null
         }
         Insert: {
           achievements_archive_file_list?: Json | null

@@ -23,6 +23,7 @@ import { teamToSlug } from "@/lib/transliterate";
 import type { Game } from "@/lib/types";
 import { AIBadgeIcon } from "../ui/icons/AIBadgeIcon";
 import { AIEditedBadgeIcon } from "../ui/icons/AIEditedBadgeIcon";
+import GameGallery from "./GameGallery";
 
 interface GameDetailArticleProps {
   game: Game;
@@ -156,6 +157,21 @@ export function GameDetailArticle({
                   <p className="game-description whitespace-pre-line">
                     {game.game_description}
                   </p>
+                </section>
+              )}
+
+              {game.screenshots && game.screenshots.length > 0 && (
+                <section className="game-section">
+                  <h2>Галерея</h2>
+                  <GameGallery
+                    slides={game.screenshots}
+                    spaceBetween={30}
+                    slidesPerView={3}
+                    pagination={false}
+                    thumbs={true}
+                    loop={true}
+                    updated_at={game.updated_at}
+                  />
                 </section>
               )}
 

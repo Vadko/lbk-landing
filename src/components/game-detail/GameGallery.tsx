@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { useState } from "react";
 import {
@@ -31,7 +33,7 @@ type Props = {
   autoplay?: boolean;
 };
 
-export default function SwiperSlider({
+export default function GameGallery({
   slides,
   spaceBetween = 10,
   slidesPerView = 1,
@@ -52,7 +54,7 @@ export default function SwiperSlider({
       className={`slider-container slider-container--same-height ${thumbs && "slider-container--thumbs"}`}
     >
       {/* Великий слайдер */}
-      <div className="main-slider overflow-hidden rounded-lg">
+      <div className="main-slider overflow-hidden">
         <Swiper
           spaceBetween={spaceBetween}
           slidesPerView={thumbs ? 1 : slidesPerView}
@@ -67,17 +69,20 @@ export default function SwiperSlider({
           modules={[Navigation, Pagination, Autoplay, Thumbs, Zoom]}
         >
           {slidesUrls.map((slide, index) => (
-            <SwiperSlide key={index} className="overflow-hidden rounded-lg">
+            <SwiperSlide key={index} className="main-slider-slide">
               <Image
                 src={slide}
-                alt={`slide-${index}`}
-                className="absolute inset-0 !object-cover blur-xl opacity-40 -z-10 pointer-events-none"
+                role="presentation"
+                alt=""
+                className="main-slider-slide__bg"
+                fill
               />
               <div className="swiper-zoom-container">
                 <Image
                   src={slide}
-                  alt={`slide-${index}`}
-                  className="rounded-lg"
+                  alt={`Ігровий скріншот ${index + 1}`}
+                  className="main-slider-slide__image"
+                  fill
                 />
               </div>
             </SwiperSlide>
@@ -94,17 +99,15 @@ export default function SwiperSlider({
             slidesPerView={slidesPerView}
             watchSlidesProgress
             scrollbar={{ draggable: true }}
-            breakpoints={{
-              1441: {
-                direction: "vertical",
-                spaceBetween,
-              },
-            }}
             modules={[Thumbs, Scrollbar, A11y]}
           >
             {slidesUrls.map((thumbSrc, index) => (
               <SwiperSlide key={index} className="cursor-pointer">
-                <Image src={thumbSrc} alt={`thumb-${index}`} fill />
+                <Image
+                  src={thumbSrc}
+                  alt={`Мініатюра ігрового скріншоту ${index + 1}`}
+                  fill
+                />
               </SwiperSlide>
             ))}
           </Swiper>
