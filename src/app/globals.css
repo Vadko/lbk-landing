@@ -232,6 +232,10 @@ a {
   background-clip: text;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 /* Container */
 .container {
   max-width: 1240px;
@@ -1840,6 +1844,7 @@ p + .why-btn {
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
   font-weight: 600;
+  justify-content: center;
   border-radius: 12px;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -3657,10 +3662,9 @@ p + .why-btn {
   box-shadow: 0 10px 30px rgba(var(--color-accent-rgb), 0.4);
 }
 
-/* Steam Button */
-.btn-steam {
-  justify-content: center;
-  width: 100%;
+.store-list {
+  display: grid;
+  gap: 12px;
 }
 
 .btn-launcher {
@@ -5655,16 +5659,22 @@ main.header-padding:has(.open-launcher-page) {
 /* Slider styles */
 .slider-container.slider-container--thumbs {
   display: grid;
-  grid-template-columns: 1fr 428px;
-  gap: 30px;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
 :is(.main-slider, .main-slider-thumbs) .swiper {
   height: 680px;
+  user-select: none;
+}
+
+.main-slider-thumbs {
+  overflow: hidden;
 }
 
 .main-slider-thumbs .swiper-wrapper {
-  width: calc(100% - 38px);
+  width: 100%;
+  height: calc(100% - 15px);
 }
 
 @media screen and (max-height: 800px) {
@@ -5673,23 +5683,17 @@ main.header-padding:has(.open-launcher-page) {
   }
 }
 
-@media screen and (max-width: 1440px) {
-  .slider-container.slider-container--thumbs {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
+.main-slider .swiper {
+  height: 350px;
+}
 
-  .main-slider .swiper {
-    height: 350px;
-  }
+.main-slider-thumbs .swiper {
+  height: 158px;
+}
 
+@media screen and (max-width: 768px) {
   .main-slider-thumbs .swiper {
-    height: 158px;
-  }
-
-  .main-slider-thumbs .swiper-wrapper {
-    width: 100%;
-    height: calc(100% - 38px);
+    height: 70px;
   }
 }
 
@@ -5729,7 +5733,26 @@ main.header-padding:has(.open-launcher-page) {
 .swiper-slide > .swiper-zoom-container > img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
   border-radius: 8px;
   overflow: hidden;
+}
+
+.main-slider,
+.main-slider-slide,
+.main-slider-slide__image {
+  border-radius: 12px;
+}
+
+.main-slider-thumbs img {
+  object-fit: cover;
+}
+
+.main-slider-slide__bg {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  filter: blur(20px);
+  opacity: 0.4;
+  z-index: -1;
+  pointer-events: none;
 }

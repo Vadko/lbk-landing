@@ -31,8 +31,8 @@ export function SteamSearchIcon(props: SVGProps<SVGSVGElement>) {
           y2="65.3263"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFA47A" />
-          <stop offset="1" stop-color="#A8CF96" />
+          <stop stopColor="#FFA47A" />
+          <stop offset="1" stopColor="#A8CF96" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_460_46896"
@@ -42,8 +42,8 @@ export function SteamSearchIcon(props: SVGProps<SVGSVGElement>) {
           y2="63.5313"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFA47A" />
-          <stop offset="1" stop-color="#A8CF96" />
+          <stop stopColor="#FFA47A" />
+          <stop offset="1" stopColor="#A8CF96" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_460_46896"
@@ -53,8 +53,8 @@ export function SteamSearchIcon(props: SVGProps<SVGSVGElement>) {
           y2="121.685"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFA47A" />
-          <stop offset="1" stop-color="#A8CF96" />
+          <stop stopColor="#FFA47A" />
+          <stop offset="1" stopColor="#A8CF96" />
         </linearGradient>
       </defs>
     </svg>

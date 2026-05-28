@@ -12,7 +12,6 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
 import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons/faFileArrowDown";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons/faTriangleExclamation";
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
@@ -182,46 +181,6 @@ function WindowsInstructions({
           <li>Запустіть завантажений файл</li>
           <li>Дотримуйтеся інструкцій на екрані</li>
         </ol>
-      </div>
-
-      <div className="setup-section setup-troubleshoot">
-        <h3>
-          <SvgIcon icon={faTriangleExclamation} />
-          Вирішення проблем
-        </h3>
-
-        <div className="setup-issue">
-          <h4>Браузер попереджає про небезпечний файл</h4>
-          <p>
-            Оберіть &quot;Зберегти&quot; або &quot;Завантажити в будь-якому
-            випадку&quot;. Попередження з&apos;являється через відсутність
-            цифрового підпису (проєкт open-source).
-          </p>
-        </div>
-
-        <div className="setup-issue">
-          <h4>Windows SmartScreen блокує запуск</h4>
-          <ol>
-            <li>Натисніть &quot;Докладніше&quot; у вікні попередження</li>
-            <li>Оберіть &quot;Усе одно запустити&quot;</li>
-          </ol>
-          <p>Або через властивості файлу:</p>
-          <ol>
-            <li>Клацніть правою кнопкою на файлі → &quot;Властивості&quot;</li>
-            <li>Поставте галочку &quot;Розблокувати&quot; внизу</li>
-            <li>Натисніть &quot;OK&quot; та спробуйте знову</li>
-          </ol>
-        </div>
-
-        <div className="setup-issue">
-          <h4>Smart App Control блокує (Windows 11)</h4>
-          <ol>
-            <li>Відкрийте &quot;Безпека Windows&quot;</li>
-            <li>Перейдіть до &quot;Керування програмами та браузером&quot;</li>
-            <li>Натисніть &quot;Параметри Smart App Control&quot;</li>
-            <li>Оберіть &quot;Вимкнути&quot;</li>
-          </ol>
-        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const hostname = request.headers.get("host") || "";
   const protocol = request.headers.get("x-forwarded-proto") || "https";
@@ -23,7 +23,7 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Застосовуємо middleware до всіх маршрутів окрім статичних файлів та API Next.js
+// Застосовуємо proxy до всіх маршрутів окрім статичних файлів та API Next.js
 export const config = {
   matcher: [
     /*
