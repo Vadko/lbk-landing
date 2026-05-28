@@ -1,15 +1,8 @@
 {
-  "name": "lb-landing",
+  "name": "lbk-landing",
   "version": "0.1.0",
   "private": true,
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp",
-      "unrs-resolver",
-      "workerd"
-    ]
-  },
+  "packageManager": "pnpm@11.4.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -59,5 +52,9 @@
     "lint-staged": "16.4.0",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3"
+  },
+  "volta": {
+    "node": "22.20.0",
+    "pnpm": "11.4.0"
   }
 }
