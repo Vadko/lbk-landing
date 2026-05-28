@@ -1844,6 +1844,7 @@ p + .why-btn {
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
   font-weight: 600;
+  justify-content: center;
   border-radius: 12px;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -3661,10 +3662,9 @@ p + .why-btn {
   box-shadow: 0 10px 30px rgba(var(--color-accent-rgb), 0.4);
 }
 
-/* Steam Button */
-.btn-steam {
-  justify-content: center;
-  width: 100%;
+.store-list {
+  display: grid;
+  gap: 12px;
 }
 
 .btn-launcher {
