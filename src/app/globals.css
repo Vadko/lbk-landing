@@ -5663,54 +5663,68 @@ main.header-padding:has(.open-launcher-page) {
   gap: 20px;
 }
 
-:is(.main-slider, .main-slider-thumbs) .swiper {
-  height: 680px;
+/* Embla основні стилі */
+:is(.main-slider, .main-slider-thumbs) .embla {
   user-select: none;
+}
+
+.embla__container {
+  display: flex;
+  height: 100%;
+}
+
+.embla__slide {
+  position: relative;
+  flex: 0 0 100%;
+  min-width: 0;
 }
 
 .main-slider-thumbs {
   overflow: hidden;
+  position: relative;
 }
 
-.main-slider-thumbs .swiper-wrapper {
-  width: 100%;
-  height: calc(100% - 15px);
+.embla__slide--thumb {
+  flex: 0 0 auto;
+  width: 200px;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  margin-right: 10px;
 }
 
-@media screen and (max-height: 800px) {
-  :is(.main-slider, .main-slider-thumbs) .swiper {
-    height: 600px;
-  }
-}
-
-.main-slider .swiper {
-  height: 350px;
-}
-
-.main-slider-thumbs .swiper {
-  height: 158px;
+.main-slider .embla {
+  aspect-ratio: 16 / 9;
 }
 
 @media screen and (max-width: 768px) {
-  .main-slider-thumbs .swiper {
+  .main-slider-thumbs .embla {
     height: 70px;
+  }
+
+  .embla__slide--thumb {
+    width: 100px;
   }
 }
 
-.swiper-scrollbar {
-  --swiper-scrollbar-right: 0;
-  --swiper-scrollbar-sides-offset: 0px;
-  --swiper-scrollbar-size: 8px;
-  --swiper-scrollbar-border-radius: 60px;
-  --swiper-scrollbar-bg-color: var(--dark-gray);
-  --swiper-scrollbar-drag-bg-color: var(--gray-text);
+/* Embla Scrollbar */
+.embla-thumbs__scrollbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-color: var(--dark-gray);
+  border-radius: 60px;
 }
 
-.swiper-scrollbar.swiper-scrollbar-horizontal {
-  --swiper-scrollbar-bottom: 0;
+.embla-thumbs__scrollbar-drag {
+  height: 100%;
+  background-color: var(--gray-text);
+  border-radius: 60px;
 }
 
-.main-slider-thumbs .swiper-slide::after {
+/* Thumbs active/hover state */
+.main-slider-thumbs .embla__slide--thumb::after {
   content: "";
   position: absolute;
   background-color: white;
@@ -5721,20 +5735,51 @@ main.header-padding:has(.open-launcher-page) {
 }
 
 .main-slider-thumbs
-  .swiper-slide:is(.swiper-slide-thumb-active, :hover)::after {
+  .embla__slide--thumb:is(.embla__slide--thumb-active, :hover)::after {
   opacity: 0.2;
 }
 
-.slider-container--same-height .swiper-slide {
+/* Pagination dots */
+.embla__dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.embla__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--dark-gray);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.embla__dot:hover {
+  background-color: var(--gray-text);
+}
+
+.embla__dot--active {
+  background-color: var(--primary-color, #007bff);
+}
+
+.slider-container--same-height .embla__slide {
   height: auto;
 }
 
-.swiper-slide > *:not(svg, .swiper-zoom-container),
-.swiper-slide > .swiper-zoom-container > img {
+.embla__slide > *:not(svg, .embla-zoom-container),
+.embla__slide > .embla-zoom-container > img {
   width: 100%;
   height: 100%;
   border-radius: 8px;
   overflow: hidden;
+}
+
+.main-slider-slide__image {
+  object-fit: contain;
 }
 
 .main-slider,
@@ -5755,4 +5800,8 @@ main.header-padding:has(.open-launcher-page) {
   opacity: 0.4;
   z-index: -1;
   pointer-events: none;
+}
+
+.cursor-zoom-in {
+  cursor: zoom-in;
 }
