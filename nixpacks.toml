@@ -1,0 +1,10 @@
+[phases.setup]
+nixpkgsArchive = "ac62194c3917d5f474c1a844b6fd6da2db95077d"
+
+[phases.install]
+cmds = [
+  "npm install -g corepack@latest",
+  "corepack enable",
+  "corepack prepare pnpm@11.4.0 --activate",
+  "pnpm install --frozen-lockfile",
+]
