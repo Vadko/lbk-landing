@@ -23,28 +23,30 @@ function getTransliteration(input: string): string | null {
   return null;
 }
 
-/**
- * Get transliteration variant for fuzzy search RPC
- */
 export function getTranslitVariant(input: string): string | null {
   return getTransliteration(input);
 }
 
-/**
- * Build FTS query with transliteration support
- * "batman" → "'batman':* | 'батман':*"
- */
+function tokenize(value: string): string[] {
+  return value
+    .toLowerCase()
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter((t) => t.length >= 2);
+}
+
 export function buildFtsQuery(input: string): string {
   if (!input) return "";
 
-  const normalized = input.toLowerCase().trim();
+  const buildExpr = (tokens: string[]) =>
+    tokens.map((t) => `'${t}':*`).join(" & ");
+
+  const primary = tokenize(input);
   const translit = getTransliteration(input);
+  const translitTokens = translit ? tokenize(translit) : [];
 
-  // FTS query with prefix matching
-  const queries = [`'${normalized}':*`];
-  if (translit) {
-    queries.push(`'${translit}':*`);
-  }
+  const exprs: string[] = [];
+  if (primary.length) exprs.push(`(${buildExpr(primary)})`);
+  if (translitTokens.length) exprs.push(`(${buildExpr(translitTokens)})`);
 
-  return queries.join(" | ");
+  return exprs.join(" | ");
 }
