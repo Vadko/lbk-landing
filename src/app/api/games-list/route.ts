@@ -92,6 +92,16 @@ export async function GET(request: NextRequest) {
 
     if (search) {
       const ftsQuery = buildFtsQuery(search);
+      if (!ftsQuery) {
+        const result = await fuzzySearch(
+          supabase,
+          search,
+          offset,
+          limit,
+          sortBy
+        );
+        return NextResponse.json(result, { headers: cacheHeaders() });
+      }
       query = query.textSearch("name_fts", ftsQuery, { config: "simple" });
     }
 
