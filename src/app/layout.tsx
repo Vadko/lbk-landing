@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ClientUtilities } from "@/components/layout/ClientUtilities";
+import { FanConBrochureBanner } from "@/components/layout/FanConBrochureBanner";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { QueryProvider } from "@/providers/QueryProvider";
@@ -125,6 +126,7 @@ export default function RootLayout({
         <QueryProvider>
           <main className="relative z-10 header-padding">{children}</main>
         </QueryProvider>
+        <FanConBrochureBanner />
         <Footer />
       </body>
     </html>
