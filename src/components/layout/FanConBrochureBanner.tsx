@@ -1,18 +1,20 @@
 "use client";
 
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 
 const DISMISS_KEY = "lbk-fancon-2026-banner-dismissed";
 
 export function FanConBrochureBanner() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
 
-  useEffect(() => {
     const isDismissed = window.localStorage.getItem(DISMISS_KEY) === "true";
-    setIsVisible(!isDismissed);
-  }, []);
+    return !isDismissed;
+  });
 
   const handleClose = () => {
     window.localStorage.setItem(DISMISS_KEY, "true");
