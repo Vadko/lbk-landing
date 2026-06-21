@@ -5,6 +5,27 @@ import { useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 
 const DISMISS_KEY = "lbk-fancon-2026-banner-dismissed";
+const DISMISS_HOURS = 72;
+
+const getCookie = (name: string): string | null => {
+  if (typeof document === "undefined") {
+    return null;
+  }
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(";").shift() || null;
+  }
+  return null;
+};
+
+const setCookie = (name: string, value: string, hours: number) => {
+  if (typeof document === "undefined") {
+    return;
+  }
+  const maxAge = hours * 60 * 60;
+  document.cookie = `${name}=${value}; max-age=${maxAge}; path=/`;
+};
 
 export function FanConBrochureBanner() {
   const [isVisible, setIsVisible] = useState(() => {
@@ -12,12 +33,12 @@ export function FanConBrochureBanner() {
       return false;
     }
 
-    const isDismissed = window.localStorage.getItem(DISMISS_KEY) === "true";
+    const isDismissed = getCookie(DISMISS_KEY) === "true";
     return !isDismissed;
   });
 
   const handleClose = () => {
-    window.localStorage.setItem(DISMISS_KEY, "true");
+    setCookie(DISMISS_KEY, "true", DISMISS_HOURS);
     setIsVisible(false);
   };
 
