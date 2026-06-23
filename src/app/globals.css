@@ -1778,9 +1778,22 @@ p + .why-btn {
   color: var(--text-sec);
 }
 
+.legal-body ul {
+  list-style: disc;
+}
+
+.legal-body ol {
+  list-style: decimal;
+}
+
 .legal-body li {
   margin-bottom: 10px;
   line-height: 1.7;
+  padding-left: 6px;
+}
+
+.legal-body li::marker {
+  color: var(--color-main);
 }
 
 .legal-body a {
