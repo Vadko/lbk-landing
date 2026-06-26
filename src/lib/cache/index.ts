@@ -2,8 +2,6 @@ import { MemoryCache } from "./memory-cache";
 import { RedisCache } from "./redis-cache";
 import type { Cache } from "./types";
 
-export type { Cache };
-
 // One cache instance per process. Stored on globalThis so dev hot-reload doesn't
 // keep creating new clients (and new Redis connections) on every edit — the
 // standard singleton pattern for connection clients in Next.js. Only the client

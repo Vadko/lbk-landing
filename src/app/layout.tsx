@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { ClientUtilities } from "@/components/layout/ClientUtilities";
 import { FanConBrochureBanner } from "@/components/layout/FanConBrochureBanner";
@@ -91,7 +92,6 @@ export default function RootLayout({
   return (
     <html lang="uk" suppressHydrationWarning className={outfit.variable}>
       <head>
-        <script src="/cdn-cgi/zaraz/i.js" referrerPolicy="origin" defer />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -116,11 +116,19 @@ export default function RootLayout({
                 url: "https://t.me/LittleBitUA",
               },
               inLanguage: "uk",
-            }),
+              // `.replace` below sanitizes "<" per Next's JSON-LD XSS guidance.
+            }).replace(/</g, "\\u003c"),
           }}
         />
       </head>
       <body className="antialiased main-bg">
+        {/* Cloudflare Zaraz — executable JS, so loaded via next/script (auto-inject
+            is off). Unlike JSON-LD above, which is data and stays a native tag. */}
+        <Script
+          src="/cdn-cgi/zaraz/i.js"
+          referrerPolicy="origin"
+          strategy="afterInteractive"
+        />
         <ClientUtilities />
         <Navbar />
         <QueryProvider>

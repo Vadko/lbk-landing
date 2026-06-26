@@ -2,13 +2,6 @@
 
 import dynamic from "next/dynamic";
 
-const BodyClassManager = dynamic(
-  () =>
-    import("@/components/layout/BodyClassManager").then((m) => ({
-      default: m.BodyClassManager,
-    })),
-  { ssr: false }
-);
 const RouteScrollTop = dynamic(
   () =>
     import("@/components/layout/RouteScrollTop").then((m) => ({
@@ -27,7 +20,6 @@ const ScrollToTop = dynamic(
 export function ClientUtilities() {
   return (
     <>
-      <BodyClassManager />
       <RouteScrollTop />
       <ScrollToTop />
     </>
