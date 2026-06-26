@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { GamesList } from "@/components/games/GamesList";
 import { getInitialGames } from "@/lib/games";
-
-const translateCount = 500;
+import { getGamesCount } from "@/lib/games-count";
 
 export async function generateMetadata({
   searchParams,
@@ -11,8 +10,9 @@ export async function generateMetadata({
   searchParams: Promise<{ team?: string }>;
 }): Promise<Metadata> {
   const params = await searchParams;
+  const count = await getGamesCount();
   const baseMetadata: Metadata = {
-    title: `Каталог ігор з українською локалізацією — ${translateCount}+ перекладів`,
+    title: `Каталог ігор з українською локалізацією — ${count}+ перекладів`,
     description:
       "Найповніша база ігор з українським перекладом. Шукайте українізатори за назвою, жанром або автором. Дізнайтеся прогрес перекладу та встановлюйте локалізації в один клік через лаунчер.",
     keywords: [
@@ -23,7 +23,7 @@ export async function generateMetadata({
       "українські переклади ігор каталог",
     ],
     openGraph: {
-      title: `Каталог ігор з українською локалізацією — ${translateCount}+ перекладів | LBK Launcher`,
+      title: `Каталог ігор з українською локалізацією — ${count}+ перекладів | LBK Launcher`,
       description:
         "Найповніша база ігор з українським перекладом. Шукайте українізатори за назвою, жанром або автором. Дізнайтеся прогрес перекладу та встановлюйте локалізації в один клік через лаунчер.",
     },

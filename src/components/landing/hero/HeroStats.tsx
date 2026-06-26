@@ -24,7 +24,7 @@ export function HeroStats() {
       <div>
         <SvgIcon icon={faGamepad} />
         <span>
-          {gamesCount ? <AnimatedStat value={gamesCount} /> : "80"}+ Ігор
+          <AnimatedStat value={gamesCount ?? 0} />+ Ігор
         </span>
       </div>
       {stats?.totalUniquePlayers && (
