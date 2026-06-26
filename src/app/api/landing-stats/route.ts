@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getFromCache, setCache } from "@/lib/redis";
+import { getFromCache, setCache } from "@/lib/cache";
 import { createServerClient } from "@/lib/supabase/server";
 
 const CACHE_KEY = "landing:stats";
