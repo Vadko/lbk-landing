@@ -94,7 +94,7 @@ export function ShowcaseSection() {
         <HoverCard key={index}>
           {feature.number ? (
             <div className="hover-card__number">
-              {gamesCount ? <AnimatedGamesCount count={gamesCount} /> : 80}+
+              <AnimatedGamesCount count={gamesCount ?? 0} />+
             </div>
           ) : (
             <div className="hover-card__icon">
@@ -106,7 +106,7 @@ export function ShowcaseSection() {
             dangerouslySetInnerHTML={{
               __html: feature.description.replace(
                 "[count]",
-                `${gamesCount ?? 80}`
+                `${gamesCount ?? 0}`
               ),
             }}
           ></p>

@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+import { refreshDeletedSlugsCache } from "@/lib/deleted-slugs-cache";
 import { teamToSlug } from "@/lib/transliterate";
 
 export async function POST(request: NextRequest) {
@@ -10,7 +11,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { slug, team, oldTeam } = await request.json();
+    const { slug, team, oldTeam, deleted } = await request.json();
 
     if (!slug) {
       return NextResponse.json({ error: "slug is required" }, { status: 400 });
@@ -38,6 +39,13 @@ export async function POST(request: NextRequest) {
     // Games list page
     revalidatePath("/games");
     paths.push("/games");
+
+    // Only a deletion changes the deleted-slugs set. Recompute it admin-side
+    // (not on the user's request) so the just-deleted page returns 410 right
+    // away; ordinary updates leave the set untouched, so we skip the work.
+    if (deleted) {
+      await refreshDeletedSlugsCache();
+    }
 
     return NextResponse.json({ revalidated: true, paths });
   } catch (error) {

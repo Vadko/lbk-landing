@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { ClientUtilities } from "@/components/layout/ClientUtilities";
 import { FanConBrochureBanner } from "@/components/layout/FanConBrochureBanner";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
+import { getGamesCount } from "@/lib/games-count";
 import { QueryProvider } from "@/providers/QueryProvider";
 
 const outfit = Outfit({
@@ -13,85 +15,92 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
-const translateCount = 600;
-export const metadata: Metadata = {
-  metadataBase: new URL("https://lbklauncher.com"),
-  title: {
-    default:
-      "LBK Launcher — Ігри українською: автоматичний українізатор та каталог перекладів",
-    template: "%s | LBK Launcher",
-  },
-  description: `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
-  keywords: [
-    "українізатор",
-    "українізатор ігор",
-    "українська локалізація",
-    "грати українською",
-    "ігри українською",
-    "український переклад ігор",
-    "LBK",
-    "LBK лаунчер",
-    "LBK Launcher",
-    "локалізація ігор",
-    "переклад ігор українською",
-    "українізація ігор",
-    "ігри на українській",
-    "українська мова в іграх",
-  ],
-  authors: [{ name: "LB Team & GGL Studio" }],
-  creator: "LB Team & GGL Studio",
-  publisher: "LB Team & GGL Studio",
-  openGraph: {
-    type: "website",
-    locale: "uk_UA",
-    url: "https://lbklauncher.com",
-    siteName: "LBK Launcher — Ігри українською",
-    title: "LBK Launcher — Ігри українською",
-    description: `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
-    images: [
-      {
-        url: "/assets/og-image.webp",
-        width: 1200,
-        height: 630,
-        alt: "LBK Launcher — Ігри українською",
-      },
+const appDescription = (gamesCount: number) =>
+  `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${gamesCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const description = appDescription(await getGamesCount());
+
+  return {
+    metadataBase: new URL("https://lbklauncher.com"),
+    title: {
+      default:
+        "LBK Launcher — Ігри українською: автоматичний українізатор та каталог перекладів",
+      template: "%s | LBK Launcher",
+    },
+    description,
+    keywords: [
+      "українізатор",
+      "українізатор ігор",
+      "українська локалізація",
+      "грати українською",
+      "ігри українською",
+      "український переклад ігор",
+      "LBK",
+      "LBK лаунчер",
+      "LBK Launcher",
+      "локалізація ігор",
+      "переклад ігор українською",
+      "українізація ігор",
+      "ігри на українській",
+      "українська мова в іграх",
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "LBK Launcher — Ігри українською мовою",
-    description: `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
-    images: ["/assets/og-image.webp"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    authors: [{ name: "LB Team & GGL Studio" }],
+    creator: "LB Team & GGL Studio",
+    publisher: "LB Team & GGL Studio",
+    openGraph: {
+      type: "website",
+      locale: "uk_UA",
+      url: "https://lbklauncher.com",
+      siteName: "LBK Launcher — Ігри українською",
+      title: "LBK Launcher — Ігри українською",
+      description,
+      images: [
+        {
+          url: "/assets/og-image.webp",
+          width: 1200,
+          height: 630,
+          alt: "LBK Launcher — Ігри українською",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "LBK Launcher — Ігри українською мовою",
+      description,
+      images: ["/assets/og-image.webp"],
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-  alternates: {
-    canonical: "https://lbklauncher.com/",
-  },
-  icons: {
-    icon: "/assets/favicon.ico",
-    apple: "/assets/favicon.ico",
-  },
-};
+    alternates: {
+      canonical: "https://lbklauncher.com/",
+    },
+    icons: {
+      icon: "/assets/favicon.ico",
+      apple: "/assets/favicon.ico",
+    },
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const description = appDescription(await getGamesCount());
+
   return (
     <html lang="uk" suppressHydrationWarning className={outfit.variable}>
       <head>
-        <script src="/cdn-cgi/zaraz/i.js" referrerPolicy="origin" defer />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -99,7 +108,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
               name: "LBK Launcher",
-              description: `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${translateCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`,
+              description,
               url: "https://lbklauncher.com",
               downloadUrl:
                 "https://github.com/Vadko/lbk-launcher/releases/latest",
@@ -116,11 +125,19 @@ export default function RootLayout({
                 url: "https://t.me/LittleBitUA",
               },
               inLanguage: "uk",
-            }),
+              // `.replace` below sanitizes "<" per Next's JSON-LD XSS guidance.
+            }).replace(/</g, "\\u003c"),
           }}
         />
       </head>
       <body className="antialiased main-bg">
+        {/* Cloudflare Zaraz — executable JS, so loaded via next/script (auto-inject
+            is off). Unlike JSON-LD above, which is data and stays a native tag. */}
+        <Script
+          src="/cdn-cgi/zaraz/i.js"
+          referrerPolicy="origin"
+          strategy="afterInteractive"
+        />
         <ClientUtilities />
         <Navbar />
         <QueryProvider>

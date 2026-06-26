@@ -68,6 +68,10 @@ body {
   }
 }
 
+body:has(.game-detail) {
+  background-image: none;
+}
+
 .header-padding {
   padding-top: calc(100px + var(--navbar-height));
   flex: 1 0 auto;

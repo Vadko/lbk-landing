@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getFromCache, setCache } from "@/lib/redis";
+import { getFromCache, setCache } from "@/lib/cache";
 import type { GitHubRelease } from "@/lib/types";
 
 const GITHUB_REPO = "Vadko/lbk-launcher";
