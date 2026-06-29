@@ -99,7 +99,12 @@ export default async function RootLayout({
   const description = appDescription(await getGamesCount());
 
   return (
-    <html lang="uk" suppressHydrationWarning className={outfit.variable}>
+    <html
+      lang="uk"
+      suppressHydrationWarning
+      className={outfit.variable}
+      data-scroll-behavior="smooth"
+    >
       <head>
         <script
           type="application/ld+json"

@@ -15,7 +15,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <html lang="uk">
+    <html lang="uk" data-scroll-behavior="smooth">
       <body>
         <div
           style={{
