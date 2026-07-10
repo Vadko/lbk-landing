@@ -50,34 +50,56 @@ export function HeroDownload() {
   const isSteamDeck = os === "steamdeck";
 
   const getMainDownloadUrl = () => {
-    if (isSteamDeck) return FLATPAKREF_URL;
-    if (os === "macos")
+    if (isSteamDeck) {
+      return FLATPAKREF_URL;
+    }
+    if (os === "macos") {
       return macArch === "x64"
         ? (downloadLinks.macosX64 ?? downloadLinks.macos)
         : (downloadLinks.macosArm ?? downloadLinks.macos);
-    if (os === "linux") return downloadLinks.linux;
+    }
+    if (os === "linux") {
+      return downloadLinks.linux;
+    }
     return downloadLinks.windows;
   };
 
   const getMainDownloadLabel = () => {
-    if (isSteamDeck) return "Встановити на Steam Deck";
-    if (os === "macos") return "Завантажити для macOS";
-    if (os === "linux") return "Завантажити для Linux";
+    if (isSteamDeck) {
+      return "Встановити на Steam Deck";
+    }
+    if (os === "macos") {
+      return "Завантажити для macOS";
+    }
+    if (os === "linux") {
+      return "Завантажити для Linux";
+    }
     return "Завантажити для Windows";
   };
 
   const getMainDownloadSubtitle = () => {
-    if (isSteamDeck) return "Flatpak";
-    if (os === "macos")
+    if (isSteamDeck) {
+      return "Flatpak";
+    }
+    if (os === "macos") {
       return macArch === "x64" ? ".dmg (Intel)" : ".dmg (Apple Silicon)";
-    if (os === "linux") return "AppImage";
+    }
+    if (os === "linux") {
+      return "AppImage";
+    }
     return "x64 Installer";
   };
 
   const getMainDownloadIcon = () => {
-    if (isSteamDeck) return faSteam;
-    if (os === "macos") return faApple;
-    if (os === "linux") return faLinux;
+    if (isSteamDeck) {
+      return faSteam;
+    }
+    if (os === "macos") {
+      return faApple;
+    }
+    if (os === "linux") {
+      return faLinux;
+    }
     return faWindows;
   };
 

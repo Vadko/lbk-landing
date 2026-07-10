@@ -4,7 +4,9 @@ export function getImageUrl(
   path: string | null,
   updatedAt?: string | null
 ): string | null {
-  if (!path) return null;
+  if (!path) {
+    return null;
+  }
 
   if (path.startsWith("http://") || path.startsWith("https://")) {
     if (updatedAt) {

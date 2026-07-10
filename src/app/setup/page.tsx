@@ -32,9 +32,15 @@ const PLATFORMS: { id: Platform; label: string; icon: typeof faWindows }[] = [
 
 const getOSPlatform = (): Platform => {
   const os = detectOS();
-  if (os === "steamdeck") return "steamdeck";
-  if (os === "macos") return "macos";
-  if (os === "linux") return "linux";
+  if (os === "steamdeck") {
+    return "steamdeck";
+  }
+  if (os === "macos") {
+    return "macos";
+  }
+  if (os === "linux") {
+    return "linux";
+  }
   return "windows";
 };
 

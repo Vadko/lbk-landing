@@ -7,7 +7,9 @@ export function BannerParallax({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el) {
+      return;
+    }
 
     const handleScroll = () => {
       const y = Math.min(window.scrollY, 0);

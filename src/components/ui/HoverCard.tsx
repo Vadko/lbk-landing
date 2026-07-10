@@ -14,18 +14,26 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
 
   // Перевірка чи це touch-пристрій (один раз при монтуванні)
   const isTouchDevice = useMemo(() => {
-    if (typeof window === "undefined") return false;
+    if (typeof window === "undefined") {
+      return false;
+    }
     return "ontouchstart" in window || navigator.maxTouchPoints > 0;
   }, []);
 
   const startAnimation = useCallback(() => {
     // Не запускаємо анімацію на touch-пристроях
-    if (isTouchDevice) return;
+    if (isTouchDevice) {
+      return;
+    }
 
     const animate = () => {
-      if (!cardRef.current) return;
+      if (!cardRef.current) {
+        return;
+      }
       angleRef.current += 0.5;
-      if (angleRef.current >= 360) angleRef.current = 0;
+      if (angleRef.current >= 360) {
+        angleRef.current = 0;
+      }
       cardRef.current.style.setProperty(
         "--gradient-angle",
         String(angleRef.current)
@@ -36,13 +44,17 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
   }, [isTouchDevice]);
 
   const handleMouseEnter = useCallback(() => {
-    if (isTouchDevice) return;
+    if (isTouchDevice) {
+      return;
+    }
     startAnimation();
   }, [startAnimation, isTouchDevice]);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (isTouchDevice || !cardRef.current) return;
+      if (isTouchDevice || !cardRef.current) {
+        return;
+      }
       const rect = cardRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -55,7 +67,9 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
   );
 
   const handleMouseLeave = useCallback(() => {
-    if (isTouchDevice) return;
+    if (isTouchDevice) {
+      return;
+    }
 
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);

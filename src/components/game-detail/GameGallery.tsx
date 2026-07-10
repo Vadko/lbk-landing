@@ -51,19 +51,25 @@ export default function GameGallery({
 
   const onThumbClick = useCallback(
     (index: number) => {
-      if (!emblaMainApi) return;
+      if (!emblaMainApi) {
+        return;
+      }
       emblaMainApi.scrollTo(index);
     },
     [emblaMainApi]
   );
 
   const onSelect = useCallback(() => {
-    if (!emblaMainApi) return;
+    if (!emblaMainApi) {
+      return;
+    }
     setSelectedIndex(emblaMainApi.selectedScrollSnap());
   }, [emblaMainApi]);
 
   useEffect(() => {
-    if (!emblaMainApi) return;
+    if (!emblaMainApi) {
+      return;
+    }
     onSelect();
     emblaMainApi.on("select", onSelect);
     return () => {
@@ -73,7 +79,9 @@ export default function GameGallery({
 
   // Синхронізація thumbs з головною каруселлю
   useEffect(() => {
-    if (!emblaThumbsApi) return;
+    if (!emblaThumbsApi) {
+      return;
+    }
     emblaThumbsApi.scrollTo(selectedIndex);
   }, [emblaThumbsApi, selectedIndex]);
 

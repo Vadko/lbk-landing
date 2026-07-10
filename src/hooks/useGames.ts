@@ -18,13 +18,23 @@ export function useGamesPaginated(
     queryFn: async () => {
       const params = new URLSearchParams();
       params.set("page", String(page));
-      if (search) params.set("search", search);
-      if (statuses?.length) params.set("statuses", statuses.join(","));
-      if (authors?.length) params.set("authors", authors.join(","));
-      if (sortBy) params.set("sortBy", sortBy);
+      if (search) {
+        params.set("search", search);
+      }
+      if (statuses?.length) {
+        params.set("statuses", statuses.join(","));
+      }
+      if (authors?.length) {
+        params.set("authors", authors.join(","));
+      }
+      if (sortBy) {
+        params.set("sortBy", sortBy);
+      }
 
       const response = await fetch(`/api/games-list?${params}`);
-      if (!response.ok) throw new Error("Failed to fetch games");
+      if (!response.ok) {
+        throw new Error("Failed to fetch games");
+      }
       return response.json() as Promise<GamesGroupedResponse>;
     },
   });
@@ -35,7 +45,9 @@ export function useGamesCount() {
     queryKey: queryKeys.games.count(),
     queryFn: async () => {
       const response = await fetch("/api/games-count");
-      if (!response.ok) throw new Error("Failed to fetch count");
+      if (!response.ok) {
+        throw new Error("Failed to fetch count");
+      }
       const data = await response.json();
       return data.count as number;
     },
@@ -47,7 +59,9 @@ export function useTeams() {
     queryKey: queryKeys.games.authors(),
     queryFn: async () => {
       const response = await fetch("/api/games-teams");
-      if (!response.ok) throw new Error("Failed to fetch teams");
+      if (!response.ok) {
+        throw new Error("Failed to fetch teams");
+      }
       return response.json() as Promise<string[]>;
     },
     staleTime: 1000 * 60 * 10,

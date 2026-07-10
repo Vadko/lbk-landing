@@ -20,7 +20,9 @@ export function useCountUp({
   // Відслідковуємо видимість елемента
   useEffect(() => {
     const element = ref.current;
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -40,13 +42,17 @@ export function useCountUp({
 
   // Анімація запускається тільки коли елемент видимий
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible) {
+      return;
+    }
 
     let startTimestamp: number | null = null;
     let animationFrameId: number;
 
     const step = (timestamp: number) => {
-      if (!startTimestamp) startTimestamp = timestamp;
+      if (!startTimestamp) {
+        startTimestamp = timestamp;
+      }
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
 
       // Використовуємо ease-out функцію для плавної анімації
