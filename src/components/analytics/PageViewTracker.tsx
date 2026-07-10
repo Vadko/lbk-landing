@@ -15,7 +15,9 @@ export function PageViewTracker({ event, gameName }: PageViewTrackerProps) {
         trackViewHomepage();
         break;
       case "view_game_details":
-        if (gameName) trackViewGameDetails(gameName);
+        if (gameName) {
+          trackViewGameDetails(gameName);
+        }
         break;
     }
   }, [event, gameName]);

@@ -16,7 +16,9 @@ export async function GET() {
 
     const allAuthors = data
       .flatMap((row) => {
-        if (!row.team) return [];
+        if (!row.team) {
+          return [];
+        }
         return row.team.split(",").map((author) => author.trim());
       })
       .filter((author) => author.length > 0);

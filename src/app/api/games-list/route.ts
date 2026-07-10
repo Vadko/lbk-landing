@@ -16,12 +16,16 @@ function isValidGameRow(
 }
 
 function parseTranslations(translations: unknown): TranslationItem[] {
-  if (!translations || !Array.isArray(translations)) return [];
+  if (!translations || !Array.isArray(translations)) {
+    return [];
+  }
   return translations as TranslationItem[];
 }
 
 function getLatestUpdatedAt(translations: TranslationItem[]): string {
-  if (translations.length === 0) return new Date().toISOString();
+  if (translations.length === 0) {
+    return new Date().toISOString();
+  }
   return translations.reduce(
     (latest, t) => (t.updated_at > latest ? t.updated_at : latest),
     translations[0].updated_at
@@ -107,7 +111,9 @@ export async function GET(request: NextRequest) {
 
     const { data, error, count } = await query;
 
-    if (error) throw new Error(error.message);
+    if (error) {
+      throw new Error(error.message);
+    }
 
     const games = (data ?? []).filter(isValidGameRow).map(mapRowToGameGroup);
     const total = count ?? 0;
@@ -213,7 +219,9 @@ async function fetchWithFilter(
   }
 
   const { data, error } = await query;
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
 
   const rows = data ?? [];
 

@@ -36,7 +36,9 @@ export function GamesList({ initialData }: GamesListProps) {
   // Read selected statuses from URL params (comma-separated)
   const selectedStatuses = useMemo(() => {
     const statusesParam = searchParams.get("statuses");
-    if (!statusesParam) return [];
+    if (!statusesParam) {
+      return [];
+    }
     return statusesParam.split(",").filter(Boolean);
   }, [searchParams]);
 

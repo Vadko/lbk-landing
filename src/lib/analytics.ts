@@ -58,7 +58,9 @@ const ANALYTICS_UID_KEY = "lb_analytics_uid";
 function getAnalyticsUid(): string {
   try {
     const existing = localStorage.getItem(ANALYTICS_UID_KEY);
-    if (existing) return existing;
+    if (existing) {
+      return existing;
+    }
     const uid = crypto.randomUUID();
     localStorage.setItem(ANALYTICS_UID_KEY, uid);
     return uid;
@@ -70,11 +72,15 @@ function getAnalyticsUid(): string {
 export function trackFailedSearch(searchTerm: string) {
   try {
     const trimmed = searchTerm.trim();
-    if (trimmed.length < 3) return;
+    if (trimmed.length < 3) {
+      return;
+    }
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!supabaseUrl || !supabaseAnonKey) return;
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return;
+    }
 
     fetch(`${supabaseUrl}/functions/v1/track`, {
       method: "POST",

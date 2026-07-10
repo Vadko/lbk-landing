@@ -75,7 +75,9 @@ export function OpenInLauncher({
   const gamePageUrl = `/games/${gameSlug}/${teamSlug}`;
 
   useEffect(() => {
-    if (state.status !== "attempting") return;
+    if (state.status !== "attempting") {
+      return;
+    }
 
     // Click hidden link to trigger protocol
     linkRef.current?.click();
@@ -108,7 +110,9 @@ export function OpenInLauncher({
   }, [state.status, state.retryCount]);
 
   useEffect(() => {
-    if (state.status !== "attempting") return;
+    if (state.status !== "attempting") {
+      return;
+    }
 
     const interval = setInterval(() => {
       dispatch({ type: "TICK" });

@@ -38,7 +38,9 @@ export function Tooltip({ content, children, className = "" }: TooltipProps) {
 
   // Закрити тултіп при кліку поза ним
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible) {
+      return;
+    }
 
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       if (

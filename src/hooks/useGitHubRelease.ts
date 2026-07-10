@@ -80,7 +80,9 @@ export function getDownloadLinks(data: AllReleasesData | undefined) {
 }
 
 export function detectMacArch(): "arm64" | "x64" {
-  if (typeof window === "undefined") return "arm64";
+  if (typeof window === "undefined") {
+    return "arm64";
+  }
 
   try {
     const canvas = document.createElement("canvas");
@@ -92,14 +94,17 @@ export function detectMacArch(): "arm64" | "x64" {
           gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string
         ).toLowerCase();
         // Apple Silicon shows "apple gpu" in WebGL renderer
-        if (renderer.includes("apple")) return "arm64";
+        if (renderer.includes("apple")) {
+          return "arm64";
+        }
         // Intel/AMD indicate Intel Mac (x64)
         if (
           renderer.includes("intel") ||
           renderer.includes("amd") ||
           renderer.includes("radeon")
-        )
+        ) {
           return "x64";
+        }
       }
     }
   } catch {
@@ -116,7 +121,9 @@ export function detectOS():
   | "linux"
   | "steamdeck"
   | "unknown" {
-  if (typeof navigator === "undefined") return "unknown";
+  if (typeof navigator === "undefined") {
+    return "unknown";
+  }
 
   const userAgent = navigator.userAgent.toLowerCase();
 
@@ -126,9 +133,15 @@ export function detectOS():
     return "steamdeck";
   }
 
-  if (userAgent.includes("win")) return "windows";
-  if (userAgent.includes("mac")) return "macos";
-  if (userAgent.includes("linux")) return "linux";
+  if (userAgent.includes("win")) {
+    return "windows";
+  }
+  if (userAgent.includes("mac")) {
+    return "macos";
+  }
+  if (userAgent.includes("linux")) {
+    return "linux";
+  }
 
   return "unknown";
 }

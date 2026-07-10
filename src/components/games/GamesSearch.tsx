@@ -90,7 +90,9 @@ export function GamesSearch({
 
   // Filter authors based on search
   const filteredAuthors = useMemo(() => {
-    if (!authorSearch.trim()) return authors;
+    if (!authorSearch.trim()) {
+      return authors;
+    }
     const search = authorSearch.toLowerCase();
     return authors.filter((a) => a.toLowerCase().includes(search));
   }, [authors, authorSearch]);
@@ -130,7 +132,9 @@ export function GamesSearch({
 
   // Infinite scroll handler for authors
   const handleAuthorScroll = useCallback(() => {
-    if (!authorListRef.current || !hasMoreAuthors) return;
+    if (!authorListRef.current || !hasMoreAuthors) {
+      return;
+    }
 
     const { scrollTop, scrollHeight, clientHeight } = authorListRef.current;
     if (scrollTop + clientHeight >= scrollHeight - 50) {
@@ -207,7 +211,9 @@ export function GamesSearch({
 
   // Status button label
   const statusLabel = useMemo(() => {
-    if (selectedStatuses.length === 0) return "Усі стани";
+    if (selectedStatuses.length === 0) {
+      return "Усі стани";
+    }
     if (selectedStatuses.length === 1) {
       const opt = STATUS_OPTIONS.find((o) => o.value === selectedStatuses[0]);
       return opt?.label || selectedStatuses[0];
@@ -217,8 +223,12 @@ export function GamesSearch({
 
   // Author button label
   const authorLabel = useMemo(() => {
-    if (selectedAuthors.length === 0) return "Усі автори";
-    if (selectedAuthors.length === 1) return selectedAuthors[0];
+    if (selectedAuthors.length === 0) {
+      return "Усі автори";
+    }
+    if (selectedAuthors.length === 1) {
+      return selectedAuthors[0];
+    }
     return `${selectedAuthors.length} авторів`;
   }, [selectedAuthors]);
 

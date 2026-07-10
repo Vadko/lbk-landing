@@ -110,8 +110,11 @@ export function FaqSection() {
   const column2: typeof FAQ_ITEMS = [];
 
   FAQ_ITEMS.forEach((item, index) => {
-    if (index % 2 === 0) column1.push(item);
-    else column2.push(item);
+    if (index % 2 === 0) {
+      column1.push(item);
+    } else {
+      column2.push(item);
+    }
   });
 
   const renderFaqItem = (
