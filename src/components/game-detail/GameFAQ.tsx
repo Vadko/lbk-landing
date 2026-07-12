@@ -43,9 +43,9 @@ export function GameFAQ({ game }: GameFAQProps) {
         </details>
         {game.voice_progress && game.voice_progress > 0 && (
           <details className="faq-item">
-            <summary>Чи є українська озвучка для {game.name}?</summary>
+            <summary>Чи є українське озвучення для {game.name}?</summary>
             <p>
-              Так! Команда {game.team} працює над українською озвучкою. Наразі
+              Так! Команда {game.team} працює над українським озвученням. Наразі
               озвучено {game.voice_progress}% гри.
             </p>
           </details>
