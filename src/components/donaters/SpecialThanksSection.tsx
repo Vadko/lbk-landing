@@ -1,0 +1,61 @@
+import Image from "next/image";
+import { HoverCard } from "../ui/HoverCard";
+
+interface TopDonator {
+  name: string;
+  amount: string;
+  message: string;
+  avatar: string;
+}
+
+const topDonators: TopDonator[] = [
+  {
+    name: "Maximus Prime",
+    amount: "₴ 50,000",
+    message: "Ти робиш неможливе можливим! Найкращий лаунчер!",
+    avatar: "/assets/donaters/maximus-prime.png",
+  },
+  {
+    name: "Elena_UA",
+    amount: "₴ 32,400",
+    message: "Дякую за можливість грати рідною мовою. Це безцінно.",
+    avatar: "/assets/donaters/elena_ua.png",
+  },
+  {
+    name: "Iron_Shield",
+    amount: "₴ 28,100",
+    message: "Підтримка українського контенту — це наш обов'язок.",
+    avatar: "/assets/donaters/iron_shield.png",
+  },
+];
+
+export function SpecialThanksSection() {
+  return (
+    <section className="special-thanks-section">
+      <div className="container">
+        <h2 className="special-thanks-section__title">Особлива подяка</h2>
+        <p className="special-thanks-section__description">
+          Ці люди внесли неоціненний вклад у розвиток української ігрової
+          спільноти.
+        </p>
+        <div className="special-thanks-section__grid">
+          {topDonators.map((donator, index) => (
+            <HoverCard key={index} className="donator-card">
+              <div className="donator-card__avatar">
+                <Image
+                  src={donator.avatar}
+                  alt={donator.name}
+                  width={100}
+                  height={100}
+                />
+              </div>
+              <h3 className="donator-card__name">{donator.name}</h3>
+              <div className="donator-card__amount">{donator.amount}</div>
+              <p className="donator-card__message">“{donator.message}”</p>
+            </HoverCard>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

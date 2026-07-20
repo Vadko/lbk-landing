@@ -3,6 +3,7 @@ import { PageHeroSection } from "@/components/ui/PageHeroSection";
 import { CodeIcon } from "../icons";
 import { CtaSection } from "../ui/CtaSection";
 import { HoverCard } from "../ui/HoverCard";
+import { PartnersListSection } from "./PartnersListSection";
 import { PartnerValueSection } from "./PartnerValueSection";
 import { PlatformAudienceSection } from "./PlatformAudienceSection";
 
@@ -20,11 +21,12 @@ export function CollaborationPage() {
       <PageHeroSection
         title="Додайте свій переклад у лаунчер"
         description="Сучасний дизайн, зручний інтерфейс і все потрібне для комфортної гри українською."
-        ctaText="Стати партнером"
-        ctaHref="https://t.me/lbk_launcher_bot"
+        ctaText="Додати переклад"
+        ctaHref="https://admin.lbklauncher.com"
         className="collab-hero"
       />
 
+      <PartnersListSection />
       <PartnerValueSection />
 
       <section className="container">

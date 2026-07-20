@@ -39,6 +39,11 @@ const navbarLinks = [
     label: "Співпраця",
     track: null,
   },
+  {
+    href: "/donaters",
+    label: "Донатери",
+    track: null,
+  },
 ];
 
 const navbarSocials = [
