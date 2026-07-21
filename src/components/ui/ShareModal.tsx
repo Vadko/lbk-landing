@@ -181,7 +181,7 @@ export function ShareModal({
             {socialPlatforms.map((platform) => (
               <button
                 key={platform.key}
-                className="share-modal-social-btn"
+                className="icon-btn share-modal-social-btn"
                 onClick={() => handleShare(platform)}
                 type="button"
                 title={platform.name}
@@ -205,7 +205,7 @@ export function ShareModal({
               onClick={(e) => e.currentTarget.select()}
             />
             <button
-              className={`share-modal-copy-btn ${copied ? "copied" : ""}`}
+              className={`btn share-modal-copy-btn ${copied ? "copied" : ""}`}
               onClick={() => handleCopy(shareText + "\n" + shareUrl)}
               type="button"
             >

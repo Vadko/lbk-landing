@@ -81,8 +81,8 @@ export default function TechStackPage() {
   return (
     <>
       <section className="container page-hero">
-        <h1>Технічний стек</h1>
-        <p className="page-hero__description">
+        <h1 className="hero-title">Технічний стек</h1>
+        <p className="hero-description">
           Архітектура та технології екосистеми LBK Launcher
         </p>
       </section>

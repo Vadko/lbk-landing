@@ -47,7 +47,7 @@ export function PlatformAudienceSection() {
         const Icon = item.icon;
         return (
           <HoverCard key={item.label} className="collab-audience-card">
-            <Icon aria-hidden className="collab-audience-icon" />
+            <Icon aria-hidden className="color-accent" />
             <h3>{item.label}</h3>
           </HoverCard>
         );

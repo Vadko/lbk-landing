@@ -58,7 +58,7 @@ export function SubscriptionCard({
           </li>
         ))}
       </ul>
-      <button className="subscription-card__button">{buttonText}</button>
+      <button className="btn subscription-card__button">{buttonText}</button>
     </div>
   );
 }

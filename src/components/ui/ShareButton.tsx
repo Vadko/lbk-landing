@@ -51,7 +51,7 @@ export function ShareButton({
     <>
       <button
         onClick={handleClick}
-        className="share-btn btn-neon btn-share"
+        className="btn btn-neon share-btn btn-share"
         type="button"
       >
         <ShareIcon />

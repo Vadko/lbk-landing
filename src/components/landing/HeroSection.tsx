@@ -16,7 +16,7 @@ export function HeroSection() {
         <div className="hero-content">
           <HeroBadge />
 
-          <h1>
+          <h1 className="hero-title">
             Ігри українською —<br />
             <TypewriterText />
           </h1>
@@ -28,13 +28,15 @@ export function HeroSection() {
             для вашої ігрової бібліотеки.
           </p>
 
-          <Link href="/games" className="btn-neon games-link">
-            <SvgIcon icon={faGamepad} />
-            <span>Переглянути всі ігри</span>
-            <SvgIcon icon={faArrowRight} />
-          </Link>
+          <div className="buttons-wrapper">
+            <Link href="/games" className="btn btn-neon games-link">
+              <SvgIcon icon={faGamepad} />
+              <span>Переглянути всі ігри</span>
+              <SvgIcon icon={faArrowRight} />
+            </Link>
 
-          <HeroDownload />
+            <HeroDownload />
+          </div>
 
           <Link href="/setup" className="instruction-link">
             <SvgIcon icon={faBook} />

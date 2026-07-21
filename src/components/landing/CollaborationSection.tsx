@@ -46,7 +46,7 @@ export function CollaborationSection() {
             href={card.link}
             target="_blank"
             rel="noopener noreferrer"
-            className={`btn-main collab-btn}`}
+            className="btn btn-main collab-btn"
           >
             <SvgIcon icon={card.linkIcon} />
             {card.linkText}

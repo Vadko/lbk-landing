@@ -31,9 +31,7 @@ export function WhyAdvertisersChooseUs() {
   return (
     <section className="why-advertisers-section">
       <div className="container">
-        <h2 className="why-advertisers__title">
-          Чому рекламодавці обирають нас
-        </h2>
+        <h2 className="section-title">Чому рекламодавці обирають нас</h2>
         <div className="why-advertisers__grid">
           <HoverCard className="why-advertisers__main-card">
             <Image
@@ -54,8 +52,8 @@ export function WhyAdvertisersChooseUs() {
                     <Icon width={32} height={32} aria-hidden />
                   </div>
                   <div className="card__content">
-                    <h3 className="card__title">{card.title}</h3>
-                    <p className="card__description">{card.description}</p>
+                    <h3>{card.title}</h3>
+                    <p>{card.description}</p>
                   </div>
                 </HoverCard>
               );

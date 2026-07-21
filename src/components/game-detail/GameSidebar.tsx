@@ -38,7 +38,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
           <h3>Встановіть переклад</h3>
         </div>
         <p>Завантажте LBK Launcher і встановіть переклад в один клац</p>
-        <Link href="/" className="dl-btn game-dl-btn">
+        <Link href="/" className="btn btn-gradient btn--big">
           <SvgIcon icon={faWindows} />
           <div className="dl-info">
             <span>Завантажити лаунчер</span>
@@ -49,7 +49,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
           <>
             <a
               href={`lbk://games/${game.slug}/${encodeURIComponent(game.team)}`}
-              className="btn-neon btn-launcher"
+              className="btn btn-neon btn-launcher"
             >
               <RocketIcon />
               Відкрити в лаунчері
@@ -72,7 +72,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
             href={game.support_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-support"
+            className="btn btn-support"
           >
             <SvgIcon icon={faHeart} />
             Підтримати переклад
@@ -152,7 +152,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
                 href={link.url!}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="game-social-link"
+                className="icon-btn game-social-link"
                 title={link.label}
               >
                 <SvgIcon icon={link.icon} />

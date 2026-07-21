@@ -12,8 +12,10 @@ export function SubscriptionSection() {
     <section className="subscription-section">
       <div className="container">
         <div className="subscription-section__header">
-          <h2 className="subscription-section__title">Підписка на Донателло</h2>
-          <p className="subscription-section__description">
+          <h2 className="section-title subscription-section__title">
+            Підписка на Донателло
+          </h2>
+          <p className="section-description subscription-section__description">
             Отримайте особливий статус та ексклюзивні можливості, підтримуючи
             розвиток платформи.
           </p>

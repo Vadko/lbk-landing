@@ -111,7 +111,7 @@ export function LeaderboardSection() {
             ))}
           </tbody>
         </table>
-        <button className="leaderboard-section__more-button">
+        <button className="btn btn--outline leaderboard-section__more-button">
           Показати більше
         </button>
       </div>

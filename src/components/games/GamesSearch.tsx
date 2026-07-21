@@ -244,9 +244,10 @@ export function GamesSearch({
         <div className="search-wrapper">
           <SvgIcon icon={faMagnifyingGlass} />
           <input
-            type="text"
+            type="search"
             value={localValue}
             onChange={(e) => setLocalValue(e.target.value)}
+            name="search"
             placeholder="Пошук ігор..."
             className="search-input"
           />
@@ -323,7 +324,7 @@ export function GamesSearch({
                 <SvgIcon icon={faMagnifyingGlass} />
                 <input
                   ref={authorSearchInputRef}
-                  type="text"
+                  type="search"
                   value={authorSearch}
                   onChange={(e) => handleAuthorSearchChange(e.target.value)}
                   placeholder="Пошук автора..."

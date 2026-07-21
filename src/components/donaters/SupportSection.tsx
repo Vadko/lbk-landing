@@ -13,15 +13,15 @@ export function SupportSection() {
           />
 
           <h2 className="support-card__title">Підтримай LBK Launcher</h2>
-          <p className="support-card__description">
+          <p className="section-description support-card__description">
             Кожен донат допомагає нам орендувати сервери, оплачувати ліцензії та
             підтримувати творців українських перекладів.
           </p>
           <div className="support-card__actions">
-            <button className="support-card__button support-card__button--primary">
+            <button className="btn support-card__button support-card__button--primary">
               Задонатити зараз
             </button>
-            <button className="support-card__button support-card__button--secondary">
+            <button className="btn btn--outline support-card__button support-card__button--secondary">
               Дізнатися більше
             </button>
           </div>

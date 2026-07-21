@@ -104,10 +104,10 @@ export function HeroDownload() {
   };
 
   return (
-    <div className="download-row">
+    <>
       <button
         onClick={() => handleDownload(getMainDownloadUrl())}
-        className="dl-btn"
+        className="btn btn-gradient btn--big"
         disabled={!getMainDownloadUrl()}
       >
         <SvgIcon icon={getMainDownloadIcon()} />
@@ -121,7 +121,7 @@ export function HeroDownload() {
         {os === "linux" && (
           <button
             onClick={() => handleDownload(FLATPAKREF_URL)}
-            className="dl-mini"
+            className="icon-btn dl-mini"
             title="Flatpak (Steam Deck)"
           >
             <SvgIcon icon={faBox} />
@@ -130,7 +130,7 @@ export function HeroDownload() {
         {os !== "linux" && !isSteamDeck && downloadLinks.linux && (
           <button
             onClick={() => handleDownload(downloadLinks.linux)}
-            className="dl-mini"
+            className="icon-btn dl-mini"
             title="Linux (AppImage)"
           >
             <SvgIcon icon={faLinux} />
@@ -139,7 +139,7 @@ export function HeroDownload() {
         {os !== "linux" && !isSteamDeck && (
           <button
             onClick={() => handleDownload(FLATPAKREF_URL)}
-            className="dl-mini"
+            className="icon-btn dl-mini"
             title="Flatpak (Steam Deck)"
           >
             <SvgIcon icon={faBox} />
@@ -148,7 +148,7 @@ export function HeroDownload() {
         {os !== "macos" && downloadLinks.macos && (
           <button
             onClick={() => handleDownload(downloadLinks.macos)}
-            className="dl-mini"
+            className="icon-btn dl-mini"
             title="macOS"
           >
             <SvgIcon icon={faApple} />
@@ -157,13 +157,13 @@ export function HeroDownload() {
         {os !== "windows" && downloadLinks.windows && (
           <button
             onClick={() => handleDownload(downloadLinks.windows)}
-            className="dl-mini"
+            className="icon-btn dl-mini"
             title="Windows"
           >
             <SvgIcon icon={faWindows} />
           </button>
         )}
       </div>
-    </div>
+    </>
   );
 }

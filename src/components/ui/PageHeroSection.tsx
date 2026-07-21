@@ -15,13 +15,13 @@ export function PageHeroSection({
 }: PageHeroSectionProps) {
   return (
     <section className={`container page-hero ${className}`}>
-      <h1>{title}</h1>
-      <p className="page-hero__description">{description}</p>
+      <h1 className="hero-title">{title}</h1>
+      <p className="hero-description">{description}</p>
       <a
         href={ctaHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="btn-main btn--big"
+        className="btn btn-gradient btn--big"
       >
         {ctaText}
       </a>

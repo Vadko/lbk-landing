@@ -17,11 +17,11 @@ export function StatusPage({ code, title, text }: StatusPageProps) {
         <h1 className="not-found-title">{title}</h1>
         <p className="not-found-text">{text}</p>
         <div className="not-found-buttons">
-          <Link href="/" className="btn-primary">
+          <Link href="/" className="btn btn-primary">
             <SvgIcon icon={faHome} />
             На головну
           </Link>
-          <Link href="/games" className="btn-secondary">
+          <Link href="/games" className="btn btn--outline btn-secondary">
             <SvgIcon icon={faGamepad} />
             Каталог ігор
           </Link>

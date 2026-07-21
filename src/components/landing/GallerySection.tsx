@@ -69,7 +69,7 @@ export function GallerySection() {
     <section id="gallery" className="gallery-sec">
       <div className="container">
         <h2 className="section-title center">Погляньте на лаунчер</h2>
-        <p className="section-subtitle center">
+        <p className="section-description center">
           Сучасний дизайн, зручний інтерфейс і все потрібне для комфортної гри
           українською.
         </p>

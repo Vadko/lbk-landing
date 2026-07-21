@@ -10,7 +10,7 @@ export function SubscriptionInfo() {
           локалізації ігор.
         </p>
       </div>
-      <a href="#" className="subscription-info__button">
+      <a href="#" className="btn subscription-info__button">
         Стати донатером
       </a>
     </div>

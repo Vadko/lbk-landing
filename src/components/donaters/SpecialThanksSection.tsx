@@ -33,8 +33,8 @@ export function SpecialThanksSection() {
   return (
     <section className="special-thanks-section">
       <div className="container">
-        <h2 className="special-thanks-section__title">Особлива подяка</h2>
-        <p className="special-thanks-section__description">
+        <h2 className="section-title">Особлива подяка</h2>
+        <p className="section-description special-thanks-section__description">
           Ці люди внесли неоціненний вклад у розвиток української ігрової
           спільноти.
         </p>

@@ -19,7 +19,7 @@ export function LegalLayout({
       <div className="container">
         <div className="legal-content">
           <header className="legal-header">
-            <h1>{title}</h1>
+            <h1 className="page-title">{title}</h1>
             {lastUpdated && (
               <p className="legal-updated">Оновлено: {lastUpdated}</p>
             )}
@@ -28,7 +28,7 @@ export function LegalLayout({
           <div className="legal-body">{children}</div>
 
           <div className="legal-footer">
-            <Link href="/" className="back-link">
+            <Link href="/" className="btn back-link--pill">
               <SvgIcon icon={faArrowLeft} />
               Повернутися на головну
             </Link>

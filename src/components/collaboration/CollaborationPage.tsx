@@ -23,7 +23,6 @@ export function CollaborationPage() {
         description="Сучасний дизайн, зручний інтерфейс і все потрібне для комфортної гри українською."
         ctaText="Додати переклад"
         ctaHref="https://admin.lbklauncher.com"
-        className="collab-hero"
       />
 
       <PartnersListSection />
