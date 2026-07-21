@@ -457,6 +457,73 @@ export type Database = {
           },
         ]
       }
+      game_fundraising: {
+        Row: {
+          created_at: string
+          donatello_goal_id: string | null
+          donatello_slug: string | null
+          game_id: string
+          last_sync_error: string | null
+          last_sync_status: string | null
+          last_synced_at: string | null
+          monobank_jar_long_id: string | null
+          monobank_jar_short_id: string | null
+          retry_after: string | null
+          source: string
+          synced_currency: string
+          synced_current: number | null
+          synced_goal: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          donatello_goal_id?: string | null
+          donatello_slug?: string | null
+          game_id: string
+          last_sync_error?: string | null
+          last_sync_status?: string | null
+          last_synced_at?: string | null
+          monobank_jar_long_id?: string | null
+          monobank_jar_short_id?: string | null
+          retry_after?: string | null
+          source: string
+          synced_currency?: string
+          synced_current?: number | null
+          synced_goal?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          donatello_goal_id?: string | null
+          donatello_slug?: string | null
+          game_id?: string
+          last_sync_error?: string | null
+          last_sync_status?: string | null
+          last_synced_at?: string | null
+          monobank_jar_long_id?: string | null
+          monobank_jar_short_id?: string | null
+          retry_after?: string | null
+          source?: string
+          synced_currency?: string
+          synced_current?: number | null
+          synced_goal?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_fundraising_game_id_fkey"
+            columns: ["game_id"]
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_fundraising_game_id_fkey"
+            columns: ["game_id"]
+            referencedRelation: "trending_games_cache"
+            referencedColumns: ["game_id"]
+          },
+        ]
+      }
       game_subscriptions: {
         Row: {
           game_id: string
@@ -523,6 +590,46 @@ export type Database = {
           {
             foreignKeyName: "game_version_authors_version_id_fkey"
             columns: ["version_id"]
+            referencedRelation: "game_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      game_version_fundraising: {
+        Row: {
+          created_at: string
+          donatello_goal_id: string | null
+          donatello_slug: string | null
+          game_version_id: string
+          monobank_jar_long_id: string | null
+          monobank_jar_short_id: string | null
+          source: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          donatello_goal_id?: string | null
+          donatello_slug?: string | null
+          game_version_id: string
+          monobank_jar_long_id?: string | null
+          monobank_jar_short_id?: string | null
+          source: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          donatello_goal_id?: string | null
+          donatello_slug?: string | null
+          game_version_id?: string
+          monobank_jar_long_id?: string | null
+          monobank_jar_short_id?: string | null
+          source?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_version_fundraising_game_version_id_fkey"
+            columns: ["game_version_id"]
             referencedRelation: "game_versions"
             referencedColumns: ["id"]
           },
