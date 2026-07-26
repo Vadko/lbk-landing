@@ -32,7 +32,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
   return (
     <aside className="game-sidebar">
       {/* Download CTA */}
-      <div className="game-sidebar-card game-download-cta">
+      <div className="game-sidebar-card glass-bg glass-bg--no-hover game-download-cta">
         <div className="game-download-header">
           <SvgIcon icon={faDownload} />
           <h3>Встановіть переклад</h3>
@@ -66,7 +66,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
 
       {/* Support */}
       {game.support_url && (
-        <div className="game-sidebar-card game-support-card">
+        <div className="game-sidebar-card glass-bg glass-bg--no-hover game-support-card">
           <h3>Підтримка</h3>
           <a
             href={game.support_url}
@@ -84,7 +84,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
 
       {/* Achievements */}
       {game.achievements_archive_path && (
-        <div className="game-sidebar-card game-achievements-card">
+        <div className="game-sidebar-card glass-bg glass-bg--no-hover game-achievements-card">
           <div className="game-achievements-badge">
             <SvgIcon icon={faTrophy} />
             <span>Включає переклад досягнень</span>
@@ -93,7 +93,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
       )}
 
       {/* Stats */}
-      <div className="game-sidebar-card game-stats-card">
+      <div className="game-sidebar-card glass-bg glass-bg--no-hover game-stats-card">
         <h3>Статистика</h3>
         <div className="game-stats-list">
           {!game.status || game.status !== "planned" ? (
@@ -143,7 +143,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
 
       {/* Social Links */}
       {socialLinks.length > 0 && (
-        <div className="game-sidebar-card game-links-card">
+        <div className="game-sidebar-card glass-bg glass-bg--no-hover game-links-card">
           <h3>Посилання</h3>
           <div className="game-social-links">
             {socialLinks.map((link) => (

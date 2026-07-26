@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import { trackViewGameDetails, trackViewHomepage } from "@/lib/analytics";
+import {
+  trackViewDonatersPage,
+  trackViewGameDetails,
+  trackViewHomepage,
+} from "@/lib/analytics";
 
 interface PageViewTrackerProps {
-  event: "view_homepage" | "view_game_details";
+  event: "view_homepage" | "view_game_details" | "view_donaters_page";
   gameName?: string;
 }
 
@@ -18,6 +22,9 @@ export function PageViewTracker({ event, gameName }: PageViewTrackerProps) {
         if (gameName) {
           trackViewGameDetails(gameName);
         }
+        break;
+      case "view_donaters_page":
+        trackViewDonatersPage();
         break;
     }
   }, [event, gameName]);

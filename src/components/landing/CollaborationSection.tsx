@@ -36,7 +36,7 @@ export function CollaborationSection() {
       centerText
     >
       {CARDS.map((card, index) => (
-        <div key={index} className="collab-card">
+        <div key={index} className="collab-card glass-bg">
           <div className="collab-icon">
             <SvgIcon icon={card.icon} />
           </div>

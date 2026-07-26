@@ -1,24 +1,75 @@
-export function DonatersStatsSection() {
+"use client";
+
+import type { ComponentType, SVGProps } from "react";
+import { CardGridSection } from "@/components/ui/CardGridSection";
+import { HoverCard } from "@/components/ui/HoverCard";
+import { useCountUp } from "@/hooks/useCountUp";
+
+function AnimatedNumber({
+  value,
+  suffix = "",
+}: {
+  value: number;
+  suffix?: string;
+}) {
+  const { value: animatedValue, ref } = useCountUp({
+    end: value,
+    duration: 2000,
+  });
   return (
-    <section className="donaters-stats">
-      <div className="container">
-        <div className="donaters-stats__grid">
-          <div className="donaters-stats__card">
-            <div className="donaters-stats__number">₴ 842K</div>
-            <div className="donaters-stats__label">Всього зібрано</div>
-            <div className="donaters-stats__sublabel">
-              За весь час існування проєкту
+    <div ref={ref}>
+      {animatedValue}
+      {suffix}
+    </div>
+  );
+}
+
+export function DonatersStatsSection() {
+  const statsData: Array<{
+    Icon?: ComponentType<SVGProps<SVGSVGElement>>;
+    number?: number;
+    suffix?: string;
+    title: string;
+    description: string;
+  }> = [
+    {
+      number: 34168,
+      title: "Всього зібрано",
+      description: "За весь час існування проєкту",
+    },
+    {
+      number: 26,
+      title: "Донатерів",
+      description: "Унікальних користувачів, що підтримали нас",
+    },
+  ];
+
+  return (
+    <CardGridSection id="donaters-stats" columns={2} centerText>
+      {statsData.map((feature, index) => {
+        const { Icon } = feature;
+        return (
+          <HoverCard key={index} className="hover-card--big">
+            {Icon && (
+              <div className="hover-card__icon">
+                <Icon width={32} height={32} aria-hidden />
+              </div>
+            )}
+            <div className="hover-card__number">
+              {typeof feature.number === "number" ? (
+                <AnimatedNumber
+                  value={feature.number}
+                  suffix={feature.suffix}
+                />
+              ) : (
+                <div className="spinner" style={{ margin: "0 auto" }} />
+              )}
             </div>
-          </div>
-          <div className="donaters-stats__card">
-            <div className="donaters-stats__number">3 240</div>
-            <div className="donaters-stats__label">Донатерів</div>
-            <div className="donaters-stats__sublabel">
-              Унікальних користувачів, що підтримали нас
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+            <h3>{feature.title}</h3>
+            <p>{feature.description}</p>
+          </HoverCard>
+        );
+      })}
+    </CardGridSection>
   );
 }

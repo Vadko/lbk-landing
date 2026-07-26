@@ -41,7 +41,7 @@ const navbarLinks = [
   },
   {
     href: "/donaters",
-    label: "Донатери",
+    label: "Топ донатерів",
     track: null,
   },
 ];

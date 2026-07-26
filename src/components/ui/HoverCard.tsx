@@ -54,7 +54,7 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
   return (
     <div
       ref={cardRef}
-      className={`hover-card ${className}`.trim()}
+      className={`hover-card glass-bg glass-bg--no-hover ${className}`.trim()}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >

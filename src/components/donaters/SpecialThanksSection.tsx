@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { CardGridSection } from "../ui/CardGridSection";
 import { HoverCard } from "../ui/HoverCard";
 
 interface TopDonator {
@@ -31,31 +32,28 @@ const topDonators: TopDonator[] = [
 
 export function SpecialThanksSection() {
   return (
-    <section className="special-thanks-section">
-      <div className="container">
-        <h2 className="section-title">Особлива подяка</h2>
-        <p className="section-description special-thanks-section__description">
-          Ці люди внесли неоціненний вклад у розвиток української ігрової
-          спільноти.
-        </p>
-        <div className="special-thanks-section__grid">
-          {topDonators.map((donator, index) => (
-            <HoverCard key={index} className="donator-card">
-              <div className="donator-card__avatar">
-                <Image
-                  src={donator.avatar}
-                  alt={donator.name}
-                  width={100}
-                  height={100}
-                />
-              </div>
-              <h3 className="donator-card__name">{donator.name}</h3>
-              <div className="donator-card__amount">{donator.amount}</div>
-              <p className="donator-card__message">“{donator.message}”</p>
-            </HoverCard>
-          ))}
-        </div>
-      </div>
-    </section>
+    <CardGridSection
+      id="top-donaters"
+      columns={3}
+      centerText
+      title="Особлива подяка"
+      description="Ці люди внесли неоціненний вклад у розвиток української ігрової спільноти."
+    >
+      {topDonators.map((donator, index) => (
+        <HoverCard key={index} className="donator-card">
+          <div className="donator-card__avatar">
+            <Image
+              src={donator.avatar}
+              alt={donator.name}
+              width={100}
+              height={100}
+            />
+          </div>
+          <h3 className="donator-card__name">{donator.name}</h3>
+          <p className="donator-card__amount">{donator.amount}</p>
+          <p className="donator-card__message">“{donator.message}”</p>
+        </HoverCard>
+      ))}
+    </CardGridSection>
   );
 }

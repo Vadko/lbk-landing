@@ -36,7 +36,11 @@ export function FanConBrochureBannerContent() {
   }
 
   return (
-    <aside className="fancon-banner" role="status" aria-live="polite">
+    <aside
+      className="fancon-banner glass-bg glass-bg--no-hover"
+      role="status"
+      aria-live="polite"
+    >
       <button
         type="button"
         className="icon-btn fancon-banner-close"

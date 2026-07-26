@@ -1,12 +1,9 @@
 import { faAward } from "@fortawesome/free-solid-svg-icons/faAward";
 import { faMedal } from "@fortawesome/free-solid-svg-icons/faMedal";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
-import Image from "next/image";
 import { SvgIcon } from "../ui/SvgIcon";
 
 interface Donator {
-  rank: number;
-  logo?: string;
   name: string;
   amount: string;
   lastDonation: string;
@@ -14,106 +11,129 @@ interface Donator {
 
 const leaderboard: Donator[] = [
   {
-    rank: 1,
     name: "Maximus Prime",
-    amount: "₴ 50,000",
-    lastDonation: "Сьогодні, 14:20",
+    amount: "50,000",
+    lastDonation: "2026-07-27T14:20:00",
   },
   {
-    rank: 2,
     name: "Elena_UA",
-    amount: "₴ 32,400",
-    lastDonation: "Вчора, 19:15",
+    amount: "32,400",
+    lastDonation: "2026-07-26T19:15:00",
   },
   {
-    rank: 3,
     name: "Iron_Shield",
-    amount: "₴ 28,150",
-    lastDonation: "2 дні тому",
+    amount: "28,150",
+    lastDonation: "2026-07-25T09:00:00",
   },
   {
-    rank: 4,
     name: "Volodymyr_K",
-    amount: "₴ 12,000",
-    lastDonation: "3 дні тому",
+    amount: "12,000",
+    lastDonation: "2026-07-24T09:00:00",
   },
   {
-    rank: 5,
     name: "Stepan_Giga_Fan",
-    amount: "₴ 9,800",
-    lastDonation: "3 місяць тому",
+    amount: "9,800",
+    lastDonation: "2026-04-27T09:00:00",
   },
   {
-    rank: 6,
     name: "Cyber_Kozak",
-    amount: "₴ 8,500",
-    lastDonation: "10 днів тому",
+    amount: "8,500",
+    lastDonation: "2026-07-17T09:00:00",
   },
   {
-    rank: 7,
     name: "Night_Owl",
-    amount: "₴ 7,200",
-    lastDonation: "2 тижні тому",
+    amount: "7,200",
+    lastDonation: "2026-07-13T09:00:00",
   },
 ];
 
+function pluralize(count: number, one: string, few: string, many: string) {
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+  if (mod10 === 1 && mod100 !== 11) {
+    return one;
+  }
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
+    return few;
+  }
+  return many;
+}
+
+function formatLastDonation(isoDate: string): string {
+  const date = new Date(isoDate);
+  const now = new Date();
+
+  const time = date.toLocaleTimeString("uk-UA", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const startOfDay = (d: Date) =>
+    new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+
+  const dayDiff = Math.round(
+    (startOfDay(now) - startOfDay(date)) / (1000 * 60 * 60 * 24)
+  );
+
+  if (dayDiff === 0) {
+    return `Сьогодні, ${time}`;
+  }
+  if (dayDiff === 1) {
+    return `Вчора, ${time}`;
+  }
+  if (dayDiff < 7) {
+    return `${dayDiff} ${pluralize(dayDiff, "день", "дні", "днів")} тому`;
+  }
+  if (dayDiff < 30) {
+    const weeks = Math.round(dayDiff / 7);
+    return `${weeks} ${pluralize(weeks, "тиждень", "тижні", "тижнів")} тому`;
+  }
+
+  const months = Math.round(dayDiff / 30);
+  return `${months} ${pluralize(months, "місяць", "місяці", "місяців")} тому`;
+}
+
 export function LeaderboardSection() {
   return (
-    <section className="leaderboard-section">
+    <section className="section-margin">
       <div className="container">
-        <div className="leaderboard-section__header">
-          <h2 className="leaderboard-section__title">Рейтинг донатерів</h2>
-          <div className="leaderboard-section__tabs">
-            <button className="leaderboard-section__tab leaderboard-section__tab--active">
-              За весь час
-            </button>
-            <button className="leaderboard-section__tab">За місяць</button>
-            <button className="leaderboard-section__tab">За тиждень</button>
-          </div>
-        </div>
-        <table className="leaderboard-table">
-          <tbody>
-            <tr className="leaderboard-table__header">
-              <th>#</th>
-              <th>Ім&apos;я донатера</th>
-              <th>Сума донатів</th>
-              <th>Останній донат</th>
-            </tr>
-            {leaderboard.map((donator) => (
-              <tr key={donator.rank}>
-                <td>
-                  <span
-                    className={`leaderboard-table__rank leaderboard-table__rank--${donator.rank <= 3 ? donator.rank : "default"}`}
-                  >
-                    {donator.rank === 1 && <SvgIcon icon={faTrophy} />}
-                    {donator.rank === 2 && <SvgIcon icon={faMedal} />}
-                    {donator.rank === 3 && <SvgIcon icon={faAward} />}
-                    {donator.rank}
-                  </span>
-                </td>
-                <td>
-                  <span className="leaderboard-table__name">
-                    {donator.logo && (
-                      <Image
-                        src={donator.logo}
-                        alt={donator.name}
-                        width={40}
-                        height={40}
-                        className="leaderboard-table__logo"
-                      />
-                    )}
-                    {donator.name}
-                  </span>
-                </td>
-                <td>{donator.amount}</td>
-                <td>{donator.lastDonation}</td>
+        <h2 className="section__title">Рейтинг донатерів</h2>
+        <div className="leaderboard-table__wrapper">
+          <table className="leaderboard-table">
+            <tbody>
+              <tr className="leaderboard-table__header">
+                <th>#</th>
+                <th>Ім&apos;я донатера</th>
+                <th>Сума донатів</th>
+                <th>Останній донат</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <button className="btn btn--outline leaderboard-section__more-button">
-          Показати більше
-        </button>
+              {leaderboard.map((donator, index) => {
+                const rank = index + 1;
+                return (
+                  <tr key={rank}>
+                    <td>
+                      <span
+                        className={`leaderboard-table__rank leaderboard-table__rank--${rank <= 3 ? rank : "default"}`}
+                      >
+                        {rank === 1 && <SvgIcon icon={faTrophy} />}
+                        {rank === 2 && <SvgIcon icon={faMedal} />}
+                        {rank === 3 && <SvgIcon icon={faAward} />}
+                        {rank}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="leaderboard-table__name">
+                        {donator.name}
+                      </span>
+                    </td>
+                    <td>₴ {donator.amount}</td>
+                    <td>{formatLastDonation(donator.lastDonation)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   );

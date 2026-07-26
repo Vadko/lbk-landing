@@ -28,6 +28,15 @@ export function Footer() {
               <li>
                 <Link href="/setup">Встановлення</Link>
               </li>
+              <li>
+                <Link href="/donate">Топ донатерів</Link>
+              </li>
+              <li>
+                <Link href="/collaboration">Співпраця</Link>
+              </li>
+              <li>
+                <Link href="/docs">Корисна документація</Link>
+              </li>
             </ul>
           </div>
 

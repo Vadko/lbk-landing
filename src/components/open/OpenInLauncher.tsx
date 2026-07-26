@@ -192,7 +192,7 @@ export function OpenInLauncher({
 
               <button
                 onClick={handleRetry}
-                className="btn btn--outline"
+                className="btn glass-bg"
                 type="button"
               >
                 <SvgIcon icon={faRotate} />
@@ -206,11 +206,7 @@ export function OpenInLauncher({
           </div>
         )}
 
-        <button
-          onClick={copyShareLink}
-          className="btn btn--outline"
-          type="button"
-        >
+        <button onClick={copyShareLink} className="btn glass-bg" type="button">
           <SvgIcon icon={faShareNodes} />
           Копіювати посилання
         </button>

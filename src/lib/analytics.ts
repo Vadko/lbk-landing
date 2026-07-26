@@ -35,6 +35,10 @@ export function trackViewHomepage() {
   track("view_homepage");
 }
 
+export function trackViewDonatersPage() {
+  track("view_donaters_page");
+}
+
 export function trackViewTranslatorsPage() {
   track("view_translators_page");
 }

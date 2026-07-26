@@ -1,8 +1,8 @@
 interface PageHeroSectionProps {
-  title: string;
-  description: string;
-  ctaText: string;
-  ctaHref: string;
+  title?: string;
+  description?: string;
+  ctaText?: string;
+  ctaHref?: string;
   className?: string;
 }
 
@@ -15,16 +15,18 @@ export function PageHeroSection({
 }: PageHeroSectionProps) {
   return (
     <section className={`container page-hero ${className}`}>
-      <h1 className="hero-title">{title}</h1>
-      <p className="hero-description">{description}</p>
-      <a
-        href={ctaHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="btn btn-gradient btn--big"
-      >
-        {ctaText}
-      </a>
+      {title && <h1 className="hero-title">{title}</h1>}
+      {description && <p className="hero-description">{description}</p>}
+      {ctaText && ctaHref && (
+        <a
+          href={ctaHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-gradient btn--big"
+        >
+          {ctaText}
+        </a>
+      )}
     </section>
   );
 }

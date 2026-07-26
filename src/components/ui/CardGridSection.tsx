@@ -33,7 +33,7 @@ export function CardGridSection({
   const gridColumnsClass = `card-grid-cols-${columns}`;
 
   return (
-    <section id={id} className={`card-grid-section ${className}`.trim()}>
+    <section id={id} className={`section-margin ${className}`.trim()}>
       <div className="container">
         {title && (
           <h2 className={`section-title ${textAlignClass}`.trim()}>{title}</h2>

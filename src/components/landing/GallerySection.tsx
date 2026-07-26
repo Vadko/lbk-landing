@@ -66,7 +66,7 @@ export function GallerySection() {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
 
   return (
-    <section id="gallery" className="gallery-sec">
+    <section id="gallery" className="section-margin">
       <div className="container">
         <h2 className="section-title center">Погляньте на лаунчер</h2>
         <p className="section-description center">
