@@ -4207,10 +4207,6 @@ main.header-padding:has(.open-launcher-page) {
   margin-bottom: 0;
 }
 
-.collab-partners {
-  padding-block: 100px 0;
-}
-
 .collab-partners-ticker {
   width: 100%;
   overflow: hidden;
@@ -4298,6 +4294,12 @@ main.header-padding:has(.open-launcher-page) {
   }
 }
 
+@media (min-width: 769px) {
+  .collab-value-card--span {
+    grid-column: span 2;
+  }
+}
+
 .collab-value-card .hover-card__icon {
   margin-bottom: 10px;
 }
@@ -4333,6 +4335,7 @@ main.header-padding:has(.open-launcher-page) {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-bottom: 20px;
 }
 
 .collab-admin-list li {

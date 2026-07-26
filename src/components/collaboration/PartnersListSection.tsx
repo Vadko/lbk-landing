@@ -13,15 +13,13 @@ const PARTNERS: Array<{ icon: IconDef; label: string }> = [
   { icon: faBookOpen, label: "Локалізація UA" },
   { icon: faUsers, label: "Українські перекладачі" },
   { icon: faGamepad, label: "UA Gaming Hub" },
-  { icon: faBookOpen, label: "Локалізація UA" },
-  { icon: faUsers, label: "Українські локалізатори" },
 ];
 
 export function PartnersListSection() {
   const items = [...PARTNERS, ...PARTNERS];
 
   return (
-    <section className="collab-partners">
+    <section className="section-margin">
       <div className="container">
         <h2 className="section-title center">
           Спілки перекладачів, що вже з нами

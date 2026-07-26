@@ -4,6 +4,7 @@ import { CodeIcon } from "../icons";
 import { CtaSection } from "../ui/CtaSection";
 import { HoverCard } from "../ui/HoverCard";
 import { PartnersListSection } from "./PartnersListSection";
+import { PartnersStatsSection } from "./PartnersStatsSection";
 import { PartnerValueSection } from "./PartnerValueSection";
 import { PlatformAudienceSection } from "./PlatformAudienceSection";
 
@@ -25,6 +26,7 @@ export function CollaborationPage() {
         ctaHref="https://admin.lbklauncher.com"
       />
 
+      <PartnersStatsSection />
       <PartnersListSection />
       <PartnerValueSection />
 
@@ -49,6 +51,10 @@ export function CollaborationPage() {
               <li>Автоматична доставка гравцям</li>
               <li>Модерація та контроль версій</li>
             </ul>
+
+            <a className="btn btn-main" href="https://admin.lbklauncher.com">
+              Спробувати
+            </a>
           </div>
 
           <Image
