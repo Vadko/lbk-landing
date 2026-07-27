@@ -8,11 +8,21 @@ interface IconDef {
 }
 
 const PARTNERS: Array<{ icon: IconDef; label: string }> = [
-  { icon: faUsers, label: "Українські локалізатори" },
-  { icon: faGamepad, label: "Game UA Team" },
-  { icon: faBookOpen, label: "Локалізація UA" },
-  { icon: faUsers, label: "Українські перекладачі" },
-  { icon: faGamepad, label: "UA Gaming Hub" },
+  { icon: faUsers, label: "Кіндрат Книш" },
+  { icon: faGamepad, label: "Народний переклад" },
+  { icon: faBookOpen, label: "Солов’їна команда" },
+  { icon: faUsers, label: "Jackbox Ukraine" },
+  { icon: faGamepad, label: "Дракон Сходу" },
+  { icon: faGamepad, label: "Ліниві ШІ" },
+  { icon: faGamepad, label: "Ідіома" },
+  { icon: faGamepad, label: "Спільнота Єнота" },
+  { icon: faGamepad, label: "Sent_DeZ" },
+  { icon: faGamepad, label: "Свічники" },
+  { icon: faGamepad, label: "HamUA Studio" },
+  { icon: faGamepad, label: "CatLocTeam" },
+  { icon: faGamepad, label: "СТОЯТИ Team" },
+  { icon: faGamepad, label: "cul33" },
+  { icon: faGamepad, label: "Кавунові переклади" },
 ];
 
 export function PartnersListSection() {

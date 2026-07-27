@@ -11,39 +11,29 @@ interface Donator {
 
 const leaderboard: Donator[] = [
   {
-    name: "Maximus Prime",
-    amount: "50,000",
-    lastDonation: "2026-07-27T14:20:00",
+    name: "Віталій Б.",
+    amount: "20,000",
+    lastDonation: "2026-07-23T14:20:00",
   },
   {
-    name: "Elena_UA",
-    amount: "32,400",
+    name: "M. Danyliuk",
+    amount: "6,666",
     lastDonation: "2026-07-26T19:15:00",
   },
   {
-    name: "Iron_Shield",
-    amount: "28,150",
+    name: "🐈",
+    amount: "5,150",
     lastDonation: "2026-07-25T09:00:00",
   },
   {
-    name: "Volodymyr_K",
-    amount: "12,000",
+    name: "MoreManUA",
+    amount: "5,000",
     lastDonation: "2026-07-24T09:00:00",
   },
   {
-    name: "Stepan_Giga_Fan",
-    amount: "9,800",
+    name: "Руслан І.",
+    amount: "4,000",
     lastDonation: "2026-04-27T09:00:00",
-  },
-  {
-    name: "Cyber_Kozak",
-    amount: "8,500",
-    lastDonation: "2026-07-17T09:00:00",
-  },
-  {
-    name: "Night_Owl",
-    amount: "7,200",
-    lastDonation: "2026-07-13T09:00:00",
   },
 ];
 

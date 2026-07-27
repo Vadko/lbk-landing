@@ -38,7 +38,7 @@ export function DonatersStatsSection() {
       description: "За весь час існування проєкту",
     },
     {
-      number: 26,
+      number: 800,
       title: "Донатерів",
       description: "Унікальних користувачів, що підтримали нас",
     },

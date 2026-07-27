@@ -6,27 +6,27 @@ interface TopDonator {
   name: string;
   amount: string;
   message: string;
-  avatar: string;
+  avatar?: string;
 }
 
 const topDonators: TopDonator[] = [
   {
-    name: "Maximus Prime",
-    amount: "₴ 50,000",
+    name: "Віталій Б.",
+    amount: "20,000",
     message: "Ти робиш неможливе можливим! Найкращий лаунчер!",
-    avatar: "/assets/donaters/maximus-prime.png",
+    // avatar: "/assets/donaters/maximus-prime.png",
   },
   {
-    name: "Elena_UA",
-    amount: "₴ 32,400",
+    name: "M. Danyliuk",
+    amount: "6,666",
     message: "Дякую за можливість грати рідною мовою. Це безцінно.",
-    avatar: "/assets/donaters/elena_ua.png",
+    // avatar: "/assets/donaters/iron_shield.png",
   },
   {
-    name: "Iron_Shield",
-    amount: "₴ 28,100",
+    name: "🐈",
+    amount: "5,150",
     message: "Підтримка українського контенту — це наш обов'язок.",
-    avatar: "/assets/donaters/iron_shield.png",
+    // avatar: "/assets/donaters/elena_ua.png",
   },
 ];
 
@@ -41,16 +41,18 @@ export function SpecialThanksSection() {
     >
       {topDonators.map((donator, index) => (
         <HoverCard key={index} className="donator-card">
-          <div className="donator-card__avatar">
-            <Image
-              src={donator.avatar}
-              alt={donator.name}
-              width={100}
-              height={100}
-            />
-          </div>
+          {donator.avatar && (
+            <div className="donator-card__avatar">
+              <Image
+                src={donator.avatar}
+                alt={donator.name}
+                width={100}
+                height={100}
+              />
+            </div>
+          )}
           <h3 className="donator-card__name">{donator.name}</h3>
-          <p className="donator-card__amount">{donator.amount}</p>
+          <p className="donator-card__amount">₴ {donator.amount}</p>
           <p className="donator-card__message">“{donator.message}”</p>
         </HoverCard>
       ))}
