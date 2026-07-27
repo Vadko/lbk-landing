@@ -39,8 +39,8 @@ function mapRowToGameGroup(
   return {
     slug: row.slug,
     name: row.name,
-    banner_path: row.banner_path,
     thumbnail_path: row.thumbnail_path,
+    capsule_path: row.capsule_path,
     is_adult: row.is_adult ?? false,
     updated_at: getLatestUpdatedAt(translations),
     translations,

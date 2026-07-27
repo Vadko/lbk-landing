@@ -11,6 +11,7 @@ export type TranslationItem = Pick<
   | "team"
   | "status"
   | "translation_progress"
+  | "editing_progress"
   | "version"
   | "banner_path"
   | "updated_at"
@@ -23,8 +24,8 @@ export type TranslationItem = Pick<
 export interface GameGroup {
   slug: string;
   name: string;
-  banner_path: string | null;
   thumbnail_path: string | null;
+  capsule_path: string | null;
   is_adult: boolean;
   updated_at: string;
   translations: TranslationItem[];
