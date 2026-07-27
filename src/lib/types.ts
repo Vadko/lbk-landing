@@ -24,7 +24,7 @@ export type TranslationItem = Pick<
 export interface GameGroup {
   slug: string;
   name: string;
-  thumbnail_path: string | null;
+  banner_path: string | null;
   capsule_path: string | null;
   is_adult: boolean;
   updated_at: string;

@@ -78,7 +78,7 @@ function TranslationRow({
 export function GameCard({ game, priority }: GameCardProps) {
   const imageUrl =
     getImageUrl(game.capsule_path, game.updated_at) ||
-    getImageUrl(game.thumbnail_path, game.updated_at);
+    getImageUrl(game.banner_path, game.updated_at);
 
   // For single translation, link directly to the translation page
   const cardHref =
