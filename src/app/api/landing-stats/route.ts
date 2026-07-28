@@ -10,6 +10,7 @@ interface LandingStats {
   totalPlaytimeHours: number;
   totalUniquePlayers: number;
   totalCreators: number;
+  totalSupporters: number;
   dau: number;
 }
 
@@ -26,6 +27,7 @@ async function fetchFromSupabase(): Promise<LandingStats> {
     totalPlaytimeHours: Math.round(Number(data.total_playtime_hours)),
     totalUniquePlayers: Number(data.total_unique_players),
     totalCreators: Number(data.total_creators),
+    totalSupporters: Number(data.total_supporters),
     dau: Number(data.dau),
   };
 }
