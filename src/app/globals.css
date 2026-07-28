@@ -5264,29 +5264,6 @@ main.header-padding:has(.open-launcher-page) {
    Donaters Page
    ========================================== */
 
-/* Donaters Hero Section */
-.donaters-hero {
-  padding: 120px 0 60px;
-  text-align: center;
-}
-
-.donaters-hero__content {
-  max-width: 840px;
-  margin: 0 auto;
-}
-
-.donaters-hero__title {
-  font-size: 3.75rem;
-  font-weight: 600;
-  line-height: 1.14;
-  margin-bottom: 30px;
-}
-
-.donaters-hero__description {
-  max-width: 840px;
-  margin: 0 auto;
-}
-
 /* Subscription Section */
 .subscription-section__grid {
   display: flex;
@@ -5388,18 +5365,6 @@ main.header-padding:has(.open-launcher-page) {
     grid-template-columns: 1fr;
   }
 
-  .donaters-hero {
-    padding: 100px 0 40px;
-  }
-
-  .donaters-hero__title {
-    font-size: 2.4rem;
-  }
-
-  .donaters-hero__description {
-    font-size: 1rem;
-  }
-
   .subscription-card {
     padding: 24px;
   }
@@ -5448,16 +5413,6 @@ main.header-padding:has(.open-launcher-page) {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-}
-
-.donator-card__avatar {
-  border: 4px solid var(--glass-border);
-  border-radius: 50%;
-  display: flex;
-  overflow: hidden;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
 }
 
 .donator-card.hover-card h3 {
@@ -5562,7 +5517,12 @@ main.header-padding:has(.open-launcher-page) {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 80px;
+
+  @media (max-width: 768px) {
+    gap: 40px;
+  }
 }
 
 .partners-list {
