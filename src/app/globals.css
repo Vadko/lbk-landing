@@ -681,8 +681,10 @@ body.mobile-menu-open {
   align-items: center;
   gap: 20px 15px;
 
-  & > *:not(.games-link) {
-    grid-row: 2;
+  @media (min-width: 769px) {
+    & > *:not(.games-link) {
+      grid-row: 2;
+    }
   }
 
   @media (max-width: 768px) {
