@@ -36,7 +36,11 @@ function TranslationRow({
   slug: string;
 }) {
   const status = STATUS_LABELS[translation.status] || STATUS_LABELS.planned;
-  const progress = translation.translation_progress ?? 0;
+  const progress = Math.round(
+    ((translation.translation_progress ?? 0) +
+      (translation.editing_progress ?? 0)) /
+      2
+  );
 
   return (
     <Link
@@ -73,8 +77,8 @@ function TranslationRow({
 
 export function GameCard({ game, priority }: GameCardProps) {
   const imageUrl =
-    getImageUrl(game.banner_path, game.updated_at) ||
-    getImageUrl(game.thumbnail_path, game.updated_at);
+    getImageUrl(game.capsule_path, game.updated_at) ||
+    getImageUrl(game.banner_path, game.updated_at);
 
   // For single translation, link directly to the translation page
   const cardHref =

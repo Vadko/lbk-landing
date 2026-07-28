@@ -457,6 +457,73 @@ export type Database = {
           },
         ]
       }
+      game_fundraising: {
+        Row: {
+          created_at: string
+          donatello_goal_id: string | null
+          donatello_slug: string | null
+          game_id: string
+          last_sync_error: string | null
+          last_sync_status: string | null
+          last_synced_at: string | null
+          monobank_jar_long_id: string | null
+          monobank_jar_short_id: string | null
+          retry_after: string | null
+          source: string
+          synced_currency: string
+          synced_current: number | null
+          synced_goal: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          donatello_goal_id?: string | null
+          donatello_slug?: string | null
+          game_id: string
+          last_sync_error?: string | null
+          last_sync_status?: string | null
+          last_synced_at?: string | null
+          monobank_jar_long_id?: string | null
+          monobank_jar_short_id?: string | null
+          retry_after?: string | null
+          source: string
+          synced_currency?: string
+          synced_current?: number | null
+          synced_goal?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          donatello_goal_id?: string | null
+          donatello_slug?: string | null
+          game_id?: string
+          last_sync_error?: string | null
+          last_sync_status?: string | null
+          last_synced_at?: string | null
+          monobank_jar_long_id?: string | null
+          monobank_jar_short_id?: string | null
+          retry_after?: string | null
+          source?: string
+          synced_currency?: string
+          synced_current?: number | null
+          synced_goal?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_fundraising_game_id_fkey"
+            columns: ["game_id"]
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_fundraising_game_id_fkey"
+            columns: ["game_id"]
+            referencedRelation: "trending_games_cache"
+            referencedColumns: ["game_id"]
+          },
+        ]
+      }
       game_subscriptions: {
         Row: {
           game_id: string
@@ -528,6 +595,46 @@ export type Database = {
           },
         ]
       }
+      game_version_fundraising: {
+        Row: {
+          created_at: string
+          donatello_goal_id: string | null
+          donatello_slug: string | null
+          game_version_id: string
+          monobank_jar_long_id: string | null
+          monobank_jar_short_id: string | null
+          source: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          donatello_goal_id?: string | null
+          donatello_slug?: string | null
+          game_version_id: string
+          monobank_jar_long_id?: string | null
+          monobank_jar_short_id?: string | null
+          source: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          donatello_goal_id?: string | null
+          donatello_slug?: string | null
+          game_version_id?: string
+          monobank_jar_long_id?: string | null
+          monobank_jar_short_id?: string | null
+          source?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_version_fundraising_game_version_id_fkey"
+            columns: ["game_version_id"]
+            referencedRelation: "game_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       game_versions: {
         Row: {
           achievements_archive_file_list: Json | null
@@ -549,6 +656,11 @@ export type Database = {
           created_by: string
           description: string | null
           discord: string | null
+          ea_archive_file_list: Json | null
+          ea_archive_hash: string | null
+          ea_archive_path: string | null
+          ea_archive_size: string | null
+          ea_store_url: string | null
           editing_progress: number
           epic_archive_file_list: Json | null
           epic_archive_hash: string | null
@@ -601,6 +713,11 @@ export type Database = {
           translation_progress: number
           twitter: string | null
           updated_at: string
+          uplay_archive_file_list: Json | null
+          uplay_archive_hash: string | null
+          uplay_archive_path: string | null
+          uplay_archive_size: string | null
+          uplay_store_url: string | null
           version: string | null
           video_url: string | null
           voice_archive_file_list: Json | null
@@ -636,6 +753,11 @@ export type Database = {
           created_by: string
           description?: string | null
           discord?: string | null
+          ea_archive_file_list?: Json | null
+          ea_archive_hash?: string | null
+          ea_archive_path?: string | null
+          ea_archive_size?: string | null
+          ea_store_url?: string | null
           editing_progress?: number
           epic_archive_file_list?: Json | null
           epic_archive_hash?: string | null
@@ -688,6 +810,11 @@ export type Database = {
           translation_progress?: number
           twitter?: string | null
           updated_at?: string
+          uplay_archive_file_list?: Json | null
+          uplay_archive_hash?: string | null
+          uplay_archive_path?: string | null
+          uplay_archive_size?: string | null
+          uplay_store_url?: string | null
           version?: string | null
           video_url?: string | null
           voice_archive_file_list?: Json | null
@@ -723,6 +850,11 @@ export type Database = {
           created_by?: string
           description?: string | null
           discord?: string | null
+          ea_archive_file_list?: Json | null
+          ea_archive_hash?: string | null
+          ea_archive_path?: string | null
+          ea_archive_size?: string | null
+          ea_store_url?: string | null
           editing_progress?: number
           epic_archive_file_list?: Json | null
           epic_archive_hash?: string | null
@@ -775,6 +907,11 @@ export type Database = {
           translation_progress?: number
           twitter?: string | null
           updated_at?: string
+          uplay_archive_file_list?: Json | null
+          uplay_archive_hash?: string | null
+          uplay_archive_path?: string | null
+          uplay_archive_size?: string | null
+          uplay_store_url?: string | null
           version?: string | null
           video_url?: string | null
           voice_archive_file_list?: Json | null
@@ -840,6 +977,11 @@ export type Database = {
           description: string | null
           discord: string | null
           downloads: number | null
+          ea_archive_file_list: Json | null
+          ea_archive_hash: string | null
+          ea_archive_path: string | null
+          ea_archive_size: string | null
+          ea_store_url: string | null
           editing_progress: number
           epic_archive_file_list: Json | null
           epic_archive_hash: string | null
@@ -898,6 +1040,11 @@ export type Database = {
           translation_updated_at: string
           twitter: string | null
           updated_at: string
+          uplay_archive_file_list: Json | null
+          uplay_archive_hash: string | null
+          uplay_archive_path: string | null
+          uplay_archive_size: string | null
+          uplay_store_url: string | null
           version: string | null
           video_url: string | null
           voice_archive_file_list: Json | null
@@ -935,6 +1082,11 @@ export type Database = {
           description?: string | null
           discord?: string | null
           downloads?: number | null
+          ea_archive_file_list?: Json | null
+          ea_archive_hash?: string | null
+          ea_archive_path?: string | null
+          ea_archive_size?: string | null
+          ea_store_url?: string | null
           editing_progress?: number
           epic_archive_file_list?: Json | null
           epic_archive_hash?: string | null
@@ -993,6 +1145,11 @@ export type Database = {
           translation_updated_at?: string
           twitter?: string | null
           updated_at?: string
+          uplay_archive_file_list?: Json | null
+          uplay_archive_hash?: string | null
+          uplay_archive_path?: string | null
+          uplay_archive_size?: string | null
+          uplay_store_url?: string | null
           version?: string | null
           video_url?: string | null
           voice_archive_file_list?: Json | null
@@ -1030,6 +1187,11 @@ export type Database = {
           description?: string | null
           discord?: string | null
           downloads?: number | null
+          ea_archive_file_list?: Json | null
+          ea_archive_hash?: string | null
+          ea_archive_path?: string | null
+          ea_archive_size?: string | null
+          ea_store_url?: string | null
           editing_progress?: number
           epic_archive_file_list?: Json | null
           epic_archive_hash?: string | null
@@ -1088,6 +1250,11 @@ export type Database = {
           translation_updated_at?: string
           twitter?: string | null
           updated_at?: string
+          uplay_archive_file_list?: Json | null
+          uplay_archive_hash?: string | null
+          uplay_archive_path?: string | null
+          uplay_archive_size?: string | null
+          uplay_store_url?: string | null
           version?: string | null
           video_url?: string | null
           voice_archive_file_list?: Json | null
@@ -1835,6 +2002,60 @@ export type Database = {
         }
         Relationships: []
       }
+      store_game_map: {
+        Row: {
+          egs_namespace: string | null
+          egs_offer_id: string | null
+          fetched_at: string
+          gog_product_id: string | null
+          steam_app_id: number
+        }
+        Insert: {
+          egs_namespace?: string | null
+          egs_offer_id?: string | null
+          fetched_at?: string
+          gog_product_id?: string | null
+          steam_app_id: number
+        }
+        Update: {
+          egs_namespace?: string | null
+          egs_offer_id?: string | null
+          fetched_at?: string
+          gog_product_id?: string | null
+          steam_app_id?: number
+        }
+        Relationships: []
+      }
+      store_price_cache: {
+        Row: {
+          currency: string | null
+          discount_percent: number
+          fetched_at: string
+          original_minor: number | null
+          price_minor: number | null
+          steam_app_id: number
+          store: string
+        }
+        Insert: {
+          currency?: string | null
+          discount_percent?: number
+          fetched_at?: string
+          original_minor?: number | null
+          price_minor?: number | null
+          steam_app_id: number
+          store: string
+        }
+        Update: {
+          currency?: string | null
+          discount_percent?: number
+          fetched_at?: string
+          original_minor?: number | null
+          price_minor?: number | null
+          steam_app_id?: number
+          store?: string
+        }
+        Relationships: []
+      }
       support_clicks: {
         Row: {
           clicked_at: string | null
@@ -2135,6 +2356,7 @@ export type Database = {
       games_grouped: {
         Row: {
           banner_path: string | null
+          capsule_path: string | null
           created_at: string | null
           downloads: number | null
           is_adult: boolean | null
@@ -2142,7 +2364,6 @@ export type Database = {
           name: string | null
           name_fts: unknown
           slug: string | null
-          thumbnail_path: string | null
           translations: Json | null
           translations_count: number | null
         }
@@ -2181,6 +2402,7 @@ export type Database = {
         Returns: number
       }
       cleanup_steam_library_rate_limits: { Args: never; Returns: number }
+      custom_access_token_hook: { Args: { event: Json }; Returns: Json }
       each: { Args: { hs: unknown }; Returns: Record<string, unknown>[] }
       fuzzy_search_games: {
         Args: {
@@ -2191,6 +2413,7 @@ export type Database = {
         }
         Returns: {
           banner_path: string
+          capsule_path: string
           created_at: string
           downloads: number
           is_adult: boolean
@@ -2198,7 +2421,6 @@ export type Database = {
           name: string
           name_fts: unknown
           slug: string
-          thumbnail_path: string
           translations: Json
           translations_count: number
         }[]
@@ -2270,6 +2492,7 @@ export type Database = {
           total_creators: number
           total_downloads: number
           total_playtime_hours: number
+          total_supporters: number
           total_unique_players: number
         }[]
       }
@@ -2410,6 +2633,8 @@ export type Database = {
         | "rockstar"
         | "other"
         | "xbox"
+        | "uplay"
+        | "ea"
       notification_type:
         | "news"
         | "feedback"
@@ -2565,6 +2790,8 @@ export const Constants = {
         "rockstar",
         "other",
         "xbox",
+        "uplay",
+        "ea",
       ],
       notification_type: [
         "news",
