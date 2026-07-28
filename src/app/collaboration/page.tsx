@@ -54,7 +54,7 @@ export default function CollaborationRoutePage() {
               гравцям.
             </p>
 
-            <ul className="collab-admin-list">
+            <ul className="collab-admin-list mobile-full">
               <li>Завантаження та оновлення перекладів</li>
               <li>Автоматична доставка гравцям</li>
               <li>Модерація та контроль версій</li>

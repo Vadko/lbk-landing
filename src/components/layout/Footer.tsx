@@ -29,7 +29,7 @@ export function Footer() {
                 <Link href="/setup">Встановлення</Link>
               </li>
               <li>
-                <Link href="/donate">Топ донатерів</Link>
+                <Link href="/donaters">Топ донатерів</Link>
               </li>
               <li>
                 <Link href="/collaboration">Співпраця</Link>
