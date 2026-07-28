@@ -1,7 +1,8 @@
 import { faBookOpen } from "@fortawesome/free-solid-svg-icons/faBookOpen";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faUsers } from "@fortawesome/free-solid-svg-icons/faUsers";
-import { SvgIcon } from "@/components/ui/SvgIcon";
+
+// import { SvgIcon } from "@/components/ui/SvgIcon";
 
 interface IconDef {
   icon: [number, number, string[], string, string | string[]];
@@ -40,9 +41,9 @@ export function PartnersListSection() {
         <div className="collab-partners-track">
           {items.map((item, index) => (
             <div className="collab-partner-chip" key={`${item.label}-${index}`}>
-              <div className="collab-partner-chip-icon">
+              {/* <div className="collab-partner-chip-icon">
                 <SvgIcon icon={item.icon} />
-              </div>
+              </div> */}
               <p>{item.label}</p>
             </div>
           ))}

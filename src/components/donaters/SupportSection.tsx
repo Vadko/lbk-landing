@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export function SupportSection() {
   return (
@@ -20,12 +21,15 @@ export function SupportSection() {
             </p>
           </div>
           <div className="support-card__actions">
-            <a className="btn btn-main" href="#">
+            <a
+              className="btn btn-main"
+              href="https://donatello.to/atlantDeMaPeine?g=pidtrimka-roboti-lbk-launcher"
+            >
               Задонатити зараз
             </a>
-            <a className="btn glass-bg" href="#">
+            <Link className="btn glass-bg" href="/#showcase">
               Дізнатися більше
-            </a>
+            </Link>
           </div>
         </div>
       </div>
