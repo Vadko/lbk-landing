@@ -3,6 +3,7 @@ import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
 import { faUsers } from "@fortawesome/free-solid-svg-icons/faUsers";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { CardGridSection } from "../ui/CardGridSection";
+import { HoverCard } from "../ui/HoverCard";
 
 const CARDS = [
   {
@@ -36,7 +37,7 @@ export function CollaborationSection() {
       centerText
     >
       {CARDS.map((card, index) => (
-        <div key={index} className="collab-card glass-bg">
+        <HoverCard key={index} className="hover-card--big">
           <div className="collab-icon">
             <SvgIcon icon={card.icon} />
           </div>
@@ -51,7 +52,7 @@ export function CollaborationSection() {
             <SvgIcon icon={card.linkIcon} />
             {card.linkText}
           </a>
-        </div>
+        </HoverCard>
       ))}
     </CardGridSection>
   );

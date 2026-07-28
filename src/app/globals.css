@@ -1179,17 +1179,6 @@ body.mobile-menu-open {
 }
 
 /* Collaboration Section */
-.collab-card {
-  border-radius: 20px;
-  padding: 40px 30px;
-  text-align: center;
-}
-
-.collab-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 40px rgba(var(--color-main-rgb), 0.15);
-}
-
 .collab-icon {
   width: 80px;
   height: 80px;
@@ -1209,31 +1198,8 @@ body.mobile-menu-open {
   transition: all 0.3s ease;
 }
 
-.collab-card:hover .collab-icon {
-  border-color: var(--color-main);
-  transform: scale(1.1);
-}
-
-.collab-card h3 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--text-primary);
-}
-
-.collab-card p {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--text-sec);
-  margin-bottom: 20px;
-}
-
-.collab-btn.github {
-  background: linear-gradient(90deg, #333, #555);
-}
-
-.collab-btn.github:hover {
-  box-shadow: 0 8px 25px rgba(100, 100, 100, 0.4);
+.collab-btn {
+  margin-top: 20px;
 }
 
 .why-btn {
@@ -1843,10 +1809,6 @@ p + .why-btn {
 
   .hover-card:hover::after {
     background: var(--glass-bg);
-  }
-
-  .collab-card {
-    padding: 30px 25px;
   }
 }
 
