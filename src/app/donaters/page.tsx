@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { DonatersStatsSection } from "@/components/donaters/DonatersStatsSection";
-// import { LeaderboardSection } from "@/components/donaters/LeaderboardSection";
+import { LeaderboardSection } from "@/components/donaters/LeaderboardSection";
 import { SpecialThanksSection } from "@/components/donaters/SpecialThanksSection";
 // import { SubscriptionSection } from "@/components/donaters/SubscriptionSection";
 import { SupportSection } from "@/components/donaters/SupportSection";
@@ -28,7 +28,7 @@ export default function DonatersRoutePage() {
       {/* <SubscriptionSection /> */}
       <SupportSection />
       <SpecialThanksSection />
-      {/* <LeaderboardSection /> */}
+      <LeaderboardSection />
     </>
   );
 }

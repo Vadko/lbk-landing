@@ -4,6 +4,7 @@ import type { ComponentType, SVGProps } from "react";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { useCountUp } from "@/hooks/useCountUp";
+import { useLandingStats } from "@/hooks/useLandingStats";
 
 function AnimatedNumber({
   value,
@@ -25,6 +26,8 @@ function AnimatedNumber({
 }
 
 export function PartnersStatsSection() {
+  const { data: stats } = useLandingStats();
+
   const statsData: Array<{
     Icon?: ComponentType<SVGProps<SVGSVGElement>>;
     number?: number;
@@ -33,17 +36,17 @@ export function PartnersStatsSection() {
     description: string;
   }> = [
     {
-      number: 34168,
+      number: stats?.totalCreators,
       title: "Перекладачів з нами",
       description: "Активні команди та окремі перекладачі",
     },
     {
-      number: 26,
-      title: "Завантажень на переклад",
-      description: "Скільки завантажень перекладу ви можете отримати",
+      number: stats?.totalDownloads,
+      title: "Завантажень перекладів",
+      description: "Кількість завантажень за історію платформи",
     },
     {
-      number: 26,
+      number: stats?.totalSupporters,
       title: "Користувачів підтримало",
       description: "Скільки раз вже підтримали перекладачів",
     },
