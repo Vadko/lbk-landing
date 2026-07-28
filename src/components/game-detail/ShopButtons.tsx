@@ -8,6 +8,19 @@ interface ShopButtonsProps {
 }
 
 export function ShopButtons({ game }: ShopButtonsProps) {
+  const hasAnyStore = Boolean(
+    game.steam_app_id ||
+      game.gog_store_url ||
+      game.epic_store_url ||
+      game.xbox_store_url ||
+      game.uplay_store_url ||
+      game.ea_store_url
+  );
+
+  if (!hasAnyStore) {
+    return null;
+  }
+
   return (
     <div className="game-sidebar-card game-steam-card store-list">
       {game.steam_app_id && (
