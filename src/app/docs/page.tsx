@@ -47,7 +47,7 @@ const docsList = {
     items: [
       {
         linkUrl:
-          "https://hikarosato.github.io/#:~:text=GitHub-,%D0%9F%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%B8%20%D0%B4%D0%BB%D1%8F%20Unity,-4%20%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%B8%2C%201",
+          "https://hikarosato.github.io/?utm_source=web&utm_medium=lbk&utm_campaign=hello-guy",
         description: "Купа програм по Unity + UE",
       },
       {

@@ -1,6 +1,8 @@
 import { faTelegram } from "@fortawesome/free-brands-svg-icons/faTelegram";
+import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
 import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
 import { faUsers } from "@fortawesome/free-solid-svg-icons/faUsers";
+import Link from "next/link";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { CardGridSection } from "../ui/CardGridSection";
 import { HoverCard } from "../ui/HoverCard";
@@ -14,7 +16,6 @@ const CARDS = [
     link: "https://t.me/lbk_launcher_bot",
     linkText: "Написати нам",
     linkIcon: faTelegram,
-    isGithub: false,
   },
   {
     icon: faUsers,
@@ -24,7 +25,15 @@ const CARDS = [
     link: "https://t.me/LittleBitUA",
     linkText: "Приєднатися",
     linkIcon: faTelegram,
-    isGithub: false,
+  },
+  {
+    icon: faBook,
+    title: "Зробіть свій переклад",
+    description:
+      "Список корисних матеріалів, що стануть у нагоді, якщо ви хочете спробувати.",
+    link: "/docs",
+    linkText: "Спробувати",
+    linkIcon: faBook,
   },
 ];
 
@@ -33,7 +42,7 @@ export function CollaborationSection() {
     <CardGridSection
       id="collaboration"
       title="Приєднуйтеся до спільноти"
-      columns={2}
+      columns={3}
       centerText
     >
       {CARDS.map((card, index) => (
@@ -43,15 +52,22 @@ export function CollaborationSection() {
           </div>
           <h3>{card.title}</h3>
           <p>{card.description}</p>
-          <a
-            href={card.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-main collab-btn"
-          >
-            <SvgIcon icon={card.linkIcon} />
-            {card.linkText}
-          </a>
+          {card.link.includes("http") ? (
+            <a
+              href={card.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-main collab-btn"
+            >
+              <SvgIcon icon={card.linkIcon} />
+              {card.linkText}
+            </a>
+          ) : (
+            <Link href={card.link} className="btn btn-main collab-btn">
+              <SvgIcon icon={card.linkIcon} />
+              {card.linkText}
+            </Link>
+          )}
         </HoverCard>
       ))}
     </CardGridSection>

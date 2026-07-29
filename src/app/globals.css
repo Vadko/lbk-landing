@@ -5459,15 +5459,18 @@ main.header-padding:has(.open-launcher-page) {
 
 .docs-list {
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   gap: 10px;
 }
 
 .docs-list-item {
   display: flex;
   cursor: pointer;
+  height: 100%;
   padding: 24px 30px;
   color: var(--text-primary);
-  font-size: 1.1rem;
+  font-size: 1.125rem;
+  line-height: 1;
   font-weight: 600;
 
   &:hover {
