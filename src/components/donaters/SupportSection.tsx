@@ -23,11 +23,18 @@ export function SupportSection() {
           <div className="support-card__actions">
             <a
               className="btn btn-main"
+              target="_blank"
+              rel="noopener noreferrer"
               href="https://donatello.to/atlantDeMaPeine?g=pidtrimka-roboti-lbk-launcher"
             >
               Задонатити зараз
             </a>
-            <Link className="btn glass-bg" href="/#showcase">
+            <Link
+              className="btn glass-bg"
+              href="/#showcase"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Дізнатися більше
             </Link>
           </div>
