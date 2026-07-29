@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import { headers } from "next/headers";
 import Script from "next/script";
-import { Suspense } from "react";
 import "./globals.css";
 import { ClientUtilities } from "@/components/layout/ClientUtilities";
 import { FanConBrochureBanner } from "@/components/layout/FanConBrochureBanner";
 import { Footer } from "@/components/layout/Footer";
+import { IframeResizeMessenger } from "@/components/layout/IframeResizeMessenger";
 import { Navbar } from "@/components/layout/Navbar";
-import { SiteChrome } from "@/components/layout/SiteChrome";
 import { getGamesCount } from "@/lib/games-count";
 import { QueryProvider } from "@/providers/QueryProvider";
 
@@ -99,6 +99,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const description = appDescription(await getGamesCount());
+  const headersList = await headers();
+  const isPageOnly = headersList.get("x-page-only") === "1";
 
   return (
     <html
@@ -146,22 +148,23 @@ export default async function RootLayout({
           strategy="afterInteractive"
         />
         <ClientUtilities />
-        <Suspense
-          fallback={
-            <>
-              <Navbar />
-              <QueryProvider>
-                <main className="relative z-10 header-padding">{children}</main>
-              </QueryProvider>
-              <FanConBrochureBanner />
-              <Footer />
-            </>
-          }
-        >
-          <SiteChrome>
-            <QueryProvider>{children}</QueryProvider>
-          </SiteChrome>
-        </Suspense>
+        {isPageOnly ? (
+          <>
+            <QueryProvider>
+              <main className="relative z-10">{children}</main>
+            </QueryProvider>
+            <IframeResizeMessenger />
+          </>
+        ) : (
+          <>
+            <Navbar />
+            <QueryProvider>
+              <main className="relative z-10 header-padding">{children}</main>
+            </QueryProvider>
+            <FanConBrochureBanner />
+            <Footer />
+          </>
+        )}
       </body>
     </html>
   );
