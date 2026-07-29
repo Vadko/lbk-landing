@@ -52,6 +52,10 @@ body {
   flex-direction: column;
 }
 
+body.page-only {
+  background: unset;
+}
+
 .main-bg {
   background-image: url("/assets/main-bg.webp");
   background-position: center top;

@@ -139,7 +139,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased main-bg">
+      <body className={`antialiased ${isPageOnly ? "page-only" : "main-bg"} `}>
         {/* Cloudflare Zaraz — executable JS, so loaded via next/script (auto-inject
             is off). Unlike JSON-LD above, which is data and stays a native tag. */}
         <Script
