@@ -47,10 +47,34 @@ function mapRowToGameGroup(
   };
 }
 
-function hasActiveFilters(statuses?: string[], authors?: string[]): boolean {
+function hasActiveFilters(
+  statuses?: string[],
+  authors?: string[],
+  hasVoice?: boolean,
+  hasAchievements?: boolean
+): boolean {
   return Boolean(
-    (statuses && statuses.length > 0) || (authors && authors.length > 0)
+    (statuses && statuses.length > 0) ||
+      (authors && authors.length > 0) ||
+      hasVoice ||
+      hasAchievements
   );
+}
+
+async function fetchVoiceIds(
+  supabase: ReturnType<typeof createServerClient>
+): Promise<Set<string>> {
+  const { data, error } = await supabase
+    .from("games")
+    .select("id")
+    .or("voice_archive_path.not.is.null,voice_progress.not.is.null");
+
+  if (error) {
+    console.error("Voice filter fetch error:", error.message);
+    return new Set();
+  }
+
+  return new Set((data ?? []).map((row) => row.id));
 }
 
 export async function GET(request: NextRequest) {
@@ -61,6 +85,8 @@ export async function GET(request: NextRequest) {
     const statusesParam = searchParams.get("statuses");
     const authorsParam = searchParams.get("authors");
     const sortBy = searchParams.get("sortBy") || undefined;
+    const hasVoice = searchParams.get("hasVoice") === "1";
+    const hasAchievements = searchParams.get("hasAchievements") === "1";
 
     const statuses = statusesParam ? statusesParam.split(",") : undefined;
     const authors = authorsParam ? authorsParam.split(",") : undefined;
@@ -69,13 +95,15 @@ export async function GET(request: NextRequest) {
 
     const supabase = createServerClient();
 
-    if (hasActiveFilters(statuses, authors)) {
+    if (hasActiveFilters(statuses, authors, hasVoice, hasAchievements)) {
       const result = await fetchWithFilter(supabase, {
         offset,
         limit,
         search,
         statuses,
         authors,
+        hasVoice,
+        hasAchievements,
         sortBy,
       });
       return NextResponse.json(result, { headers: cacheHeaders() });
@@ -190,14 +218,36 @@ async function fetchWithFilter(
     search?: string;
     statuses?: string[];
     authors?: string[];
+    hasVoice?: boolean;
+    hasAchievements?: boolean;
     sortBy?: string;
   }
 ) {
-  const { offset, limit, search, statuses, authors, sortBy } = params;
+  const {
+    offset,
+    limit,
+    search,
+    statuses,
+    authors,
+    hasVoice,
+    hasAchievements,
+    sortBy,
+  } = params;
+
+  const applyFilters = async (games: GameGroup[]): Promise<GameGroup[]> => {
+    let filtered = filterGames(games, statuses, authors, hasAchievements);
+    if (hasVoice) {
+      const voiceIds = await fetchVoiceIds(supabase);
+      filtered = filtered.filter((g) =>
+        g.translations.some((t) => voiceIds.has(t.id))
+      );
+    }
+    return filtered;
+  };
 
   if (search && search.trim().length < 3) {
     const fuzzyResult = await fuzzySearch(supabase, search, 0, 50, sortBy);
-    const filtered = filterGames(fuzzyResult.games, statuses, authors);
+    const filtered = await applyFilters(fuzzyResult.games);
     const total = filtered.length;
     return {
       games: filtered.slice(offset, offset + limit),
@@ -227,7 +277,7 @@ async function fetchWithFilter(
 
   if (search && rows.length === 0) {
     const fuzzyResult = await fuzzySearch(supabase, search, 0, 50, sortBy);
-    const filtered = filterGames(fuzzyResult.games, statuses, authors);
+    const filtered = await applyFilters(fuzzyResult.games);
     const total = filtered.length;
     return {
       games: filtered.slice(offset, offset + limit),
@@ -238,7 +288,7 @@ async function fetchWithFilter(
   }
 
   const allGames = rows.filter(isValidGameRow).map(mapRowToGameGroup);
-  const filtered = filterGames(allGames, statuses, authors);
+  const filtered = await applyFilters(allGames);
   const total = filtered.length;
   return {
     games: filtered.slice(offset, offset + limit),
@@ -251,7 +301,8 @@ async function fetchWithFilter(
 function filterGames(
   games: GameGroup[],
   statuses?: string[],
-  authors?: string[]
+  authors?: string[],
+  hasAchievements?: boolean
 ): GameGroup[] {
   return games.filter((game) => {
     if (
@@ -263,6 +314,12 @@ function filterGames(
     if (
       authors?.length &&
       !game.translations.some((t) => authors.some((a) => t.team?.includes(a)))
+    ) {
+      return false;
+    }
+    if (
+      hasAchievements &&
+      !game.translations.some((t) => t.achievements_archive_path)
     ) {
       return false;
     }

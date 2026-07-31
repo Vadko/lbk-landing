@@ -10,10 +10,20 @@ export function useGamesPaginated(
   statuses?: string[],
   authors?: string[],
   sortBy?: string,
-  initialData?: GamesGroupedResponse
+  initialData?: GamesGroupedResponse,
+  hasVoice?: boolean,
+  hasAchievements?: boolean
 ) {
   return useQuery({
-    queryKey: queryKeys.games.list({ search, statuses, authors, page, sortBy }),
+    queryKey: queryKeys.games.list({
+      search,
+      statuses,
+      authors,
+      page,
+      sortBy,
+      hasVoice,
+      hasAchievements,
+    }),
     initialData,
     queryFn: async () => {
       const params = new URLSearchParams();
@@ -29,6 +39,12 @@ export function useGamesPaginated(
       }
       if (sortBy) {
         params.set("sortBy", sortBy);
+      }
+      if (hasVoice) {
+        params.set("hasVoice", "1");
+      }
+      if (hasAchievements) {
+        params.set("hasAchievements", "1");
       }
 
       const response = await fetch(`/api/games-list?${params}`);
