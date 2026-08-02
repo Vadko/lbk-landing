@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Корисна документація",
+  title: "Посібники та інструменти",
   description:
     "Тут зібрана інформація по інструментам, посібникам та словникам, щоб ви могли себе спробувати.",
   alternates: {
-    canonical: "https://lbklauncher.com/docs",
+    canonical: "https://lbklauncher.com/guides&tools",
   },
 };
 
@@ -182,11 +182,11 @@ const docsList = {
   },
 };
 
-export default function DocsPage() {
+export default function InfoPage() {
   return (
     <>
       <section className="container page-hero">
-        <h1 className="hero-title">Корисна документація</h1>
+        <h1 className="hero-title">Посібники та інструменти</h1>
         <p className="hero-description">
           Тут зібрана інформація по інструментам, посібникам та словникам, щоб
           ви могли себе спробувати.
@@ -195,14 +195,14 @@ export default function DocsPage() {
       {Object.values(docsList).map((section, index) => (
         <section key={index} className="container section-margin">
           <h2>{section.title}</h2>
-          <ul className="docs-list">
+          <ul className="info-list">
             {section.items.map((item, itemIndex) => (
               <li key={itemIndex}>
                 <a
                   href={item.linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="docs-list-item glass-bg"
+                  className="info-list-item glass-bg"
                 >
                   {item.description}
                 </a>

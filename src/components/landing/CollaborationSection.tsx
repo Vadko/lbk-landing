@@ -31,7 +31,7 @@ const CARDS = [
     title: "Зробіть свій переклад",
     description:
       "Список корисних матеріалів, що стануть у нагоді, якщо ви хочете спробувати.",
-    link: "/docs",
+    link: "/guides&tools",
     linkText: "Спробувати",
     linkIcon: faBook,
   },

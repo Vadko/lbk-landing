@@ -35,7 +35,7 @@ export function Footer() {
                 <Link href="/collaboration">Співпраця</Link>
               </li>
               <li>
-                <Link href="/docs">Корисна документація</Link>
+                <Link href="/guides&tools">Посібники та інструменти</Link>
               </li>
             </ul>
           </div>

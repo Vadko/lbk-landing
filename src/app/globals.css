@@ -5461,13 +5461,13 @@ main.header-padding:has(.open-launcher-page) {
   font-weight: 500;
 }
 
-.docs-list {
+.info-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   gap: 10px;
 }
 
-.docs-list-item {
+.info-list-item {
   display: flex;
   cursor: pointer;
   height: 100%;
