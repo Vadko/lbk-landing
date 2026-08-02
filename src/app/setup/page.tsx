@@ -59,13 +59,15 @@ export default function SetupPage() {
 
   return (
     <section className="setup-page">
-      <div className="container">
+      <div className="container-narrow">
         <div className="setup-header">
-          <Link href="/" className="back-link">
+          <Link href="/" className="back-link--plain">
             <SvgIcon icon={faArrowLeft} />
             На головну
           </Link>
-          <h1>Встановлення LBK Launcher</h1>
+          <h1 className="page-title page-title--hero">
+            Встановлення LBK Launcher
+          </h1>
           <p>
             Покрокова інструкція для встановлення лаунчера на вашу платформу
           </p>
@@ -125,7 +127,7 @@ export default function SetupPage() {
 
         {/* Download CTA */}
         <div className="setup-download-cta">
-          <Link href="/" className="dl-btn">
+          <Link href="/" className="btn btn-gradient btn--big">
             <SvgIcon icon={faDownload} />
             <div className="dl-info">
               <span>Завантажити LBK Launcher</span>
@@ -369,15 +371,15 @@ function SteamDeckInstructions() {
         </p>
         <ol className="setup-steps">
           <li>
-            <strong>Перейдіть у режим робочого столу:</strong> Затисніть кнопку
+            <strong>Перейдіть у режим робочого столу: </strong> Затисніть кнопку
             живлення → &quot;Перейти на робочий стіл&quot;
           </li>
           <li>
-            <strong>Відкрийте Firefox:</strong> Використовуйте Firefox (не
+            <strong>Відкрийте Firefox: </strong> Використовуйте Firefox (не
             Chrome), оскільки він краще інтегрований з системою
           </li>
           <li>
-            <strong>Відкрийте посилання:</strong> У Firefox перейдіть за{" "}
+            <strong>Відкрийте посилання: </strong> У Firefox перейдіть за{" "}
             <a href={flatpakrefUrl} className="setup-link">
               посиланням на flatpakref
             </a>
@@ -385,13 +387,13 @@ function SteamDeckInstructions() {
             Launcher.
           </li>
           <li>
-            <strong>Встановіть:</strong> Натисніть &quot;Install&quot; у
+            <strong>Встановіть: </strong> Натисніть &quot;Install&quot; у
             Discover
           </li>
         </ol>
         <p>
-          <strong>Примітка:</strong> Якщо браузер пропонує просто скачати файл
-          замість відкриття Discover, встановіть через термінал (Konsole):
+          <strong>Примітка: </strong> Якщо браузер пропонує просто завантажити
+          файл замість відкриття Discover, встановіть через термінал (Konsole):
         </p>
         <div className="setup-code">
           <code>flatpak install --user {flatpakrefUrl}</code>
@@ -413,7 +415,7 @@ function SteamDeckInstructions() {
         <h3>Спосіб 2: AppImage</h3>
         <ol className="setup-steps">
           <li>
-            <strong>Перейдіть у режим робочого столу:</strong> Затисніть кнопку
+            <strong>Перейдіть у режим робочого столу: </strong> Затисніть кнопку
             живлення → &quot;Перейти на робочий стіл&quot;
           </li>
           <li>
@@ -440,7 +442,7 @@ function SteamDeckInstructions() {
                 Steam&quot;
               </li>
               <li>Перейдіть до завантажень та оберіть AppImage</li>
-              <li>Підтвердіть додавання</li>
+              <li>Підтвердьте додавання</li>
             </ul>
             <p>
               За бажанням можна завантажити медіа для оформлення бібліотеки:{" "}

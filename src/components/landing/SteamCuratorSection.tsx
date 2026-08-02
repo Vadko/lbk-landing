@@ -16,7 +16,7 @@ export function SteamCuratorSection() {
           </p>
           <div className="steam-curator--btn-wrapper">
             <a
-              className="btn-neon"
+              className="btn btn-neon"
               target="_blank"
               rel="noopener noreferrer"
               href="https://steamcommunity.com/groups/LBKLauncher"
@@ -24,7 +24,7 @@ export function SteamCuratorSection() {
               Вступити до групи
             </a>
             <a
-              className="btn-main"
+              className="btn btn-main"
               target="_blank"
               rel="noopener noreferrer"
               href="https://store.steampowered.com/curator/46014434-LBK-Launcher"

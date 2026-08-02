@@ -32,13 +32,13 @@ export function GameSidebar({ game }: GameSidebarProps) {
   return (
     <aside className="game-sidebar">
       {/* Download CTA */}
-      <div className="game-sidebar-card game-download-cta">
+      <div className="game-sidebar-card glass-bg glass-bg--no-hover game-download-cta">
         <div className="game-download-header">
           <SvgIcon icon={faDownload} />
           <h3>Встановіть переклад</h3>
         </div>
         <p>Завантажте LBK Launcher і встановіть переклад в один клац</p>
-        <Link href="/" className="dl-btn game-dl-btn">
+        <Link href="/" className="btn btn-gradient btn--big">
           <SvgIcon icon={faWindows} />
           <div className="dl-info">
             <span>Завантажити лаунчер</span>
@@ -49,7 +49,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
           <>
             <a
               href={`lbk://games/${game.slug}/${encodeURIComponent(game.team)}`}
-              className="btn-neon btn-launcher"
+              className="btn btn-neon btn-launcher"
             >
               <RocketIcon />
               Відкрити в лаунчері
@@ -66,13 +66,13 @@ export function GameSidebar({ game }: GameSidebarProps) {
 
       {/* Support */}
       {game.support_url && (
-        <div className="game-sidebar-card game-support-card">
+        <div className="game-sidebar-card glass-bg glass-bg--no-hover game-support-card">
           <h3>Підтримка</h3>
           <a
             href={game.support_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-support"
+            className="btn btn-support"
           >
             <SvgIcon icon={faHeart} />
             Підтримати переклад
@@ -84,7 +84,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
 
       {/* Achievements */}
       {game.achievements_archive_path && (
-        <div className="game-sidebar-card game-achievements-card">
+        <div className="game-sidebar-card glass-bg glass-bg--no-hover game-achievements-card">
           <div className="game-achievements-badge">
             <SvgIcon icon={faTrophy} />
             <span>Включає переклад досягнень</span>
@@ -93,7 +93,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
       )}
 
       {/* Stats */}
-      <div className="game-sidebar-card game-stats-card">
+      <div className="game-sidebar-card glass-bg glass-bg--no-hover game-stats-card">
         <h3>Статистика</h3>
         <div className="game-stats-list">
           {!game.status || game.status !== "planned" ? (
@@ -143,7 +143,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
 
       {/* Social Links */}
       {socialLinks.length > 0 && (
-        <div className="game-sidebar-card game-links-card">
+        <div className="game-sidebar-card glass-bg glass-bg--no-hover game-links-card">
           <h3>Посилання</h3>
           <div className="game-social-links">
             {socialLinks.map((link) => (
@@ -152,7 +152,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
                 href={link.url!}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="game-social-link"
+                className="icon-btn game-social-link"
                 title={link.label}
               >
                 <SvgIcon icon={link.icon} />

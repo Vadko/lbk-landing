@@ -11,7 +11,9 @@ import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons/faClockRota
 import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
+import { faMicrophone } from "@fortawesome/free-solid-svg-icons/faMicrophone";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
@@ -34,6 +36,14 @@ interface GamesSearchProps {
   // Sort by
   sortBy: string;
   onSortChange: (sortBy: string) => void;
+  // Has voice-over filter
+  hasVoice: boolean;
+  onVoiceChange: (hasVoice: boolean) => void;
+  // Has achievements filter
+  hasAchievements: boolean;
+  onAchievementsChange: (hasAchievements: boolean) => void;
+  // Clear statuses, voice and achievements together
+  onClearStatusFilters: () => void;
 }
 
 const AUTHORS_PER_PAGE = 20;
@@ -75,6 +85,11 @@ export function GamesSearch({
   authorsLoading,
   sortBy,
   onSortChange,
+  hasVoice,
+  onVoiceChange,
+  hasAchievements,
+  onAchievementsChange,
+  onClearStatusFilters,
 }: GamesSearchProps) {
   const [localValue, setLocalValue] = useState(value);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -197,9 +212,9 @@ export function GamesSearch({
     }
   };
 
-  // Clear all statuses
+  // Clear all statuses and the voice/achievements filters grouped with them
   const handleClearStatuses = () => {
-    onStatusesChange([]);
+    onClearStatusFilters();
     setIsStatusOpen(false);
   };
 
@@ -209,17 +224,22 @@ export function GamesSearch({
     setIsAuthorOpen(false);
   };
 
-  // Status button label
+  // Status button label (also covers voice/achievements grouped in the same dropdown)
   const statusLabel = useMemo(() => {
-    if (selectedStatuses.length === 0) {
+    const total =
+      selectedStatuses.length + (hasVoice ? 1 : 0) + (hasAchievements ? 1 : 0);
+    if (total === 0) {
       return "Усі стани";
     }
-    if (selectedStatuses.length === 1) {
-      const opt = STATUS_OPTIONS.find((o) => o.value === selectedStatuses[0]);
-      return opt?.label || selectedStatuses[0];
+    if (total === 1) {
+      if (selectedStatuses.length === 1) {
+        const opt = STATUS_OPTIONS.find((o) => o.value === selectedStatuses[0]);
+        return opt?.label || selectedStatuses[0];
+      }
+      return hasVoice ? "Озвучення" : "Досягнення";
     }
-    return `${selectedStatuses.length} стани`;
-  }, [selectedStatuses]);
+    return `${total} фільтри`;
+  }, [selectedStatuses, hasVoice, hasAchievements]);
 
   // Author button label
   const authorLabel = useMemo(() => {
@@ -244,19 +264,20 @@ export function GamesSearch({
         <div className="search-wrapper">
           <SvgIcon icon={faMagnifyingGlass} />
           <input
-            type="text"
+            type="search"
             value={localValue}
             onChange={(e) => setLocalValue(e.target.value)}
+            name="search"
             placeholder="Пошук ігор..."
             className="search-input"
           />
         </div>
 
-        {/* Status Multi-Select Dropdown */}
+        {/* Status Multi-Select Dropdown (also groups voice/achievements filters) */}
         <div className="custom-dropdown" ref={statusDropdownRef}>
           <button
             type="button"
-            className={`dropdown-trigger ${isStatusOpen ? "open" : ""} ${selectedStatuses.length > 0 ? "has-value" : ""}`}
+            className={`dropdown-trigger ${isStatusOpen ? "open" : ""} ${selectedStatuses.length > 0 || hasVoice || hasAchievements ? "has-value" : ""}`}
             onClick={() => setIsStatusOpen(!isStatusOpen)}
           >
             <SvgIcon icon={faGamepad} />
@@ -270,7 +291,7 @@ export function GamesSearch({
           {isStatusOpen && (
             <div className="dropdown-menu dropdown-menu-with-search">
               {/* Clear selection */}
-              {selectedStatuses.length > 0 && (
+              {(selectedStatuses.length > 0 || hasVoice || hasAchievements) && (
                 <button
                   type="button"
                   className="dropdown-item dropdown-item-clear"
@@ -297,6 +318,31 @@ export function GamesSearch({
                   </button>
                 );
               })}
+              <div className="dropdown-divider" />
+              <button
+                type="button"
+                className={`dropdown-item dropdown-item-checkbox ${hasVoice ? "active" : ""}`}
+                onClick={() => onVoiceChange(!hasVoice)}
+              >
+                <span className={`checkbox ${hasVoice ? "checked" : ""}`}>
+                  {hasVoice && <SvgIcon icon={faCheck} />}
+                </span>
+                <SvgIcon icon={faMicrophone} />
+                <span>Озвучення</span>
+              </button>
+              <button
+                type="button"
+                className={`dropdown-item dropdown-item-checkbox ${hasAchievements ? "active" : ""}`}
+                onClick={() => onAchievementsChange(!hasAchievements)}
+              >
+                <span
+                  className={`checkbox ${hasAchievements ? "checked" : ""}`}
+                >
+                  {hasAchievements && <SvgIcon icon={faCheck} />}
+                </span>
+                <SvgIcon icon={faTrophy} />
+                <span>Досягнення</span>
+              </button>
             </div>
           )}
         </div>
@@ -323,7 +369,7 @@ export function GamesSearch({
                 <SvgIcon icon={faMagnifyingGlass} />
                 <input
                   ref={authorSearchInputRef}
-                  type="text"
+                  type="search"
                   value={authorSearch}
                   onChange={(e) => handleAuthorSearchChange(e.target.value)}
                   placeholder="Пошук автора..."
@@ -453,7 +499,10 @@ export function GamesSearch({
       </div>
 
       {/* Selected filters chips - outside of flex container */}
-      {(selectedStatuses.length > 0 || selectedAuthors.length > 0) && (
+      {(selectedStatuses.length > 0 ||
+        selectedAuthors.length > 0 ||
+        hasVoice ||
+        hasAchievements) && (
         <div className="filters-chips">
           {selectedStatuses.map((s) => {
             const opt = STATUS_OPTIONS.find((o) => o.value === s);
@@ -482,6 +531,30 @@ export function GamesSearch({
               </button>
             </span>
           ))}
+          {hasVoice && (
+            <span className="filter-chip">
+              Озвучення
+              <button
+                type="button"
+                onClick={() => onVoiceChange(false)}
+                className="filter-chip-remove"
+              >
+                <SvgIcon icon={faXmark} />
+              </button>
+            </span>
+          )}
+          {hasAchievements && (
+            <span className="filter-chip">
+              Досягнення
+              <button
+                type="button"
+                onClick={() => onAchievementsChange(false)}
+                className="filter-chip-remove"
+              >
+                <SvgIcon icon={faXmark} />
+              </button>
+            </span>
+          )}
         </div>
       )}
     </div>

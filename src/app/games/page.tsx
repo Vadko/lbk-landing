@@ -52,7 +52,7 @@ export default async function GamesPage() {
     <section className="games-page">
       <div className="container">
         <div className="games-header">
-          <h1>Каталог ігор</h1>
+          <h1 className="page-title">Каталог ігор</h1>
           <p>
             Усі ігри з українським перекладом в одному місці. Знайдіть свою
             улюблену гру та грайте українською.

@@ -38,7 +38,7 @@ export const GameVideo: React.FC<VideoCardProps> = ({ videoUrl }) => {
           href={videoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-neon"
+          className="btn btn-neon"
         >
           <SvgIcon icon={faPlay} />
           <span className="font-medium">Переглянути відео</span>

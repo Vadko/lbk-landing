@@ -36,10 +36,14 @@ export function FanConBrochureBannerContent() {
   }
 
   return (
-    <aside className="fancon-banner" role="status" aria-live="polite">
+    <aside
+      className="fancon-banner glass-bg glass-bg--no-hover"
+      role="status"
+      aria-live="polite"
+    >
       <button
         type="button"
-        className="fancon-banner-close"
+        className="icon-btn fancon-banner-close"
         onClick={handleClose}
         aria-label="Закрити повідомлення"
       >
@@ -51,6 +55,7 @@ export function FanConBrochureBannerContent() {
       </p>
       <div className="fancon-banner-links">
         <a
+          className="mobile-full"
           href="https://drive.google.com/file/d/1Y6i0XHijJ0YQ6izp7e6u6KtNyECbdre7/view"
           target="_blank"
           rel="noopener noreferrer"
@@ -58,6 +63,7 @@ export function FanConBrochureBannerContent() {
           Відкрити брошуру
         </a>
         <a
+          className="mobile-full"
           href="https://docs.google.com/presentation/d/1tQ8gvxOuZeoRNVg2nC6G9Y4_anrBWZA_CO7IxqG9qX0/edit?usp=sharing"
           target="_blank"
           rel="noopener noreferrer"

@@ -363,7 +363,7 @@ const initialEdges: Edge[] = [
     animated: true,
     label: "Realtime sync",
     labelStyle: { fill: C.launcher, fontSize: 11, fontWeight: 500 },
-    labelBgStyle: { fill: "rgba(15, 15, 16, 0.85)" },
+    labelBgStyle: { fill: "rgba(var(--color-bg-rgb), 0.85)" },
     labelBgPadding: [4, 8] as [number, number],
     style: { stroke: C.launcher, strokeWidth: 2 },
   },

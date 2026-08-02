@@ -168,8 +168,9 @@ export function OpenInLauncher({
           <div className="open-launcher-status open-launcher-success">
             <SvgIcon icon={faCheckCircle} />
             <p>Лаунчер відкрито!</p>
-            <Link href={gamePageUrl} className="open-launcher-link">
+            <Link href={gamePageUrl} className="open-launcher-game-link">
               Перейти на сторінку гри
+              <SvgIcon icon={faArrowRight} />
             </Link>
           </div>
         )}
@@ -181,7 +182,7 @@ export function OpenInLauncher({
             <p>Щоб грати в {gameName} українською, вам потрібен LBK Launcher</p>
 
             <div className="open-launcher-actions">
-              <Link href="/" className="dl-btn open-launcher-download">
+              <Link href="/" className="btn btn-gradient btn--big">
                 <SvgIcon icon={faWindows} />
                 <div className="dl-info">
                   <span>Завантажити лаунчер</span>
@@ -191,7 +192,7 @@ export function OpenInLauncher({
 
               <button
                 onClick={handleRetry}
-                className="open-launcher-retry"
+                className="btn glass-bg"
                 type="button"
               >
                 <SvgIcon icon={faRotate} />
@@ -205,11 +206,7 @@ export function OpenInLauncher({
           </div>
         )}
 
-        <button
-          onClick={copyShareLink}
-          className="open-launcher-share"
-          type="button"
-        >
+        <button onClick={copyShareLink} className="btn glass-bg" type="button">
           <SvgIcon icon={faShareNodes} />
           Копіювати посилання
         </button>

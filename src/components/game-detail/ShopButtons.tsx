@@ -22,13 +22,13 @@ export function ShopButtons({ game }: ShopButtonsProps) {
   }
 
   return (
-    <div className="game-sidebar-card game-steam-card store-list">
+    <div className="game-sidebar-card glass-bg glass-bg--no-hover game-steam-card store-list">
       {game.steam_app_id && (
         <a
           href={`https://store.steampowered.com/app/${game.steam_app_id}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-secondary btn-steam"
+          className="btn glass-bg btn-steam"
         >
           <SvgIcon icon={faSteam} />
           Сторінка в Steam
@@ -39,7 +39,7 @@ export function ShopButtons({ game }: ShopButtonsProps) {
           href={game.gog_store_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-secondary btn-gog"
+          className="btn glass-bg btn-gog"
         >
           <SvgIcon icon={faGOG} />
           Сторінка в GOG Galaxy
@@ -50,7 +50,7 @@ export function ShopButtons({ game }: ShopButtonsProps) {
           href={game.epic_store_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-secondary btn-epic"
+          className="btn glass-bg btn-epic"
         >
           <SvgIcon icon={faEpic} />
           Сторінка в Epic Games Store
@@ -61,7 +61,7 @@ export function ShopButtons({ game }: ShopButtonsProps) {
           href={game.xbox_store_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-secondary btn-xbox"
+          className="btn glass-bg btn-xbox"
         >
           <SvgIcon icon={faXbox} />
           Сторінка в Microsoft Store

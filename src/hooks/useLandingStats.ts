@@ -8,6 +8,7 @@ interface LandingStats {
   totalPlaytimeHours: number;
   totalUniquePlayers: number;
   totalCreators: number;
+  totalSupporters: number;
   dau: number;
 }
 

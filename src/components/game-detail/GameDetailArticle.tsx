@@ -83,7 +83,7 @@ export function GameDetailArticle({
             <div className="game-main">
               <header className="game-header">
                 <div className="game-title-row">
-                  <h1>{game.name}</h1>
+                  <h1 className="page-title">{game.name}</h1>
                   <span className={status.className}>{status.label}</span>
                 </div>
                 {featuredInfo && (

@@ -20,36 +20,6 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
     return "ontouchstart" in window || navigator.maxTouchPoints > 0;
   }, []);
 
-  const startAnimation = useCallback(() => {
-    // Не запускаємо анімацію на touch-пристроях
-    if (isTouchDevice) {
-      return;
-    }
-
-    const animate = () => {
-      if (!cardRef.current) {
-        return;
-      }
-      angleRef.current += 0.5;
-      if (angleRef.current >= 360) {
-        angleRef.current = 0;
-      }
-      cardRef.current.style.setProperty(
-        "--gradient-angle",
-        String(angleRef.current)
-      );
-      animationRef.current = requestAnimationFrame(animate);
-    };
-    animate();
-  }, [isTouchDevice]);
-
-  const handleMouseEnter = useCallback(() => {
-    if (isTouchDevice) {
-      return;
-    }
-    startAnimation();
-  }, [startAnimation, isTouchDevice]);
-
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (isTouchDevice || !cardRef.current) {
@@ -78,16 +48,13 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
     if (cardRef.current) {
       cardRef.current.style.setProperty("--mouse-x", "50%");
       cardRef.current.style.setProperty("--mouse-y", "50%");
-      angleRef.current = 0;
-      cardRef.current.style.setProperty("--gradient-angle", "0");
     }
   }, [isTouchDevice]);
 
   return (
     <div
       ref={cardRef}
-      className={`hover-card ${className}`.trim()}
-      onMouseEnter={handleMouseEnter}
+      className={`hover-card glass-bg glass-bg--no-hover ${className}`.trim()}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >

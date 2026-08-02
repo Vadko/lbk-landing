@@ -28,7 +28,7 @@ export function CtaSection({
             target: "_blank",
             rel: "noopener noreferrer",
           })}
-          className="btn-main btn--big cta-primary-btn"
+          className="btn btn-gradient btn--big"
         >
           {buttonText}
         </a>

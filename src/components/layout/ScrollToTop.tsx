@@ -25,7 +25,7 @@ export function ScrollToTop() {
 
   return (
     <button
-      className={`scroll-top ${isVisible ? "visible" : ""}`}
+      className={`icon-btn scroll-top ${isVisible ? "visible" : ""}`}
       onClick={scrollToTop}
       title="Наверх"
     >

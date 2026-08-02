@@ -1,0 +1,20 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "explicit"
+  },
+  "cSpell.words": [
+    "лаунчер",
+    "лаунчера",
+    "лаунчері",
+    "папки",
+    "collab",
+    "donaters",
+    "embla",
+    "fancon",
+    "flatpakref",
+    "Konsole",
+    "steamdeck",
+    "Supabase",
+    "tsparticles"
+  ]
+}

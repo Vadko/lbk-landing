@@ -62,13 +62,25 @@ export function GamesList({ initialData }: GamesListProps) {
     return sortParam || "name";
   }, [searchParams]);
 
+  // Read has-voice filter from URL params
+  const hasVoice = useMemo(() => {
+    return searchParams.get("voice") === "1";
+  }, [searchParams]);
+
+  // Read has-achievements filter from URL params
+  const hasAchievements = useMemo(() => {
+    return searchParams.get("achievements") === "1";
+  }, [searchParams]);
+
   // Update URL with new filter values and reset to page 1
   const updateFilters = useCallback(
     (
       newStatuses: string[],
       newAuthors: string[],
       page?: number,
-      newSortBy?: string
+      newSortBy?: string,
+      newHasVoice?: boolean,
+      newHasAchievements?: boolean
     ) => {
       const params = new URLSearchParams();
       if (newStatuses.length > 0) {
@@ -79,6 +91,12 @@ export function GamesList({ initialData }: GamesListProps) {
       }
       if (newSortBy && newSortBy !== "name") {
         params.set("sort", newSortBy);
+      }
+      if (newHasVoice) {
+        params.set("voice", "1");
+      }
+      if (newHasAchievements) {
+        params.set("achievements", "1");
       }
       if (page && page > 1) {
         params.set("page", page.toString());
@@ -91,31 +109,107 @@ export function GamesList({ initialData }: GamesListProps) {
 
   const handleStatusesChange = useCallback(
     (newStatuses: string[]) => {
-      updateFilters(newStatuses, selectedAuthors, 1, sortBy);
+      updateFilters(
+        newStatuses,
+        selectedAuthors,
+        1,
+        sortBy,
+        hasVoice,
+        hasAchievements
+      );
     },
-    [updateFilters, selectedAuthors, sortBy]
+    [updateFilters, selectedAuthors, sortBy, hasVoice, hasAchievements]
   );
 
   const handleAuthorsChange = useCallback(
     (newAuthors: string[]) => {
-      updateFilters(selectedStatuses, newAuthors, 1, sortBy);
+      updateFilters(
+        selectedStatuses,
+        newAuthors,
+        1,
+        sortBy,
+        hasVoice,
+        hasAchievements
+      );
     },
-    [updateFilters, selectedStatuses, sortBy]
+    [updateFilters, selectedStatuses, sortBy, hasVoice, hasAchievements]
   );
 
   const handleSortChange = useCallback(
     (newSortBy: string) => {
-      updateFilters(selectedStatuses, selectedAuthors, 1, newSortBy);
+      updateFilters(
+        selectedStatuses,
+        selectedAuthors,
+        1,
+        newSortBy,
+        hasVoice,
+        hasAchievements
+      );
     },
-    [updateFilters, selectedStatuses, selectedAuthors]
+    [
+      updateFilters,
+      selectedStatuses,
+      selectedAuthors,
+      hasVoice,
+      hasAchievements,
+    ]
   );
+
+  const handleVoiceChange = useCallback(
+    (newHasVoice: boolean) => {
+      updateFilters(
+        selectedStatuses,
+        selectedAuthors,
+        1,
+        sortBy,
+        newHasVoice,
+        hasAchievements
+      );
+    },
+    [updateFilters, selectedStatuses, selectedAuthors, sortBy, hasAchievements]
+  );
+
+  const handleAchievementsChange = useCallback(
+    (newHasAchievements: boolean) => {
+      updateFilters(
+        selectedStatuses,
+        selectedAuthors,
+        1,
+        sortBy,
+        hasVoice,
+        newHasAchievements
+      );
+    },
+    [updateFilters, selectedStatuses, selectedAuthors, sortBy, hasVoice]
+  );
+
+  // Clear statuses, voice and achievements together in a single navigation
+  // (calling their individual on*Change handlers back-to-back would race,
+  // since each one builds the new URL from the same stale closure values)
+  const handleClearStatusFilters = useCallback(() => {
+    updateFilters([], selectedAuthors, 1, sortBy, false, false);
+  }, [updateFilters, selectedAuthors, sortBy]);
 
   const handlePageChange = useCallback(
     (page: number) => {
-      updateFilters(selectedStatuses, selectedAuthors, page, sortBy);
+      updateFilters(
+        selectedStatuses,
+        selectedAuthors,
+        page,
+        sortBy,
+        hasVoice,
+        hasAchievements
+      );
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
-    [updateFilters, selectedStatuses, selectedAuthors, sortBy]
+    [
+      updateFilters,
+      selectedStatuses,
+      selectedAuthors,
+      sortBy,
+      hasVoice,
+      hasAchievements,
+    ]
   );
 
   const isDefaultView =
@@ -123,6 +217,8 @@ export function GamesList({ initialData }: GamesListProps) {
     !search &&
     selectedStatuses.length === 0 &&
     selectedAuthors.length === 0 &&
+    !hasVoice &&
+    !hasAchievements &&
     (sortBy === "name" || !sortBy);
 
   const { data, isLoading, error } = useGamesPaginated(
@@ -131,7 +227,9 @@ export function GamesList({ initialData }: GamesListProps) {
     selectedStatuses,
     selectedAuthors,
     sortBy,
-    isDefaultView ? initialData : undefined
+    isDefaultView ? initialData : undefined,
+    hasVoice,
+    hasAchievements
   );
 
   const allGames = data?.games ?? [];
@@ -177,7 +275,14 @@ export function GamesList({ initialData }: GamesListProps) {
     if (search !== prevSearch.current) {
       prevSearch.current = search;
       if (currentPage > 1) {
-        updateFilters(selectedStatuses, selectedAuthors, 1, sortBy);
+        updateFilters(
+          selectedStatuses,
+          selectedAuthors,
+          1,
+          sortBy,
+          hasVoice,
+          hasAchievements
+        );
       }
     }
   }, [
@@ -186,6 +291,8 @@ export function GamesList({ initialData }: GamesListProps) {
     selectedStatuses,
     selectedAuthors,
     sortBy,
+    hasVoice,
+    hasAchievements,
     updateFilters,
   ]);
 
@@ -202,6 +309,11 @@ export function GamesList({ initialData }: GamesListProps) {
         authorsLoading={authorsLoading}
         sortBy={sortBy}
         onSortChange={handleSortChange}
+        hasVoice={hasVoice}
+        onVoiceChange={handleVoiceChange}
+        hasAchievements={hasAchievements}
+        onAchievementsChange={handleAchievementsChange}
+        onClearStatusFilters={handleClearStatusFilters}
       />
 
       {!isLoading && (

@@ -21,16 +21,16 @@ const GALLERY_ITEMS = [
   {
     src: "/assets/2.webp",
     alt: "Сторінка гри в LBK Launcher",
-    label: "Сторінка гри",
+    label: "Сторінка перекладу",
     description:
-      "Детальна інформація про гру: опис, скріншоти, системні вимоги та інші деталі.",
+      "Сторінка перекладу: опис, скріншоти, системні вимоги та інші деталі.",
   },
   {
     src: "/assets/3.webp",
     alt: "Налаштування LBK Launcher",
     label: "Налаштування",
     description:
-      "Гнучкі налаштування: тема, мова інтерфейсу, шляхи до ігор та автооновлення.",
+      "Гнучкі налаштування: анімації, видимість перекладів, сповіщення та автооновлення.",
   },
   {
     src: "/assets/4.webp",
@@ -42,12 +42,12 @@ const GALLERY_ITEMS = [
   {
     src: "/assets/5.webp",
     alt: "Деталі гри в LBK Launcher",
-    label: "Деталі гри",
+    label: "Деталі перекладу",
     description:
       "Детальна інформація про переклад: прогрес, команда перекладачів, версія та опис.",
   },
   {
-    src: "/assets/7.webp",
+    src: "/assets/6.webp",
     alt: "Процес завантаження в LBK Launcher",
     label: "Процес завантаження",
     description:
@@ -66,10 +66,10 @@ export function GallerySection() {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
 
   return (
-    <section id="gallery" className="gallery-sec">
+    <section id="gallery" className="section-margin">
       <div className="container">
         <h2 className="section-title center">Погляньте на лаунчер</h2>
-        <p className="section-subtitle center">
+        <p className="section-description center">
           Сучасний дизайн, зручний інтерфейс і все потрібне для комфортної гри
           українською.
         </p>

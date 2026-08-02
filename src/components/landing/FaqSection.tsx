@@ -123,7 +123,7 @@ export function FaqSection() {
   ) => (
     <div
       key={originalIndex}
-      className={`faq-item ${openIndex === originalIndex ? "active" : ""}`}
+      className={`faq-item glass-bg ${openIndex === originalIndex ? "active" : ""}`}
     >
       <button className="faq-question" onClick={() => toggle(originalIndex)}>
         <span>{item.question}</span>
@@ -135,7 +135,7 @@ export function FaqSection() {
   );
 
   return (
-    <section id="faq" className="faq-sec">
+    <section id="faq" className="section-margin">
       <div className="container">
         <h2 className="section-title center">Часті питання</h2>
 

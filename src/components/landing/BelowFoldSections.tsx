@@ -2,6 +2,14 @@
 
 import dynamic from "next/dynamic";
 
+const PartnerSection = dynamic(
+  () =>
+    import("@/components/landing/PartnerSection").then((m) => ({
+      default: m.PartnerSection,
+    })),
+  { ssr: false }
+);
+
 const StatSection = dynamic(
   () =>
     import("@/components/landing/StatSection").then((m) => ({
@@ -53,6 +61,7 @@ const FaqSection = dynamic(
 export function BelowFoldSections() {
   return (
     <>
+      <PartnerSection />
       <StatSection />
       <GallerySection />
       <ShowcaseSection />
