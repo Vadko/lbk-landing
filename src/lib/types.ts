@@ -27,6 +27,7 @@ export interface GameGroup {
   banner_path: string | null;
   capsule_path: string | null;
   is_adult: boolean;
+  has_voice: boolean;
   updated_at: string;
   translations: TranslationItem[];
 }

@@ -2196,6 +2196,12 @@ p + .why-btn {
   );
 }
 
+.dropdown-divider {
+  height: 1px;
+  margin: 4px 0;
+  background: var(--glass-border);
+}
+
 /* Dropdown with Search */
 .dropdown-menu-with-search {
   display: flex;
