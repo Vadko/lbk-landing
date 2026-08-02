@@ -62,22 +62,6 @@ function hasActiveFilters(
   );
 }
 
-async function fetchVoiceIds(
-  supabase: ReturnType<typeof createServerClient>
-): Promise<Set<string>> {
-  const { data, error } = await supabase
-    .from("games")
-    .select("id")
-    .or("voice_archive_path.not.is.null,voice_progress.not.is.null");
-
-  if (error) {
-    console.error("Voice filter fetch error:", error.message);
-    return new Set();
-  }
-
-  return new Set((data ?? []).map((row) => row.id));
-}
-
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
@@ -236,14 +220,7 @@ async function fetchWithFilter(
   } = params;
 
   const applyFilters = async (games: GameGroup[]): Promise<GameGroup[]> => {
-    let filtered = filterGames(games, statuses, authors, hasAchievements);
-    if (hasVoice) {
-      const voiceIds = await fetchVoiceIds(supabase);
-      filtered = filtered.filter((g) =>
-        g.translations.some((t) => voiceIds.has(t.id))
-      );
-    }
-    return filtered;
+    return filterGames(games, statuses, authors, hasAchievements, hasVoice);
   };
 
   if (search && search.trim().length < 3) {
@@ -303,7 +280,8 @@ function filterGames(
   games: GameGroup[],
   statuses?: string[],
   authors?: string[],
-  hasAchievements?: boolean
+  hasAchievements?: boolean,
+  hasVoice?: boolean
 ): GameGroup[] {
   return games.filter((game) => {
     if (
@@ -322,6 +300,9 @@ function filterGames(
       hasAchievements &&
       !game.translations.some((t) => t.achievements_archive_path)
     ) {
+      return false;
+    }
+    if (hasVoice && !game.has_voice) {
       return false;
     }
     return true;
