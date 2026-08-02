@@ -42,6 +42,7 @@ function mapRowToGameGroup(
     banner_path: row.banner_path,
     capsule_path: row.capsule_path,
     is_adult: row.is_adult ?? false,
+    has_voice: row.has_voice ?? false,
     updated_at: getLatestUpdatedAt(translations),
     translations,
   };
