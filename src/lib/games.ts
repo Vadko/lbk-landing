@@ -1,3 +1,4 @@
+import { GAMES_PER_PAGE } from "@/lib/constants";
 import { createServerClient } from "@/lib/supabase/server";
 import { teamToSlug } from "@/lib/transliterate";
 import type {
@@ -94,7 +95,7 @@ export async function getAllGameSlugsWithTeams(): Promise<
 // Fetch first page of games for SSR (no spinner on initial load)
 export async function getInitialGames(): Promise<GamesGroupedResponse> {
   const supabase = createServerClient();
-  const limit = 12;
+  const limit = GAMES_PER_PAGE;
 
   const { data, error, count } = await supabase
     .from("games_grouped")

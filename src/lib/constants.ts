@@ -1,3 +1,5 @@
+export const GAMES_PER_PAGE = 20;
+
 export const STATUS_LABELS: Record<
   string,
   { label: string; className: string }

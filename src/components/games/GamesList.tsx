@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesPaginated, useTeams } from "@/hooks/useGames";
 import { trackFailedSearch, trackViewSearchResults } from "@/lib/analytics";
+import { GAMES_PER_PAGE } from "@/lib/constants";
 import type { GamesGroupedResponse } from "@/lib/types";
 import { GameCard } from "./GameCard";
 import { GamesSearch } from "./GamesSearch";
@@ -234,7 +235,7 @@ export function GamesList({ initialData }: GamesListProps) {
 
   const allGames = data?.games ?? [];
   const total = data?.total ?? 0;
-  const totalPages = Math.ceil(total / 12);
+  const totalPages = Math.ceil(total / GAMES_PER_PAGE);
 
   // Track search results when user has a search query and results arrive
   const lastTrackedSearch = useRef("");

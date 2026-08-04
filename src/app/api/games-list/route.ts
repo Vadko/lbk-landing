@@ -1,13 +1,12 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { GAMES_PER_PAGE } from "@/lib/constants";
 import type { Database } from "@/lib/database.types";
 import { buildFtsQuery, getTranslitVariant } from "@/lib/search-utils";
 import { createServerClient } from "@/lib/supabase/server";
 import type { GameGroup, TranslationItem } from "@/lib/types";
 
 type GamesGroupedRow = Database["public"]["Views"]["games_grouped"]["Row"];
-
-const GAMES_PER_PAGE = 12;
 
 function isValidGameRow(
   row: GamesGroupedRow
