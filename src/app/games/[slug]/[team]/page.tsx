@@ -7,7 +7,7 @@ import {
   getGamesBySlug,
 } from "@/lib/games";
 import { getImageUrl } from "@/lib/images";
-import { getRedirect } from "@/lib/redirects";
+import { resolveMovedGamePath } from "@/lib/redirects";
 import { teamToSlug } from "@/lib/transliterate";
 
 interface PageProps {
@@ -90,7 +90,7 @@ export default async function GameTranslationPage({ params }: PageProps) {
   const game = await getGameBySlugAndTeamSlug(slug, teamSlugParam);
 
   if (!game) {
-    const newPath = await getRedirect(`/games/${slug}/${teamSlugParam}`);
+    const newPath = await resolveMovedGamePath(slug, teamSlugParam);
     if (newPath) {
       permanentRedirect(newPath);
     }
