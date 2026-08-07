@@ -12,11 +12,10 @@ export async function getRedirect(oldPath: string): Promise<string | null> {
   return data?.new_path ?? null;
 }
 
-
 export async function resolveMovedGamePath(
   slug: string,
   teamSlug?: string,
-  prefix = "/games",
+  prefix = "/games"
 ): Promise<string | null> {
   const oldPath = teamSlug ? `/games/${slug}/${teamSlug}` : `/games/${slug}`;
   let newPath = await getRedirect(oldPath);
