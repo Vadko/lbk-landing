@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { OpenInLauncher } from "@/components/open/OpenInLauncher";
 import {
   getAllGameSlugsWithTeams,
   getGameBySlugAndTeamSlug,
 } from "@/lib/games";
 import { getImageUrl } from "@/lib/images";
+import { resolveMovedGamePath } from "@/lib/redirects";
 import { teamToSlug } from "@/lib/transliterate";
 
 interface PageProps {
@@ -66,6 +67,10 @@ export default async function OpenGamePage({ params }: PageProps) {
   const game = await getGameBySlugAndTeamSlug(slug, teamSlugParam);
 
   if (!game) {
+    const newPath = await resolveMovedGamePath(slug, teamSlugParam, "/open");
+    if (newPath) {
+      redirect(newPath);
+    }
     notFound();
   }
 

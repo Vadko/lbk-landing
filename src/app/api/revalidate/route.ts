@@ -19,18 +19,22 @@ export async function POST(request: NextRequest) {
 
     const paths: string[] = [];
 
-    // Revalidate game pages
+    // Revalidate game pages (/open mirrors /games and caches separately)
     const teamSlug = team ? teamToSlug(team) : null;
     if (teamSlug) {
-      revalidatePath(`/games/${slug}/${teamSlug}`);
-      paths.push(`/games/${slug}/${teamSlug}`);
+      for (const path of [`/games/${slug}/${teamSlug}`, `/open/${slug}/${teamSlug}`]) {
+        revalidatePath(path);
+        paths.push(path);
+      }
     }
 
-    // Revalidate old team page so it picks up the redirect
+    // Revalidate old team pages so they pick up the redirect
     const oldTeamSlug = oldTeam ? teamToSlug(oldTeam) : null;
     if (oldTeamSlug && oldTeamSlug !== teamSlug) {
-      revalidatePath(`/games/${slug}/${oldTeamSlug}`);
-      paths.push(`/games/${slug}/${oldTeamSlug}`);
+      for (const path of [`/games/${slug}/${oldTeamSlug}`, `/open/${slug}/${oldTeamSlug}`]) {
+        revalidatePath(path);
+        paths.push(path);
+      }
     }
 
     // Game overview page (all teams)
