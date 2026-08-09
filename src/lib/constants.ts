@@ -1,5 +1,7 @@
 export const GAMES_PER_PAGE = 20;
 
+export const ADMIN_URL = "https://admin.lbklauncher.com/?ref=landing";
+
 export const STATUS_LABELS: Record<
   string,
   { label: string; className: string }
