@@ -271,6 +271,16 @@ export function GamesSearch({
             placeholder="Пошук ігор..."
             className="search-input"
           />
+          {localValue && (
+            <button
+              type="button"
+              className="input-clear"
+              onClick={() => setLocalValue("")}
+              aria-label="Очистити пошук"
+            >
+              <SvgIcon icon={faXmark} />
+            </button>
+          )}
         </div>
 
         {/* Status Multi-Select Dropdown (also groups voice/achievements filters) */}
@@ -378,7 +388,7 @@ export function GamesSearch({
                 {authorSearch && (
                   <button
                     type="button"
-                    className="dropdown-search-clear"
+                    className="input-clear"
                     onClick={() => setAuthorSearch("")}
                   >
                     <SvgIcon icon={faXmark} />
