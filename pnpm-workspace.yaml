@@ -1,3 +1,6 @@
+minimumReleaseAge: 4320
+dangerouslyAllowAllBuilds: false
+
 allowBuilds:
   '@sentry/cli': true
   esbuild: true
