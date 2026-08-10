@@ -4,6 +4,7 @@ import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
 import { faUsers } from "@fortawesome/free-solid-svg-icons/faUsers";
 import Link from "next/link";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { BOT_URL } from "@/lib/constants";
 import { CardGridSection } from "../ui/CardGridSection";
 import { HoverCard } from "../ui/HoverCard";
 
@@ -13,7 +14,7 @@ const CARDS = [
     title: "Додайте свою гру",
     description:
       "Український переклад вашої гри стане доступний тисячам користувачів.",
-    link: "https://t.me/lbk_launcher_bot",
+    link: BOT_URL,
     linkText: "Написати нам",
     linkIcon: faTelegram,
   },

@@ -4,6 +4,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesCount } from "@/hooks/useGames";
+import { BOT_URL } from "@/lib/constants";
 
 const FAQ_ITEMS = [
   {
@@ -32,8 +33,7 @@ const FAQ_ITEMS = [
   },
   {
     question: "Як додати свій переклад до лаунчера?",
-    answer:
-      "Напишіть нам у Telegram через бота <a href='https://t.me/lbk_launcher_bot' target='_blank' rel='noopener noreferrer'>@lbk_launcher_bot</a>. Обговоримо деталі й допоможемо інтегрувати ваш переклад — швидко та просто!",
+    answer: `Напишіть нам у Telegram через бота <a href='${BOT_URL}' target='_blank' rel='noopener noreferrer'>@lbk_launcher_bot</a>. Обговоримо деталі й допоможемо інтегрувати ваш переклад — швидко та просто!`,
   },
   {
     question: "Звідки беруться переклади?",
@@ -51,8 +51,7 @@ const FAQ_ITEMS = [
   },
   {
     question: "Якщо я зіштовхнувся з проблемою?",
-    answer:
-      "Зверніться до нашої служби підтримки через Telegram-бота <a href='https://t.me/lbk_launcher_bot' target='_blank' rel='noopener noreferrer'>@lbk_launcher_bot</a>. Ми допоможемо вирішити будь-які проблеми швидко та ефективно.",
+    answer: `Зверніться до нашої служби підтримки через Telegram-бота <a href='${BOT_URL}' target='_blank' rel='noopener noreferrer'>@lbk_launcher_bot</a>. Ми допоможемо вирішити будь-які проблеми швидко та ефективно.`,
   },
 ];
 

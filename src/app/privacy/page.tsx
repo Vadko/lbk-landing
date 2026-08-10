@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BOT_URL } from "@/lib/constants";
 import { LegalLayout } from "../legal-layout";
 
 export const metadata: Metadata = {
@@ -99,12 +100,8 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong>Telegram: </strong>
-            <a
-              href="https://t.me/lbk_launcher_bot"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              https://t.me/lbk_launcher_bot
+            <a href={BOT_URL} target="_blank" rel="noopener noreferrer">
+              {BOT_URL}
             </a>
           </li>
         </ul>

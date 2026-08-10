@@ -1,6 +1,7 @@
 export const GAMES_PER_PAGE = 20;
 
 export const ADMIN_URL = "https://admin.lbklauncher.com/?ref=landing";
+export const BOT_URL = "https://t.me/lbk_launcher_bot";
 
 export const STATUS_LABELS: Record<
   string,
