@@ -9,6 +9,7 @@ import { CodeIcon } from "@/components/icons";
 import { CtaSection } from "@/components/ui/CtaSection";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { PageHeroSection } from "@/components/ui/PageHeroSection";
+import { ADMIN_URL } from "@/lib/constants";
 
 const FLOW_STEPS = [
   "Зареєструватися на платформі та створити профіль",
@@ -31,7 +32,7 @@ export default function CollaborationRoutePage() {
         title="Додайте свій переклад у лаунчер"
         description="Сучасний дизайн, зручний інтерфейс і все потрібне для комфортної гри українською."
         ctaText="Додати переклад"
-        ctaHref="https://admin.lbklauncher.com"
+        ctaHref={ADMIN_URL}
       />
 
       <PartnersStatsSection />
@@ -60,7 +61,7 @@ export default function CollaborationRoutePage() {
               <li>Модерація та контроль версій</li>
             </ul>
 
-            <a className="btn btn-main" href="https://admin.lbklauncher.com">
+            <a className="btn btn-main" href={ADMIN_URL}>
               Спробувати
             </a>
           </div>
