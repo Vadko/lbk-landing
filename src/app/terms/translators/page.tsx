@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BOT_URL } from "@/lib/constants";
 import { LegalLayout } from "../../legal-layout";
 
 export const metadata: Metadata = {
@@ -151,10 +152,8 @@ export default function TermsTranslatorsPage() {
           </li>
           <li>
             <strong>Право на вилучення: </strong> За вашим запитом через бот{" "}
-            <a href="https://t.me/lbk_launcher_bot">
-              https://t.me/lbk_launcher_bot
-            </a>{" "}
-            ми можемо повністю вилучити вашу роботу.
+            <a href={BOT_URL}>{BOT_URL}</a> ми можемо повністю вилучити вашу
+            роботу.
           </li>
         </ul>
       </section>
@@ -186,10 +185,7 @@ export default function TermsTranslatorsPage() {
             </a>
           </li>
           <li>
-            <strong>Telegram: </strong>{" "}
-            <a href="https://t.me/lbk_launcher_bot">
-              https://t.me/lbk_launcher_bot
-            </a>
+            <strong>Telegram: </strong> <a href={BOT_URL}>{BOT_URL}</a>
           </li>
         </ul>
       </section>

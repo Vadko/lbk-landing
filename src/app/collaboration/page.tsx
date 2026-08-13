@@ -9,7 +9,7 @@ import { CodeIcon } from "@/components/icons";
 import { CtaSection } from "@/components/ui/CtaSection";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { PageHeroSection } from "@/components/ui/PageHeroSection";
-import { ADMIN_URL } from "@/lib/constants";
+import { BOT_URL } from "@/lib/constants";
 
 const FLOW_STEPS = [
   "Зареєструватися на платформі та створити профіль",
@@ -32,7 +32,7 @@ export default function CollaborationRoutePage() {
         title="Додайте свій переклад у лаунчер"
         description="Сучасний дизайн, зручний інтерфейс і все потрібне для комфортної гри українською."
         ctaText="Додати переклад"
-        ctaHref={ADMIN_URL}
+        ctaHref={`${BOT_URL}?text=Доброго дня, я хочу додати свій переклад в лаунчер:%0A- [ що за гра?]%0A- [ чи перекладали за допомогою ШІ?]%0A- [ з якої мови виконаний переклад?]%0A- [ яку мову замінює переклад?]`}
       />
 
       <PartnersStatsSection />
@@ -61,7 +61,7 @@ export default function CollaborationRoutePage() {
               <li>Модерація та контроль версій</li>
             </ul>
 
-            <a className="btn btn-main" href={ADMIN_URL}>
+            <a className="btn btn-main" href={BOT_URL}>
               Спробувати
             </a>
           </div>
@@ -96,7 +96,7 @@ export default function CollaborationRoutePage() {
         title="Готові до співпраці?"
         description="Зв'яжіться з нами, щоб отримати детальну статистику та варіанти інтеграції."
         buttonText="Зв'язатися з нами"
-        buttonHref="https://t.me/lbk_launcher_bot"
+        buttonHref={`${BOT_URL}?text=Доброго дня, я хочу додати свій переклад в лаунчер:%0A- [ що за гра?]%0A- [ чи перекладали за допомогою ШІ?]%0A- [ з якої мови виконаний переклад?]%0A- [ яку мову замінює переклад?]`}
       />
     </>
   );
