@@ -10,6 +10,7 @@ import {
   GameSidebar,
 } from "@/components/game-detail";
 import { GameTeamLink } from "@/components/ui/GameTeamLink";
+import { MarkdownText } from "@/components/ui/MarkdownText";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { STATUS_LABELS } from "@/lib/constants";
 import { getFeaturedInfo } from "@/lib/featuredTranslations";
@@ -167,18 +168,20 @@ export function GameDetailArticle({
               {game.description && (
                 <section className="game-section">
                   <h2>Про переклад</h2>
-                  <p className="game-description whitespace-pre-line">
-                    {game.description}
-                  </p>
+                  <MarkdownText
+                    text={game.description}
+                    className="game-description"
+                  />
                 </section>
               )}
 
               {game.game_description && (
                 <section className="game-section">
                   <h2>Про гру</h2>
-                  <p className="game-description whitespace-pre-line">
-                    {game.game_description}
-                  </p>
+                  <MarkdownText
+                    text={game.game_description}
+                    className="game-description"
+                  />
                 </section>
               )}
 
