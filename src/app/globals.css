@@ -164,6 +164,12 @@ a {
   color: var(--text-primary);
 }
 
+code {
+  background: rgba(0, 0, 0, 0.3);
+  padding-inline: 4px;
+  border-radius: 4px;
+}
+
 @media (max-width: 768px) {
   h1 {
     font-size: 2.125rem;
