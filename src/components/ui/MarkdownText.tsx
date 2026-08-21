@@ -16,7 +16,7 @@ const REMARK_REHYPE_OPTIONS: Options["remarkRehypeOptions"] = {
   },
 };
 
-const LIST_CLASS = "list-outside pl-5 space-y-1 leading-snug";
+const LIST_CLASS = "list-outside !pl-5 space-y-1 leading-snug";
 
 const COMPONENTS: Components = {
   ul: ({ node: _node, ...props }) => (
@@ -25,12 +25,7 @@ const COMPONENTS: Components = {
   ol: ({ node: _node, ...props }) => (
     <ol className={`list-decimal ${LIST_CLASS}`} {...props} />
   ),
-  code: ({ node: _node, ...props }) => (
-    <code
-      className="bg-black/30 rounded px-1! font-mono whitespace-pre-wrap"
-      {...props}
-    />
-  ),
+  code: ({ node: _node, ...props }) => <code {...props} />,
 };
 
 interface MarkdownTextProps {
