@@ -1,11 +1,13 @@
 import { getReadablePlatform } from "@/helpers/getReadablePlatform";
-import type { Game } from "@/lib/types";
+import { type Game, isWorkshopTranslation } from "@/lib/types";
 
 interface GameFAQProps {
   game: Game;
 }
 
 export function GameFAQ({ game }: GameFAQProps) {
+  const isWorkshop = isWorkshopTranslation(game);
+
   return (
     <section className="game-section game-faq">
       <h2>Часті питання про переклад {game.name}</h2>
@@ -14,8 +16,10 @@ export function GameFAQ({ game }: GameFAQProps) {
           <summary>Чи безкоштовний український переклад {game.name}?</summary>
           <p>
             Так, переклад {game.name} від команди {game.team} повністю
-            безкоштовний. Завантажте LBK Launcher та встановіть українську
-            локалізацію за кілька клаців.
+            безкоштовний.{" "}
+            {isWorkshop
+              ? "Встановіть українську локалізацію за кілька клаців через Steam майстерню."
+              : "Завантажте LBK Launcher та встановіть українську локалізацію за кілька клаців."}
           </p>
         </details>
         <details className="faq-item">
@@ -25,20 +29,24 @@ export function GameFAQ({ game }: GameFAQProps) {
           <p>
             Так, для коректної роботи перекладу потрібна оригінальна гра{" "}
             {game.name}. Переклад працює з{" "}
-            {game.platforms.includes("other")
-              ? `оригінальним лаунчером гри`
-              : `версіями з ${
-                  game.platforms?.map(getReadablePlatform).join(", ") ||
-                  "Steam, GOG, Epic Games"
-                }`}
+            {/* Майстерня живе лише в Steam — решта магазинів для неї не існує */}
+            {isWorkshop
+              ? "версіями з Steam"
+              : game.platforms.includes("other")
+                ? "оригінальним лаунчером гри"
+                : `версіями з ${
+                    game.platforms?.map(getReadablePlatform).join(", ") ||
+                    "Steam, GOG, Epic Games"
+                  }`}
             .
           </p>
         </details>
         <details className="faq-item">
           <summary>Як оновити переклад до нової версії?</summary>
           <p>
-            LBK Launcher автоматично перевіряє оновлення. Коли вийде нова версія
-            перекладу, ви отримаєте сповіщення та зможете оновити в один клац.
+            {isWorkshop
+              ? "LBK Launcher автоматично не перевіряє оновлення. Коли вийде нова версія перекладу, ви отримаєте сповіщення та зможете оновити переклад в Steam в один клац."
+              : "LBK Launcher автоматично перевіряє оновлення. Коли вийде нова версія перекладу, ви отримаєте сповіщення та зможете оновити в один клац."}
           </p>
         </details>
         {game.voice_progress && game.voice_progress > 0 && (
