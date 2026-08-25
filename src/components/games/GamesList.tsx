@@ -73,144 +73,117 @@ export function GamesList({ initialData }: GamesListProps) {
     return searchParams.get("achievements") === "1";
   }, [searchParams]);
 
-  // Update URL with new filter values and reset to page 1
+  // Читаємо фільтр «лише з Майстерні» з URL
+  const fromWorkshop = useMemo(() => {
+    return searchParams.get("workshop") === "1";
+  }, [searchParams]);
+
+  // Оновлюємо URL частковими змінами: позиційні булеві аргументи тут надто легко переплутати
   const updateFilters = useCallback(
-    (
-      newStatuses: string[],
-      newAuthors: string[],
-      page?: number,
-      newSortBy?: string,
-      newHasVoice?: boolean,
-      newHasAchievements?: boolean
-    ) => {
+    (patch: {
+      statuses?: string[];
+      authors?: string[];
+      page?: number;
+      sortBy?: string;
+      hasVoice?: boolean;
+      hasAchievements?: boolean;
+      fromWorkshop?: boolean;
+    }) => {
+      const next = {
+        statuses: selectedStatuses,
+        authors: selectedAuthors,
+        page: 1,
+        sortBy,
+        hasVoice,
+        hasAchievements,
+        fromWorkshop,
+        ...patch,
+      };
+
       const params = new URLSearchParams();
-      if (newStatuses.length > 0) {
-        params.set("statuses", newStatuses.join(","));
+      if (next.statuses.length > 0) {
+        params.set("statuses", next.statuses.join(","));
       }
-      if (newAuthors.length > 0) {
-        params.set("authors", newAuthors.join(","));
+      if (next.authors.length > 0) {
+        params.set("authors", next.authors.join(","));
       }
-      if (newSortBy && newSortBy !== "name") {
-        params.set("sort", newSortBy);
+      if (next.sortBy && next.sortBy !== "name") {
+        params.set("sort", next.sortBy);
       }
-      if (newHasVoice) {
+      if (next.hasVoice) {
         params.set("voice", "1");
       }
-      if (newHasAchievements) {
+      if (next.hasAchievements) {
         params.set("achievements", "1");
       }
-      if (page && page > 1) {
-        params.set("page", page.toString());
+      if (next.fromWorkshop) {
+        params.set("workshop", "1");
+      }
+      if (next.page > 1) {
+        params.set("page", next.page.toString());
       }
       const queryString = params.toString();
       router.push(queryString ? `/games?${queryString}` : "/games");
     },
-    [router]
-  );
-
-  const handleStatusesChange = useCallback(
-    (newStatuses: string[]) => {
-      updateFilters(
-        newStatuses,
-        selectedAuthors,
-        1,
-        sortBy,
-        hasVoice,
-        hasAchievements
-      );
-    },
-    [updateFilters, selectedAuthors, sortBy, hasVoice, hasAchievements]
-  );
-
-  const handleAuthorsChange = useCallback(
-    (newAuthors: string[]) => {
-      updateFilters(
-        selectedStatuses,
-        newAuthors,
-        1,
-        sortBy,
-        hasVoice,
-        hasAchievements
-      );
-    },
-    [updateFilters, selectedStatuses, sortBy, hasVoice, hasAchievements]
-  );
-
-  const handleSortChange = useCallback(
-    (newSortBy: string) => {
-      updateFilters(
-        selectedStatuses,
-        selectedAuthors,
-        1,
-        newSortBy,
-        hasVoice,
-        hasAchievements
-      );
-    },
     [
-      updateFilters,
-      selectedStatuses,
-      selectedAuthors,
-      hasVoice,
-      hasAchievements,
-    ]
-  );
-
-  const handleVoiceChange = useCallback(
-    (newHasVoice: boolean) => {
-      updateFilters(
-        selectedStatuses,
-        selectedAuthors,
-        1,
-        sortBy,
-        newHasVoice,
-        hasAchievements
-      );
-    },
-    [updateFilters, selectedStatuses, selectedAuthors, sortBy, hasAchievements]
-  );
-
-  const handleAchievementsChange = useCallback(
-    (newHasAchievements: boolean) => {
-      updateFilters(
-        selectedStatuses,
-        selectedAuthors,
-        1,
-        sortBy,
-        hasVoice,
-        newHasAchievements
-      );
-    },
-    [updateFilters, selectedStatuses, selectedAuthors, sortBy, hasVoice]
-  );
-
-  // Clear statuses, voice and achievements together in a single navigation
-  // (calling their individual on*Change handlers back-to-back would race,
-  // since each one builds the new URL from the same stale closure values)
-  const handleClearStatusFilters = useCallback(() => {
-    updateFilters([], selectedAuthors, 1, sortBy, false, false);
-  }, [updateFilters, selectedAuthors, sortBy]);
-
-  const handlePageChange = useCallback(
-    (page: number) => {
-      updateFilters(
-        selectedStatuses,
-        selectedAuthors,
-        page,
-        sortBy,
-        hasVoice,
-        hasAchievements
-      );
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    },
-    [
-      updateFilters,
+      router,
       selectedStatuses,
       selectedAuthors,
       sortBy,
       hasVoice,
       hasAchievements,
+      fromWorkshop,
     ]
+  );
+
+  const handleStatusesChange = useCallback(
+    (statuses: string[]) => updateFilters({ statuses }),
+    [updateFilters]
+  );
+
+  const handleAuthorsChange = useCallback(
+    (authors: string[]) => updateFilters({ authors }),
+    [updateFilters]
+  );
+
+  const handleSortChange = useCallback(
+    (newSortBy: string) => updateFilters({ sortBy: newSortBy }),
+    [updateFilters]
+  );
+
+  const handleVoiceChange = useCallback(
+    (newHasVoice: boolean) => updateFilters({ hasVoice: newHasVoice }),
+    [updateFilters]
+  );
+
+  const handleAchievementsChange = useCallback(
+    (newHasAchievements: boolean) =>
+      updateFilters({ hasAchievements: newHasAchievements }),
+    [updateFilters]
+  );
+
+  const handleWorkshopChange = useCallback(
+    (newFromWorkshop: boolean) =>
+      updateFilters({ fromWorkshop: newFromWorkshop }),
+    [updateFilters]
+  );
+
+  // Скидаємо стани й похідні прапорці одним переходом, інакше вони перетруть одне одного
+  const handleClearStatusFilters = useCallback(() => {
+    updateFilters({
+      statuses: [],
+      hasVoice: false,
+      hasAchievements: false,
+      fromWorkshop: false,
+    });
+  }, [updateFilters]);
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      updateFilters({ page });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    [updateFilters]
   );
 
   const isDefaultView =
@@ -220,6 +193,7 @@ export function GamesList({ initialData }: GamesListProps) {
     selectedAuthors.length === 0 &&
     !hasVoice &&
     !hasAchievements &&
+    !fromWorkshop &&
     (sortBy === "name" || !sortBy);
 
   const { data, isLoading, error } = useGamesPaginated(
@@ -230,7 +204,8 @@ export function GamesList({ initialData }: GamesListProps) {
     sortBy,
     isDefaultView ? initialData : undefined,
     hasVoice,
-    hasAchievements
+    hasAchievements,
+    fromWorkshop
   );
 
   const allGames = data?.games ?? [];
@@ -276,14 +251,7 @@ export function GamesList({ initialData }: GamesListProps) {
     if (search !== prevSearch.current) {
       prevSearch.current = search;
       if (currentPage > 1) {
-        updateFilters(
-          selectedStatuses,
-          selectedAuthors,
-          1,
-          sortBy,
-          hasVoice,
-          hasAchievements
-        );
+        updateFilters({ page: 1 });
       }
     }
   }, [
@@ -314,6 +282,8 @@ export function GamesList({ initialData }: GamesListProps) {
         onVoiceChange={handleVoiceChange}
         hasAchievements={hasAchievements}
         onAchievementsChange={handleAchievementsChange}
+        fromWorkshop={fromWorkshop}
+        onWorkshopChange={handleWorkshopChange}
         onClearStatusFilters={handleClearStatusFilters}
       />
 

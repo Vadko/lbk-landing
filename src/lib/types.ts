@@ -22,6 +22,7 @@ export type TranslationItem = Pick<
   | "translation_updated_at"
   | "achievements_archive_path"
   | "ai"
+  | "kind"
 >;
 
 // Grouped game with multiple translations
