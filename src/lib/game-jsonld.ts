@@ -1,4 +1,4 @@
-import type { Game } from "./types";
+import { type Game, isWorkshopTranslation } from "./types";
 
 export function generateSoftwareApplicationLD(game: Game) {
   return {
@@ -23,6 +23,10 @@ export function generateSoftwareApplicationLD(game: Game) {
 }
 
 export function generateFAQLD(game: Game) {
+  // Розмітка мусить повторювати видимий текст сторінки, інакше Google бачить
+  // одну відповідь, а користувач — іншу
+  const isWorkshop = isWorkshopTranslation(game);
+
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -32,7 +36,9 @@ export function generateFAQLD(game: Game) {
         name: `Чи безкоштовний український переклад ${game.name}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Так, переклад ${game.name} від команди ${game.team} повністю безкоштовний. Завантажте LBK Launcher та встановіть українську локалізацію за кілька клаців.`,
+          text: isWorkshop
+            ? `Так, переклад ${game.name} від команди ${game.team} повністю безкоштовний. Встановіть українську локалізацію за кілька клаців через Steam майстерню.`
+            : `Так, переклад ${game.name} від команди ${game.team} повністю безкоштовний. Завантажте LBK Launcher та встановіть українську локалізацію за кілька клаців.`,
         },
       },
       {
@@ -40,7 +46,9 @@ export function generateFAQLD(game: Game) {
         name: `Як встановити український переклад ${game.name}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Завантажте безкоштовний LBK Launcher з lbklauncher.com, знайдіть ${game.name} у каталозі ігор та натисніть "Встановити". Переклад автоматично завантажиться та встановиться.`,
+          text: isWorkshop
+            ? `Завантажте Steam, знайдіть ${game.name} у каталозі майстерні Steam та натисніть "Підписатися". Модифікація автоматично завантажиться та встановиться.`
+            : `Завантажте безкоштовний LBK Launcher з lbklauncher.com, знайдіть ${game.name} у каталозі ігор та натисніть "Встановити". Переклад автоматично завантажиться та встановиться.`,
         },
       },
       {
@@ -48,7 +56,11 @@ export function generateFAQLD(game: Game) {
         name: `Чи потрібна ліцензійна гра для встановлення перекладу ${game.name}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Так, для коректної роботи перекладу потрібна оригінальна гра ${game.name}. Переклад працює з версіями з ${game.platforms?.join(", ") || "Steam, GOG, Epic Games"}.`,
+          text: `Так, для коректної роботи перекладу потрібна оригінальна гра ${game.name}. Переклад працює з версіями з ${
+            isWorkshop
+              ? "Steam"
+              : game.platforms?.join(", ") || "Steam, GOG, Epic Games"
+          }.`,
         },
       },
     ],

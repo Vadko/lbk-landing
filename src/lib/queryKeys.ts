@@ -9,6 +9,7 @@ export const queryKeys = {
       sortBy?: string;
       hasVoice?: boolean;
       hasAchievements?: boolean;
+      fromWorkshop?: boolean;
     }) => [...queryKeys.games.all, "list", filters] as const,
     detail: (slug: string) => [...queryKeys.games.all, "detail", slug] as const,
     count: () => [...queryKeys.games.all, "count"] as const,

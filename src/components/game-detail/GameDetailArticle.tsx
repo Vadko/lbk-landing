@@ -21,7 +21,7 @@ import {
 } from "@/lib/game-jsonld";
 import { getImageUrl } from "@/lib/images";
 import { teamToSlug } from "@/lib/transliterate";
-import type { Game } from "@/lib/types";
+import { type Game, isWorkshopTranslation } from "@/lib/types";
 import { AIBadgeIcon } from "../ui/icons/AIBadgeIcon";
 import { AIEditedBadgeIcon } from "../ui/icons/AIEditedBadgeIcon";
 import GameGallery from "./GameGallery";
@@ -185,7 +185,10 @@ export function GameDetailArticle({
                 </section>
               )}
 
-              <GameInstallSteps gameName={game.name} />
+              <GameInstallSteps
+                gameName={game.name}
+                isWorkshop={isWorkshopTranslation(game)}
+              />
               <GameFAQ game={game} />
             </div>
 

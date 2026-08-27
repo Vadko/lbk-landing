@@ -4,6 +4,10 @@ export type Platform = Database["public"]["Enums"]["install_source"];
 
 export type Game = Database["public"]["Tables"]["games"]["Row"];
 
+/** Переклад із Майстерні ставиться самим Steam — у нього інша інструкція й інший FAQ. */
+export const isWorkshopTranslation = (game: Pick<Game, "kind">) =>
+  game.kind === "workshop";
+
 // Translation item for grouped games
 export type TranslationItem = Pick<
   Game,
@@ -18,6 +22,7 @@ export type TranslationItem = Pick<
   | "translation_updated_at"
   | "achievements_archive_path"
   | "ai"
+  | "kind"
 >;
 
 // Grouped game with multiple translations

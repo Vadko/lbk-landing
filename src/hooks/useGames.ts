@@ -12,7 +12,8 @@ export function useGamesPaginated(
   sortBy?: string,
   initialData?: GamesGroupedResponse,
   hasVoice?: boolean,
-  hasAchievements?: boolean
+  hasAchievements?: boolean,
+  fromWorkshop?: boolean
 ) {
   return useQuery({
     queryKey: queryKeys.games.list({
@@ -23,6 +24,7 @@ export function useGamesPaginated(
       sortBy,
       hasVoice,
       hasAchievements,
+      fromWorkshop,
     }),
     initialData,
     queryFn: async () => {
@@ -45,6 +47,9 @@ export function useGamesPaginated(
       }
       if (hasAchievements) {
         params.set("hasAchievements", "1");
+      }
+      if (fromWorkshop) {
+        params.set("fromWorkshop", "1");
       }
 
       const response = await fetch(`/api/games-list?${params}`);

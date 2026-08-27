@@ -1,5 +1,6 @@
 "use client";
 
+import { faSteam } from "@fortawesome/free-brands-svg-icons/faSteam";
 import { faArrowDownAZ } from "@fortawesome/free-solid-svg-icons/faArrowDownAZ";
 import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons/faArrowDownWideShort";
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons/faCalendarPlus";
@@ -42,6 +43,9 @@ interface GamesSearchProps {
   // Has achievements filter
   hasAchievements: boolean;
   onAchievementsChange: (hasAchievements: boolean) => void;
+
+  fromWorkshop: boolean;
+  onWorkshopChange: (fromWorkshop: boolean) => void;
   // Clear statuses, voice and achievements together
   onClearStatusFilters: () => void;
 }
@@ -89,6 +93,8 @@ export function GamesSearch({
   onVoiceChange,
   hasAchievements,
   onAchievementsChange,
+  fromWorkshop,
+  onWorkshopChange,
   onClearStatusFilters,
 }: GamesSearchProps) {
   const [localValue, setLocalValue] = useState(value);
@@ -227,7 +233,10 @@ export function GamesSearch({
   // Status button label (also covers voice/achievements grouped in the same dropdown)
   const statusLabel = useMemo(() => {
     const total =
-      selectedStatuses.length + (hasVoice ? 1 : 0) + (hasAchievements ? 1 : 0);
+      selectedStatuses.length +
+      (hasVoice ? 1 : 0) +
+      (hasAchievements ? 1 : 0) +
+      (fromWorkshop ? 1 : 0);
     if (total === 0) {
       return "Усі стани";
     }
@@ -236,10 +245,13 @@ export function GamesSearch({
         const opt = STATUS_OPTIONS.find((o) => o.value === selectedStatuses[0]);
         return opt?.label || selectedStatuses[0];
       }
-      return hasVoice ? "Озвучення" : "Досягнення";
+      if (hasVoice) {
+        return "Озвучення";
+      }
+      return hasAchievements ? "Досягнення" : "З Майстерні Steam";
     }
     return `${total} фільтри`;
-  }, [selectedStatuses, hasVoice, hasAchievements]);
+  }, [selectedStatuses, hasVoice, hasAchievements, fromWorkshop]);
 
   // Author button label
   const authorLabel = useMemo(() => {
@@ -287,7 +299,7 @@ export function GamesSearch({
         <div className="custom-dropdown" ref={statusDropdownRef}>
           <button
             type="button"
-            className={`dropdown-trigger ${isStatusOpen ? "open" : ""} ${selectedStatuses.length > 0 || hasVoice || hasAchievements ? "has-value" : ""}`}
+            className={`dropdown-trigger ${isStatusOpen ? "open" : ""} ${selectedStatuses.length > 0 || hasVoice || hasAchievements || fromWorkshop ? "has-value" : ""}`}
             onClick={() => setIsStatusOpen(!isStatusOpen)}
           >
             <SvgIcon icon={faGamepad} />
@@ -352,6 +364,17 @@ export function GamesSearch({
                 </span>
                 <SvgIcon icon={faTrophy} />
                 <span>Досягнення</span>
+              </button>
+              <button
+                type="button"
+                className={`dropdown-item dropdown-item-checkbox ${fromWorkshop ? "active" : ""}`}
+                onClick={() => onWorkshopChange(!fromWorkshop)}
+              >
+                <span className={`checkbox ${fromWorkshop ? "checked" : ""}`}>
+                  {fromWorkshop && <SvgIcon icon={faCheck} />}
+                </span>
+                <SvgIcon icon={faSteam} />
+                <span>З Майстерні Steam</span>
               </button>
             </div>
           )}
