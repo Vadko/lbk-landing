@@ -45,7 +45,7 @@ Next 16 renamed `middleware.ts` to `proxy.ts`. There is no `src/middleware.ts`. 
 
 ### `?page=only` embed mode
 
-Proxy sets `x-page-only: 1`; `src/app/layout.tsx` reads it with `await headers()` and renders without Navbar/Footer/FanCon banner, swaps body class `main-bg` → `page-only`, and mounts `src/components/layout/IframeResizeMessenger.tsx` (postMessages `{type:"resize", height}` to the parent). Header name, query value and body classes must change together across `src/proxy.ts`, `src/app/layout.tsx`, `src/app/globals.css`.
+Proxy sets `x-page-only: 1`; `src/app/layout.tsx` reads it with `await headers()` and renders without the Navbar and Footer, swaps body class `main-bg` → `page-only`, and mounts `src/components/layout/IframeResizeMessenger.tsx` (postMessages `{type:"resize", height}` to the parent). Header name, query value and body classes must change together across `src/proxy.ts`, `src/app/layout.tsx`, `src/app/globals.css`.
 
 ### Data layer
 

@@ -4,7 +4,6 @@ import { headers } from "next/headers";
 import Script from "next/script";
 import "./globals.css";
 import { ClientUtilities } from "@/components/layout/ClientUtilities";
-import { FanConBrochureBanner } from "@/components/layout/FanConBrochureBanner";
 import { Footer } from "@/components/layout/Footer";
 import { IframeResizeMessenger } from "@/components/layout/IframeResizeMessenger";
 import { Navbar } from "@/components/layout/Navbar";
@@ -161,7 +160,6 @@ export default async function RootLayout({
             <QueryProvider>
               <main className="relative z-10 header-padding">{children}</main>
             </QueryProvider>
-            <FanConBrochureBanner />
             <Footer />
           </>
         )}
