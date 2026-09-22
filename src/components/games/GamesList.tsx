@@ -78,6 +78,15 @@ export function GamesList({ initialData }: GamesListProps) {
     return searchParams.get("workshop") === "1";
   }, [searchParams]);
 
+  // Читаємо вибрані типи перекладу (ручний / ШІ / ШІ + ред) з URL params
+  const selectedTranslationTypes = useMemo(() => {
+    const typesParam = searchParams.get("translationTypes");
+    if (!typesParam) {
+      return [];
+    }
+    return typesParam.split(",").filter(Boolean);
+  }, [searchParams]);
+
   // Оновлюємо URL частковими змінами: позиційні булеві аргументи тут надто легко переплутати
   const updateFilters = useCallback(
     (patch: {
@@ -88,6 +97,7 @@ export function GamesList({ initialData }: GamesListProps) {
       hasVoice?: boolean;
       hasAchievements?: boolean;
       fromWorkshop?: boolean;
+      translationTypes?: string[];
     }) => {
       const next = {
         statuses: selectedStatuses,
@@ -97,6 +107,7 @@ export function GamesList({ initialData }: GamesListProps) {
         hasVoice,
         hasAchievements,
         fromWorkshop,
+        translationTypes: selectedTranslationTypes,
         ...patch,
       };
 
@@ -119,6 +130,9 @@ export function GamesList({ initialData }: GamesListProps) {
       if (next.fromWorkshop) {
         params.set("workshop", "1");
       }
+      if (next.translationTypes.length > 0) {
+        params.set("translationTypes", next.translationTypes.join(","));
+      }
       if (next.page > 1) {
         params.set("page", next.page.toString());
       }
@@ -133,6 +147,7 @@ export function GamesList({ initialData }: GamesListProps) {
       hasVoice,
       hasAchievements,
       fromWorkshop,
+      selectedTranslationTypes,
     ]
   );
 
@@ -168,6 +183,11 @@ export function GamesList({ initialData }: GamesListProps) {
     [updateFilters]
   );
 
+  const handleTranslationTypesChange = useCallback(
+    (translationTypes: string[]) => updateFilters({ translationTypes }),
+    [updateFilters]
+  );
+
   // Скидаємо стани й похідні прапорці одним переходом, інакше вони перетруть одне одного
   const handleClearStatusFilters = useCallback(() => {
     updateFilters({
@@ -175,6 +195,7 @@ export function GamesList({ initialData }: GamesListProps) {
       hasVoice: false,
       hasAchievements: false,
       fromWorkshop: false,
+      translationTypes: [],
     });
   }, [updateFilters]);
 
@@ -194,6 +215,7 @@ export function GamesList({ initialData }: GamesListProps) {
     !hasVoice &&
     !hasAchievements &&
     !fromWorkshop &&
+    selectedTranslationTypes.length === 0 &&
     (sortBy === "name" || !sortBy);
 
   const { data, isLoading, error } = useGamesPaginated(
@@ -205,7 +227,8 @@ export function GamesList({ initialData }: GamesListProps) {
     isDefaultView ? initialData : undefined,
     hasVoice,
     hasAchievements,
-    fromWorkshop
+    fromWorkshop,
+    selectedTranslationTypes
   );
 
   const allGames = data?.games ?? [];
@@ -284,6 +307,8 @@ export function GamesList({ initialData }: GamesListProps) {
         onAchievementsChange={handleAchievementsChange}
         fromWorkshop={fromWorkshop}
         onWorkshopChange={handleWorkshopChange}
+        selectedTranslationTypes={selectedTranslationTypes}
+        onTranslationTypesChange={handleTranslationTypesChange}
         onClearStatusFilters={handleClearStatusFilters}
       />
 

@@ -52,14 +52,16 @@ function hasActiveFilters(
   authors?: string[],
   hasVoice?: boolean,
   hasAchievements?: boolean,
-  fromWorkshop?: boolean
+  fromWorkshop?: boolean,
+  translationTypes?: string[]
 ): boolean {
   return Boolean(
     (statuses && statuses.length > 0) ||
       (authors && authors.length > 0) ||
       hasVoice ||
       hasAchievements ||
-      fromWorkshop
+      fromWorkshop ||
+      (translationTypes && translationTypes.length > 0)
   );
 }
 
@@ -74,9 +76,13 @@ export async function GET(request: NextRequest) {
     const hasVoice = searchParams.get("hasVoice") === "1";
     const hasAchievements = searchParams.get("hasAchievements") === "1";
     const fromWorkshop = searchParams.get("fromWorkshop") === "1";
+    const translationTypesParam = searchParams.get("translationTypes");
 
     const statuses = statusesParam ? statusesParam.split(",") : undefined;
     const authors = authorsParam ? authorsParam.split(",") : undefined;
+    const translationTypes = translationTypesParam
+      ? translationTypesParam.split(",")
+      : undefined;
     const offset = (page - 1) * GAMES_PER_PAGE;
     const limit = GAMES_PER_PAGE;
 
@@ -88,7 +94,8 @@ export async function GET(request: NextRequest) {
         authors,
         hasVoice,
         hasAchievements,
-        fromWorkshop
+        fromWorkshop,
+        translationTypes
       )
     ) {
       const result = await fetchWithFilter(supabase, {
@@ -100,6 +107,7 @@ export async function GET(request: NextRequest) {
         hasVoice,
         hasAchievements,
         fromWorkshop,
+        translationTypes,
         sortBy,
       });
       return NextResponse.json(result, { headers: cacheHeaders() });
@@ -217,6 +225,7 @@ async function fetchWithFilter(
     hasVoice?: boolean;
     hasAchievements?: boolean;
     fromWorkshop?: boolean;
+    translationTypes?: string[];
     sortBy?: string;
   }
 ) {
@@ -229,6 +238,7 @@ async function fetchWithFilter(
     hasVoice,
     hasAchievements,
     fromWorkshop,
+    translationTypes,
     sortBy,
   } = params;
 
@@ -239,7 +249,8 @@ async function fetchWithFilter(
       authors,
       hasAchievements,
       hasVoice,
-      fromWorkshop
+      fromWorkshop,
+      translationTypes
     );
   };
 
@@ -296,13 +307,31 @@ async function fetchWithFilter(
   };
 }
 
+// Мапить значення фільтра «тип перекладу» на поле games.ai (null = ручний переклад)
+function translationMatchesType(
+  translation: TranslationItem,
+  type: string
+): boolean {
+  if (type === "manual") {
+    return !translation.ai;
+  }
+  if (type === "ai") {
+    return translation.ai === "non-edited";
+  }
+  if (type === "ai_edited") {
+    return translation.ai === "edited";
+  }
+  return false;
+}
+
 function filterGames(
   games: GameGroup[],
   statuses?: string[],
   authors?: string[],
   hasAchievements?: boolean,
   hasVoice?: boolean,
-  fromWorkshop?: boolean
+  fromWorkshop?: boolean,
+  translationTypes?: string[]
 ): GameGroup[] {
   return games.filter((game) => {
     if (
@@ -328,6 +357,14 @@ function filterGames(
     }
     // Різновид живе в перекладі: в однієї гри буває і звичайний, і з Майстерні
     if (fromWorkshop && !game.translations.some((t) => t.kind === "workshop")) {
+      return false;
+    }
+    if (
+      translationTypes?.length &&
+      !game.translations.some((t) =>
+        translationTypes.some((type) => translationMatchesType(t, type))
+      )
+    ) {
       return false;
     }
     return true;
