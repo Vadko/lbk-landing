@@ -14,7 +14,7 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons/faMicrophone";
 import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
@@ -60,7 +60,7 @@ const AUTHORS_PER_PAGE = 20;
 
 const STATUS_OPTIONS = [
   { value: "completed", label: "Готово", icon: faCheckCircle },
-  { value: "in-progress", label: "У розробці", icon: faSpinner },
+  { value: "in-progress", label: "Ранній доступ", icon: faRocket },
   { value: "planned", label: "Заплановано", icon: faClock },
   { value: "tech-improvement", label: "Технічна доробка", icon: faWrench },
 ];

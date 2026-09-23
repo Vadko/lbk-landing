@@ -18,7 +18,7 @@ interface GameCardProps {
 const STATUS_LABELS: Record<string, { label: string; className: string }> = {
   completed: { label: "Готово", className: "game-card-status completed" },
   "in-progress": {
-    label: "У розробці",
+    label: "Ранній доступ",
     className: "game-card-status in-progress",
   },
   planned: { label: "Заплановано", className: "game-card-status planned" },
