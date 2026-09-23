@@ -13,12 +13,15 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons/faMicrophone";
+import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
 import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AIBadgeIcon } from "@/components/ui/icons/AIBadgeIcon";
+import { AIEditedBadgeIcon } from "@/components/ui/icons/AIEditedBadgeIcon";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { trackViewTranslatorsPage } from "@/lib/analytics";
 
@@ -46,7 +49,10 @@ interface GamesSearchProps {
 
   fromWorkshop: boolean;
   onWorkshopChange: (fromWorkshop: boolean) => void;
-  // Clear statuses, voice and achievements together
+  // Multi-select translation types (manual / AI / AI + edited)
+  selectedTranslationTypes: string[];
+  onTranslationTypesChange: (translationTypes: string[]) => void;
+  // Clear statuses, voice, achievements and translation types together
   onClearStatusFilters: () => void;
 }
 
@@ -58,6 +64,22 @@ const STATUS_OPTIONS = [
   { value: "planned", label: "Заплановано", icon: faClock },
   { value: "tech-improvement", label: "Технічна доробка", icon: faWrench },
 ];
+
+const TRANSLATION_TYPE_OPTIONS = [
+  { value: "manual", label: "Ручний переклад" },
+  { value: "ai", label: "Переклад ШІ" },
+  { value: "ai_edited", label: "ШІ + редактура людиною" },
+];
+
+function TranslationTypeIcon({ value }: { value: string }) {
+  if (value === "ai") {
+    return <AIBadgeIcon size={16} />;
+  }
+  if (value === "ai_edited") {
+    return <AIEditedBadgeIcon size={16} />;
+  }
+  return <SvgIcon icon={faPen} />;
+}
 
 const SORT_OPTIONS = [
   { value: "name", label: "За назвою", icon: faArrowDownAZ },
@@ -95,6 +117,8 @@ export function GamesSearch({
   onAchievementsChange,
   fromWorkshop,
   onWorkshopChange,
+  selectedTranslationTypes,
+  onTranslationTypesChange,
   onClearStatusFilters,
 }: GamesSearchProps) {
   const [localValue, setLocalValue] = useState(value);
@@ -209,6 +233,17 @@ export function GamesSearch({
     }
   };
 
+  // Toggle translation type selection
+  const handleTranslationTypeToggle = (typeValue: string) => {
+    if (selectedTranslationTypes.includes(typeValue)) {
+      onTranslationTypesChange(
+        selectedTranslationTypes.filter((t) => t !== typeValue)
+      );
+    } else {
+      onTranslationTypesChange([...selectedTranslationTypes, typeValue]);
+    }
+  };
+
   // Toggle author selection
   const handleAuthorToggle = (authorName: string) => {
     if (selectedAuthors.includes(authorName)) {
@@ -218,7 +253,7 @@ export function GamesSearch({
     }
   };
 
-  // Clear all statuses and the voice/achievements filters grouped with them
+  // Clear all statuses and the voice/achievements/translation type filters grouped with them
   const handleClearStatuses = () => {
     onClearStatusFilters();
     setIsStatusOpen(false);
@@ -230,10 +265,11 @@ export function GamesSearch({
     setIsAuthorOpen(false);
   };
 
-  // Status button label (also covers voice/achievements grouped in the same dropdown)
+  // Status button label (also covers voice/achievements/translation type grouped in the same dropdown)
   const statusLabel = useMemo(() => {
     const total =
       selectedStatuses.length +
+      selectedTranslationTypes.length +
       (hasVoice ? 1 : 0) +
       (hasAchievements ? 1 : 0) +
       (fromWorkshop ? 1 : 0);
@@ -245,13 +281,25 @@ export function GamesSearch({
         const opt = STATUS_OPTIONS.find((o) => o.value === selectedStatuses[0]);
         return opt?.label || selectedStatuses[0];
       }
+      if (selectedTranslationTypes.length === 1) {
+        const opt = TRANSLATION_TYPE_OPTIONS.find(
+          (o) => o.value === selectedTranslationTypes[0]
+        );
+        return opt?.label || selectedTranslationTypes[0];
+      }
       if (hasVoice) {
         return "Озвучення";
       }
       return hasAchievements ? "Досягнення" : "З Майстерні Steam";
     }
     return `${total} фільтри`;
-  }, [selectedStatuses, hasVoice, hasAchievements, fromWorkshop]);
+  }, [
+    selectedStatuses,
+    selectedTranslationTypes,
+    hasVoice,
+    hasAchievements,
+    fromWorkshop,
+  ]);
 
   // Author button label
   const authorLabel = useMemo(() => {
@@ -299,7 +347,7 @@ export function GamesSearch({
         <div className="custom-dropdown" ref={statusDropdownRef}>
           <button
             type="button"
-            className={`dropdown-trigger ${isStatusOpen ? "open" : ""} ${selectedStatuses.length > 0 || hasVoice || hasAchievements || fromWorkshop ? "has-value" : ""}`}
+            className={`dropdown-trigger ${isStatusOpen ? "open" : ""} ${selectedStatuses.length > 0 || selectedTranslationTypes.length > 0 || hasVoice || hasAchievements || fromWorkshop ? "has-value" : ""}`}
             onClick={() => setIsStatusOpen(!isStatusOpen)}
           >
             <SvgIcon icon={faGamepad} />
@@ -313,7 +361,10 @@ export function GamesSearch({
           {isStatusOpen && (
             <div className="dropdown-menu dropdown-menu-with-search">
               {/* Clear selection */}
-              {(selectedStatuses.length > 0 || hasVoice || hasAchievements) && (
+              {(selectedStatuses.length > 0 ||
+                selectedTranslationTypes.length > 0 ||
+                hasVoice ||
+                hasAchievements) && (
                 <button
                   type="button"
                   className="dropdown-item dropdown-item-clear"
@@ -323,59 +374,85 @@ export function GamesSearch({
                   <span>Очистити фільтр</span>
                 </button>
               )}
-              {STATUS_OPTIONS.map((option) => {
-                const isSelected = selectedStatuses.includes(option.value);
-                return (
-                  <button
-                    key={option.value}
-                    type="button"
-                    className={`dropdown-item dropdown-item-checkbox ${isSelected ? "active" : ""}`}
-                    onClick={() => handleStatusToggle(option.value)}
-                  >
-                    <span className={`checkbox ${isSelected ? "checked" : ""}`}>
-                      {isSelected && <SvgIcon icon={faCheck} />}
-                    </span>
-                    <SvgIcon icon={option.icon} />
-                    <span>{option.label}</span>
-                  </button>
-                );
-              })}
-              <div className="dropdown-divider" />
-              <button
-                type="button"
-                className={`dropdown-item dropdown-item-checkbox ${hasVoice ? "active" : ""}`}
-                onClick={() => onVoiceChange(!hasVoice)}
-              >
-                <span className={`checkbox ${hasVoice ? "checked" : ""}`}>
-                  {hasVoice && <SvgIcon icon={faCheck} />}
-                </span>
-                <SvgIcon icon={faMicrophone} />
-                <span>Озвучення</span>
-              </button>
-              <button
-                type="button"
-                className={`dropdown-item dropdown-item-checkbox ${hasAchievements ? "active" : ""}`}
-                onClick={() => onAchievementsChange(!hasAchievements)}
-              >
-                <span
-                  className={`checkbox ${hasAchievements ? "checked" : ""}`}
+              <div className="dropdown-list">
+                {STATUS_OPTIONS.map((option) => {
+                  const isSelected = selectedStatuses.includes(option.value);
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={`dropdown-item dropdown-item-checkbox ${isSelected ? "active" : ""}`}
+                      onClick={() => handleStatusToggle(option.value)}
+                    >
+                      <span
+                        className={`checkbox ${isSelected ? "checked" : ""}`}
+                      >
+                        {isSelected && <SvgIcon icon={faCheck} />}
+                      </span>
+                      <SvgIcon icon={option.icon} />
+                      <span>{option.label}</span>
+                    </button>
+                  );
+                })}
+                <div className="dropdown-divider" />
+                <button
+                  type="button"
+                  className={`dropdown-item dropdown-item-checkbox ${hasVoice ? "active" : ""}`}
+                  onClick={() => onVoiceChange(!hasVoice)}
                 >
-                  {hasAchievements && <SvgIcon icon={faCheck} />}
-                </span>
-                <SvgIcon icon={faTrophy} />
-                <span>Досягнення</span>
-              </button>
-              <button
-                type="button"
-                className={`dropdown-item dropdown-item-checkbox ${fromWorkshop ? "active" : ""}`}
-                onClick={() => onWorkshopChange(!fromWorkshop)}
-              >
-                <span className={`checkbox ${fromWorkshop ? "checked" : ""}`}>
-                  {fromWorkshop && <SvgIcon icon={faCheck} />}
-                </span>
-                <SvgIcon icon={faSteam} />
-                <span>З Майстерні Steam</span>
-              </button>
+                  <span className={`checkbox ${hasVoice ? "checked" : ""}`}>
+                    {hasVoice && <SvgIcon icon={faCheck} />}
+                  </span>
+                  <SvgIcon icon={faMicrophone} />
+                  <span>Озвучення</span>
+                </button>
+                <button
+                  type="button"
+                  className={`dropdown-item dropdown-item-checkbox ${hasAchievements ? "active" : ""}`}
+                  onClick={() => onAchievementsChange(!hasAchievements)}
+                >
+                  <span
+                    className={`checkbox ${hasAchievements ? "checked" : ""}`}
+                  >
+                    {hasAchievements && <SvgIcon icon={faCheck} />}
+                  </span>
+                  <SvgIcon icon={faTrophy} />
+                  <span>Досягнення</span>
+                </button>
+                <button
+                  type="button"
+                  className={`dropdown-item dropdown-item-checkbox ${fromWorkshop ? "active" : ""}`}
+                  onClick={() => onWorkshopChange(!fromWorkshop)}
+                >
+                  <span className={`checkbox ${fromWorkshop ? "checked" : ""}`}>
+                    {fromWorkshop && <SvgIcon icon={faCheck} />}
+                  </span>
+                  <SvgIcon icon={faSteam} />
+                  <span>З Майстерні Steam</span>
+                </button>
+                <div className="dropdown-divider" />
+                {TRANSLATION_TYPE_OPTIONS.map((option) => {
+                  const isSelected = selectedTranslationTypes.includes(
+                    option.value
+                  );
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={`dropdown-item dropdown-item-checkbox ${isSelected ? "active" : ""}`}
+                      onClick={() => handleTranslationTypeToggle(option.value)}
+                    >
+                      <span
+                        className={`checkbox ${isSelected ? "checked" : ""}`}
+                      >
+                        {isSelected && <SvgIcon icon={faCheck} />}
+                      </span>
+                      <TranslationTypeIcon value={option.value} />
+                      <span>{option.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
@@ -533,6 +610,7 @@ export function GamesSearch({
 
       {/* Selected filters chips - outside of flex container */}
       {(selectedStatuses.length > 0 ||
+        selectedTranslationTypes.length > 0 ||
         selectedAuthors.length > 0 ||
         hasVoice ||
         hasAchievements) && (
@@ -545,6 +623,21 @@ export function GamesSearch({
                 <button
                   type="button"
                   onClick={() => handleStatusToggle(s)}
+                  className="filter-chip-remove"
+                >
+                  <SvgIcon icon={faXmark} />
+                </button>
+              </span>
+            );
+          })}
+          {selectedTranslationTypes.map((t) => {
+            const opt = TRANSLATION_TYPE_OPTIONS.find((o) => o.value === t);
+            return (
+              <span key={t} className="filter-chip">
+                {opt?.label || t}
+                <button
+                  type="button"
+                  onClick={() => handleTranslationTypeToggle(t)}
                   className="filter-chip-remove"
                 >
                   <SvgIcon icon={faXmark} />
