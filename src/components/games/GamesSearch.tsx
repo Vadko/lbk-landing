@@ -290,7 +290,7 @@ export function GamesSearch({
       if (hasVoice) {
         return "Озвучення";
       }
-      return hasAchievements ? "Досягнення" : "З Майстерні Steam";
+      return hasAchievements ? "Досягнення" : "З майстерні Steam";
     }
     return `${total} фільтри`;
   }, [
@@ -428,7 +428,7 @@ export function GamesSearch({
                     {fromWorkshop && <SvgIcon icon={faCheck} />}
                   </span>
                   <SvgIcon icon={faSteam} />
-                  <span>З Майстерні Steam</span>
+                  <span>З майстерні Steam</span>
                 </button>
                 <div className="dropdown-divider" />
                 {TRANSLATION_TYPE_OPTIONS.map((option) => {
