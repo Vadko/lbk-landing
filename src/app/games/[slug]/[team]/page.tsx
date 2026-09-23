@@ -37,7 +37,7 @@ export async function generateMetadata({
       ? "100%"
       : game.status === "in-progress"
         ? `${game.translation_progress}%`
-        : "у розробці";
+        : "ранній доступ";
 
   const description = `Український переклад ${game.name} від команди ${game.team}. Статус перекладу: ${statusText}. Дізнайтеся, як автоматично встановити українізатор через LBK Launcher та грати українською вже зараз.`;
 

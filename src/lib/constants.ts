@@ -9,7 +9,7 @@ export const STATUS_LABELS: Record<
 > = {
   completed: { label: "Готово", className: "game-status-badge completed" },
   "in-progress": {
-    label: "У розробці",
+    label: "Ранній доступ",
     className: "game-status-badge in-progress",
   },
   planned: { label: "Заплановано", className: "game-status-badge planned" },
