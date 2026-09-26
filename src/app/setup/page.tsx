@@ -7,13 +7,13 @@ import { faSteam } from "@fortawesome/free-brands-svg-icons/faSteam";
 import { faWindows } from "@fortawesome/free-brands-svg-icons/faWindows";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons/faCircleInfo";
-import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
 import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons/faFileArrowDown";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
+import { CopyButton } from "@/components/ui/CopyButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import {
   detectOS,
@@ -296,16 +296,10 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
         <p>Або через термінал:</p>
         <div className="setup-code">
           <code>flatpak install --user {flatpakrefUrl}</code>
-          <button
-            className="copy-btn"
-            onClick={() =>
-              navigator.clipboard.writeText(
-                `flatpak install --user ${flatpakrefUrl}`
-              )
-            }
-          >
-            <SvgIcon icon={faCopy} />
-          </button>
+          <CopyButton
+            text={`flatpak install --user ${flatpakrefUrl}`}
+            title="Скопіювати команду"
+          />
         </div>
       </div>
 
@@ -329,16 +323,10 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
         </ol>
         <div className="setup-code">
           <code>sudo rpm -i LBK-Launcher-linux.rpm</code>
-          <button
-            className="copy-btn"
-            onClick={() =>
-              navigator.clipboard.writeText(
-                "sudo rpm -i LBK-Launcher-linux.rpm"
-              )
-            }
-          >
-            <SvgIcon icon={faCopy} />
-          </button>
+          <CopyButton
+            text="sudo rpm -i LBK-Launcher-linux.rpm"
+            title="Скопіювати команду"
+          />
         </div>
       </div>
     </div>
@@ -397,16 +385,10 @@ function SteamDeckInstructions() {
         </p>
         <div className="setup-code">
           <code>flatpak install --user {flatpakrefUrl}</code>
-          <button
-            className="copy-btn"
-            onClick={() =>
-              navigator.clipboard.writeText(
-                `flatpak install --user ${flatpakrefUrl}`
-              )
-            }
-          >
-            <SvgIcon icon={faCopy} />
-          </button>
+          <CopyButton
+            text={`flatpak install --user ${flatpakrefUrl}`}
+            title="Скопіювати команду"
+          />
         </div>
       </div>
 

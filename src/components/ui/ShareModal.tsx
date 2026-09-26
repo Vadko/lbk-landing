@@ -10,9 +10,11 @@ import {
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { faCopy, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useActionPhase } from "@/hooks/useActionPhase";
 import { trackShareLinkCopied } from "@/lib/analytics";
+import { ActionIcon } from "./ActionIcon";
 import { SvgIcon } from "./SvgIcon";
 
 interface ShareModalProps {
@@ -90,6 +92,19 @@ const socialPlatforms: SocialPlatform[] = [
   },
 ];
 
+const LABEL_STACK_STYLE: React.CSSProperties = {
+  display: "grid",
+  textAlign: "center",
+};
+const STACKED_LABEL_STYLE: React.CSSProperties = { gridArea: "1 / 1" };
+const GHOST_LABEL_STYLE: React.CSSProperties = {
+  ...STACKED_LABEL_STYLE,
+  visibility: "hidden",
+};
+const COPIED_BUTTON_STYLE: React.CSSProperties = {
+  background: "var(--color-accent)",
+};
+
 export function ShareModal({
   isOpen,
   onClose,
@@ -97,28 +112,43 @@ export function ShareModal({
   shareUrl,
   shareText,
 }: ShareModalProps) {
-  const [copied, setCopied] = useState(false);
+  const {
+    phase: copyPhase,
+    attempt: attemptCopy,
+    reset: resetCopy,
+  } = useActionPhase({
+    minPendingMs: 0,
+  });
+  const copied = copyPhase === "done";
 
-  const handleCopy = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      trackShareLinkCopied(gameName);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Fallback for older browsers
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "fixed";
-      textArea.style.opacity = "0";
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textArea);
-      trackShareLinkCopied(gameName);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+  useEffect(() => {
+    if (!isOpen) {
+      resetCopy();
     }
+  }, [isOpen, resetCopy]);
+
+  const handleCopy = (text: string) => {
+    void attemptCopy(
+      async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          textArea.style.position = "fixed";
+          textArea.style.opacity = "0";
+          document.body.appendChild(textArea);
+          textArea.select();
+          const ok = document.execCommand("copy");
+          document.body.removeChild(textArea);
+          if (!ok) {
+            throw new Error("clipboard unavailable");
+          }
+        }
+        trackShareLinkCopied(gameName);
+      },
+      { label: "ShareModal.copy" }
+    );
   };
 
   const handleShare = (platform: SocialPlatform) => {
@@ -205,12 +235,29 @@ export function ShareModal({
               onClick={(e) => e.currentTarget.select()}
             />
             <button
-              className={`btn share-modal-copy-btn ${copied ? "copied" : ""}`}
+              className="btn share-modal-copy-btn"
+              style={copied ? COPIED_BUTTON_STYLE : undefined}
               onClick={() => handleCopy(shareText + "\n" + shareUrl)}
               type="button"
             >
-              <SvgIcon icon={faCopy} />
-              {copied ? "Скопійовано!" : "Копіювати текст"}
+              <ActionIcon
+                phase={copyPhase}
+                icon={faCopy}
+                doneClassName="action-icon--inherit"
+                errorClassName="action-icon--inherit"
+              />
+              {/* обидва лейбли в одній клітинці резервують ширину: текст міняється, кнопка — ні */}
+              <span style={LABEL_STACK_STYLE}>
+                <span style={GHOST_LABEL_STYLE} aria-hidden="true">
+                  Копіювати текст
+                </span>
+                <span style={GHOST_LABEL_STYLE} aria-hidden="true">
+                  Скопійовано!
+                </span>
+                <span style={STACKED_LABEL_STYLE}>
+                  {copied ? "Скопійовано!" : "Копіювати текст"}
+                </span>
+              </span>
             </button>
           </div>
         </div>

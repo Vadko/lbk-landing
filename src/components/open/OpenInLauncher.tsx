@@ -9,7 +9,10 @@ import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useReducer, useRef } from "react";
+import { ActionIcon } from "@/components/ui/ActionIcon";
+import { CopyButton } from "@/components/ui/CopyButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { useActionPhase } from "@/hooks/useActionPhase";
 
 interface OpenInLauncherProps {
   gameName: string;
@@ -20,19 +23,45 @@ interface OpenInLauncherProps {
   logoUrl?: string | null;
 }
 
+const ATTEMPT_TIMEOUT_MS = 2500;
+
+// blur або приховання вкладки — єдина ознака, що lbk:// підхопив лаунчер
+function attemptOpen(
+  link: HTMLAnchorElement | null,
+  signal?: AbortSignal
+): Promise<boolean> {
+  return new Promise((resolve) => {
+    const scope = new AbortController();
+    const finish = (opened: boolean) => {
+      scope.abort();
+      resolve(opened);
+    };
+    const options = { signal: scope.signal };
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+        if (document.hidden) {
+          finish(true);
+        }
+      },
+      options
+    );
+    window.addEventListener("blur", () => finish(true), options);
+    signal?.addEventListener("abort", () => finish(false), options);
+    const timer = setTimeout(() => finish(false), ATTEMPT_TIMEOUT_MS);
+    scope.signal.addEventListener("abort", () => clearTimeout(timer));
+    link?.click();
+  });
+}
+
 type LauncherState = "attempting" | "failed" | "opened";
 
 interface State {
   status: LauncherState;
   countdown: number;
-  retryCount: number;
 }
 
-type Action =
-  | { type: "OPENED" }
-  | { type: "FAILED" }
-  | { type: "RETRY" }
-  | { type: "TICK" };
+type Action = { type: "OPENED" } | { type: "FAILED" } | { type: "TICK" };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
@@ -40,12 +69,6 @@ function reducer(state: State, action: Action): State {
       return { ...state, status: "opened" };
     case "FAILED":
       return { ...state, status: "failed" };
-    case "RETRY":
-      return {
-        status: "attempting",
-        countdown: 3,
-        retryCount: state.retryCount + 1,
-      };
     case "TICK":
       return {
         ...state,
@@ -67,47 +90,23 @@ export function OpenInLauncher({
   const [state, dispatch] = useReducer(reducer, {
     status: "attempting",
     countdown: 3,
-    retryCount: 0,
   });
+  const retry = useActionPhase();
 
   const linkRef = useRef<HTMLAnchorElement>(null);
   const launcherUrl = `lbk://games/${gameSlug}/${encodeURIComponent(team)}`;
   const gamePageUrl = `/games/${gameSlug}/${teamSlug}`;
 
+  // перша спроба автоматична, тому йде повз фазу кнопки
   useEffect(() => {
-    if (state.status !== "attempting") {
-      return;
-    }
-
-    // Click hidden link to trigger protocol
-    linkRef.current?.click();
-
-    // If we're still here after timeout, launcher probably didn't open
-    const checkTimeout = setTimeout(() => {
-      dispatch({ type: "FAILED" });
-    }, 2500);
-
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        dispatch({ type: "OPENED" });
-        clearTimeout(checkTimeout);
+    const controller = new AbortController();
+    void attemptOpen(linkRef.current, controller.signal).then((opened) => {
+      if (!controller.signal.aborted) {
+        dispatch({ type: opened ? "OPENED" : "FAILED" });
       }
-    };
-
-    const handleBlur = () => {
-      dispatch({ type: "OPENED" });
-      clearTimeout(checkTimeout);
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    window.addEventListener("blur", handleBlur);
-
-    return () => {
-      clearTimeout(checkTimeout);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      window.removeEventListener("blur", handleBlur);
-    };
-  }, [state.status, state.retryCount]);
+    });
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     if (state.status !== "attempting") {
@@ -119,15 +118,22 @@ export function OpenInLauncher({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [state.status, state.retryCount]);
+  }, [state.status]);
 
   const handleRetry = () => {
-    dispatch({ type: "RETRY" });
-  };
-
-  const copyShareLink = async () => {
-    const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
-    await navigator.clipboard.writeText(shareUrl);
+    if (retry.phase === "pending") {
+      return;
+    }
+    // блок «не встановлено» лишається змонтованим: фазу несе іконка кнопки
+    void retry
+      .run(() => attemptOpen(linkRef.current), {
+        isSuccess: (opened) => opened,
+      })
+      .then((opened) => {
+        if (opened) {
+          dispatch({ type: "OPENED" });
+        }
+      });
   };
 
   return (
@@ -194,8 +200,9 @@ export function OpenInLauncher({
                 onClick={handleRetry}
                 className="btn glass-bg"
                 type="button"
+                aria-busy={retry.phase === "pending"}
               >
-                <SvgIcon icon={faRotate} />
+                <ActionIcon phase={retry.phase} icon={faRotate} />
                 Спробувати знову
               </button>
             </div>
@@ -206,10 +213,13 @@ export function OpenInLauncher({
           </div>
         )}
 
-        <button onClick={copyShareLink} className="btn glass-bg" type="button">
-          <SvgIcon icon={faShareNodes} />
-          Копіювати посилання
-        </button>
+        <CopyButton
+          text={`https://lbklauncher.com/open/${gameSlug}/${teamSlug}`}
+          title="Копіювати посилання"
+          label="Копіювати посилання"
+          icon={faShareNodes}
+          className="btn glass-bg"
+        />
       </div>
     </div>
   );
