@@ -172,7 +172,6 @@ export function Navbar() {
             </span>
             <span className="mobile-menu-toggle__close" aria-hidden="true">
               <SvgIcon icon={faXmark} />
-              <span />
             </span>
           </button>
         </div>

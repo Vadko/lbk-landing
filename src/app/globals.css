@@ -308,48 +308,11 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.mobile-menu-toggle__icon span {
-  position: absolute;
-  width: 18px;
-  height: 2px;
-  border-radius: 2px;
-  background: #939296;
   transition: opacity 0.2s ease;
-}
-
-.mobile-menu-toggle__icon span:nth-child(1) {
-  top: 5px;
-}
-
-.mobile-menu-toggle__icon span:nth-child(2) {
-  top: 11px;
-}
-
-.mobile-menu-toggle__icon span:nth-child(3) {
-  top: 17px;
 }
 
 .mobile-menu-toggle__close {
   opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.mobile-menu-toggle__close span {
-  position: absolute;
-  width: 13px;
-  height: 2px;
-  border-radius: 2px;
-  background: #939296;
-}
-
-.mobile-menu-toggle__close span:first-child {
-  transform: rotate(45deg);
-}
-
-.mobile-menu-toggle__close span:last-child {
-  transform: rotate(-45deg);
 }
 
 .mobile-menu-toggle.is-open .mobile-menu-toggle__icon {
@@ -358,6 +321,52 @@ code {
 
 .mobile-menu-toggle.is-open .mobile-menu-toggle__close {
   opacity: 1;
+}
+
+/* ActionIcon: слот фази дії. Бокс тримає розмір у всіх фазах, колір фази — на боксі */
+.action-icon {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.action-icon--pending {
+  color: var(--color-main);
+}
+
+/* Outfit: центр великих літер на 0.03em нижче центру рядка (ascent 1.0, descent 0.25, cap 0.69) */
+.action-icon--optical {
+  transform: translateY(0.03em);
+}
+
+/* на заливних кнопках колір фази зливається з тлом — беремо колір тексту */
+.action-icon--inherit {
+  color: inherit;
+}
+
+.action-icon--done {
+  color: #10b981;
+}
+
+.action-icon--error {
+  color: #ef4444;
+}
+
+.action-icon__glyph--spin {
+  animation: action-icon-spin 1s linear infinite;
+}
+
+@keyframes action-icon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action-icon__glyph--spin {
+    animation: none;
+  }
 }
 
 body.mobile-menu-open {
@@ -3627,6 +3636,9 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 .setup-code .copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
   color: var(--text-sec);
@@ -4689,10 +4701,6 @@ main.header-padding:has(.open-launcher-page) {
 .share-modal-copy-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(var(--color-main-rgb), 0.3);
-}
-
-.share-modal-copy-btn.copied {
-  background: var(--color-accent);
 }
 
 .share-modal-socials {
