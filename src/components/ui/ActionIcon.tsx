@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import type { ActionPhase } from "@/hooks/useActionPhase";
 import { type FaIconDef, MorphSvgIcon } from "./MorphSvgIcon";
 
-const PENDING_DELAY_MS = 150;
-const SPIN_DELAY_MS = 260;
+const PENDING_DELAY_MS = 100;
+const SPIN_DELAY_MS = 180;
 
 interface ActionIconProps {
   phase: ActionPhase;

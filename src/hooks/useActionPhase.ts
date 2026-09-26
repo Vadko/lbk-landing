@@ -21,10 +21,10 @@ interface AttemptOptions<T> extends RunOptions<T> {
   label: string;
 }
 
-const DONE_MS = 1600;
-const ERROR_MS = 2600;
-// швидкі відповіді (~100 мс) інакше перестрибують спінер — морфу в галочку не буде з чого починатись
-const MIN_PENDING_MS = 900;
+const DONE_MS = 1000;
+const ERROR_MS = 1800;
+
+const MIN_PENDING_MS = 600;
 
 export function useActionPhase({
   doneMs = DONE_MS,
@@ -99,7 +99,7 @@ export function useActionPhase({
         }
         throw error;
       }
-      // предикат рахуємо поза try: його власна помилка не має ставати помилкою дії
+      // помилка предиката не валить дію: результат вертаємо, але фазу показуємо як невдачу
       let failed = false;
       try {
         failed = options?.isSuccess?.(result) === false;

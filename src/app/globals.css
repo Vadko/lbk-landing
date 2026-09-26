@@ -141,7 +141,7 @@ p {
 a {
   text-decoration: none;
   color: white;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .color-main {
@@ -228,7 +228,7 @@ code {
   backdrop-filter: blur(12px);
   background: var(--navbar-bg);
   border-bottom: 1px solid var(--glass-border);
-  transition: background 0.3s ease;
+  transition: background 0.2s ease;
 }
 
 .nav-container {
@@ -254,7 +254,7 @@ code {
 
 .nav-links a {
   color: var(--text-sec);
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
 .nav-links a:hover {
@@ -270,7 +270,7 @@ code {
 .nav-socials a {
   color: var(--text-sec);
   font-size: 1.125rem;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -308,7 +308,7 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.15s ease;
 }
 
 .mobile-menu-toggle__close {
@@ -388,7 +388,7 @@ body.mobile-menu-open {
   background: rgba(var(--color-bg-rgb), 0.01);
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.15s ease;
 }
 
 .mobile-nav-overlay.is-open {
@@ -503,7 +503,7 @@ body.mobile-menu-open {
   position: relative;
   backdrop-filter: blur(10px);
   cursor: default;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .badge-icon {
@@ -544,7 +544,7 @@ body.mobile-menu-open {
   font-size: 1rem;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .btn.glass-bg {
@@ -615,7 +615,7 @@ body.mobile-menu-open {
   background-clip: text, border-box;
   -webkit-background-clip: text, border-box;
   -webkit-text-fill-color: transparent;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .btn-neon svg {
@@ -656,7 +656,7 @@ body.mobile-menu-open {
 
 .btn-neon i:last-child {
   font-size: 0.875rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 /* Icon-only circular/rounded-square button — shape only, each usage supplies size/background/color */
@@ -665,7 +665,7 @@ body.mobile-menu-open {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .games-link:hover {
@@ -681,7 +681,7 @@ body.mobile-menu-open {
   color: var(--text-sec);
   font-size: 0.875rem;
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
 .instruction-link:hover {
@@ -785,7 +785,7 @@ body.mobile-menu-open {
   border-radius: 16px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
   border: 1px solid var(--glass-border);
-  transition: 0.5s ease-out;
+  transition: 0.3s ease-out;
 }
 
 .main-shot {
@@ -837,7 +837,7 @@ body.mobile-menu-open {
   overflow: hidden;
   cursor: pointer;
   border: 1px solid var(--glass-border);
-  transition: all 0.4s ease;
+  transition: all 0.25s ease;
 }
 
 .gallery-item.large {
@@ -850,7 +850,7 @@ body.mobile-menu-open {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s ease;
+  transition: transform 0.3s ease;
 }
 
 .gallery-item:hover img {
@@ -865,7 +865,7 @@ body.mobile-menu-open {
   padding: 20px;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
 .gallery-item:hover .gallery-overlay {
@@ -1044,7 +1044,7 @@ body.mobile-menu-open {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
 }
@@ -1088,7 +1088,7 @@ body.mobile-menu-open {
     var(--color-main) 360deg
   );
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.15s ease;
   z-index: 0;
   pointer-events: none;
   padding: 3px;
@@ -1128,7 +1128,7 @@ body.mobile-menu-open {
   content: "";
   position: absolute;
   inset: 3px;
-  transition: 0.3s;
+  transition: 0.2s;
   background: var(--glass-bg);
   border-radius: 17px;
   backdrop-filter: blur(10px);
@@ -1214,7 +1214,7 @@ body.mobile-menu-open {
   margin: 0 auto 24px;
   font-size: 2.2rem;
   color: var(--color-main);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .collab-btn {
@@ -1267,7 +1267,7 @@ p + .why-btn {
   font-size: 1.1rem;
   font-weight: 600;
   text-align: left;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .faq-question:hover,
@@ -1278,7 +1278,7 @@ p + .why-btn {
 .faq-question svg {
   color: var(--color-main);
   font-size: 0.875rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .faq-item.active .faq-question svg {
@@ -1400,7 +1400,7 @@ p + .why-btn {
 .footer-links a {
   color: var(--text-sec);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1515,7 +1515,7 @@ p + .why-btn {
 .legal-body a {
   color: var(--color-main);
   text-decoration: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
 .legal-body a:hover {
@@ -1536,7 +1536,7 @@ p + .why-btn {
 }
 
 .legal-back-btn svg {
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .legal-back-btn:hover svg {
@@ -1579,7 +1579,7 @@ p + .why-btn {
   height: 100%;
   background: linear-gradient(90deg, var(--color-main), var(--color-accent));
   border-radius: 3px;
-  transition: width 0.5s ease;
+  transition: width 0.3s ease;
 }
 
 /* 404 Page */
@@ -1911,7 +1911,7 @@ input[type="search"]::-webkit-search-decoration {
   color: var(--text-primary);
   font-size: 1rem;
   font-family: inherit;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   position: relative;
   z-index: 0;
 }
@@ -1958,7 +1958,7 @@ input[type="search"]::-webkit-search-decoration {
   border-radius: 50%;
   color: var(--text-sec);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .input-clear:hover {
@@ -2003,7 +2003,7 @@ input[type="search"]::-webkit-search-decoration {
   font-size: 1rem;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
 }
@@ -2029,7 +2029,7 @@ input[type="search"]::-webkit-search-decoration {
 .dropdown-arrow {
   font-size: 0.75rem;
   color: var(--text-sec);
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .dropdown-arrow.rotated {
@@ -2050,7 +2050,7 @@ input[type="search"]::-webkit-search-decoration {
   z-index: 100;
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  animation: dropdownSlide 0.2s ease;
+  animation: dropdownSlide 0.15s ease;
 }
 
 .dropdown-menu--right {
@@ -2082,7 +2082,7 @@ input[type="search"]::-webkit-search-decoration {
   font-size: 1rem;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   text-align: left;
 }
 
@@ -2126,7 +2126,7 @@ input[type="search"]::-webkit-search-decoration {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   background: transparent;
 }
 
@@ -2306,7 +2306,7 @@ input[type="search"]::-webkit-search-decoration {
   border-radius: 50%;
   color: var(--text-sec);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   font-size: 10px;
 }
 
@@ -2332,7 +2332,7 @@ input[type="search"]::-webkit-search-decoration {
   border: 1px solid var(--glass-border);
   border-radius: 16px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -2359,7 +2359,7 @@ input[type="search"]::-webkit-search-decoration {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.3s ease;
 }
 
 .game-card:hover .game-card-image img {
@@ -2449,7 +2449,7 @@ input[type="search"]::-webkit-search-decoration {
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
-  transition: background 0.2s ease;
+  transition: background 0.15s ease;
 }
 
 .game-card-translation:hover {
@@ -2667,7 +2667,7 @@ input[type="search"]::-webkit-search-decoration {
 
 .game-breadcrumb a {
   color: var(--text-sec);
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
 .game-breadcrumb a:hover {
@@ -2708,7 +2708,7 @@ input[type="search"]::-webkit-search-decoration {
   color: var(--color-main);
   font-weight: 600;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.15s ease;
 }
 
 .game-team-link:hover {
@@ -2730,7 +2730,7 @@ input[type="search"]::-webkit-search-decoration {
   font-family: inherit;
   cursor: pointer;
   padding: 0;
-  transition: color 0.2s ease;
+  transition: color 0.15s ease;
 }
 
 .authors-more-btn:hover {
@@ -2867,7 +2867,7 @@ input[type="search"]::-webkit-search-decoration {
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .game-faq .faq-item:hover {
@@ -2893,7 +2893,7 @@ input[type="search"]::-webkit-search-decoration {
   content: "+";
   font-size: 1.5rem;
   color: var(--color-main);
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .game-faq .faq-item[open] summary::after {
@@ -3107,7 +3107,7 @@ input[type="search"]::-webkit-search-decoration {
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
-  transition: background 0.2s ease;
+  transition: background 0.15s ease;
 }
 
 .game-translation-link:hover {
@@ -3305,7 +3305,7 @@ input[type="search"]::-webkit-search-decoration {
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3467,7 +3467,7 @@ input[type="search"]::-webkit-search-decoration {
   gap: 8px;
   color: var(--text-sec);
   margin-bottom: 20px;
-  transition: color 0.2s;
+  transition: color 0.15s;
 }
 
 .back-link--plain:hover {
@@ -3494,7 +3494,7 @@ input[type="search"]::-webkit-search-decoration {
   border-radius: 12px;
   color: var(--text-sec);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
 
 .setup-tab:hover {
@@ -3644,7 +3644,7 @@ input[type="search"]::-webkit-search-decoration {
   color: var(--text-sec);
   cursor: pointer;
   padding: 4px 8px;
-  transition: color 0.2s;
+  transition: color 0.15s;
 }
 
 .setup-code .copy-btn:hover {
@@ -3686,7 +3686,7 @@ input[type="search"]::-webkit-search-decoration {
   color: var(--text-sec);
   font-size: 0.85rem;
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.15s;
 }
 
 .setup-github-link:hover {
@@ -3730,7 +3730,7 @@ input[type="search"]::-webkit-search-decoration {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s;
 }
 
 .release-file-card:hover {
@@ -3896,7 +3896,7 @@ main.header-padding:has(.open-launcher-page) {
   border: 1px solid var(--glass-border);
   border-radius: 24px;
   padding: 40px 30px;
-  animation: fadeInUp 0.5s ease-out;
+  animation: fadeInUp 0.3s ease-out;
 }
 
 @keyframes fadeInUp {
@@ -3997,7 +3997,7 @@ main.header-padding:has(.open-launcher-page) {
   align-items: center;
   gap: 6px;
   color: var(--text-sec);
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
 .open-launcher-game-link:hover {
@@ -4006,7 +4006,7 @@ main.header-padding:has(.open-launcher-page) {
 
 .open-launcher-game-link svg {
   font-size: 0.8rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .open-launcher-game-link:hover svg {
@@ -4084,7 +4084,7 @@ main.header-padding:has(.open-launcher-page) {
   white-space: normal;
   z-index: 1000;
   pointer-events: none;
-  animation: tooltipFadeIn 0.2s ease;
+  animation: tooltipFadeIn 0.15s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   min-width: 150px;
   max-width: 280px;
@@ -4579,7 +4579,7 @@ main.header-padding:has(.open-launcher-page) {
   background: rgba(0, 0, 0, 0.7);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  animation: fadeIn 0.2s ease;
+  animation: fadeIn 0.15s ease;
 }
 
 @keyframes fadeIn {
@@ -4600,7 +4600,7 @@ main.header-padding:has(.open-launcher-page) {
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  animation: slideUp 0.3s ease;
+  animation: slideUp 0.2s ease;
 }
 
 @keyframes slideUp {
@@ -4625,7 +4625,7 @@ main.header-padding:has(.open-launcher-page) {
   justify-content: center;
   color: var(--text-sec);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .share-modal-close:hover {
@@ -4681,7 +4681,7 @@ main.header-padding:has(.open-launcher-page) {
   font-size: 0.875rem;
   line-height: 24px;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.15s ease;
 }
 
 .share-modal-link-input:focus {
@@ -4694,7 +4694,7 @@ main.header-padding:has(.open-launcher-page) {
   color: var(--color-black);
   font-size: 1rem;
   line-height: 1;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
 }
 
@@ -4717,7 +4717,7 @@ main.header-padding:has(.open-launcher-page) {
   border: 1px solid var(--glass-border);
   border-radius: 10px;
   color: var(--text-sec);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
 }
@@ -5120,7 +5120,7 @@ main.header-padding:has(.open-launcher-page) {
   background-color: white;
   border-radius: 8px;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
   inset: 0;
 }
 
@@ -5145,7 +5145,7 @@ main.header-padding:has(.open-launcher-page) {
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
 .embla__dot:hover {
@@ -5400,7 +5400,7 @@ main.header-padding:has(.open-launcher-page) {
 
 .leaderboard-table tr {
   border-bottom: 1px solid rgba(239, 238, 173, 0.15);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .leaderboard-table tr:last-child {

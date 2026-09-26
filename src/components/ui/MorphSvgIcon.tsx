@@ -1,7 +1,11 @@
 "use client";
 
 import { fitIcon } from "morphicons";
-import { MorphIcon, type SpringPreset } from "morphicons/react";
+import {
+  MorphIcon,
+  type MorphOptions,
+  type SpringPreset,
+} from "morphicons/react";
 import type { CSSProperties } from "react";
 
 export interface FaIconDef {
@@ -22,6 +26,9 @@ export function fitFaIcon(icon: FaIconDef): string {
   return value;
 }
 
+// швидше за пресет snappy (k=420): та сама плавність, удвічі коротший хід
+const MORPH_SPRING: MorphOptions = { stiffness: 800, damping: 42 };
+
 const baseStyle: CSSProperties = {
   display: "inline-block",
   verticalAlign: "-0.125em",
@@ -32,7 +39,7 @@ interface MorphSvgIconProps {
   size?: number | string;
   className?: string;
   label?: string;
-  spring?: SpringPreset;
+  spring?: SpringPreset | MorphOptions;
   style?: CSSProperties;
 }
 
@@ -41,7 +48,7 @@ export function MorphSvgIcon({
   size = "1em",
   className,
   label,
-  spring = "smooth",
+  spring = MORPH_SPRING,
   style,
 }: MorphSvgIconProps) {
   return (
