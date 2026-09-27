@@ -233,10 +233,10 @@ const initialNodes: Node[] = [
       subtitle: "lbk-launcher",
       color: C.launcher,
       techs: [
-        "Electron 40",
-        "React 18",
+        "Electron 39",
+        "React 19",
         "TypeScript",
-        "Vite 6",
+        "Vite 7",
         "Tailwind 3",
         "Zustand",
         "Framer Motion",
@@ -289,6 +289,16 @@ const initialNodes: Node[] = [
       color: "#E5E7EB",
     },
   },
+  {
+    id: "workers",
+    type: "infra",
+    position: { x: 980, y: 330 },
+    data: {
+      label: "Workers",
+      subtitle: "8 фонових сервісів",
+      color: C.admin,
+    },
+  },
 
   // ── Row 3: External Services ──
   {
@@ -298,40 +308,46 @@ const initialNodes: Node[] = [
     data: { label: "Redis" },
   },
   {
-    id: "steam",
+    id: "zaraz",
     type: "external",
     position: { x: 130, y: 430 },
+    data: { label: "Cloudflare Zaraz" },
+  },
+  {
+    id: "steam",
+    type: "external",
+    position: { x: 320, y: 430 },
     data: { label: "Steam API" },
   },
   {
     id: "telegram",
     type: "external",
-    position: { x: 270, y: 430 },
+    position: { x: 450, y: 430 },
     data: { label: "Telegram" },
+  },
+  {
+    id: "metadefender",
+    type: "external",
+    position: { x: 580, y: 430 },
+    data: { label: "MetaDefender" },
   },
   {
     id: "resend",
     type: "external",
-    position: { x: 400, y: 430 },
+    position: { x: 730, y: 430 },
     data: { label: "Resend" },
-  },
-  {
-    id: "ga",
-    type: "external",
-    position: { x: 520, y: 430 },
-    data: { label: "Google Analytics" },
-  },
-  {
-    id: "mixpanel",
-    type: "external",
-    position: { x: 690, y: 430 },
-    data: { label: "Mixpanel" },
   },
   {
     id: "kuli",
     type: "external",
-    position: { x: 830, y: 430 },
+    position: { x: 860, y: 430 },
     data: { label: "Kuli API" },
+  },
+  {
+    id: "mixpanel",
+    type: "external",
+    position: { x: 990, y: 430 },
+    data: { label: "Mixpanel" },
   },
 ];
 
@@ -410,9 +426,16 @@ const initialEdges: Edge[] = [
     style: { stroke: C.admin, opacity: 0.7 },
   },
   {
-    id: "e-admin-ga",
+    id: "e-land-zaraz",
+    source: "landing",
+    target: "zaraz",
+    type: "smoothstep",
+    style: { stroke: C.landing, opacity: 0.7 },
+  },
+  {
+    id: "e-admin-meta",
     source: "admin",
-    target: "ga",
+    target: "metadefender",
     type: "smoothstep",
     style: { stroke: C.admin, opacity: 0.7 },
   },
@@ -422,6 +445,15 @@ const initialEdges: Edge[] = [
     target: "mixpanel",
     type: "smoothstep",
     style: { stroke: C.launcher, opacity: 0.7 },
+  },
+  {
+    id: "e-admin-workers",
+    source: "admin",
+    sourceHandle: "s-right",
+    target: "workers",
+    targetHandle: "t-c",
+    type: "smoothstep",
+    style: { stroke: C.admin, opacity: 0.7 },
   },
 
   // Deploy → Coolify (dashed, via right side)

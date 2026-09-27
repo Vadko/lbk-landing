@@ -1,6 +1,7 @@
 "use client";
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import Link from "next/link";
 import { useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesCount } from "@/hooks/useGames";
@@ -65,24 +66,6 @@ const FAQ_ITEMS = [
   },
 ];
 
-const TECH_STACK = [
-  {
-    name: "Electron 39 + Vite",
-    desc: "настільний фреймворк та швидке збирання",
-  },
-  { name: "React 18 + TypeScript", desc: "інтерфейс користувача" },
-  { name: "Tailwind CSS", desc: "стилі та дизайн" },
-  { name: "Framer Motion", desc: "плавні анімації інтерфейсу" },
-  { name: "Zustand", desc: "керування станом застосунку" },
-  {
-    name: "better-sqlite3",
-    desc: "локальна база даних для швидкої роботи офлайн",
-  },
-  { name: "Supabase", desc: "синхронізація даних та realtime оновлення" },
-  { name: "electron-builder", desc: "білд та автооновлення" },
-  { name: "Lucide React", desc: "іконки" },
-];
-
 export function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const { data: gamesCount } = useGamesCount();
@@ -94,13 +77,14 @@ export function FaqSection() {
   const renderAnswer = (answer: string) => {
     if (answer === "tech-stack") {
       return (
-        <ul className="tech-stack">
-          {TECH_STACK.map((tech, i) => (
-            <li key={i}>
-              <strong>{tech.name}</strong> — {tech.desc}
-            </li>
-          ))}
-        </ul>
+        <p>
+          Лаунчер — це Electron із React і TypeScript, локальною базою SQLite та
+          синхронізацією через self-hosted Supabase.{" "}
+          <Link href="/tech-stack">
+            Повна схема архітектури та технічний стек
+          </Link>{" "}
+          — там усі три проєкти, спільний backend та інфраструктура.
+        </p>
       );
     }
     if (answer === "games-count") {

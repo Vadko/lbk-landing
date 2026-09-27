@@ -22,8 +22,10 @@ const PROJECTS = [
       Дані: "TanStack Query v5, Supabase",
       Кеш: "Redis (ioredis)",
       SEO: "JSON-LD, OpenGraph, динамічний Sitemap",
-      UI: "FontAwesome, Lightbox",
-      Деплой: "Coolify (next start)",
+      UI: "FontAwesome, Lightbox, morphicons",
+      Аналітика: "Cloudflare Zaraz",
+      Помилки: "Sentry SDK → self-hosted GlitchTip",
+      Деплой: "Coolify (nixpacks, next start)",
     },
   },
   {
@@ -32,15 +34,19 @@ const PROJECTS = [
     color: "#a8cf96",
     description: "Панель керування перекладами, іграми та користувачами",
     stack: {
-      Фреймворк: "Next.js 16 (standalone), React 19",
+      Фреймворк: "Next.js 16 (App Router), React 19",
       Стилі: "Tailwind CSS 4, PostCSS",
       Дані: "TanStack Query v5, Supabase",
       Форми: "React Hook Form + Zod",
-      Email: "Resend",
-      UI: "Recharts, PhotoSwipe, Lucide Icons",
+      Email: "Resend (@lbk/email)",
+      UI: "Recharts, PhotoSwipe, Lucide, morphicons",
       Тести: "Vitest, Testing Library",
-      Workers: "Media, Steam Guides, Steam Curator, Telegram Bot",
-      Деплой: "Coolify",
+      Пакети: "@lbk/db-types, email, notify, scan-core, steam-workshop",
+      Workers:
+        "Media, Scan, Steam Guides, Steam Curator, Steam Updates, Steam Apps, Telegram, Fundraising",
+      "Скан архівів": "MetaDefender Cloud (OPSWAT) + filescan.io",
+      Помилки: "Sentry SDK → self-hosted GlitchTip",
+      Деплой: "Coolify (nixpacks, next start)",
     },
   },
   {
@@ -49,12 +55,13 @@ const PROJECTS = [
     color: "#ffa47a",
     description: "Десктопний додаток для встановлення українських перекладів",
     stack: {
-      Фреймворк: "Electron 40, React 19, Vite 6",
+      Фреймворк: "Electron 39, React 19, Vite 7",
       Стилі: "Tailwind CSS 3, Framer Motion",
       Стейт: "Zustand, TanStack Query v5",
       "Локальна БД": "SQLite (better-sqlite3, worker threads, spellfix1)",
       Синхронізація: "Supabase REST + Realtime WebSocket",
       Аналітика: "Mixpanel",
+      Помилки: "Sentry SDK (Electron) → GlitchTip",
       Збірка: "electron-builder (Win / Mac / Linux)",
       Оновлення: "electron-updater (GitHub Releases)",
       E2E: "Playwright",
@@ -67,12 +74,14 @@ const SUPABASE = {
   Автентифікація: "Email + Google OAuth",
   Сховище: "game-images, game-archives",
   Realtime: "WebSocket підписки для синхронізації лаунчера",
+  "Edge Functions": "10 функцій на Deno — Telegram-бот, завантаження, фідбек",
 };
 
 const SHARED_TECH = [
   "TypeScript 5.9",
   "TanStack Query v5",
   "Tailwind CSS",
+  "morphicons",
   "Biome",
   "Knip",
 ];
