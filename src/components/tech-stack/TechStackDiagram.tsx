@@ -38,6 +38,7 @@ const ProjectNode = memo(function ProjectNode({
       className="ts-node ts-node--project"
       style={{ "--accent": data.color } as React.CSSProperties}
     >
+      <Handle type="target" position={Position.Top} id="t-top" />
       <Handle type="source" position={Position.Bottom} id="s-bottom" />
       <Handle type="source" position={Position.Right} id="s-right" />
       <h3 className="ts-node__title">{data.label}</h3>
@@ -147,6 +148,7 @@ const InfraNode = memo(function InfraNode({ data }: NodeProps<InfraNodeType>) {
         id="t-b"
         style={{ top: "75%" }}
       />
+      <Handle type="source" position={Position.Bottom} id="s-bottom" />
       <h3 className="ts-node__title">{data.label}</h3>
       <p className="ts-node__subtitle">{data.subtitle}</p>
     </div>
@@ -185,6 +187,28 @@ const nodeTypes = {
 
 // ━━━ Nodes ━━━
 const initialNodes: Node[] = [
+  // ── Row -1: Допоміжні репозиторії ──
+  {
+    id: "deploy-action",
+    type: "infra",
+    position: { x: 370, y: -160 },
+    data: {
+      label: "lbk-deploy-translation",
+      subtitle: "GitHub Action",
+      color: C.admin,
+    },
+  },
+  {
+    id: "flatpak",
+    type: "infra",
+    position: { x: 690, y: -160 },
+    data: {
+      label: "lbk-flatpak",
+      subtitle: "Flatpak-репозиторій",
+      color: C.launcher,
+    },
+  },
+
   // ── Row 0: Projects ──
   {
     id: "landing",
@@ -221,6 +245,7 @@ const initialNodes: Node[] = [
         "RHF + Zod",
         "Recharts",
         "Resend",
+        "Realtime",
       ],
     },
   },
@@ -353,6 +378,26 @@ const initialNodes: Node[] = [
 
 // ━━━ Edges ━━━
 const initialEdges: Edge[] = [
+  // Допоміжні репозиторії → Projects
+  {
+    id: "e-action-admin",
+    source: "deploy-action",
+    sourceHandle: "s-bottom",
+    target: "admin",
+    targetHandle: "t-top",
+    type: "smoothstep",
+    style: { stroke: C.admin, opacity: 0.5, strokeDasharray: "5 5" },
+  },
+  {
+    id: "e-flatpak-launcher",
+    source: "flatpak",
+    sourceHandle: "s-bottom",
+    target: "launcher",
+    targetHandle: "t-top",
+    type: "smoothstep",
+    style: { stroke: C.launcher, opacity: 0.5, strokeDasharray: "5 5" },
+  },
+
   // Projects → Supabase
   {
     id: "e-land-supa",

@@ -340,11 +340,6 @@ code {
   transform: translateY(0.03em);
 }
 
-/* на заливних кнопках колір фази зливається з тлом — беремо колір тексту */
-.action-icon--inherit {
-  color: inherit;
-}
-
 .action-icon--done {
   color: #10b981;
 }
@@ -4757,12 +4752,13 @@ main.header-padding:has(.open-launcher-page) {
    ═══════════════════════════════════════════════ */
 
 .tech-stack-section {
+  margin-top: 60px;
   margin-bottom: 80px;
 }
 
 .tech-stack-diagram {
   width: 100%;
-  height: 700px;
+  height: 780px;
   border-radius: 20px;
   border: 1px solid var(--glass-border);
   background: rgba(var(--color-bg-rgb), 0.6);
@@ -4776,6 +4772,18 @@ main.header-padding:has(.open-launcher-page) {
 }
 
 /* ReactFlow overrides */
+.tech-stack-diagram .react-flow__controls,
+.tech-stack-diagram .react-flow__attribution {
+  margin: 20px;
+}
+
+.tech-stack-diagram .react-flow__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: none;
+}
+
 .tech-stack-diagram .react-flow__controls button {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--glass-border);
@@ -4932,13 +4940,35 @@ main.header-padding:has(.open-launcher-page) {
 
 .ts-details__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  margin-bottom: 20px;
 }
 
 @media screen and (max-width: 1000px) {
   .ts-details__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ts-aux {
+  margin-bottom: 80px;
+}
+
+.ts-aux__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.ts-aux__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media screen and (max-width: 1000px) {
+  .ts-aux__grid {
     grid-template-columns: 1fr;
   }
 }
@@ -4949,11 +4979,6 @@ main.header-padding:has(.open-launcher-page) {
   border-left: 3px solid var(--accent);
   border-radius: 16px;
   padding: 24px;
-}
-
-.ts-details__card--wide {
-  border-left: none;
-  border-top: 3px solid var(--accent);
 }
 
 .ts-details__name {
@@ -4976,14 +5001,14 @@ main.header-padding:has(.open-launcher-page) {
 }
 
 .ts-details__list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 10px;
+  align-items: baseline;
 }
 
 .ts-details__row {
-  display: flex;
-  gap: 8px;
+  display: contents;
 }
 
 .ts-details__row dt {

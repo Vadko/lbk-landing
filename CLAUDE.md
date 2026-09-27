@@ -87,7 +87,7 @@ Authenticates on header `x-revalidate-secret` against `REVALIDATE_SECRET`; body 
 
 `src/lib/game-jsonld.ts` FAQ markup must repeat the visible FAQ text verbatim — `generateFAQLD` and `GameFAQ.tsx` both call `isWorkshopTranslation(game)` (`src/lib/types.ts`), and `GameInstallSteps.tsx` branches on an `isWorkshop` prop that `GameDetailArticle.tsx` computes the same way. Edit copy in one and you must edit the others.
 
-`src/app/sitemap.ts` is hand-maintained, has no `revalidate` (Supabase hit per fetch), emits `/games/{slug}` only when a slug has more than one translation, and already omits `/collaboration`, `/donaters`, `/tech-stack` and `/guides&tools`.
+`src/app/sitemap.ts` is hand-maintained, has no `revalidate` (Supabase hit per fetch), emits `/games/{slug}` only when a slug has more than one translation, and omits `/collaboration`, `/donaters` and `/guides&tools` (`/tech-stack` is listed).
 
 ### Rendering
 

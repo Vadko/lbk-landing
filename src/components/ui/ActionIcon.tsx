@@ -15,9 +15,7 @@ interface ActionIconProps {
   icon?: FaIconDef;
   size?: number;
   className?: string;
-  doneClassName?: string;
-  errorClassName?: string;
-  pendingClassName?: string;
+  inheritColor?: boolean;
   label?: string;
   optical?: boolean;
 }
@@ -27,9 +25,7 @@ export function ActionIcon({
   icon,
   size = 16,
   className,
-  doneClassName = "action-icon--done",
-  errorClassName = "action-icon--error",
-  pendingClassName = "action-icon--pending",
+  inheritColor = false,
   label,
   optical = true,
 }: ActionIconProps) {
@@ -58,15 +54,15 @@ export function ActionIcon({
   let tone = "";
   if (phase === "pending" && showPending) {
     glyph = faCircleNotch;
-    tone = pendingClassName;
+    tone = inheritColor ? "" : "action-icon--pending";
   }
   if (phase === "done") {
     glyph = faCheck;
-    tone = doneClassName;
+    tone = inheritColor ? "" : "action-icon--done";
   }
   if (phase === "error") {
     glyph = faXmark;
-    tone = errorClassName;
+    tone = inheritColor ? "" : "action-icon--error";
   }
 
   const boxClass = [
