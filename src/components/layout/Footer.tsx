@@ -37,6 +37,9 @@ export function Footer() {
               <li>
                 <Link href="/guides&tools">Посібники та інструменти</Link>
               </li>
+              <li>
+                <Link href="/tech-stack">Технічний стек</Link>
+              </li>
             </ul>
           </div>
 

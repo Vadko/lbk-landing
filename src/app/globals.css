@@ -1303,28 +1303,14 @@ p + .why-btn {
   line-height: 1.8;
 }
 
-/* Tech Stack List in FAQ */
-.tech-stack {
-  list-style: none;
-  padding: 0 30px 24px;
-  margin: 0;
-}
-
-.tech-stack li {
-  padding: 8px 0;
-  color: var(--text-sec);
-  line-height: 1.6;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.tech-stack li:last-child {
-  border-bottom: none;
-  padding-bottom: 20px;
-}
-
-.tech-stack li strong {
+.faq-answer a {
   color: var(--color-main);
-  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.faq-answer a:hover {
+  opacity: 0.8;
 }
 
 /* Scroll Top Button */
