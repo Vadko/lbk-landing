@@ -240,12 +240,7 @@ export function ShareModal({
               onClick={() => handleCopy(shareText + "\n" + shareUrl)}
               type="button"
             >
-              <ActionIcon
-                phase={copyPhase}
-                icon={faCopy}
-                doneClassName="action-icon--inherit"
-                errorClassName="action-icon--inherit"
-              />
+              <ActionIcon phase={copyPhase} icon={faCopy} inheritColor />
               {/* обидва лейбли в одній клітинці резервують ширину: текст міняється, кнопка — ні */}
               <span style={LABEL_STACK_STYLE}>
                 <span style={GHOST_LABEL_STYLE} aria-hidden="true">
