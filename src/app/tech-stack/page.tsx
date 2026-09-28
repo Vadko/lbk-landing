@@ -43,6 +43,7 @@ const PROJECTS = [
       Email: "Resend (@lbk/email)",
       UI: "Recharts, PhotoSwipe, Lucide, morphicons",
       Тести: "Vitest, Testing Library",
+      Аналітика: "Google Analytics 4",
       API: "Токени lbk_, OpenAPI 3.1 на Scalar",
       Інтеграції: "lbk-deploy-translation (GitHub Action)",
       Пакети: "@lbk/db-types, email, notify, scan-core, steam-workshop",
