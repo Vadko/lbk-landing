@@ -290,7 +290,7 @@ const initialNodes: Node[] = [
     position: { x: 980, y: 0 },
     data: {
       label: "Coolify",
-      subtitle: "Hosting & Deploy",
+      subtitle: "Хостинг наших сервісів",
       color: "#8B5CF6",
     },
   },
@@ -363,15 +363,21 @@ const initialNodes: Node[] = [
     data: { label: "Resend" },
   },
   {
-    id: "kuli",
+    id: "ga",
     type: "external",
     position: { x: 860, y: 430 },
+    data: { label: "Google Analytics" },
+  },
+  {
+    id: "kuli",
+    type: "external",
+    position: { x: 1030, y: 430 },
     data: { label: "Kuli API" },
   },
   {
     id: "mixpanel",
     type: "external",
-    position: { x: 990, y: 430 },
+    position: { x: 1160, y: 430 },
     data: { label: "Mixpanel" },
   },
 ];
@@ -478,6 +484,13 @@ const initialEdges: Edge[] = [
     style: { stroke: C.landing, opacity: 0.7 },
   },
   {
+    id: "e-admin-ga",
+    source: "admin",
+    target: "ga",
+    type: "smoothstep",
+    style: { stroke: C.admin, opacity: 0.7 },
+  },
+  {
     id: "e-admin-meta",
     source: "admin",
     target: "metadefender",
@@ -519,6 +532,34 @@ const initialEdges: Edge[] = [
     targetHandle: "t-b",
     type: "smoothstep",
     style: { stroke: C.admin, opacity: 0.4, strokeDasharray: "5 5" },
+  },
+
+  {
+    id: "e-supa-cool",
+    source: "supabase",
+    sourceHandle: "s-r",
+    target: "coolify",
+    targetHandle: "t-b",
+    type: "smoothstep",
+    style: { stroke: C.supabase, opacity: 0.4, strokeDasharray: "5 5" },
+  },
+  {
+    id: "e-workers-cool",
+    source: "workers",
+    sourceHandle: "s-bottom",
+    target: "coolify",
+    targetHandle: "t-c",
+    type: "smoothstep",
+    style: { stroke: C.admin, opacity: 0.4, strokeDasharray: "5 5" },
+  },
+  {
+    id: "e-sentry-cool",
+    source: "sentry",
+    sourceHandle: "s-bottom",
+    target: "coolify",
+    targetHandle: "t-b",
+    type: "smoothstep",
+    style: { stroke: "#F43F5E", opacity: 0.4, strokeDasharray: "5 5" },
   },
 
   // Monitoring → Sentry (dashed, via right side)

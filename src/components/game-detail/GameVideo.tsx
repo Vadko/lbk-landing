@@ -11,9 +11,9 @@ interface VideoCardProps {
  */
 function getYouTubeVideoId(url: string): string | null {
   const patterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
-    /youtube\.com\/embed\/([^&\n?#]+)/,
-    /youtube\.com\/v\/([^&\n?#]+)/,
+    /(?:youtube(?:-nocookie)?\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
+    /youtube(?:-nocookie)?\.com\/embed\/([^&\n?#]+)/,
+    /youtube(?:-nocookie)?\.com\/v\/([^&\n?#]+)/,
   ];
 
   for (const pattern of patterns) {
@@ -47,7 +47,7 @@ export const GameVideo: React.FC<VideoCardProps> = ({ videoUrl }) => {
     );
   }
 
-  const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}`;
 
   return (
     <>
