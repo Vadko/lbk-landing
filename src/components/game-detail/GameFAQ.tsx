@@ -49,7 +49,7 @@ export function GameFAQ({ game }: GameFAQProps) {
               : "LBK Launcher автоматично перевіряє оновлення. Коли вийде нова версія перекладу, ви отримаєте сповіщення та зможете оновити в один клац."}
           </p>
         </details>
-        {game.voice_progress && game.voice_progress > 0 && (
+        {(game.voice_progress ?? 0) > 0 && (
           <details className="faq-item">
             <summary>Чи є українське озвучення для {game.name}?</summary>
             <p>
