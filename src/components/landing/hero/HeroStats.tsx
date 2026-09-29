@@ -18,6 +18,7 @@ function AnimatedStat({ value }: { value: number }) {
 export function HeroStats() {
   const { data: gamesCount } = useGamesCount();
   const { data: stats } = useLandingStats();
+  const totalUniquePlayers = stats?.totalUniquePlayers ?? 0;
 
   return (
     <div className="stats-mini">
@@ -27,11 +28,11 @@ export function HeroStats() {
           <AnimatedStat value={gamesCount ?? 0} />+ Ігор
         </span>
       </div>
-      {stats?.totalUniquePlayers && (
+      {totalUniquePlayers > 0 && (
         <div>
           <SvgIcon icon={faUsers} />
           <span>
-            <AnimatedStat value={stats.totalUniquePlayers} />+ Користувачів
+            <AnimatedStat value={totalUniquePlayers} />+ Користувачів
           </span>
         </div>
       )}
