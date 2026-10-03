@@ -25,7 +25,7 @@ interface OpenInLauncherProps {
 
 const ATTEMPT_TIMEOUT_MS = 2500;
 
-// blur або приховання вкладки — єдина ознака, що lbk:// підхопив лаунчер
+// A blur or a hidden tab is the only sign that the launcher picked up lbk://
 function attemptOpen(
   link: HTMLAnchorElement | null,
   signal?: AbortSignal
@@ -97,7 +97,7 @@ export function OpenInLauncher({
   const launcherUrl = `lbk://games/${gameSlug}/${encodeURIComponent(team)}`;
   const gamePageUrl = `/games/${gameSlug}/${teamSlug}`;
 
-  // перша спроба автоматична, тому йде повз фазу кнопки
+  // The first attempt is automatic, so it bypasses the button phase
   useEffect(() => {
     const controller = new AbortController();
     void attemptOpen(linkRef.current, controller.signal).then((opened) => {
@@ -124,7 +124,7 @@ export function OpenInLauncher({
     if (retry.phase === "pending") {
       return;
     }
-    // блок «не встановлено» лишається змонтованим: фазу несе іконка кнопки
+    // The "not installed" block stays mounted: the button icon carries the phase
     void retry
       .run(() => attemptOpen(linkRef.current), {
         isSuccess: (opened) => opened,

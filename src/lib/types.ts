@@ -4,7 +4,7 @@ export type Platform = Database["public"]["Enums"]["install_source"];
 
 export type Game = Database["public"]["Tables"]["games"]["Row"];
 
-/** Переклад із Майстерні ставиться самим Steam — у нього інша інструкція й інший FAQ. */
+/** Steam installs a Workshop translation itself — it has its own instructions and its own FAQ. */
 export const isWorkshopTranslation = (game: Pick<Game, "kind">) =>
   game.kind === "workshop";
 

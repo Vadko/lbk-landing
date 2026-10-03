@@ -36,7 +36,7 @@ export function Tooltip({ content, children, className = "" }: TooltipProps) {
     setIsVisible((prev) => !prev);
   };
 
-  // Закрити тултіп при кліку поза ним
+  // Close the tooltip on an outside click
   useEffect(() => {
     if (!isVisible) {
       return;

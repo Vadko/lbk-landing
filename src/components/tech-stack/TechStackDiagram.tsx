@@ -187,7 +187,7 @@ const nodeTypes = {
 
 // ━━━ Nodes ━━━
 const initialNodes: Node[] = [
-  // ── Row -1: Допоміжні репозиторії ──
+  // ── Row -1: Supporting repositories ──
   {
     id: "deploy-action",
     type: "infra",
@@ -384,7 +384,7 @@ const initialNodes: Node[] = [
 
 // ━━━ Edges ━━━
 const initialEdges: Edge[] = [
-  // Допоміжні репозиторії → Projects
+  // Supporting repositories → Projects
   {
     id: "e-action-admin",
     source: "deploy-action",

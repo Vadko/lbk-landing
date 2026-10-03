@@ -23,8 +23,8 @@ export function generateSoftwareApplicationLD(game: Game) {
 }
 
 export function generateFAQLD(game: Game) {
-  // Розмітка мусить повторювати видимий текст сторінки, інакше Google бачить
-  // одну відповідь, а користувач — іншу
+  // The markup has to repeat the visible page text, otherwise Google sees one
+  // answer and the user another
   const isWorkshop = isWorkshopTranslation(game);
 
   return {

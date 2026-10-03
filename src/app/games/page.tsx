@@ -32,7 +32,7 @@ export async function generateMetadata({
     },
   };
 
-  // Якщо є query параметри (фільтри), забороняємо індексацію
+  // Query params (filters) present — keep the page out of the index
   if (params && Object.keys(params).length > 0) {
     return {
       ...baseMetadata,

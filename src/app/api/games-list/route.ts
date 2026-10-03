@@ -307,7 +307,7 @@ async function fetchWithFilter(
   };
 }
 
-// Мапить значення фільтра «тип перекладу» на поле games.ai (null = ручний переклад)
+// Maps the "translation type" filter value onto games.ai (null = human translation)
 function translationMatchesType(
   translation: TranslationItem,
   type: string
@@ -355,7 +355,7 @@ function filterGames(
     if (hasVoice && !game.has_voice) {
       return false;
     }
-    // Різновид живе в перекладі: в однієї гри буває і звичайний, і з Майстерні
+    // The kind lives on the translation: one game can have both a regular and a Workshop one
     if (fromWorkshop && !game.translations.some((t) => t.kind === "workshop")) {
       return false;
     }

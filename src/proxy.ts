@@ -6,21 +6,21 @@ export async function proxy(request: NextRequest) {
   const hostname = request.headers.get("host") || "";
   const protocol = request.headers.get("x-forwarded-proto") || "https";
 
-  // Редирект з WWW на non-WWW (301)
+  // WWW to non-WWW redirect (301)
   if (hostname.startsWith("www.")) {
     const newHost = hostname.replace(/^www\./, "");
     const newUrl = `${protocol === "http" ? "https" : protocol}://${newHost}${pathname}${search}`;
     return NextResponse.redirect(newUrl, { status: 301 });
   }
 
-  // 410 Gone / 308 для видалених та перейменованих перекладів.
+  // 410 Gone / 308 for deleted and renamed translations.
   const gameResponse = await resolveGamePath(request);
   if (gameResponse) {
     return gameResponse;
   }
 
-  // Прокидаємо ?page=only у заголовок, щоб layout міг прибрати
-  // хедер/футер на сервері, без флешу клієнтського рендеру.
+  // Pass ?page=only through as a header so the layout can drop the
+  // header/footer on the server, with no client-render flash.
   const requestHeaders = new Headers(request.headers);
   if (searchParams.get("page") === "only") {
     requestHeaders.set("x-page-only", "1");
@@ -29,7 +29,7 @@ export async function proxy(request: NextRequest) {
   return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
-// Застосовуємо proxy до всіх маршрутів окрім статичних файлів та API Next.js
+// Apply the proxy to every route except static files and Next.js API routes
 export const config = {
   matcher: [
     /*

@@ -7,13 +7,13 @@ export type ActionPhase = "idle" | "pending" | "done" | "error";
 interface ActionPhaseOptions {
   doneMs?: number;
   errorMs?: number;
-  /** 0 — для миттєвих дій (буфер обміну): спінер там зайвий */
+  /** 0 for instant actions (clipboard): a spinner there is noise */
   minPendingMs?: number;
 }
 
 interface RunOptions<T> {
   isSuccess?: (result: T) => boolean;
-  /** успіх не завершує фазу — спінер крутиться, поки контрол не зникне (редиректи) */
+  /** Success doesn't end the phase — the spinner runs until the control goes away (redirects) */
   holdPending?: boolean;
 }
 
@@ -24,6 +24,7 @@ interface AttemptOptions<T> extends RunOptions<T> {
 const DONE_MS = 1000;
 const ERROR_MS = 1800;
 
+// Fast responses (~100 ms) would otherwise skip the spinner, leaving the morph to the checkmark nothing to start from
 const MIN_PENDING_MS = 600;
 
 export function useActionPhase({
@@ -52,7 +53,7 @@ export function useActionPhase({
     };
   }, [clearTimer]);
 
-  // мінімальний спінер дотримуємо таймером, а не паузою в run(): викликач не має чекати на анімацію
+  // The minimum spinner time is held by a timer, not by a pause in run(): the caller must not wait on the animation
   const hold = useCallback(
     (next: "done" | "error") => {
       clearTimer();
@@ -85,7 +86,7 @@ export function useActionPhase({
       action: () => Promise<T>,
       options?: RunOptions<T>
     ): Promise<T> => {
-      // покоління: застарілий виклик не малює свій результат поверх свіжого
+      // Generation token: a stale run must not paint its result over a fresh one
       const generation = ++generationRef.current;
       clearTimer();
       startedAtRef.current = Date.now();
@@ -99,7 +100,7 @@ export function useActionPhase({
         }
         throw error;
       }
-      // помилка предиката не валить дію: результат вертаємо, але фазу показуємо як невдачу
+      // A throwing predicate doesn't fail the action: the result is returned, but the phase shows a failure
       let failed = false;
       try {
         failed = options?.isSuccess?.(result) === false;
@@ -142,7 +143,7 @@ export function useActionPhase({
   return {
     phase,
     isPending: phase === "pending",
-    /** контрол лишається на екрані, поки фаза догорає — замість затримки самих даних */
+    /** The control stays on screen while the phase burns down — instead of delaying the data itself */
     isBusy: phase !== "idle",
     run,
     attempt,
