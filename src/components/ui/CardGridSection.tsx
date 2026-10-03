@@ -1,21 +1,21 @@
 import type { ReactNode } from "react";
 
 interface CardGridSectionProps {
-  /** Заголовок секції (опціонально) */
+  /** Section heading (optional) */
   title?: string;
-  /** Опис під заголовком (опціонально) */
+  /** Description under the heading (optional) */
   description?: string;
-  /** Центрувати заголовок і опис */
+  /** Center the heading and the description */
   centerText?: boolean;
-  /** Кількість колонок в grid (1-5) */
+  /** Number of grid columns (1-5) */
   columns?: 1 | 2 | 3 | 4 | 5;
-  /** ID для секції (для навігації) */
+  /** Section id (for navigation) */
   id?: string;
-  /** Додаткові класи для секції */
+  /** Extra classes for the section */
   className?: string;
-  /** Додаткові класи для grid-контейнера */
+  /** Extra classes for the grid container */
   gridClassName?: string;
-  /** Вміст секції (картки) */
+  /** Section content (the cards) */
   children: ReactNode;
 }
 

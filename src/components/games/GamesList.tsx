@@ -73,12 +73,12 @@ export function GamesList({ initialData }: GamesListProps) {
     return searchParams.get("achievements") === "1";
   }, [searchParams]);
 
-  // Читаємо фільтр «лише з Майстерні» з URL
+  // Read the "Workshop only" filter from the URL
   const fromWorkshop = useMemo(() => {
     return searchParams.get("workshop") === "1";
   }, [searchParams]);
 
-  // Читаємо вибрані типи перекладу (ручний / ШІ / ШІ + ред) з URL params
+  // Read the selected translation types (human / AI / AI + edited) from the URL params
   const selectedTranslationTypes = useMemo(() => {
     const typesParam = searchParams.get("translationTypes");
     if (!typesParam) {
@@ -87,7 +87,7 @@ export function GamesList({ initialData }: GamesListProps) {
     return typesParam.split(",").filter(Boolean);
   }, [searchParams]);
 
-  // Оновлюємо URL частковими змінами: позиційні булеві аргументи тут надто легко переплутати
+  // Update the URL with partial changes: positional boolean arguments are far too easy to mix up here
   const updateFilters = useCallback(
     (patch: {
       statuses?: string[];
@@ -188,7 +188,7 @@ export function GamesList({ initialData }: GamesListProps) {
     [updateFilters]
   );
 
-  // Скидаємо стани й похідні прапорці одним переходом, інакше вони перетруть одне одного
+  // Reset the statuses and derived flags in one transition, otherwise they overwrite each other
   const handleClearStatusFilters = useCallback(() => {
     updateFilters({
       statuses: [],

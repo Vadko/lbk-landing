@@ -1,6 +1,6 @@
 interface GameInstallStepsProps {
   gameName: string;
-  /** Переклад із Майстерні ставить сам Steam — лаунчер тут лише інформує */
+  /** Steam installs a Workshop translation itself — the launcher only informs here */
   isWorkshop?: boolean;
 }
 

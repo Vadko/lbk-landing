@@ -17,7 +17,7 @@ export function useCountUp({
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Відслідковуємо видимість елемента
+  // Track element visibility
   useEffect(() => {
     const element = ref.current;
     if (!element) {
@@ -40,7 +40,7 @@ export function useCountUp({
     };
   }, [isVisible]);
 
-  // Анімація запускається тільки коли елемент видимий
+  // The animation only starts once the element is visible
   useEffect(() => {
     if (!isVisible) {
       return;
@@ -55,7 +55,7 @@ export function useCountUp({
       }
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
 
-      // Використовуємо ease-out функцію для плавної анімації
+      // Ease-out keeps the count smooth
       const easeOutQuad = 1 - Math.pow(1 - progress, 3);
       const current = start + (end - start) * easeOutQuad;
 

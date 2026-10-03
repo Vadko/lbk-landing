@@ -12,7 +12,7 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
   const angleRef = useRef(0);
   const animationRef = useRef<number | null>(null);
 
-  // Перевірка чи це touch-пристрій (один раз при монтуванні)
+  // Detect a touch device (once on mount)
   const isTouchDevice = useMemo(() => {
     if (typeof window === "undefined") {
       return false;

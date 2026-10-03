@@ -37,13 +37,13 @@ export default function GameGallery({
     .map((slide) => getImageUrl(slide, updated_at) || "")
     .filter(Boolean);
 
-  // Головна карусель з autoplay
+  // Main carousel with autoplay
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(
     { loop, align: "start" },
     autoplay ? [Autoplay({ delay: 3000, stopOnInteraction: false })] : []
   );
 
-  // Карусель мініатюр
+  // Thumbnail carousel
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
     dragFree: true,
@@ -77,7 +77,7 @@ export default function GameGallery({
     };
   }, [emblaMainApi, onSelect]);
 
-  // Синхронізація thumbs з головною каруселлю
+  // Keep the thumbs in sync with the main carousel
   useEffect(() => {
     if (!emblaThumbsApi) {
       return;

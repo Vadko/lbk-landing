@@ -26,7 +26,7 @@ export function fitFaIcon(icon: FaIconDef): string {
   return value;
 }
 
-// швидше за пресет snappy (k=420): та сама плавність, удвічі коротший хід
+// Faster than the snappy preset (k=420): the same smoothness, half the travel
 const MORPH_SPRING: MorphOptions = { stiffness: 800, damping: 42 };
 
 const baseStyle: CSSProperties = {
