@@ -33,13 +33,13 @@ export function DonatersStatsSection() {
     description: string;
   }> = [
     {
-      number: 104.5,
+      number: 114,
       suffix: "K",
       title: "Всього зібрано",
       description: "За весь час існування проєкту",
     },
     {
-      number: 812,
+      number: 858,
       title: "Донатерів",
       description: "Унікальних користувачів, що підтримали нас",
     },
