@@ -34,7 +34,9 @@ interface MarkdownTextProps {
 }
 
 export function MarkdownText({ text, className }: MarkdownTextProps) {
-  if (!text) {
+  const normalizedText = text.trim();
+
+  if (!normalizedText) {
     return null;
   }
 
@@ -47,7 +49,7 @@ export function MarkdownText({ text, className }: MarkdownTextProps) {
         unwrapDisallowed
         components={COMPONENTS}
       >
-        {text}
+        {normalizedText}
       </ReactMarkdown>
     </div>
   );
