@@ -2642,7 +2642,6 @@ input[type="search"]::-webkit-search-decoration {
 .game-description {
   color: var(--text-sec);
   line-height: 1.8;
-  margin-bottom: 30px;
 }
 
 /* Game Breadcrumb */
