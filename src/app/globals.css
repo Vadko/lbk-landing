@@ -741,8 +741,13 @@ body.mobile-menu-open {
   color: var(--text-sec);
 }
 
+.dl-mini:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .dl-mini.active,
-.dl-mini:hover {
+.dl-mini:hover:not(:disabled) {
   border-color: var(--color-accent);
   color: white;
   background: rgba(var(--color-accent-rgb), 0.15);
@@ -1502,6 +1507,31 @@ p + .why-btn {
 .legal-body a:hover {
   opacity: 0.8;
   text-decoration: underline;
+}
+
+.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  display: block;
+  overflow-x: auto;
+}
+
+.legal-table th,
+.legal-table td {
+  border: 1px solid var(--glass-border);
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: top;
+  color: var(--text-sec);
+}
+
+.legal-table th {
+  color: var(--text-primary);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.04);
+  white-space: nowrap;
 }
 
 .legal-body code {

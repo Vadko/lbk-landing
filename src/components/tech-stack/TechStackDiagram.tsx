@@ -258,11 +258,11 @@ const initialNodes: Node[] = [
       subtitle: "lbk-launcher",
       color: C.launcher,
       techs: [
-        "Electron 39",
+        "Electron 44",
         "React 19",
         "TypeScript",
         "Vite 7",
-        "Tailwind 3",
+        "Tailwind 4",
         "Zustand",
         "Framer Motion",
         "SQLite",
