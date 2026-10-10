@@ -127,10 +127,11 @@ export function HeroDownload() {
             <SvgIcon icon={faBox} />
           </button>
         )}
-        {os !== "linux" && !isSteamDeck && downloadLinks.linux && (
+        {os !== "linux" && !isSteamDeck && (
           <button
             onClick={() => handleDownload(downloadLinks.linux)}
             className="icon-btn dl-mini"
+            disabled={!downloadLinks.linux}
             title="Linux (AppImage)"
           >
             <SvgIcon icon={faLinux} />
@@ -145,19 +146,21 @@ export function HeroDownload() {
             <SvgIcon icon={faBox} />
           </button>
         )}
-        {os !== "macos" && downloadLinks.macos && (
+        {os !== "macos" && (
           <button
             onClick={() => handleDownload(downloadLinks.macos)}
             className="icon-btn dl-mini"
+            disabled={!downloadLinks.macos}
             title="macOS"
           >
             <SvgIcon icon={faApple} />
           </button>
         )}
-        {os !== "windows" && downloadLinks.windows && (
+        {os !== "windows" && (
           <button
             onClick={() => handleDownload(downloadLinks.windows)}
             className="icon-btn dl-mini"
+            disabled={!downloadLinks.windows}
             title="Windows"
           >
             <SvgIcon icon={faWindows} />
