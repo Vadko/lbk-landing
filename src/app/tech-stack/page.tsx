@@ -60,8 +60,8 @@ const PROJECTS = [
     color: "#ffa47a",
     description: "Десктопний додаток для встановлення українських перекладів",
     stack: {
-      Фреймворк: "Electron 39, React 19, Vite 7",
-      Стилі: "Tailwind CSS 3, Framer Motion",
+      Фреймворк: "Electron 44, React 19, Vite 7",
+      Стилі: "Tailwind CSS 4, Framer Motion",
       Стейт: "Zustand, TanStack Query v5",
       "Локальна БД": "SQLite (better-sqlite3, worker threads, spellfix1)",
       Синхронізація: "Supabase REST + Realtime WebSocket",
@@ -116,7 +116,7 @@ const AUX_REPOS = [
 ];
 
 const SHARED_TECH = [
-  "TypeScript 5.9",
+  "TypeScript",
   "TanStack Query v5",
   "Tailwind CSS",
   "morphicons",
