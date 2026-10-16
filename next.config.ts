@@ -7,6 +7,8 @@ const release = commit ? `${version}-${commit}` : version;
 
 const nextConfig: NextConfig = {
   experimental: {
+    // A .next/cache restored between deploys made Turbopack ship a stale CSS chunk alongside fresh JS.
+    turbopackFileSystemCacheForBuild: false,
     inlineCss: true,
     optimizePackageImports: [
       "@fortawesome/free-solid-svg-icons",
