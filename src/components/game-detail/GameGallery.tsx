@@ -70,10 +70,9 @@ export default function GameGallery({
     if (!emblaMainApi) {
       return;
     }
-    onSelect();
-    emblaMainApi.on("select", onSelect);
+    emblaMainApi.on("select", onSelect).on("reInit", onSelect);
     return () => {
-      emblaMainApi.off("select", onSelect);
+      emblaMainApi.off("select", onSelect).off("reInit", onSelect);
     };
   }, [emblaMainApi, onSelect]);
 
