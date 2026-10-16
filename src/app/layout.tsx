@@ -7,7 +7,9 @@ import { ClientUtilities } from "@/components/layout/ClientUtilities";
 import { Footer } from "@/components/layout/Footer";
 import { IframeResizeMessenger } from "@/components/layout/IframeResizeMessenger";
 import { Navbar } from "@/components/layout/Navbar";
+import { MaintenancePage } from "@/components/MaintenancePage";
 import { getGamesCount } from "@/lib/games-count";
+import { isMaintenanceMode } from "@/lib/maintenance";
 import { QueryProvider } from "@/providers/QueryProvider";
 
 const outfit = Outfit({
@@ -97,6 +99,18 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  if (isMaintenanceMode) {
+    return (
+      <html lang="uk" className={outfit.variable}>
+        <body className="antialiased main-bg">
+          <main className="relative z-10">
+            <MaintenancePage />
+          </main>
+        </body>
+      </html>
+    );
+  }
+
   const description = appDescription(await getGamesCount());
   const headersList = await headers();
   const isPageOnly = headersList.get("x-page-only") === "1";

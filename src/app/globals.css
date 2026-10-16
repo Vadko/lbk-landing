@@ -1643,6 +1643,73 @@ p + .why-btn {
   flex-wrap: wrap;
 }
 
+/* Maintenance */
+.maintenance-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 0 20px;
+}
+
+.maintenance-content {
+  text-align: center;
+}
+
+.maintenance-mill {
+  display: block;
+  width: 100%;
+  max-width: 616px;
+  height: auto;
+  margin: 0 auto 2rem;
+}
+
+.maintenance-mill-rotor {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(var(--rotor-angle, 0deg));
+}
+
+.maintenance-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.maintenance-text {
+  max-width: 28rem;
+  margin: 0 auto 2rem;
+  color: var(--text-sec);
+  font-size: 1.125rem;
+}
+
+.maintenance-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-sec);
+}
+
+.maintenance-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #eab308;
+  animation: maintenance-pulse 2s ease-in-out infinite;
+}
+
+@keyframes maintenance-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {

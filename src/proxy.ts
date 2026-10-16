@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { isMaintenanceMode } from "@/lib/maintenance";
 import { resolveGamePath } from "@/lib/proxy-games";
 
 export async function proxy(request: NextRequest) {
@@ -11,6 +12,14 @@ export async function proxy(request: NextRequest) {
     const newHost = hostname.replace(/^www\./, "");
     const newUrl = `${protocol === "http" ? "https" : protocol}://${newHost}${pathname}${search}`;
     return NextResponse.redirect(newUrl, { status: 301 });
+  }
+
+  // 503 + Retry-After so search engines keep the indexed pages instead of the stub.
+  if (isMaintenanceMode) {
+    return NextResponse.rewrite(new URL("/maintenance", request.url), {
+      status: 503,
+      headers: { "Retry-After": "3600" },
+    });
   }
 
   // 410 Gone / 308 for deleted and renamed translations.
