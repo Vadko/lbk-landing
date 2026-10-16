@@ -1,16 +1,10 @@
-import Image from "next/image";
+import { AnimatedMill } from "./AnimatedMill";
 
 export function MaintenancePage() {
   return (
     <section className="maintenance-page">
       <div className="maintenance-content">
-        <Image
-          src="/assets/logo.svg"
-          alt="LBK Launcher"
-          width={160}
-          height={81}
-          className="maintenance-logo"
-        />
+        <AnimatedMill className="maintenance-mill" />
         <h1 className="maintenance-title">Технічні роботи</h1>
         <p className="maintenance-text">
           Наразі проводяться технічні роботи. Будь ласка, поверніться пізніше.
