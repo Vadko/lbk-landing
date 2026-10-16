@@ -1643,6 +1643,65 @@ p + .why-btn {
   flex-wrap: wrap;
 }
 
+/* Maintenance */
+.maintenance-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 0 20px;
+}
+
+.maintenance-content {
+  text-align: center;
+  max-width: 28rem;
+}
+
+.maintenance-logo {
+  width: 160px;
+  height: auto;
+  margin: 0 auto 2rem;
+}
+
+.maintenance-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.maintenance-text {
+  color: var(--text-sec);
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+}
+
+.maintenance-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-sec);
+}
+
+.maintenance-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #eab308;
+  animation: maintenance-pulse 2s ease-in-out infinite;
+}
+
+@keyframes maintenance-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {
