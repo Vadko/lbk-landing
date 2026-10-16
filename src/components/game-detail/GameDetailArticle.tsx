@@ -25,6 +25,7 @@ import { type Game, isWorkshopTranslation } from "@/lib/types";
 import { AIBadgeIcon } from "../ui/icons/AIBadgeIcon";
 import { AIEditedBadgeIcon } from "../ui/icons/AIEditedBadgeIcon";
 import GameGallery from "./GameGallery";
+import { GameReviews } from "./GameReviews";
 import { GameVideo } from "./GameVideo";
 
 interface GameDetailArticleProps {
@@ -190,6 +191,7 @@ export function GameDetailArticle({
                 isWorkshop={isWorkshopTranslation(game)}
               />
               <GameFAQ game={game} />
+              <GameReviews gameId={game.id} />
             </div>
 
             <GameSidebar game={game} />

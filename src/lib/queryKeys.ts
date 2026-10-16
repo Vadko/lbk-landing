@@ -16,6 +16,9 @@ export const queryKeys = {
     count: () => [...queryKeys.games.all, "count"] as const,
     authors: () => [...queryKeys.games.all, "authors"] as const,
   },
+  reviews: {
+    list: (gameId: string, page: number) => ["reviews", gameId, page] as const,
+  },
   github: {
     release: ["github", "release"] as const,
   },

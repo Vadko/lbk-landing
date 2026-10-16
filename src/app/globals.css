@@ -2993,6 +2993,218 @@ input[type="search"]::-webkit-search-decoration {
   line-height: 1.7;
 }
 
+/* Game Reviews */
+.game-reviews {
+  min-height: 320px;
+}
+
+.game-reviews-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.game-reviews-header h2 {
+  margin-bottom: 0;
+}
+
+.game-reviews-count {
+  min-height: 18px;
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-sec);
+}
+
+.game-reviews-state {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+  color: var(--text-sec);
+  text-align: center;
+}
+
+.game-reviews-empty {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-sec);
+}
+
+.game-reviews-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--glass-border);
+  border-top-color: var(--color-main);
+  border-radius: 50%;
+  animation: game-reviews-spin 0.8s linear infinite;
+}
+
+@keyframes game-reviews-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: opacity 0.2s ease;
+}
+
+.review-list.loading {
+  opacity: 0.6;
+}
+
+.review-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.review-date {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-sec);
+}
+
+.review-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.review-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.review-image-btn {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  overflow: hidden;
+  background: none;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  cursor: zoom-in;
+  transition: border-color 0.2s ease;
+}
+
+.review-image-btn:hover {
+  border-color: var(--color-main);
+}
+
+.review-image-btn img {
+  object-fit: cover;
+}
+
+.review-replies {
+  display: flex;
+  flex-direction: column;
+  margin: -10px 0 0 12px;
+}
+
+.review-reply {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0 0 24px;
+  border-left: 1px solid var(--color-main);
+}
+
+.review-reply.last {
+  border-left-color: transparent;
+}
+
+.review-reply::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 22px;
+  border-left: 1px solid var(--color-main);
+  border-bottom: 1px solid var(--color-main);
+  border-bottom-left-radius: 12px;
+}
+
+.review-reply-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.review-reply-badge {
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-main);
+  background: rgba(var(--color-main-rgb), 0.15);
+  border-radius: 6px;
+}
+
+.reviews-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.reviews-pagination-control,
+.reviews-pagination-page,
+.reviews-pagination-ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font: inherit;
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  border-radius: 8px;
+}
+
+.reviews-pagination-control,
+.reviews-pagination-page {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.reviews-pagination-page {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.reviews-pagination-control:hover,
+.reviews-pagination-page:hover {
+  background: var(--glass-bg-hover);
+}
+
+.reviews-pagination-control:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.reviews-pagination-page.active {
+  color: var(--bg-base);
+  background: var(--color-main);
+}
+
 /* Game Progress */
 .game-progress-list {
   display: flex;
@@ -3514,6 +3726,10 @@ input[type="search"]::-webkit-search-decoration {
 
   .game-section.game-faq {
     order: 12;
+  }
+
+  .game-section.game-reviews {
+    order: 13;
   }
 
   /* Hide everything except share on mobile */
