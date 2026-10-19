@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { PartnersListSection } from "@/components/collaboration/PartnersListSection";
 import { PartnersStatsSection } from "@/components/collaboration/PartnersStatsSection";
 import { PartnerValueSection } from "@/components/collaboration/PartnerValueSection";
@@ -12,27 +13,31 @@ import { PageHeroSection } from "@/components/ui/PageHeroSection";
 import { BOT_URL } from "@/lib/constants";
 
 const FLOW_STEPS = [
-  "Зареєструватися на платформі та створити профіль",
-  "Пройти верифікацію профілю",
-  "Додати переклад до гри та зберегти його у системі",
-  "Дочекатися верифікацію перекладу",
-  "І все! Переклад стає доступним гравцям",
-];
+  "register",
+  "verifyProfile",
+  "addTranslation",
+  "awaitReview",
+  "done",
+] as const;
 
-export const metadata: Metadata = {
-  title: "Співпраця з LBK Launcher",
-  description:
-    "Сторінка для партнерів LBK Launcher: переваги платформи, процес підключення перекладів і контакт для співпраці.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("collaboration");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
-export default function CollaborationRoutePage() {
+export default async function CollaborationRoutePage() {
+  const t = await getTranslations("collaboration");
+
   return (
     <>
       <PageHeroSection
-        title="Додайте свій переклад у лаунчер"
-        description="Сучасний дизайн, зручний інтерфейс і все потрібне для комфортної гри українською."
-        ctaText="Додати переклад"
-        ctaHref={`${BOT_URL}?text=Доброго дня, я хочу додати свій переклад в лаунчер:%0A- [ що за гра?]%0A- [ чи перекладали за допомогою ШІ?]%0A- [ з якої мови виконаний переклад?]%0A- [ яку мову замінює переклад?]`}
+        title={t("hero.title")}
+        description={t("hero.description")}
+        ctaText={t("hero.cta")}
+        ctaHref={`${BOT_URL}?text=${t("botMessage")}`}
       />
 
       <PartnersStatsSection />
@@ -46,29 +51,23 @@ export default function CollaborationRoutePage() {
               <CodeIcon aria-hidden />
             </div>
 
-            <h2>
-              Зручна адмін панель для розповсюдження фанатських перекладів
-            </h2>
-            <p>
-              Ми надаємо партнерам спеціальну адмін панель для керування
-              фанатськими перекладами, від завантаження до автоматичної доставки
-              гравцям.
-            </p>
+            <h2>{t("adminPanel.title")}</h2>
+            <p>{t("adminPanel.description")}</p>
 
             <ul className="collab-admin-list mobile-full">
-              <li>Завантаження та оновлення перекладів</li>
-              <li>Автоматична доставка гравцям</li>
-              <li>Модерація та контроль версій</li>
+              <li>{t("adminPanel.uploads")}</li>
+              <li>{t("adminPanel.delivery")}</li>
+              <li>{t("adminPanel.moderation")}</li>
             </ul>
 
             <a className="btn btn-main" href={BOT_URL}>
-              Спробувати
+              {t("adminPanel.cta")}
             </a>
           </div>
 
           <Image
             src="/assets/collaboration-admin-panel.webp"
-            alt="Адмін панель партнерів LBK Launcher"
+            alt={t("adminPanel.imageAlt")}
             width={430}
             height={574}
           />
@@ -79,13 +78,13 @@ export default function CollaborationRoutePage() {
 
       <section className="container collab-flow">
         <HoverCard>
-          <h2 className="section-title center">Як це працює?</h2>
+          <h2 className="section-title center">{t("flow.title")}</h2>
 
           <ol className="collab-flow-list">
             {FLOW_STEPS.map((step, index) => (
               <li key={step}>
                 <span className="collab-flow-number">{index + 1}</span>
-                <p>{step}</p>
+                <p>{t(`flow.${step}`)}</p>
               </li>
             ))}
           </ol>
@@ -93,10 +92,10 @@ export default function CollaborationRoutePage() {
       </section>
 
       <CtaSection
-        title="Готові до співпраці?"
-        description="Зв'яжіться з нами, щоб отримати детальну статистику та варіанти інтеграції."
-        buttonText="Зв'язатися з нами"
-        buttonHref={`${BOT_URL}?text=Доброго дня, я хочу додати свій переклад в лаунчер:%0A- [ що за гра?]%0A- [ чи перекладали за допомогою ШІ?]%0A- [ з якої мови виконаний переклад?]%0A- [ яку мову замінює переклад?]`}
+        title={t("cta.title")}
+        description={t("cta.description")}
+        buttonText={t("cta.button")}
+        buttonHref={`${BOT_URL}?text=${t("botMessage")}`}
       />
     </>
   );

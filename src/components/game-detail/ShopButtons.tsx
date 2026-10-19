@@ -1,4 +1,5 @@
 import { faSteam, faXbox } from "@fortawesome/free-brands-svg-icons";
+import { getTranslations } from "next-intl/server";
 import { faEA, faEpic, faGOG, faUbisoft } from "@/components/icons/BrandIcons";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import type { Game } from "@/lib/types";
@@ -7,7 +8,8 @@ interface ShopButtonsProps {
   game: Game;
 }
 
-export function ShopButtons({ game }: ShopButtonsProps) {
+export async function ShopButtons({ game }: ShopButtonsProps) {
+  const t = await getTranslations("gameSidebar.stores");
   const hasAnyStore = Boolean(
     game.steam_app_id ||
       game.gog_store_url ||
@@ -31,7 +33,7 @@ export function ShopButtons({ game }: ShopButtonsProps) {
           className="btn glass-bg btn-steam"
         >
           <SvgIcon icon={faSteam} />
-          Сторінка в Steam
+          {t("steam")}
         </a>
       )}
       {game.gog_store_url && (
@@ -42,7 +44,7 @@ export function ShopButtons({ game }: ShopButtonsProps) {
           className="btn glass-bg btn-gog"
         >
           <SvgIcon icon={faGOG} />
-          Сторінка в GOG Galaxy
+          {t("gog")}
         </a>
       )}
       {game.epic_store_url && (
@@ -53,7 +55,7 @@ export function ShopButtons({ game }: ShopButtonsProps) {
           className="btn glass-bg btn-epic"
         >
           <SvgIcon icon={faEpic} />
-          Сторінка в Epic Games Store
+          {t("epic")}
         </a>
       )}
       {game.xbox_store_url && (
@@ -64,7 +66,7 @@ export function ShopButtons({ game }: ShopButtonsProps) {
           className="btn glass-bg btn-xbox"
         >
           <SvgIcon icon={faXbox} />
-          Сторінка в Microsoft Store
+          {t("xbox")}
         </a>
       )}
       {game.uplay_store_url && (
@@ -75,7 +77,7 @@ export function ShopButtons({ game }: ShopButtonsProps) {
           className="btn-secondary btn-uplay"
         >
           <SvgIcon icon={faUbisoft} />
-          Сторінка в Ubisoft Store
+          {t("uplay")}
         </a>
       )}
       {game.ea_store_url && (
@@ -86,7 +88,7 @@ export function ShopButtons({ game }: ShopButtonsProps) {
           className="btn-secondary btn-ea"
         >
           <SvgIcon icon={faEA} />
-          Сторінка в EA App
+          {t("ea")}
         </a>
       )}
     </div>

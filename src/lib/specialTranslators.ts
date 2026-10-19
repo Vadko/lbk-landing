@@ -2,26 +2,24 @@
 interface SpecialTranslator {
   name: string;
   team?: string;
-  description: string;
+  descriptionKey: "earlyHelper" | "launcherTeam";
 }
 
-const SPECIAL_DESCRIPTION = "Допомагає розвивати LBK Launcher з перших днів";
-
 const SPECIAL_TRANSLATORS: SpecialTranslator[] = [
-  { name: "Владислав", team: "Sent_DeZ", description: SPECIAL_DESCRIPTION },
-  { name: "Вена", team: "Ліниві ШІ", description: SPECIAL_DESCRIPTION },
-  { name: "Євгеній", team: "kurasagi", description: SPECIAL_DESCRIPTION },
+  { name: "Владислав", team: "Sent_DeZ", descriptionKey: "earlyHelper" },
+  { name: "Вена", team: "Ліниві ШІ", descriptionKey: "earlyHelper" },
+  { name: "Євгеній", team: "kurasagi", descriptionKey: "earlyHelper" },
   {
     name: "Костянтин",
     team: "Перекладач Патріотів (KostyanChek8)",
-    description: SPECIAL_DESCRIPTION,
+    descriptionKey: "earlyHelper",
   },
   {
     name: "GameGlobe Localization",
     team: "GameGlobe Localization",
-    description: "Команда лаунчера",
+    descriptionKey: "launcherTeam",
   },
-  { name: "Little Bit", team: "Little Bit", description: "Команда лаунчера" },
+  { name: "Little Bit", team: "Little Bit", descriptionKey: "launcherTeam" },
 ];
 
 // Get special translator info for a specific author name

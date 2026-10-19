@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { ComponentType, SVGProps } from "react";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
@@ -27,28 +28,25 @@ function AnimatedNumber({
 
 export function PartnersStatsSection() {
   const { data: stats } = useLandingStats();
+  const t = useTranslations("collaboration.stats");
 
   const statsData: Array<{
     Icon?: ComponentType<SVGProps<SVGSVGElement>>;
     number?: number;
     suffix?: string;
-    title: string;
-    description: string;
+    id: "creators" | "downloads" | "supporters";
   }> = [
     {
       number: stats?.totalCreators,
-      title: "Перекладачів з нами",
-      description: "Активні команди та окремі перекладачі",
+      id: "creators",
     },
     {
       number: stats?.totalDownloads,
-      title: "Завантажень перекладів",
-      description: "Кількість завантажень за історію платформи",
+      id: "downloads",
     },
     {
       number: stats?.totalSupporters,
-      title: "Користувачів підтримало",
-      description: "Скільки раз вже підтримали перекладачів",
+      id: "supporters",
     },
   ];
 
@@ -57,12 +55,12 @@ export function PartnersStatsSection() {
       id="collaboration-stats"
       columns={3}
       centerText
-      title="Наші цифри"
+      title={t("title")}
     >
-      {statsData.map((feature, index) => {
+      {statsData.map((feature) => {
         const { Icon } = feature;
         return (
-          <HoverCard key={index} className="hover-card--big">
+          <HoverCard key={feature.id} className="hover-card--big">
             {Icon && (
               <div className="hover-card__icon">
                 <Icon width={32} height={32} aria-hidden />
@@ -78,8 +76,8 @@ export function PartnersStatsSection() {
                 <div className="spinner" style={{ margin: "0 auto" }} />
               )}
             </div>
-            <h3>{feature.title}</h3>
-            <p>{feature.description}</p>
+            <h3>{t(`${feature.id}.title`)}</h3>
+            <p>{t(`${feature.id}.description`)}</p>
           </HoverCard>
         );
       })}

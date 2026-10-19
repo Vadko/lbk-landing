@@ -1,9 +1,12 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs/config";
+import createNextIntlPlugin from "next-intl/plugin";
 import { version } from "./package.json";
 
 const commit = process.env.SOURCE_COMMIT?.slice(0, 7);
 const release = commit ? `${version}-${commit}` : version;
+
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
@@ -29,7 +32,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
+export default withSentryConfig(withNextIntl(nextConfig), {
   silent: !process.env.CI,
   tunnelRoute: "/monitoring",
   authToken: process.env.SENTRY_AUTH_TOKEN,

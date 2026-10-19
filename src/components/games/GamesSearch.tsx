@@ -19,6 +19,7 @@ import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AIBadgeIcon } from "@/components/ui/icons/AIBadgeIcon";
 import { AIEditedBadgeIcon } from "@/components/ui/icons/AIEditedBadgeIcon";
@@ -59,17 +60,13 @@ export interface GamesSearchProps {
 const AUTHORS_PER_PAGE = 20;
 
 const STATUS_OPTIONS = [
-  { value: "completed", label: "Готово", icon: faCheckCircle },
-  { value: "in-progress", label: "Ранній доступ", icon: faRocket },
-  { value: "planned", label: "Заплановано", icon: faClock },
-  { value: "tech-improvement", label: "Технічна доробка", icon: faWrench },
-];
+  { value: "completed", icon: faCheckCircle },
+  { value: "in-progress", icon: faRocket },
+  { value: "planned", icon: faClock },
+  { value: "tech-improvement", icon: faWrench },
+] as const;
 
-const TRANSLATION_TYPE_OPTIONS = [
-  { value: "manual", label: "Ручний переклад" },
-  { value: "ai", label: "Переклад ШІ" },
-  { value: "ai_edited", label: "ШІ + редактура людиною" },
-];
+const TRANSLATION_TYPE_OPTIONS = ["manual", "ai", "ai_edited"] as const;
 
 function TranslationTypeIcon({ value }: { value: string }) {
   if (value === "ai") {
@@ -82,23 +79,11 @@ function TranslationTypeIcon({ value }: { value: string }) {
 }
 
 const SORT_OPTIONS = [
-  { value: "name", label: "За назвою", icon: faArrowDownAZ },
-  {
-    value: "created_at",
-    label: "За датою додавання",
-    icon: faCalendarPlus,
-  },
-  {
-    value: "latest_updated_at",
-    label: "За новизною",
-    icon: faClockRotateLeft,
-  },
-  {
-    value: "downloads",
-    label: "За популярністю",
-    icon: faDownload,
-  },
-];
+  { value: "name", icon: faArrowDownAZ },
+  { value: "created_at", icon: faCalendarPlus },
+  { value: "latest_updated_at", icon: faClockRotateLeft },
+  { value: "downloads", icon: faDownload },
+] as const;
 
 export function GamesSearch({
   value,
@@ -121,6 +106,9 @@ export function GamesSearch({
   onTranslationTypesChange,
   onClearStatusFilters,
 }: GamesSearchProps) {
+  const t = useTranslations("catalogSearch");
+  const tStatus = useTranslations("gameStatus");
+  const tType = useTranslations("translationType");
   const [localValue, setLocalValue] = useState(value);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isAuthorOpen, setIsAuthorOpen] = useState(false);
@@ -274,26 +262,29 @@ export function GamesSearch({
       (hasAchievements ? 1 : 0) +
       (fromWorkshop ? 1 : 0);
     if (total === 0) {
-      return "Усі стани";
+      return t("allStatuses");
     }
     if (total === 1) {
       if (selectedStatuses.length === 1) {
         const opt = STATUS_OPTIONS.find((o) => o.value === selectedStatuses[0]);
-        return opt?.label || selectedStatuses[0];
+        return opt ? tStatus(opt.value) : selectedStatuses[0];
       }
       if (selectedTranslationTypes.length === 1) {
         const opt = TRANSLATION_TYPE_OPTIONS.find(
-          (o) => o.value === selectedTranslationTypes[0]
+          (o) => o === selectedTranslationTypes[0]
         );
-        return opt?.label || selectedTranslationTypes[0];
+        return opt ? tType(opt) : selectedTranslationTypes[0];
       }
       if (hasVoice) {
-        return "Озвучення";
+        return t("voice");
       }
-      return hasAchievements ? "Досягнення" : "З майстерні Steam";
+      return hasAchievements ? t("achievements") : t("workshop");
     }
-    return `${total} фільтри`;
+    return t("filtersCount", { count: String(total) });
   }, [
+    t,
+    tStatus,
+    tType,
     selectedStatuses,
     selectedTranslationTypes,
     hasVoice,
@@ -304,19 +295,19 @@ export function GamesSearch({
   // Author button label
   const authorLabel = useMemo(() => {
     if (selectedAuthors.length === 0) {
-      return "Усі автори";
+      return t("allAuthors");
     }
     if (selectedAuthors.length === 1) {
       return selectedAuthors[0];
     }
-    return `${selectedAuthors.length} авторів`;
-  }, [selectedAuthors]);
+    return t("authorsCount", { count: String(selectedAuthors.length) });
+  }, [t, selectedAuthors]);
 
   // Sort button label
   const sortLabel = useMemo(() => {
     const option = SORT_OPTIONS.find((o) => o.value === sortBy);
-    return option?.label || "За назвою";
-  }, [sortBy]);
+    return t(`sort.${option?.value ?? "name"}`);
+  }, [t, sortBy]);
 
   return (
     <div className="games-filters-wrapper">
@@ -328,7 +319,7 @@ export function GamesSearch({
             value={localValue}
             onChange={(e) => setLocalValue(e.target.value)}
             name="search"
-            placeholder="Пошук ігор..."
+            placeholder={t("placeholder")}
             className="search-input"
           />
           {localValue && (
@@ -336,7 +327,7 @@ export function GamesSearch({
               type="button"
               className="input-clear"
               onClick={() => setLocalValue("")}
-              aria-label="Очистити пошук"
+              aria-label={t("clearSearch")}
             >
               <SvgIcon icon={faXmark} />
             </button>
@@ -371,7 +362,7 @@ export function GamesSearch({
                   onClick={handleClearStatuses}
                 >
                   <SvgIcon icon={faXmark} />
-                  <span>Очистити фільтр</span>
+                  <span>{t("clearFilter")}</span>
                 </button>
               )}
               <div className="dropdown-list">
@@ -390,7 +381,7 @@ export function GamesSearch({
                         {isSelected && <SvgIcon icon={faCheck} />}
                       </span>
                       <SvgIcon icon={option.icon} />
-                      <span>{option.label}</span>
+                      <span>{tStatus(option.value)}</span>
                     </button>
                   );
                 })}
@@ -404,7 +395,7 @@ export function GamesSearch({
                     {hasVoice && <SvgIcon icon={faCheck} />}
                   </span>
                   <SvgIcon icon={faMicrophone} />
-                  <span>Озвучення</span>
+                  <span>{t("voice")}</span>
                 </button>
                 <button
                   type="button"
@@ -417,7 +408,7 @@ export function GamesSearch({
                     {hasAchievements && <SvgIcon icon={faCheck} />}
                   </span>
                   <SvgIcon icon={faTrophy} />
-                  <span>Досягнення</span>
+                  <span>{t("achievements")}</span>
                 </button>
                 <button
                   type="button"
@@ -428,27 +419,25 @@ export function GamesSearch({
                     {fromWorkshop && <SvgIcon icon={faCheck} />}
                   </span>
                   <SvgIcon icon={faSteam} />
-                  <span>З майстерні Steam</span>
+                  <span>{t("workshop")}</span>
                 </button>
                 <div className="dropdown-divider" />
                 {TRANSLATION_TYPE_OPTIONS.map((option) => {
-                  const isSelected = selectedTranslationTypes.includes(
-                    option.value
-                  );
+                  const isSelected = selectedTranslationTypes.includes(option);
                   return (
                     <button
-                      key={option.value}
+                      key={option}
                       type="button"
                       className={`dropdown-item dropdown-item-checkbox ${isSelected ? "active" : ""}`}
-                      onClick={() => handleTranslationTypeToggle(option.value)}
+                      onClick={() => handleTranslationTypeToggle(option)}
                     >
                       <span
                         className={`checkbox ${isSelected ? "checked" : ""}`}
                       >
                         {isSelected && <SvgIcon icon={faCheck} />}
                       </span>
-                      <TranslationTypeIcon value={option.value} />
-                      <span>{option.label}</span>
+                      <TranslationTypeIcon value={option} />
+                      <span>{tType(option)}</span>
                     </button>
                   );
                 })}
@@ -482,7 +471,7 @@ export function GamesSearch({
                   type="search"
                   value={authorSearch}
                   onChange={(e) => handleAuthorSearchChange(e.target.value)}
-                  placeholder="Пошук автора..."
+                  placeholder={t("authorSearch")}
                   className="dropdown-search-input"
                 />
                 {authorSearch && (
@@ -504,7 +493,11 @@ export function GamesSearch({
                   onClick={handleClearAuthors}
                 >
                   <SvgIcon icon={faXmark} />
-                  <span>Очистити фільтр ({selectedAuthors.length})</span>
+                  <span>
+                    {t("clearAuthors", {
+                      count: String(selectedAuthors.length),
+                    })}
+                  </span>
                 </button>
               )}
 
@@ -520,7 +513,7 @@ export function GamesSearch({
                   </div>
                 ) : visibleAuthors.length === 0 ? (
                   <div className="dropdown-empty">
-                    <span>Автора не знайдено</span>
+                    <span>{t("authorNotFound")}</span>
                   </div>
                 ) : (
                   <>
@@ -557,8 +550,10 @@ export function GamesSearch({
                 <div className="dropdown-footer">
                   <span>
                     {authorSearch
-                      ? `Знайдено: ${filteredAuthors.length}`
-                      : `Усього: ${authors.length}`}
+                      ? t("authorsFound", {
+                          count: String(filteredAuthors.length),
+                        })
+                      : t("authorsTotal", { count: String(authors.length) })}
                   </span>
                 </div>
               )}
@@ -596,7 +591,7 @@ export function GamesSearch({
                     }}
                   >
                     <SvgIcon icon={option.icon} />
-                    <span>{option.label}</span>
+                    <span>{t(`sort.${option.value}`)}</span>
                     {isSelected && (
                       <SvgIcon icon={faCheck} className="dropdown-item-check" />
                     )}
@@ -619,7 +614,7 @@ export function GamesSearch({
             const opt = STATUS_OPTIONS.find((o) => o.value === s);
             return (
               <span key={s} className="filter-chip">
-                {opt?.label || s}
+                {opt ? tStatus(opt.value) : s}
                 <button
                   type="button"
                   onClick={() => handleStatusToggle(s)}
@@ -630,14 +625,14 @@ export function GamesSearch({
               </span>
             );
           })}
-          {selectedTranslationTypes.map((t) => {
-            const opt = TRANSLATION_TYPE_OPTIONS.find((o) => o.value === t);
+          {selectedTranslationTypes.map((type) => {
+            const opt = TRANSLATION_TYPE_OPTIONS.find((o) => o === type);
             return (
-              <span key={t} className="filter-chip">
-                {opt?.label || t}
+              <span key={type} className="filter-chip">
+                {opt ? tType(opt) : type}
                 <button
                   type="button"
-                  onClick={() => handleTranslationTypeToggle(t)}
+                  onClick={() => handleTranslationTypeToggle(type)}
                   className="filter-chip-remove"
                 >
                   <SvgIcon icon={faXmark} />
@@ -659,7 +654,7 @@ export function GamesSearch({
           ))}
           {hasVoice && (
             <span className="filter-chip">
-              Озвучення
+              {t("voice")}
               <button
                 type="button"
                 onClick={() => onVoiceChange(false)}
@@ -671,7 +666,7 @@ export function GamesSearch({
           )}
           {hasAchievements && (
             <span className="filter-chip">
-              Досягнення
+              {t("achievements")}
               <button
                 type="button"
                 onClick={() => onAchievementsChange(false)}

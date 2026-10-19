@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { GameDetailArticle } from "@/components/game-detail";
 import {
   getAllGameSlugsWithTeams,
@@ -29,41 +30,27 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug, team: teamSlugParam } = await params;
   const game = await getGameBySlugAndTeamSlug(slug, teamSlugParam);
+  const t = await getTranslations("gameMeta");
 
   if (!game) {
-    return { title: "Переклад не знайдено" };
+    return { title: t("translationNotFound") };
   }
 
-  const statusText =
-    game.status === "completed"
-      ? "100%"
-      : game.status === "in-progress"
-        ? `${game.translation_progress}%`
-        : "ранній доступ";
-
-  const description = `Український переклад ${game.name} від команди ${game.team}. Статус перекладу: ${statusText}. Дізнайтеся, як автоматично встановити українізатор через LBK Launcher та грати українською вже зараз.`;
+  const description = t("teamDescription", {
+    game: game.name,
+    team: game.team,
+    status: game.status === "in-progress" ? "inProgress" : game.status,
+    progress: String(game.translation_progress),
+  });
 
   return {
     title: {
-      absolute: `${game.name} українською мовою — Переклад від ${game.team} | Скачати в LBK Launcher`,
+      absolute: t("teamTitle", { game: game.name, team: game.team }),
     },
     description,
-    keywords: [
-      `${game.name} українською`,
-      `${game.name} український переклад`,
-      `${game.name} ${game.team}`,
-      `${game.name} українізатор`,
-      `${game.name} локалізація`,
-      `${game.name} переклад`,
-      `${game.name} ua`,
-      `${game.name} ukrainian`,
-      `скачати ${game.name} українською`,
-      `як перекласти ${game.name}`,
-      "українізатор ігор",
-      "LBK Launcher",
-    ],
+    keywords: t("teamKeywords", { game: game.name, team: game.team }),
     openGraph: {
-      title: `${game.name} українською від ${game.team} | LBK Launcher`,
+      title: t("teamOgTitle", { game: game.name, team: game.team }),
       description,
       images: game.banner_path
         ? [getImageUrl(game.banner_path, game.updated_at)!]
@@ -73,7 +60,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${game.name} українською від ${game.team}`,
+      title: t("teamTwitterTitle", { game: game.name, team: game.team }),
       description,
       images: game.banner_path
         ? [getImageUrl(game.banner_path, game.updated_at)!]

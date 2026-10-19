@@ -127,7 +127,7 @@ export function useActionPhase({
       try {
         return await run(action, options);
       } catch (error) {
-        console.error(`[${options.label}] дія не виконалась:`, error);
+        console.error(`[${options.label}] action failed:`, error);
         return undefined;
       }
     },

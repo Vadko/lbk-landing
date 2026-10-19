@@ -1,6 +1,7 @@
 "use client";
 
 import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
+import { useTranslations } from "next-intl";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import {
   formatDate,
@@ -9,14 +10,18 @@ import {
 } from "@/hooks/useGitHubRelease";
 
 export function HeroBadge() {
+  const t = useTranslations("landingHero.badge");
   const { data: release, isLoading } = useGitHubRelease();
   const downloadLinks = getDownloadLinks(release);
 
   const versionText = isLoading
-    ? "Завантаження..."
+    ? t("loading")
     : downloadLinks.version && downloadLinks.publishedAt
-      ? `Версія ${downloadLinks.version} від ${formatDate(downloadLinks.publishedAt)}`
-      : "Версія ...";
+      ? t("version", {
+          version: downloadLinks.version,
+          date: formatDate(downloadLinks.publishedAt),
+        })
+      : t("versionUnknown");
 
   return (
     <div className="badge">

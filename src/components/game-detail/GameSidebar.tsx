@@ -8,6 +8,7 @@ import { faGlobe } from "@fortawesome/free-solid-svg-icons/faGlobe";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { ShareButton } from "@/components/ui/ShareButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { getReadablePlatform } from "@/helpers/getReadablePlatform";
@@ -20,13 +21,15 @@ interface GameSidebarProps {
   game: Game;
 }
 
-export function GameSidebar({ game }: GameSidebarProps) {
+export async function GameSidebar({ game }: GameSidebarProps) {
+  const t = await getTranslations("gameSidebar");
+  const tPlatform = await getTranslations("storePlatform");
   const socialLinks = [
     { url: game.telegram, icon: faTelegram, label: "Telegram" },
     { url: game.discord, icon: faDiscord, label: "Discord" },
     { url: game.youtube, icon: faYoutube, label: "YouTube" },
     { url: game.twitter, icon: faXTwitter, label: "X" },
-    { url: game.website, icon: faGlobe, label: "Веб-сайт" },
+    { url: game.website, icon: faGlobe, label: t("website") },
   ].filter((link) => link.url);
 
   return (
@@ -35,13 +38,13 @@ export function GameSidebar({ game }: GameSidebarProps) {
       <div className="game-sidebar-card glass-bg glass-bg--no-hover game-download-cta">
         <div className="game-download-header">
           <SvgIcon icon={faDownload} />
-          <h3>Встановіть переклад</h3>
+          <h3>{t("installTitle")}</h3>
         </div>
-        <p>Завантажте LBK Launcher і встановіть переклад в один клац</p>
+        <p>{t("installText")}</p>
         <Link href="/" className="btn btn-gradient btn--big">
           <SvgIcon icon={faWindows} />
           <div className="dl-info">
-            <span>Завантажити лаунчер</span>
+            <span>{t("downloadLauncher")}</span>
             <small>Windows / macOS / Linux</small>
           </div>
         </Link>
@@ -52,7 +55,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
               className="btn btn-neon btn-launcher"
             >
               <RocketIcon />
-              Відкрити в лаунчері
+              {t("openInLauncher")}
             </a>
             <ShareButton
               gameSlug={game.slug}
@@ -67,7 +70,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
       {/* Support */}
       {game.support_url && (
         <div className="game-sidebar-card glass-bg glass-bg--no-hover game-support-card">
-          <h3>Підтримка</h3>
+          <h3>{t("support")}</h3>
           <a
             href={game.support_url}
             target="_blank"
@@ -75,7 +78,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
             className="btn btn-support"
           >
             <SvgIcon icon={faHeart} />
-            Підтримати переклад
+            {t("supportButton")}
           </a>
         </div>
       )}
@@ -87,35 +90,37 @@ export function GameSidebar({ game }: GameSidebarProps) {
         <div className="game-sidebar-card glass-bg glass-bg--no-hover game-achievements-card">
           <div className="game-achievements-badge">
             <SvgIcon icon={faTrophy} />
-            <span>Включає переклад досягнень</span>
+            <span>{t("achievements")}</span>
           </div>
         </div>
       )}
 
       {/* Stats */}
       <div className="game-sidebar-card glass-bg glass-bg--no-hover game-stats-card">
-        <h3>Статистика</h3>
+        <h3>{t("stats")}</h3>
         <div className="game-stats-list">
           {!game.status || game.status !== "planned" ? (
             <div className="game-stat">
-              <span>Завантажень</span>
+              <span>{t("downloads")}</span>
               <strong>
                 {!game.downloads || game.downloads < 20
-                  ? "до 20"
+                  ? t("downloadsFew")
                   : game.downloads.toLocaleString("uk-UA")}
               </strong>
             </div>
           ) : null}
           {game.platforms && game.platforms.length > 0 && (
             <div className="game-stat">
-              <span>Платформи</span>
+              <span>{t("platforms")}</span>
               <strong>
-                {game.platforms.map(getReadablePlatform).join(", ")}
+                {game.platforms
+                  .map((platform) => getReadablePlatform(tPlatform, platform))
+                  .join(", ")}
               </strong>
             </div>
           )}
           <div className="game-stat">
-            <span>Створено</span>
+            <span>{t("created")}</span>
             <strong>
               {new Date(game.created_at).toLocaleDateString("uk-UA", {
                 day: "numeric",
@@ -126,7 +131,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
             </strong>
           </div>
           <div className="game-stat">
-            <span>Оновлено</span>
+            <span>{t("updated")}</span>
             <strong>
               {new Date(game.translation_updated_at).toLocaleString("uk-UA", {
                 day: "numeric",
@@ -144,7 +149,7 @@ export function GameSidebar({ game }: GameSidebarProps) {
       {/* Social Links */}
       {socialLinks.length > 0 && (
         <div className="game-sidebar-card glass-bg glass-bg--no-hover game-links-card">
-          <h3>Посилання</h3>
+          <h3>{t("links")}</h3>
           <div className="game-social-links">
             {socialLinks.map((link) => (
               <a

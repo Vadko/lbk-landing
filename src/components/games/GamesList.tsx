@@ -5,6 +5,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   Suspense,
   useCallback,
@@ -397,6 +398,7 @@ function GamesCatalog({
   currentPage,
   onPageChange,
 }: GamesCatalogProps) {
+  const t = useTranslations("catalogList");
   const allGames = data?.games ?? [];
   const total = data?.total ?? 0;
   const totalPages = Math.ceil(total / GAMES_PER_PAGE);
@@ -407,7 +409,10 @@ function GamesCatalog({
 
       {!isLoading && (
         <p className="games-count">
-          Знайдено ігор: <strong>{total}</strong>
+          {t.rich("found", {
+            total: String(total),
+            b: (chunks) => <strong>{chunks}</strong>,
+          })}
         </p>
       )}
 
@@ -418,14 +423,14 @@ function GamesCatalog({
       ) : error ? (
         <div className="games-empty">
           <SvgIcon icon={faExclamationTriangle} />
-          <h3>Помилка</h3>
-          <p>Помилка завантаження ігор</p>
+          <h3>{t("errorTitle")}</h3>
+          <p>{t("errorText")}</p>
         </div>
       ) : allGames.length === 0 ? (
         <div className="games-empty">
           <SvgIcon icon={faGamepad} />
-          <h3>Ігор не знайдено</h3>
-          <p>Спробуйте змінити параметри пошуку</p>
+          <h3>{t("emptyTitle")}</h3>
+          <p>{t("emptyText")}</p>
         </div>
       ) : (
         <>
@@ -443,7 +448,7 @@ function GamesCatalog({
                 className="pagination-btn"
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                aria-label="Попередня сторінка"
+                aria-label={t("prevPage")}
               >
                 <SvgIcon icon={faChevronLeft} />
               </button>
@@ -467,7 +472,7 @@ function GamesCatalog({
                       currentPage === pageNum ? "active" : ""
                     }`}
                     onClick={() => onPageChange(pageNum)}
-                    aria-label={`Сторінка ${pageNum}`}
+                    aria-label={t("page", { page: String(pageNum) })}
                     aria-current={currentPage === pageNum ? "page" : undefined}
                   >
                     {pageNum}
@@ -479,7 +484,7 @@ function GamesCatalog({
                 className="pagination-btn"
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                aria-label="Наступна сторінка"
+                aria-label={t("nextPage")}
               >
                 <SvgIcon icon={faChevronRight} />
               </button>

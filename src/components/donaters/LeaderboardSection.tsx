@@ -2,6 +2,7 @@ import { faAward } from "@fortawesome/free-solid-svg-icons/faAward";
 import { faMedal } from "@fortawesome/free-solid-svg-icons/faMedal";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import { cacheLife } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { SvgIcon } from "../ui/SvgIcon";
 
 interface Donator {
@@ -38,19 +39,11 @@ const leaderboard: Donator[] = [
   },
 ];
 
-function pluralize(count: number, one: string, few: string, many: string) {
-  const mod10 = count % 10;
-  const mod100 = count % 100;
-  if (mod10 === 1 && mod100 !== 11) {
-    return one;
-  }
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
-    return few;
-  }
-  return many;
-}
+type LeaderboardTranslator = Awaited<
+  ReturnType<typeof getTranslations<"donaters.leaderboard">>
+>;
 
-function formatLastDonation(isoDate: string): string {
+function formatLastDonation(isoDate: string, t: LeaderboardTranslator): string {
   const date = new Date(isoDate);
   const now = new Date();
 
@@ -67,39 +60,38 @@ function formatLastDonation(isoDate: string): string {
   );
 
   if (dayDiff === 0) {
-    return `Сьогодні, ${time}`;
+    return t("today", { time });
   }
   if (dayDiff === 1) {
-    return `Вчора, ${time}`;
+    return t("yesterday", { time });
   }
   if (dayDiff < 7) {
-    return `${dayDiff} ${pluralize(dayDiff, "день", "дні", "днів")} тому`;
+    return t("daysAgo", { count: dayDiff });
   }
   if (dayDiff < 30) {
-    const weeks = Math.round(dayDiff / 7);
-    return `${weeks} ${pluralize(weeks, "тиждень", "тижні", "тижнів")} тому`;
+    return t("weeksAgo", { count: Math.round(dayDiff / 7) });
   }
 
-  const months = Math.round(dayDiff / 30);
-  return `${months} ${pluralize(months, "місяць", "місяці", "місяців")} тому`;
+  return t("monthsAgo", { count: Math.round(dayDiff / 30) });
 }
 
 export async function LeaderboardSection() {
   "use cache";
   cacheLife("days");
+  const t = await getTranslations("donaters.leaderboard");
 
   return (
     <section className="section-margin">
       <div className="container">
-        <h2 className="section__title">Рейтинг донатерів</h2>
+        <h2 className="section__title">{t("title")}</h2>
         <div className="leaderboard-table__wrapper">
           <table className="leaderboard-table">
             <tbody>
               <tr className="leaderboard-table__header">
                 <th>#</th>
-                <th>Ім&apos;я донатера</th>
-                <th>Сума донатів</th>
-                <th>Останній донат</th>
+                <th>{t("name")}</th>
+                <th>{t("amount")}</th>
+                <th>{t("lastDonation")}</th>
               </tr>
               {leaderboard.map((donator, index) => {
                 const rank = index + 1;
@@ -121,7 +113,7 @@ export async function LeaderboardSection() {
                       </span>
                     </td>
                     <td>₴ {donator.amount}</td>
-                    <td>{formatLastDonation(donator.lastDonation)}</td>
+                    <td>{formatLastDonation(donator.lastDonation, t)}</td>
                   </tr>
                 );
               })}

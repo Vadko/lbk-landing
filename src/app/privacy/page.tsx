@@ -1,703 +1,346 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import type { ReactNode } from "react";
 import { BOT_URL } from "@/lib/constants";
 import { LegalLayout } from "../legal-layout";
 
-export const metadata: Metadata = {
-  title: "Політика приватності",
-  description:
-    "Які дані збирають сайт і застосунок LBK Launcher, навіщо, кому вони передаються та як ними керувати.",
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    canonical: "https://lbklauncher.com/privacy",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("privacyPolicy");
+
+  return {
+    title: t("title"),
+    description: t("metaDescription"),
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical: "https://lbklauncher.com/privacy",
+    },
+  };
+}
 
 const CONTACT_EMAIL = "pr@gameglobe-localisation.com";
 
-export default function PrivacyPage() {
+const LEGAL_BASIS_ROWS = [
+  { purpose: "delivery", category: "essential", basis: "requestOrTerms" },
+  { purpose: "subscription", category: "essential", basis: "request" },
+  { purpose: "abuse", category: "essential", basis: "stability" },
+  {
+    purpose: "improve",
+    category: "improve",
+    basis: "legitimateInterest",
+  },
+  {
+    purpose: "develop",
+    category: "develop",
+    basis: "legitimateInterest",
+  },
+  {
+    purpose: "diagnostics",
+    category: "diagnostics",
+    basis: "legitimateInterest",
+  },
+  { purpose: "feedback", category: "userAction", basis: "consent" },
+  { purpose: "account", category: "account", basis: "requestOrTerms" },
+] as const;
+
+const b = (chunks: ReactNode) => <strong>{chunks}</strong>;
+
+const email = (chunks: ReactNode) => (
+  <a href={`mailto:${CONTACT_EMAIL}`} target="_blank" rel="noopener noreferrer">
+    {chunks}
+  </a>
+);
+
+const bot = (chunks: ReactNode) => (
+  <a href={BOT_URL} target="_blank" rel="noopener noreferrer">
+    {chunks}
+  </a>
+);
+
+export default async function PrivacyPage() {
+  const t = await getTranslations("privacyPolicy");
+  const tLegal = await getTranslations("legalLayout");
+
   return (
-    <LegalLayout title="Політика приватності" lastUpdated="10 жовтня 2026">
+    <LegalLayout title={t("title")} lastUpdated={t("lastUpdated")}>
       <section>
-        <p>
-          LBK Launcher — сервіс для пошуку, встановлення та оновлення
-          українських локалізацій.
-        </p>
-        <p>
-          Сайт і застосунок мають відкритий вихідний код. Ця політика описує
-          дані, які обробляються локально, надсилаються на інфраструктуру LBK
-          або передаються зовнішнім сервісам.
-        </p>
+        <p>{t("intro.service")}</p>
+        <p>{t("intro.openSource")}</p>
       </section>
 
       <section>
-        <h2>1. Хто обробляє дані</h2>
-        <p>
-          За оброблення даних відповідає{" "}
-          <strong>
-            LBK Team — що складається із двох спілок GameGlobe Localization
-            (дані) та Little Bit
-          </strong>
-          .
-        </p>
-        <p>Питання щодо приватності можна надсилати на:</p>
+        <h2>{t("controller.title")}</h2>
+        <p>{t.rich("controller.body", { b })}</p>
+        <p>{t("controller.contactsIntro")}</p>
         <ul>
           <li>
-            пошту{" "}
-            <a
-              href={`mailto:${CONTACT_EMAIL}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {CONTACT_EMAIL}
-            </a>
+            {t.rich("controller.email", { address: CONTACT_EMAIL, email })}
           </li>
-          <li>
-            або через{" "}
-            <a href={BOT_URL} target="_blank" rel="noopener noreferrer">
-              Telegram-бот підтримки
-            </a>
-          </li>
+          <li>{t.rich("controller.bot", { bot })}</li>
         </ul>
       </section>
 
       <section>
-        <h2>2. Категорії даних, що обробляються</h2>
-        <p>
-          LBK розділяє дані на необхідні для роботи сервісу операції та
-          аналітичні категорії.
-        </p>
-        <h3>Необхідні функції LBK</h3>
-        <p>
-          Ці операції потрібні для роботи функцій, якими ви користуєтеся:
-          завантаження, встановлення й оновлення локалізацій, захисту сервісу
-          від зловживань та роботи акаунту перекладача.
-        </p>
-        <p>До них належать:</p>
+        <h2>{t("categories.title")}</h2>
+        <p>{t("categories.intro")}</p>
+        <h3>{t("categories.essentialTitle")}</h3>
+        <p>{t("categories.essentialBody")}</p>
+        <p>{t("categories.includesThem")}</p>
         <ul>
-          <li>отримання потрібного архіву локалізації;</li>
-          <li>встановлення, оновлення та локальне видалення локалізації;</li>
-          <li>збереження інформації про вашу підписку на локалізацію;</li>
-          <li>
-            захист сервісу від зловживань та застосування технічних обмежень
-            завантажень;
-          </li>
-          <li>робота акаунта для перекладачів, команд і модераторів.</li>
+          <li>{t("categories.essentialItems.archive")}</li>
+          <li>{t("categories.essentialItems.install")}</li>
+          <li>{t("categories.essentialItems.subscription")}</li>
+          <li>{t("categories.essentialItems.abuse")}</li>
+          <li>{t("categories.essentialItems.account")}</li>
         </ul>
-        <h3>Те, що допомагає покращувати LBK</h3>
-        <p>
-          Продуктова аналітика допомагає нам зрозуміти, як ви користуєтеся
-          застосунком і наскільки зручно в ньому знаходити та встановлювати
-          локалізації.
-        </p>
-        <p>До неї належать:</p>
+        <h3>{t("categories.improveTitle")}</h3>
+        <p>{t("categories.improveBody")}</p>
+        <p>{t("categories.includesIt")}</p>
         <ul>
-          <li>запуск і завершення сесії застосунку;</li>
-          <li>
-            інформація про те, чи встановили ви локалізацію під час першого
-            запуску застосунку;
-          </li>
-          <li>продуктова аналітика Mixpanel;</li>
-          <li>
-            перегляди інформаційних банерів у застосунку та натискання на них.
-          </li>
+          <li>{t("categories.improveItems.session")}</li>
+          <li>{t("categories.improveItems.firstRun")}</li>
+          <li>{t("categories.improveItems.mixpanel")}</li>
+          <li>{t("categories.improveItems.banners")}</li>
         </ul>
-        <h3>Те, що допомагає розвивати українські локалізації</h3>
-        <p>
-          Аналітика попиту та використання локалізацій. Вона допомагає
-          зрозуміти, які переклади потрібні гравцям і як вони користуються
-          наявними локалізаціями.
-        </p>
-        <p>До неї належать:</p>
+        <h3>{t("categories.developTitle")}</h3>
+        <p>{t("categories.developBody")}</p>
+        <p>{t("categories.includesIt")}</p>
         <ul>
-          <li>натискання кнопки «Підтримати»;</li>
-          <li>
-            пошукові запити, за якими нічого не знайдено задля оформлення списку
-            задоволення попиту на переклад;
-          </li>
-          <li>
-            інформація про видалення локалізацій, яка допомагає оцінювати їх
-            використання;
-          </li>
-          <li>
-            вимірювання часу в іграх із встановленими локалізаціями задля промо
-            матеріалів на сайті «Скільки часу награно з нашим лаунчером» та у
-            спільноті.
-          </li>
+          <li>{t("categories.developItems.support")}</li>
+          <li>{t("categories.developItems.failedSearch")}</li>
+          <li>{t("categories.developItems.removal")}</li>
+          <li>{t("categories.developItems.playtime")}</li>
         </ul>
-        <h3>Діагностика та звіти про помилки</h3>
-        <p>
-          Автоматичні звіти допомагають нам знаходити й виправляти помилки та
-          збої застосунку. Ручні відгуки, знімки екрана та журнали надсилаються
-          окремою дією користувача.
-        </p>
-        <p>
-          Продуктова аналітика, аналітика розвитку локалізацій та автоматична
-          діагностика не потрібні для встановлення й оновлення локалізацій. Ми
-          працюємо над налаштуваннями, які дозволять вимикати кожну з цих
-          категорій окремо в застосунку. Поки ці налаштування недоступні, ви
-          можете написати нам і заперечити проти такого оброблення даних.
-          Контакти та порядок звернення наведено в розділі 16.
-        </p>
-        <h3>Публічне та партнерське використання статистики</h3>
-        <p>
-          Агреговані показники можуть використовуватися у публічній статистиці,
-          промо-матеріалах і партнерських презентаціях без MachineID та інших
-          ідентифікаторів деперсоналізаційного встановлення.
-        </p>
-        <p>
-          Застосунок і сайт не використовують рекламних мереж, пікселів
-          відстеження, запису дій на екрані чи цифрових відбитків пристрою або
-          браузера. Ми не продаємо персональних даних і не передаємо їх
-          компаніям, що займаються збиранням і продажем таких даних.
-        </p>
+        <h3>{t("categories.diagnosticsTitle")}</h3>
+        <p>{t("categories.diagnosticsBody")}</p>
+        <p>{t("categories.optOut")}</p>
+        <h3>{t("categories.publicTitle")}</h3>
+        <p>{t("categories.publicBody")}</p>
+        <p>{t("categories.noTracking")}</p>
       </section>
 
       <section>
-        <h2>3. Що застосунок обробляє лише локально</h2>
-        <p>
-          Частина функцій працює на пристрої користувача без надсилання їхнього
-          вмісту на сервер LBK.
-        </p>
+        <h2>{t("localOnly.title")}</h2>
+        <p>{t("localOnly.intro")}</p>
         <ul>
-          <li>
-            <strong>Пошук установлених ігор.</strong> Застосунок читає службові
-            файли Steam, Epic Games, GOG, EA, Xbox, Ubisoft Connect, Rockstar,
-            Heroic і Lutris, щоб визначити встановлені ігри та їх розташування.
-            У Windows застосунок також може визначати ці платформи за їхніми
-            записами в системному реєстрі.
-          </li>
-          <li>
-            <strong>Дані облікових записів ігрових платформ.</strong> Із даних
-            профілю Steam застосунок зчитує лише числовий ідентифікатор, щоб
-            зіставити вашу бібліотеку ігор із каталогом локалізацій. Він не
-            зчитує логін, нікнейм, список друзів, історію покупок, платіжні дані
-            чи листування, навіть якщо вони містяться в тому самому файлі. Із
-            службових файлів інших ігрових платформ застосунок зчитує лише дані,
-            потрібні для пошуку встановлених ігор та їхнього розташування на
-            диску.
-          </li>
-          <li>
-            <strong>Зміни в бібліотеці Steam.</strong> Поки застосунок
-            відкритий, він відстежує зміни службових файлів Steam, щоб оновити
-            локальний перелік ігор. Застосунок не читає вмісту файлу з переліком
-            ваших ліцензій, а лише відстежує зміну його розміру.
-          </li>
-          <li>
-            <strong>Локальна база.</strong> Каталог перекладів, історія
-            встановлень, улюблене й налаштування зберігаються у файлі бази даних
-            на вашому компʼютері. Усі ці локальні дані можна видалити через
-            налаштування застосунку.
-          </li>
-          <li>
-            <strong>Резервні копії.</strong> Перед встановленням локалізації
-            оригінальні файли гри можуть копіюватися локально для подальшого
-            відновлення.
-          </li>
-          <li>
-            <strong>Пошук, фільтри та добірки.</strong> Формуються з локальної
-            бази. Ми не створюємо на сервері профілю ваших уподобань і не
-            підлаштовуємо каталог під ваш пристрій.
-          </li>
-          <li>
-            <strong>Синхронізація зі стороннім застосунком.</strong>{" "}
-            Запускається дією користувача та переносить інформацію про
-            встановлені локалізації локально.
-          </li>
-          <li>
-            <strong>Локальне читання Steam playtime.</strong> Виконується лише
-            для ігор із встановленими локалізаціями, щоб розрахувати зміну часу
-            в грі.
-          </li>
+          <li>{t.rich("localOnly.items.installedGames", { b })}</li>
+          <li>{t.rich("localOnly.items.accounts", { b })}</li>
+          <li>{t.rich("localOnly.items.steamLibrary", { b })}</li>
+          <li>{t.rich("localOnly.items.database", { b })}</li>
+          <li>{t.rich("localOnly.items.backups", { b })}</li>
+          <li>{t.rich("localOnly.items.search", { b })}</li>
+          <li>{t.rich("localOnly.items.sync", { b })}</li>
+          <li>{t.rich("localOnly.items.playtime", { b })}</li>
         </ul>
-        <p>
-          Застосунок не робить знімків екрана, не читає буфер обміну й не збирає
-          окремо імені компʼютера чи облікового запису операційної системи. Для
-          пошуку ігор він читає лише файли в теках ігор та ігрових платформ.
-          Назва облікового запису може траплятися у шляхах до файлів у
-          діагностичних журналах, які ви надсилаєте вручну (див. розділ 7).
-        </p>
+        <p>{t("localOnly.closing")}</p>
       </section>
 
       <section>
-        <h2>4. Необхідні мережеві операції застосунку</h2>
-        <h3>Завантаження локалізації</h3>
-        <p>
-          Для видачі потрібного файлу застосунок передає на сервер щонайменше:
-        </p>
+        <h2>{t("network.title")}</h2>
+        <h3>{t("network.downloadTitle")}</h3>
+        <p>{t("network.downloadIntro")}</p>
         <ul>
-          <li>ID гри;</li>
-          <li>шлях/ідентифікатор архіву;</li>
-          <li>тип архіву;</li>
-          <li>
-            MachineID — технічний ідентифікатор, за яким сервіс розрізняє
-            пристрої.
-          </li>
+          <li>{t("network.downloadItems.gameId")}</li>
+          <li>{t("network.downloadItems.archivePath")}</li>
+          <li>{t("network.downloadItems.archiveType")}</li>
+          <li>{t("network.downloadItems.machineId")}</li>
         </ul>
-        <p>
-          Ці поля використовуються для визначення потрібного файлу та виконання
-          запиту на завантаження, обмеження кількості завантажень і підрахунку
-          унікальних завантажень. Під час одного запиту сервер надає файл,
-          перевіряє ліміт і враховує завантаження у статистиці.
-        </p>
-        <h3>Перехід у Майстерню Steam</h3>
-        <p>
-          Деякі локалізації встановлюються через підписку в Майстерні Steam.
-          Перехід до такої локалізації враховується в загальній статистиці
-          завантажень. Для цього застосунок передає ID локалізації та MachineID.
-          Для кожної локалізації враховується лише перший перехід із вашого
-          пристрою.
-        </p>
-        <h3>Підписка на локалізацію</h3>
-        <p>
-          Підписка на переклад дає змогу отримувати сповіщення про його нові
-          версії. Ці сповіщення формує застосунок на вашому пристрої. Окремо
-          сервер LBK зберігає ідентифікатор локалізації та MachineID, щоб
-          команда перекладачів бачила, скільки користувачів чекають на оновлення
-          її перекладу. Цей серверний запис не потрібен для створення сповіщень.
-          Ви можете будь-коли скасувати підписку в застосунку — запис на сервері
-          буде видалено одразу.
-        </p>
+        <p>{t("network.downloadBody")}</p>
+        <h3>{t("network.workshopTitle")}</h3>
+        <p>{t("network.workshopBody")}</p>
+        <h3>{t("network.subscriptionTitle")}</h3>
+        <p>{t("network.subscriptionBody")}</p>
       </section>
 
       <section>
-        <h2>5. Продуктова аналітика</h2>
-        <p>Для продуктової аналітики застосунок надсилає такі дані:</p>
+        <h2>{t("productAnalytics.title")}</h2>
+        <p>{t("productAnalytics.intro")}</p>
         <ul>
-          <li>
-            <strong>початок і завершення сесії</strong> — версію застосунку,
-            час/тривалість сесії, MachineID та ознаку першого запуску. Ці дані
-            допомагають підраховувати унікальні запуски й визначати, якими
-            версіями застосунку користуються;
-          </li>
-          <li>
-            <strong>інформацію про те, чи це перша сесія</strong> — передається
-            разом із запитом на завантаження й допомагає визначити, чи
-            встановлюють користувачі локалізацію під час першого запуску
-            застосунку;
-          </li>
-          <li>
-            <strong>події інтерфейсу Mixpanel</strong> — відкриття розділів,
-            взаємодії з елементами, встановлення, оновлення та видалення
-            локалізацій. Разом із подіями передаються назва гри, версія
-            застосунку та MachineID;
-          </li>
-          <li>
-            <strong>перегляди банерів і натискання на них</strong> —
-            ідентифікатор кампанії, тип події та MachineID.
-          </li>
+          <li>{t.rich("productAnalytics.items.session", { b })}</li>
+          <li>{t.rich("productAnalytics.items.firstSession", { b })}</li>
+          <li>{t.rich("productAnalytics.items.mixpanel", { b })}</li>
+          <li>{t.rich("productAnalytics.items.banners", { b })}</li>
         </ul>
       </section>
 
       <section>
-        <h2>6. Аналітика розвитку українських локалізацій</h2>
-        <p>Для аналітики розвитку локалізацій застосунок надсилає такі дані:</p>
+        <h2>{t("localizationAnalytics.title")}</h2>
+        <p>{t("localizationAnalytics.intro")}</p>
         <ul>
-          <li>
-            <strong>натискання «Підтримати»</strong> — ID гри/локалізації та
-            MachineID, щоб команди бачили, скільки людей захотіли їх підтримати;
-          </li>
-          <li>
-            <strong>пошук без результатів</strong> — текст пошукового запиту,
-            джерело запиту та MachineID;
-          </li>
-          <li>
-            <strong>видалення локалізації</strong> — ID локалізації та
-            MachineID;
-          </li>
-          <li>
-            <strong>час у грі</strong> — лише для ігор із встановленою
-            локалізацією: ID гри, приріст часу в хвилинах та MachineID.
-          </li>
+          <li>{t.rich("localizationAnalytics.items.support", { b })}</li>
+          <li>{t.rich("localizationAnalytics.items.failedSearch", { b })}</li>
+          <li>{t.rich("localizationAnalytics.items.removal", { b })}</li>
+          <li>{t.rich("localizationAnalytics.items.playtime", { b })}</li>
         </ul>
       </section>
 
       <section>
-        <h2>7. Відгуки, знімки екрана та журнали</h2>
-        <p>Ці дані надсилаються лише після окремої дії користувача.</p>
-        <h3>Відгук про локалізацію</h3>
-        <p>Під час відправлення відгуку можуть передаватися:</p>
+        <h2>{t("feedback.title")}</h2>
+        <p>{t("feedback.intro")}</p>
+        <h3>{t("feedback.reviewTitle")}</h3>
+        <p>{t("feedback.reviewIntro")}</p>
         <ul>
-          <li>ID гри;</li>
-          <li>тип звернення;</li>
-          <li>текст повідомлення;</li>
-          <li>версія застосунку;</li>
-          <li>операційна система/платформа та архітектура;</li>
-          <li>
-            MachineID — за ним ви отримаєте відповідь саме на своє звернення.
-          </li>
+          <li>{t("feedback.reviewItems.gameId")}</li>
+          <li>{t("feedback.reviewItems.type")}</li>
+          <li>{t("feedback.reviewItems.message")}</li>
+          <li>{t("feedback.reviewItems.appVersion")}</li>
+          <li>{t("feedback.reviewItems.platform")}</li>
+          <li>{t("feedback.reviewItems.machineId")}</li>
         </ul>
-        <h3>Знімки екрана</h3>
-        <p>
-          Знімки додаються лише через явний вибір користувача. Перед
-          завантаженням користувач має бачити, який файл буде відправлено.
-          Знімок може містити особисту інформацію, яка випадково потрапила в
-          кадр, — за це LBK Team відповідальності не несе. Знімки надсилаються
-          без змін: застосунок не стискає їх, не змінює розміру й не видаляє
-          метаданих — додаткової інформації, збереженої у файлі. До одного
-          звернення можна додати до пʼяти знімків.
-        </p>
-        <h3>Діагностичні журнали</h3>
-        <p>
-          Журнал може містити технічні повідомлення, шляхи до файлів (вони
-          можуть містити назву вашого облікового запису в операційній системі),
-          назви встановлених ігор, числові ідентифікатори платформ та тексти
-          помилок. Перед надсиланням застосунок не видаляє окремих рядків із
-          журналу: вони можуть містити інформацію, потрібну для зʼясування
-          причини проблеми. Журнал не надсилається автоматично; передавання
-          відбувається лише після окремого підтвердження користувача.
-        </p>
+        <h3>{t("feedback.screenshotsTitle")}</h3>
+        <p>{t("feedback.screenshotsBody")}</p>
+        <h3>{t("feedback.logsTitle")}</h3>
+        <p>{t("feedback.logsBody")}</p>
       </section>
 
       <section>
-        <h2>8. Автоматична діагностика збоїв</h2>
-        <p>
-          У разі помилки застосунок автоматично надсилає її опис, послідовність
-          викликів, що призвели до помилки (стек викликів), версію застосунку та
-          інші технічні дані, потрібні для діагностики.
-        </p>
-        <p>
-          Для звітів використовується <strong>GlitchTip</strong>, розгорнутий на
-          інфраструктурі LBK.
-        </p>
+        <h2>{t("crashReports.title")}</h2>
+        <p>{t("crashReports.body")}</p>
+        <p>{t.rich("crashReports.glitchtip", { b })}</p>
       </section>
 
       <section>
-        <h2>9. Що збирає сайт</h2>
-        <h3>Публічна частина сайту</h3>
-        <p>
-          Публічний сайт використовує <strong>Cloudflare Zaraz</strong> для
-          аналітики переглядів і окремих подій, зокрема відкриття каталогу,
-          сторінки локалізації та використання пошуку.
-        </p>
-        <p>
-          Пошук без результатів на сайті зберігає текст запиту разом із
-          випадковим ідентифікатором, створеним у памʼяті браузера. Цей
-          ідентифікатор не повʼязаний із вашим пристроєм або особою.
-        </p>
-        <h3>Вбудоване відео</h3>
-        <p>
-          На сторінках локалізацій можуть бути вбудовані відео YouTube. При
-          завантаженні програвача браузер встановлює зʼєднання із сервісами
-          Google/YouTube і передає їм технічні дані зʼєднання.
-        </p>
-        <h3>Завантаження релізів</h3>
-        <p>
-          Файли релізів можуть завантажуватися з GitHub. При такому завантаженні
-          GitHub отримує стандартні технічні дані мережевого запиту.
-        </p>
+        <h2>{t("website.title")}</h2>
+        <h3>{t("website.publicTitle")}</h3>
+        <p>{t.rich("website.zaraz", { b })}</p>
+        <p>{t("website.failedSearch")}</p>
+        <h3>{t("website.videoTitle")}</h3>
+        <p>{t("website.videoBody")}</p>
+        <h3>{t("website.releasesTitle")}</h3>
+        <p>{t("website.releasesBody")}</p>
       </section>
 
       <section>
-        <h2>10. Акаунти перекладачів, команд і модераторів</h2>
-        <p>
-          Для звичайного встановлення локалізацій акаунт не потрібен. Акаунти
-          використовуються перекладачами, командами та модераторами за шляхом —
-          https://admin.lbklauncher.com/
-        </p>
-        <p>При створенні та використанні акаунта можуть оброблятися:</p>
+        <h2>{t("accounts.title")}</h2>
+        <p>{t("accounts.intro")}</p>
+        <p>{t("accounts.dataIntro")}</p>
         <ul>
-          <li>імʼя;</li>
-          <li>електронна пошта;</li>
-          <li>
-            дані профілю Google, якщо користувач обирає вхід через Google;
-          </li>
-          <li>службові дані, необхідні для автентифікації та ролей доступу.</li>
+          <li>{t("accounts.items.name")}</li>
+          <li>{t("accounts.items.email")}</li>
+          <li>{t("accounts.items.google")}</li>
+          <li>{t("accounts.items.service")}</li>
         </ul>
-        <p>
-          В адміністративній панелі використовується Google Analytics: сервіс
-          збирає інформацію про перегляди сторінок панелі та використовує власні
-          cookie. Коли ви натискаєте кнопку копіювання промотексту для Steam,
-          панель надсилає до Google Analytics цю подію та назву відповідної гри.
-          Електронна пошта та ідентифікатор акаунта не передаються. Ми працюємо
-          над налаштуванням, яке дозволить вимкнути цю аналітику в
-          адміністративній панелі.
-        </p>
+        <p>{t("accounts.analytics")}</p>
       </section>
 
       <section>
-        <h2>11. Мета та правові підстави оброблення</h2>
+        <h2>{t("legalBasis.title")}</h2>
         <table className="legal-table">
           <thead>
             <tr>
-              <th>Мета</th>
-              <th>Категорія</th>
-              <th>Підстава</th>
+              <th>{t("legalBasis.columns.purpose")}</th>
+              <th>{t("legalBasis.columns.category")}</th>
+              <th>{t("legalBasis.columns.basis")}</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Видача та встановлення локалізації</td>
-              <td>Необхідні функції LBK</td>
-              <td>Виконання запиту користувача / Умов користування</td>
-            </tr>
-            <tr>
-              <td>Збереження стану підписки</td>
-              <td>Необхідні функції LBK</td>
-              <td>Виконання запиту користувача</td>
-            </tr>
-            <tr>
-              <td>
-                Захист від зловживань, технічні ліміти та облік унікальних
-                завантажень
-              </td>
-              <td>Необхідні функції LBK</td>
-              <td>
-                Законний інтерес у забезпеченні стабільної роботи сервісу та
-                достовірності публічної статистики
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Сесії застосунку, взаємодії з інтерфейсом, перегляди банерів і
-                натискання на них, інформація про першу сесію
-              </td>
-              <td>«Допомагати покращувати LBK»</td>
-              <td>Законний інтерес</td>
-            </tr>
-            <tr>
-              <td>
-                Натискання «Підтримати», пошук без результатів, видалення
-                локалізації, час у грі
-              </td>
-              <td>«Допомагати розвивати українські локалізації»</td>
-              <td>Законний інтерес</td>
-            </tr>
-            <tr>
-              <td>Автоматична діагностика</td>
-              <td>«Діагностика та звіти про помилки»</td>
-              <td>Законний інтерес</td>
-            </tr>
-            <tr>
-              <td>Відгуки, знімки екрана, журнали</td>
-              <td>Окрема дія користувача</td>
-              <td>Згода користувача під час надсилання</td>
-            </tr>
-            <tr>
-              <td>Робота акаунта</td>
-              <td>Необхідні функції акаунта</td>
-              <td>Виконання запиту користувача / Умов користування</td>
-            </tr>
+            {LEGAL_BASIS_ROWS.map((row) => (
+              <tr key={row.purpose}>
+                <td>{t(`legalBasis.purposes.${row.purpose}`)}</td>
+                <td>{t(`legalBasis.categories.${row.category}`)}</td>
+                <td>{t(`legalBasis.bases.${row.basis}`)}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
-        <p>
-          Ви можете заперечити проти оброблення даних на підставі законного
-          інтересу. Як це зробити, описано в розділі 16.
-        </p>
+        <p>{t("legalBasis.objection")}</p>
       </section>
 
       <section>
-        <h2>12. Строки зберігання</h2>
-        <p>
-          Ми зберігаємо дані стільки часу, скільки потрібно для цілей, описаних
-          у цій політиці.
-        </p>
-        <p>
-          Запис про підписку зберігається до її скасування й видаляється одразу
-          після того, як ви відпишетеся. Дані акаунта зберігаються, поки він
-          існує. Після видалення акаунта його дані та завантажені файли
-          видаляються одразу.
-        </p>
+        <h2>{t("retention.title")}</h2>
+        <p>{t("retention.intro")}</p>
+        <p>{t("retention.body")}</p>
       </section>
 
       <section>
-        <h2>13. Одержувачі та інфраструктура</h2>
-        <h3>Інфраструктура LBK</h3>
+        <h2>{t("recipients.title")}</h2>
+        <h3>{t("recipients.infraTitle")}</h3>
         <ul>
-          <li>
-            <strong>Backend на базі Supabase</strong> — база даних, сховище
-            файлів та службові функції LBK. Розгорнутий на власних серверах LBK.
-            Тут зберігаються серверні записи про завантаження й підписки,
-            відгуки, знімки екрана, діагностичні журнали та статистика, яку LBK
-            збирає на власній інфраструктурі. Ці дані зберігаються в межах
-            інфраструктури LBK; використання зовнішніх сервісів описано окремо
-            нижче.
-          </li>
-          <li>
-            <strong>GlitchTip</strong> — звіти про помилки та збої. Сервіс
-            розгорнутий на власних серверах LBK, де й зберігаються ці звіти.
-          </li>
+          <li>{t.rich("recipients.supabase", { b })}</li>
+          <li>{t.rich("recipients.glitchtip", { b })}</li>
         </ul>
-        <p>Для керування розгортанням сервісів використовується Coolify.</p>
-        <h3>Зовнішні сервіси</h3>
+        <p>{t("recipients.coolify")}</p>
+        <h3>{t("recipients.externalTitle")}</h3>
         <ul>
-          <li>
-            <strong>Mixpanel</strong> — продуктова аналітика застосунку;
-          </li>
-          <li>
-            <strong>Cloudflare Zaraz</strong> — аналітика публічного сайту;
-          </li>
-          <li>
-            <strong>Google Analytics</strong> — аналітика адміністративної
-            панелі;
-          </li>
-          <li>
-            <strong>Resend</strong> — доставка листів для акаунтів/службових
-            повідомлень;
-          </li>
-          <li>
-            <strong>YouTube / Google</strong> — вбудоване відео;
-          </li>
-          <li>
-            <strong>Steam</strong> — дані, потрібні для роботи інтеграції Steam;
-          </li>
-          <li>
-            <strong>GitHub</strong> — розповсюдження релізів та перевірка
-            оновлень;
-          </li>
-          <li>
-            <strong>внутрішні канали сповіщень команди</strong> — сповіщення про
-            нові звернення, щоб LBK Team могла оперативно їх розглянути та
-            відповісти.
-          </li>
+          <li>{t.rich("recipients.external.mixpanel", { b })}</li>
+          <li>{t.rich("recipients.external.zaraz", { b })}</li>
+          <li>{t.rich("recipients.external.googleAnalytics", { b })}</li>
+          <li>{t.rich("recipients.external.resend", { b })}</li>
+          <li>{t.rich("recipients.external.youtube", { b })}</li>
+          <li>{t.rich("recipients.external.steam", { b })}</li>
+          <li>{t.rich("recipients.external.github", { b })}</li>
+          <li>{t.rich("recipients.external.notifications", { b })}</li>
+        </ul>
+        <p>{t("recipients.partners")}</p>
+      </section>
+
+      <section>
+        <h2>{t("steamFallback.title")}</h2>
+        <p>{t("steamFallback.body")}</p>
+        <p>{t("steamFallback.notStored")}</p>
+      </section>
+
+      <section>
+        <h2>{t("dataLocation.title")}</h2>
+        <p>{t.rich("dataLocation.servers", { b })}</p>
+        <p>{t("dataLocation.external")}</p>
+      </section>
+
+      <section>
+        <h2>{t("rights.title")}</h2>
+        <p>{t("rights.intro")}</p>
+        <ul>
+          <li>{t("rights.items.access")}</li>
+          <li>{t("rights.items.rectify")}</li>
+          <li>{t("rights.items.erase")}</li>
+          <li>{t("rights.items.object")}</li>
         </ul>
         <p>
-          Каталог локалізацій щодня синхронізується з партнерським сервісом. Під
-          час цієї синхронізації дані гравців не передаються. Архіви, які
-          завантажують перекладачі, перед публікацією перевіряються на віруси за
-          допомогою зовнішнього сервісу Metadefender. Дані гравців для цієї
-          перевірки не передаються.
+          {t.rich("rights.requests", { address: CONTACT_EMAIL, email, bot })}
         </p>
+        <p>{t("rights.identification")}</p>
       </section>
 
       <section>
-        <h2>14. Steam: локальне визначення бібліотеки та серверний fallback</h2>
-        <p>
-          Зазвичай застосунок визначає вашу бібліотеку Steam за даними на
-          пристрої. Якщо цих даних недостатньо, сервер LBK запитує список ігор
-          через Steam Web API. Для запиту використовуються числовий
-          ідентифікатор вашого профілю Steam та ключ доступу LBK. Запит до Steam
-          надсилає сервер LBK.
-        </p>
-        <p>Отриманий список ігор на сервері не зберігається.</p>
-      </section>
-
-      <section>
-        <h2>15. Де обробляються дані</h2>
-        <p>
-          Власні сервери LBK розташовані в <strong>Німеччині</strong>.
-        </p>
-        <p>
-          Частина зовнішніх сервісів може обробляти дані в інших країнах,
-          зокрема у США — це стосується Mixpanel, Resend, Google/YouTube, GitHub
-          і Steam.
-        </p>
-      </section>
-
-      <section>
-        <h2>16. Права та керування згодою</h2>
-        <p>Користувач може:</p>
+        <h2>{t("security.title")}</h2>
         <ul>
-          <li>
-            дізнатися, які дані з ним повʼязані, й отримати їхню копію за
-            зверненням до LBK Team;
-          </li>
-          <li>виправити неточні дані;</li>
-          <li>
-            вимагати видалення даних у випадках, коли вони більше не потрібні
-            або підлягають видаленню;
-          </li>
-          <li>
-            заперечити проти оброблення даних на підставі законного інтересу.
-          </li>
-        </ul>
-        <p>
-          Запити можна надсилати на{" "}
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {CONTACT_EMAIL}
-          </a>{" "}
-          або через{" "}
-          <a href={BOT_URL} target="_blank" rel="noopener noreferrer">
-            Telegram-бот підтримки
-          </a>
-          . Ми відповімо на ваш запит протягом 30 днів.
-        </p>
-        <p>
-          Якщо користувач має акаунт, записи можуть бути знайдені за даними
-          акаунта. Якщо акаунта немає, для пошуку деперсоналізованих подій може
-          знадобитися MachineID.
-        </p>
-      </section>
-
-      <section>
-        <h2>17. Захист даних</h2>
-        <ul>
-          <li>
-            Доступ до серверних таблиць та сховищ обмежений ролями. Ключ
-            доступу, який міститься в застосунку та на сайті, не дає змоги
-            читати відгуки, журнали чи статистику. Доступ до цих даних надається
-            лише через сервер із відповідними правами доступу.
-          </li>
-          <li>
-            Відгуки, журнали й знімки екрана зберігаються в закритих сховищах;
-            тимчасові посилання для доступу до них створюються лише для LBK
-            Team.
-          </li>
-          <li>
-            Платформа входу в акаунт зберігає паролі у вигляді хешів —
-            результатів одностороннього перетворення. Код LBK не має доступу до
-            паролів у відкритому вигляді.
-          </li>
-          <li>
-            Токени для автоматичної публікації зберігаються лише у вигляді
-            хешів, з яких неможливо відновити початковий токен.
-          </li>
-          <li>Токени та секрети не передаються до аналітичних сервісів.</li>
-          <li>
-            Мережеві зʼєднання сайту та застосунку використовують шифрування.
-          </li>
+          <li>{t("security.items.roles")}</li>
+          <li>{t("security.items.storage")}</li>
+          <li>{t("security.items.passwords")}</li>
+          <li>{t("security.items.tokens")}</li>
+          <li>{t("security.items.secrets")}</li>
+          <li>{t("security.items.encryption")}</li>
         </ul>
       </section>
 
       <section>
-        <h2>18. Чого LBK не робить</h2>
+        <h2>{t("notDone.title")}</h2>
         <ul>
-          <li>не продає персональні дані користувачів;</li>
-          <li>не вимагає акаунта для звичайного встановлення локалізацій;</li>
-          <li>не створює знімки екрана без дії користувача;</li>
-          <li>не читає буфер обміну;</li>
-          <li>не передає MachineID у публічну або агреговану статистику;</li>
-          <li>не показує реклами на основі вашої поведінки;</li>
-          <li>
-            не використовує цифрових відбитків браузера й не записує дій на
-            екрані.
-          </li>
+          <li>{t("notDone.items.sell")}</li>
+          <li>{t("notDone.items.account")}</li>
+          <li>{t("notDone.items.screenshots")}</li>
+          <li>{t("notDone.items.clipboard")}</li>
+          <li>{t("notDone.items.machineId")}</li>
+          <li>{t("notDone.items.ads")}</li>
+          <li>{t("notDone.items.fingerprint")}</li>
         </ul>
       </section>
 
       <section>
-        <h2>19. Зміни до політики</h2>
-        <p>
-          Якщо змінюються категорії даних, цілі, одержувачі або правові підстави
-          оброблення, політика та дата її оновлення мають бути змінені до або
-          одночасно з відповідною зміною функціоналу.
-        </p>
+        <h2>{t("changes.title")}</h2>
+        <p>{t("changes.body")}</p>
       </section>
 
       <section>
-        <h2>20. Контакти</h2>
+        <h2>{t("contactsTitle")}</h2>
         <ul>
           <li>
-            <strong>Email:</strong>{" "}
-            <a
-              href={`mailto:${CONTACT_EMAIL}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {CONTACT_EMAIL}
-            </a>
+            <strong>{tLegal("emailLabel")}</strong> {email(CONTACT_EMAIL)}
           </li>
           <li>
-            <strong>Telegram:</strong>{" "}
-            <a href={BOT_URL} target="_blank" rel="noopener noreferrer">
-              {BOT_URL}
-            </a>
+            <strong>{tLegal("telegramLabel")}</strong> {bot(BOT_URL)}
           </li>
         </ul>
       </section>

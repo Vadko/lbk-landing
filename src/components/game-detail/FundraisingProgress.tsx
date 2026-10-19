@@ -1,5 +1,6 @@
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import { faHandHoldingHeart } from "@fortawesome/free-solid-svg-icons/faHandHoldingHeart";
+import { getTranslations } from "next-intl/server";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 
 interface FundraisingProgressProps {
@@ -7,7 +8,7 @@ interface FundraisingProgressProps {
   goal: number | null;
 }
 
-export function FundraisingProgress({
+export async function FundraisingProgress({
   current,
   goal,
 }: FundraisingProgressProps) {
@@ -16,6 +17,7 @@ export function FundraisingProgress({
     return null;
   }
 
+  const t = await getTranslations("fundraising");
   const currentAmount = current ?? 0;
   const percentage = Math.min(Math.round((currentAmount / goal) * 100), 100);
   const isCompleted = currentAmount >= goal;
@@ -27,7 +29,7 @@ export function FundraisingProgress({
   return (
     <section className="game-section game-fundraising">
       <h2>
-        <SvgIcon icon={faHandHoldingHeart} /> Збір коштів
+        <SvgIcon icon={faHandHoldingHeart} /> {t("title")}
       </h2>
       <div className="fundraising-content">
         <div className="fundraising-header">
@@ -52,8 +54,7 @@ export function FundraisingProgress({
         </div>
         {isCompleted && (
           <p className="fundraising-message success">
-            <SvgIcon icon={faCheckCircle} /> Збір завершено! Дякуємо всім, хто
-            підтримав!
+            <SvgIcon icon={faCheckCircle} /> {t("completed")}
           </p>
         )}
       </div>
