@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { MillIcon } from "./MillIcon";
+import { type ReactNode, useEffect, useRef } from "react";
 
 const IDLE_SPEED_EPSILON = 0.001;
 
 interface AnimatedMillProps {
-  className?: string;
+  children: ReactNode;
 }
 
-export function AnimatedMill({ className }: AnimatedMillProps) {
-  const svgRef = useRef<SVGSVGElement | null>(null);
+// The SVG comes in as server-rendered children so its paths stay out of every page's JS
+export function AnimatedMill({ children }: AnimatedMillProps) {
+  const wrapperRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    const svg = svgRef.current;
+    const svg = wrapperRef.current?.querySelector("svg");
     if (!svg) {
       return;
     }
@@ -62,5 +62,9 @@ export function AnimatedMill({ className }: AnimatedMillProps) {
     };
   }, []);
 
-  return <MillIcon ref={svgRef} className={className} />;
+  return (
+    <span ref={wrapperRef} className="contents">
+      {children}
+    </span>
+  );
 }

@@ -64,7 +64,7 @@ Proxy sets `x-page-only: 1`; `src/app/layout.tsx` reads it with `await headers()
 Two independent layers:
 
 - **Redis** (`src/lib/cache/`) — a two-method `Cache` interface (`get`/`set`). There is no `del`, no scan, no prefix. Exactly four keys: `games:count` (86400s, `src/lib/games-count.ts`, only written when count > 0, and the getter is wrapped in React `cache`), `games:deleted-slugs` (86400s), `landing:stats` (86400s), `github:releases` (3600s). Invalidation is TTL-only except `games:deleted-slugs`, which `refreshDeletedSlugsCache()` recomputes from the webhook. The site-description games count and landing stats can be 24h stale with no way to bust them short of flushing Redis.
-- **Next** — `export const revalidate` = 86400 on `src/app/page.tsx`, 3600 on the three `[slug]`/`[team]` routes; API routes set explicit `Cache-Control: public, s-maxage=…, stale-while-revalidate=…` (60/30 for games-list, 3600/60 for games-count, games-teams, github-releases, 86400/60 for landing-stats) and `X-Cache: HIT|MISS` on the two Redis-backed ones.
+- **Next** — `export const revalidate` = 86400 on `src/app/(query)/page.tsx`, 3600 on the three `[slug]`/`[team]` routes; API routes set explicit `Cache-Control: public, s-maxage=…, stale-while-revalidate=…` (60/30 for games-list, 3600/60 for games-count, games-teams, github-releases, 86400/60 for landing-stats) and `X-Cache: HIT|MISS` on the two Redis-backed ones.
 
 Without `REDIS_URL`, `src/lib/cache/index.ts` silently substitutes a `MemoryCache` (a per-process `Map`, with the instance parked on `globalThis`). `RedisCache` swallows every error and returns null/undefined. A broken Redis degrades to hitting Supabase on every request with no visible failure — verify with the `X-Cache` header, not by "the site is up".
 
@@ -87,13 +87,13 @@ Authenticates on header `x-revalidate-secret` against `REVALIDATE_SECRET`; body 
 
 `src/lib/game-jsonld.ts` FAQ markup must repeat the visible FAQ text verbatim — `generateFAQLD` and `GameFAQ.tsx` both call `isWorkshopTranslation(game)` (`src/lib/types.ts`), and `GameInstallSteps.tsx` branches on an `isWorkshop` prop that `GameDetailArticle.tsx` computes the same way. Edit copy in one and you must edit the others.
 
-`src/app/sitemap.ts` is hand-maintained, has no `revalidate` (Supabase hit per fetch), emits `/games/{slug}` only when a slug has more than one translation, and omits `/collaboration`, `/donaters` and `/guides&tools` (`/tech-stack` is listed).
+`src/app/sitemap.ts` is hand-maintained and has no `revalidate`, so it is prerendered once at build (`○` in the route table, served with `x-nextjs-cache: HIT`): new translations appear in it only after the next deploy. Its build-time Supabase fetch is stored in `.next/cache/fetch-cache` with a one-year lifetime and reused by later builds, so a stale local `.next/cache` makes `pnpm build` emit an old sitemap. It emits `/games/{slug}` only when a slug has more than one translation, and omits `/collaboration`, `/donaters` and `/guides&tools` (`/tech-stack` is listed).
 
 ### Rendering
 
 `src/components/landing/BelowFoldSections.tsx` lazy-loads all seven below-the-fold homepage sections with `dynamic(..., { ssr: false })`; only `HeroSection` is server-rendered. Crawlable SEO copy belongs in the hero, in metadata, or in JSON-LD — not in those sections.
 
-Client pages that need metadata get a sibling `layout.tsx` whose only job is to export it (`src/app/setup/layout.tsx`). `src/app/legal-layout.tsx` is deliberately **not** named `layout.tsx` so Next does not treat it as a route layout; `privacy` and `terms/*` import `LegalLayout` as a plain component.
+Client pages that need metadata get a sibling `layout.tsx` whose only job is to export it (`src/app/(query)/setup/layout.tsx`). `src/app/legal-layout.tsx` is deliberately **not** named `layout.tsx` so Next does not treat it as a route layout; `privacy` and `terms/*` import `LegalLayout` as a plain component.
 
 ### Styling
 
@@ -105,13 +105,13 @@ No `@fortawesome/react-fontawesome` — do not add it. Import icons from the dee
 
 ### Heavy libs are each confined to one or two files
 
-embla-carousel → `game-detail/GameGallery.tsx`; yet-another-react-lightbox → `GameGallery.tsx` + `ui/GalleryLightbox.tsx`; `@xyflow/react` → `tech-stack/TechStackDiagram.tsx`; canvas-confetti → runtime `import()` in `landing/hero/HeroDownload.tsx`; react-markdown + remark-breaks → `ui/MarkdownText.tsx` (allowlists `p,strong,em,ul,ol,li,br,code`, rewrites headings to `<p>`). Keep them there.
+embla-carousel → `game-detail/GameGallery.tsx`; yet-another-react-lightbox → `game-detail/GameLightbox.tsx` (lazy `dynamic()` from `GameGallery.tsx`, mounted on first open) + `ui/GalleryLightbox.tsx`; `@xyflow/react` → `tech-stack/TechStackDiagram.tsx`; canvas-confetti → runtime `import()` in `landing/hero/HeroDownload.tsx`; react-markdown + remark-breaks → `ui/MarkdownText.tsx` (allowlists `p,strong,em,ul,ol,li,br,code`, rewrites headings to `<p>`). Keep them there.
 
 ### Analytics and errors
 
 Page views go through Cloudflare Zaraz (`/cdn-cgi/zaraz/i.js` via `next/script` in the root layout). `src/lib/analytics.ts` only fires when `window.zaraz` exists, so off Cloudflare every event is a silent no-op — analytics cannot be verified in dev. The exception is `trackFailedSearch`, which POSTs to the Supabase Edge Function `/functions/v1/track` with the anon key and a `localStorage` UUID (`lb_analytics_uid`), only for queries ≥ 3 chars, debounced 1500ms in `GamesList`. Always add events as thin named wrappers in `src/lib/analytics.ts`; never call `window.zaraz.track` at a call site, and never let analytics throw.
 
-Sentry SDK points at a self-hosted GlitchTip (`SENTRY_URL`/DSN), `enabled: NODE_ENV === "production"`, with `captureConsoleIntegration({ levels: ["error"] })` in all three configs (`instrumentation-client.ts`, `sentry.server.config.ts`, `sentry.edge.config.ts`). Every production `console.error` becomes an issue, so a flaky Redis or Supabase floods the tracker — think before adding one to a hot path.
+Sentry SDK points at a self-hosted GlitchTip (`SENTRY_URL`/DSN), `enabled: NODE_ENV === "production"`, with `captureConsoleIntegration({ levels: ["error"] })` in all three configs (`instrumentation-client.ts`, `sentry.server.config.ts`, `sentry.edge.config.ts`). Every production `console.error` becomes an issue, so a flaky Redis or Supabase floods the tracker — think before adding one to a hot path. All three spread `sentryV10Baseline` from `src/lib/sentry-baseline.ts`: SDK v11 collects more by default (user info/IP, cookies, headers, bodies) and attaches synthetic stack traces, and that module pins the v10 behaviour — loosening it is a privacy decision, not a cleanup. `bundleSizeOptimizations` in `next.config.ts` does apply under Turbopack on SDK v11 (through its bundler plugin; it did nothing on v10): it is what drops the unused tracing, replay and debug code (measured, Sentry client code 75.9 → 50.0 KB). Keep `excludeTracing` only while no config sets `tracesSampleRate`.
 
 ## Conventions
 
@@ -125,7 +125,7 @@ Sentry SDK points at a self-hosted GlitchTip (`SENTRY_URL`/DSN), `enabled: NODE_
 - Formatting: 2-space indent, 80 columns, double quotes, always semicolons, `es5` trailing commas (so multi-line *parameter* lists have no trailing comma, object/array literals do).
 - Errors: server helpers in `src/lib` swallow Supabase errors into a safe empty value (`[]` / `null`); API routes wrap in try/catch, `console.error("<Name> API error:", error)`, and return `NextResponse.json({ error }, { status: 500 })` — `/api/revalidate` is the one route whose catch does not log.
 - Action feedback — `useActionPhase` (`src/hooks/useActionPhase.ts`) + `ActionIcon`: the hook is mirrored, in substance byte-for-byte, in lbk-admin (`src/hooks`) and lbk-launcher (`src/renderer/hooks`), so a change here is a change in all three; contract tests live only in lbk-admin (this repo has no test runner). Timings: `DONE_MS` 1000 / `ERROR_MS` 1800 / `MIN_PENDING_MS` 600 in the hook, `PENDING_DELAY_MS` 100 / `SPIN_DELAY_MS` 180 in `ActionIcon.tsx`, `MORPH_SPRING` (`{ stiffness: 800, damping: 42 }`) in `MorphSvgIcon.tsx` — the morph is a morphicons spring, not a CSS transition, and the glyphs here are FontAwesome paths fed through `fitFaIcon`. There is no `settle()` on purpose; `isBusy` keeps a control mounted while the phase burns down.
-- React Query keys always come from `src/lib/queryKeys.ts`, never inline arrays. Defaults live once in `src/providers/QueryProvider.tsx` (staleTime 5min, gcTime 10min, no refetch on focus, retry 1); hooks override staleTime.
+- React Query keys always come from `src/lib/queryKeys.ts`, never inline arrays. Defaults live once in `src/providers/QueryProvider.tsx` (staleTime 5min, gcTime 10min, no refetch on focus, retry 1); hooks override staleTime. `QueryProvider` is **not** in the root layout. It lives in the route group layout `src/app/(query)/layout.tsx`, which holds exactly the routes that call query hooks (`/`, `/games`, `/collaboration`, `/setup`), so every other route ships no `@tanstack/*` and those four share one chunk. A route that starts using a query hook must move into `(query)`, or it throws "No QueryClient set" at render. Do not wrap individual pages instead: that gives each page its own copy of query-core, so navigating between them downloads it again. The browser `QueryClient` is a module-level singleton, so the cache survives leaving and re-entering the group. `/games/[slug]/**` stays outside the group under `src/app/games/`.
 - `lib/` filenames are mixed (kebab for infrastructure, camelCase for data/const modules). Match the neighbours of whatever you add.
 - Before hand-rolling a helper, check `package.json` — 17 runtime dependencies are already installed and something there probably does it.
 - All user-facing strings are Ukrainian literals inline; there is no i18n library. Format with `uk-UA` / `Europe/Kyiv`, sort with `localeCompare(a, b, "uk")`. A translation entry is «переклад»; the Steam Workshop area is «Майстерня». Never write «айтем» in strings, comments or copy.
@@ -153,7 +153,7 @@ After any change: `pnpm format && pnpm typecheck && pnpm lint && pnpm knip`. For
 - Do not add a raw `games` query without `.eq("approved", true).eq("hide", false)`.
 - Do not rename or relocate `src/proxy.ts` — it is Next 16's middleware and knip's Next plugin recognizes it by name.
 - Do not retype `public/assets/Logo-FanСon.png`. The `С` is U+0421 CYRILLIC CAPITAL ES, and `src/components/landing/PartnerSection.tsx` references it with the same character. Copy-paste the path; a Latin `C` is a silent 404 that looks correct in the diff.
-- Do not use unquoted paths for `src/app/guides&tools/` — the route directory contains a literal ampersand and the public URL is `/guides&tools`. Always quote it in shell and grep.
+- Do not use unquoted paths for `src/app/guides&tools/` — the route directory contains a literal ampersand and the public URL is `/guides&tools`. Always quote it in shell and grep. The same goes for the `src/app/(query)/` route group (parentheses).
 - Do not point `NEXT_PUBLIC_STORAGE_IMAGES_URL` anywhere other than `supabase.lbklauncher.com` without also editing `images.remotePatterns` in `next.config.ts` — it allowlists exactly that one host and `getImageUrl()` passes through any absolute URL stored in the DB, so an off-host `banner_path` throws at render.
 - Do not "fix" `src/app/advertisers/page.tsx` — it calls `notFound()` unconditionally on purpose (page body commented out, hence the unused `BOT_URL` warning) — and do not delete `components/advertisers/WhyAdvertisersChooseUs.tsx` or `components/landing/MetricSection.tsx`.
 - Do not add a `game_status` value in one place: `STATUS_LABELS` is duplicated in `src/lib/constants.ts` (class prefix `game-status-badge`) and privately in `src/components/games/GameCard.tsx` (prefix `game-card-status`), plus `STATUS_OPTIONS` in `GamesSearch.tsx`. Both class families are styled separately in `globals.css`.
@@ -161,7 +161,7 @@ After any change: `pnpm format && pnpm typecheck && pnpm lint && pnpm knip`. For
 - Do not add a UTF-8 BOM. `src/app/terms/players/page.tsx` already has a stray one; it is the only such file.
 - Do not expect the donaters leaderboard, special thanks, partner logos, `src/lib/featuredTranslations.ts`, `src/lib/specialTranslators.ts` or the `/donaters` stat cards to come from Supabase — they are literal arrays in component and lib modules. Updating them is a code change plus a deploy.
 - Do not treat `README.md` as a spec: it lists 3 env vars (12 are read in code), omits 4 of 6 API routes and ~10 route directories and `src/proxy.ts`, points at the old `littlebit-launcher` repo, and claims MIT with no LICENSE file.
-- `src/hooks/useClientValue.ts` already wraps the hydration-safe `useSyncExternalStore` pattern; `src/app/setup/page.tsx` re-implements it inline. Use the hook. Note that file also declares a local `Platform` string-union type that shadows the unrelated `Platform` (`install_source` enum) in `src/lib/types.ts`.
+- `src/hooks/useClientValue.ts` already wraps the hydration-safe `useSyncExternalStore` pattern; `src/app/(query)/setup/page.tsx` re-implements it inline. Use the hook. Note that file also declares a local `Platform` string-union type that shadows the unrelated `Platform` (`install_source` enum) in `src/lib/types.ts`.
 
 ## Environment and deploy
 
