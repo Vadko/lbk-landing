@@ -2,12 +2,18 @@
 
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import Lightbox from "yet-another-react-lightbox";
-import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import "yet-another-react-lightbox/styles.css";
 import { getImageUrl } from "@/lib/images";
+
+const GameLightbox = dynamic(
+  () =>
+    import("./GameLightbox").then((m) => ({
+      default: m.GameLightbox,
+    })),
+  { ssr: false }
+);
 
 type Props = {
   slides: Array<string>;
@@ -30,6 +36,7 @@ export default function GameGallery({
 }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxMounted, setLightboxMounted] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const slidesUrls = slides
@@ -86,6 +93,7 @@ export default function GameGallery({
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
+    setLightboxMounted(true);
     setLightboxOpen(true);
   };
 
@@ -171,18 +179,15 @@ export default function GameGallery({
         )}
       </div>
 
-      {/* Lightbox для zoom */}
-      <Lightbox
-        open={lightboxOpen}
-        close={() => setLightboxOpen(false)}
-        index={lightboxIndex}
-        slides={slidesUrls.map((src) => ({ src }))}
-        plugins={[Zoom]}
-        zoom={{
-          maxZoomPixelRatio: 3,
-          scrollToZoom: true,
-        }}
-      />
+      {/* Не розмонтовуємо після закриття, інакше зникне анімація закриття */}
+      {lightboxMounted && (
+        <GameLightbox
+          open={lightboxOpen}
+          close={() => setLightboxOpen(false)}
+          index={lightboxIndex}
+          slides={slidesUrls}
+        />
+      )}
     </>
   );
 }

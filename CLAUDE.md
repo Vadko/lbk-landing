@@ -105,7 +105,7 @@ No `@fortawesome/react-fontawesome` — do not add it. Import icons from the dee
 
 ### Heavy libs are each confined to one or two files
 
-embla-carousel → `game-detail/GameGallery.tsx`; yet-another-react-lightbox → `GameGallery.tsx` + `ui/GalleryLightbox.tsx`; `@xyflow/react` → `tech-stack/TechStackDiagram.tsx`; canvas-confetti → runtime `import()` in `landing/hero/HeroDownload.tsx`; react-markdown + remark-breaks → `ui/MarkdownText.tsx` (allowlists `p,strong,em,ul,ol,li,br,code`, rewrites headings to `<p>`). Keep them there.
+embla-carousel → `game-detail/GameGallery.tsx`; yet-another-react-lightbox → `game-detail/GameLightbox.tsx` (lazy `dynamic()` from `GameGallery.tsx`, mounted on first open) + `ui/GalleryLightbox.tsx`; `@xyflow/react` → `tech-stack/TechStackDiagram.tsx`; canvas-confetti → runtime `import()` in `landing/hero/HeroDownload.tsx`; react-markdown + remark-breaks → `ui/MarkdownText.tsx` (allowlists `p,strong,em,ul,ol,li,br,code`, rewrites headings to `<p>`). Keep them there.
 
 ### Analytics and errors
 
