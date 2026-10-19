@@ -1,10 +1,13 @@
 import { AnimatedMill } from "./AnimatedMill";
+import { MillIcon } from "./MillIcon";
 
 export function MaintenancePage() {
   return (
     <section className="maintenance-page">
       <div className="maintenance-content">
-        <AnimatedMill className="maintenance-mill" />
+        <AnimatedMill>
+          <MillIcon className="maintenance-mill" />
+        </AnimatedMill>
         <h1 className="maintenance-title">Технічні роботи</h1>
         <p className="maintenance-text">
           Наразі проводяться технічні роботи. Будь ласка, поверніться пізніше.
