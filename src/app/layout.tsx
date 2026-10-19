@@ -10,7 +10,6 @@ import { Navbar } from "@/components/layout/Navbar";
 import { MaintenancePage } from "@/components/MaintenancePage";
 import { getGamesCount } from "@/lib/games-count";
 import { isMaintenanceMode } from "@/lib/maintenance";
-import { QueryProvider } from "@/providers/QueryProvider";
 
 const outfit = Outfit({
   subsets: ["latin", "latin-ext"],
@@ -163,17 +162,13 @@ export default async function RootLayout({
         <ClientUtilities />
         {isPageOnly ? (
           <>
-            <QueryProvider>
-              <main className="relative z-10">{children}</main>
-            </QueryProvider>
+            <main className="relative z-10">{children}</main>
             <IframeResizeMessenger />
           </>
         ) : (
           <>
             <Navbar />
-            <QueryProvider>
-              <main className="relative z-10 header-padding">{children}</main>
-            </QueryProvider>
+            <main className="relative z-10 header-padding">{children}</main>
             <Footer />
           </>
         )}
