@@ -118,8 +118,6 @@ export async function generateMetadata({
   };
 }
 
-export const revalidate = 3600;
-
 export default async function GamePage({ params }: PageProps) {
   const { slug } = await params;
   const translations = await getGamesBySlug(slug);

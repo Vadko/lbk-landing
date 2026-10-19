@@ -1,11 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getDeletedSlugs } from "@/lib/deleted-slugs-cache";
-import { getRedirect } from "@/lib/redirects";
+import { fetchRedirect } from "@/lib/redirects";
+import { statusPageResponse } from "@/lib/status-page";
 import { createServerClient } from "@/lib/supabase/server";
 
 // Decides the response for /games/* requests so deleted translations return a
 // real "410 Gone" — search engines drop the URL from the index quickly instead
 // of treating it as a soft 404.
+
 // Lightweight live check (HEAD count, no rows) — only runs for a tombstoned
 // slug, to confirm it's really gone and wasn't re-created under the same slug.
 async function slugExistsLive(slug: string): Promise<boolean> {
@@ -41,7 +43,6 @@ function parseGamePath(
 }
 
 async function decide(
-  request: NextRequest,
   slug: string,
   teamSlug: string | null
 ): Promise<NextResponse> {
@@ -62,16 +63,11 @@ async function decide(
   const canonicalPath = teamSlug
     ? `/games/${slug}/${teamSlug}`
     : `/games/${slug}`;
-  if (await getRedirect(canonicalPath)) {
+  if (await fetchRedirect(canonicalPath)) {
     return NextResponse.next();
   }
 
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-lbk-gone", "1");
-  return NextResponse.rewrite(new URL("/gone", request.nextUrl.origin), {
-    status: 410,
-    request: { headers: requestHeaders },
-  });
+  return statusPageResponse("/gone", 410);
 }
 
 /**
@@ -85,5 +81,5 @@ export async function resolveGamePath(
   if (!game) {
     return null;
   }
-  return decide(request, game.slug, game.teamSlug);
+  return decide(game.slug, game.teamSlug);
 }

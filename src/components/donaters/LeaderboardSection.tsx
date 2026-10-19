@@ -1,6 +1,7 @@
 import { faAward } from "@fortawesome/free-solid-svg-icons/faAward";
 import { faMedal } from "@fortawesome/free-solid-svg-icons/faMedal";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
+import { cacheLife } from "next/cache";
 import { SvgIcon } from "../ui/SvgIcon";
 
 interface Donator {
@@ -83,7 +84,10 @@ function formatLastDonation(isoDate: string): string {
   return `${months} ${pluralize(months, "місяць", "місяці", "місяців")} тому`;
 }
 
-export function LeaderboardSection() {
+export async function LeaderboardSection() {
+  "use cache";
+  cacheLife("days");
+
   return (
     <section className="section-margin">
       <div className="container">

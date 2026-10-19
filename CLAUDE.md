@@ -1,6 +1,6 @@
 # lbk-landing
 
-Public marketing + catalog site for LBK Launcher (`https://lbklauncher.com`): landing, game catalog, per-translation pages, donaters, collaboration, guides&tools, tech-stack, setup, legal. Next.js 16.2.12 App Router / React 19.2.6 / pnpm 11.4.0 / Node 22. Reads the **same Supabase Postgres as lbk-admin, but anon-key only**, with an ioredis key/value cache in front. All user-facing copy is Ukrainian; there is no i18n library and there are **no tests**.
+Public marketing + catalog site for LBK Launcher (`https://lbklauncher.com`): landing, game catalog, per-translation pages, donaters, collaboration, guides&tools, tech-stack, setup, legal. Next.js 16.4.2 App Router (`cacheComponents: true`) / React 19.2.6 / pnpm 11.4.0 / Node 22. Reads the **same Supabase Postgres as lbk-admin, but anon-key only**, with an ioredis key/value cache in front. All user-facing copy is Ukrainian; there is no i18n library and there are **no tests**.
 
 ## Commands
 
@@ -29,15 +29,18 @@ Request path: `src/proxy.ts` → route segment (`src/app/**`) → `src/lib/*` se
 
 ### Proxy (`src/proxy.ts`)
 
-Next 16 renamed `middleware.ts` to `proxy.ts`. There is no `src/middleware.ts`. It exports `proxy(request)` plus `config.matcher` (excludes `api`, `_next/static`, `_next/image`, `favicon.ico`, image extensions). It does three things, in order:
+Next 16 renamed `middleware.ts` to `proxy.ts`. There is no `src/middleware.ts`. It exports `proxy(request)` plus `config.matcher` (excludes `api`, `_next/static`, `_next/image`, `favicon.ico`, image extensions). It does four things, in order:
 
 1. 301 `www.` → apex.
-2. `resolveGamePath()` from `src/lib/proxy-games.ts` — returns `null` for anything that is not `/games/:slug[/:team]`, so the Redis + Supabase work only happens on game URLs. **Do not hoist that check**, or every request starts paying for it.
-3. `?page=only` → sets request header `x-page-only: 1`.
+2. When `MAINTENANCE_MODE=true` (server-only, read per request by `isMaintenanceMode()`, so a restart toggles it without a rebuild), answer every page with the `/maintenance` page at 503 + `Retry-After` (see below). That page hides the Navbar/Footer through `<BodyClass name="is-maintenance" />`.
+3. `resolveGamePath()` from `src/lib/proxy-games.ts` — returns `null` for anything that is not `/games/:slug[/:team]`, so the Redis + Supabase work only happens on game URLs. **Do not hoist that check**, or every request starts paying for it.
+4. `/games` with any query string → `X-Robots-Tag: noindex, follow`. It lives here because reading `searchParams` in `generateMetadata` would make `/games` dynamic.
+
+A status the proxy puts on a **rewrite** does not survive: the page render's `200` overwrites it (`app-page-runtime.js`, `cachedData.status`), and Next can render a page only as 200/401/403/404. So for 410 and 503, `statusPageResponse()` (`src/lib/status-page.ts`) fetches the prerendered `/gone` or `/maintenance` page from this same server (`http://localhost:$PORT`; Next sets `PORT` to the port it listens on) with header `x-lbk-status-page: 1` and re-sends it with the real status and `Cache-Control: no-store`; if that fetch fails, it sends the status with an empty body and logs. Without the header, the proxy answers `/gone` and `/maintenance` with a 404, so they are not browsable directly. Both are ordinary pages styled by `globals.css`.
 
 ### 410 Gone pipeline
 
-`deleted_games` tombstone table → cached slug set (`src/lib/deleted-slugs-cache.ts`) → on a hit, a live HEAD count on `games` (the slug may have been re-created) → then `slug_redirects` (a rename must 308, not 410) → only then `NextResponse.rewrite("/gone", { status: 410 })` with header `x-lbk-gone: 1`. `src/app/gone/page.tsx` calls `notFound()` when that header is absent, so `/gone` is not browsable directly. Anything rendering `/gone` must set the header.
+`deleted_games` tombstone table → cached slug set (`src/lib/deleted-slugs-cache.ts`) → on a hit, a live HEAD count on `games` (the slug may have been re-created) → then `slug_redirects` (a rename must 308, not 410) → only then `statusPageResponse("/gone", 410)` — the `src/app/gone/page.tsx` `StatusPage`, `noindex, follow`. The proxy runs outside a render, so it calls the uncached `fetchRedirect()`; `getRedirect()` wraps it in `"use cache"`, which throws in the proxy.
 
 ### Redirect semantics — keep the 308/307 split
 
@@ -45,7 +48,7 @@ Next 16 renamed `middleware.ts` to `proxy.ts`. There is no `src/middleware.ts`. 
 
 ### `?page=only` embed mode
 
-Proxy sets `x-page-only: 1`; `src/app/layout.tsx` reads it with `await headers()` and renders without the Navbar and Footer, swaps body class `main-bg` → `page-only`, and mounts `src/components/layout/IframeResizeMessenger.tsx` (postMessages `{type:"resize", height}` to the parent). Header name, query value and body classes must change together across `src/proxy.ts`, `src/app/layout.tsx`, `src/app/globals.css`.
+The layout always renders the Navbar and Footer, so pages stay prerenderable. `src/components/layout/PageOnlyScript.tsx` is an inline script at the top of `<head>` that sets `<html data-page-only>` before first paint; `html[data-page-only]` rules in `src/app/globals.css` hide `.navbar` / `.footer` and drop the `.main-bg` background, and `src/components/layout/IframeResizeMessenger.tsx` (postMessages `{type:"resize", height}` to the parent) only starts when the attribute is set. The query value, attribute name and CSS selectors must change together across those three files. Never style the shell from page content with `:has()`: Cache Components keeps visited routes mounted (hidden) inside React `<Activity>`, so their DOM still matches after navigating away. A page that changes `<body>` renders `<BodyClass name="…" />` (`src/components/layout/BodyClass.tsx`: an inline script that runs while a full load parses, plus an effect that Activity cleans up; `<body>` carries `suppressHydrationWarning` for that class); `is-game-detail` (from `GameBanner`) and `is-open-launcher` (from `OpenInLauncher`) work this way.
 
 ### Data layer
 
@@ -63,8 +66,8 @@ Proxy sets `x-page-only: 1`; `src/app/layout.tsx` reads it with `await headers()
 
 Two independent layers:
 
-- **Redis** (`src/lib/cache/`) — a two-method `Cache` interface (`get`/`set`). There is no `del`, no scan, no prefix. Exactly four keys: `games:count` (86400s, `src/lib/games-count.ts`, only written when count > 0, and the getter is wrapped in React `cache`), `games:deleted-slugs` (86400s), `landing:stats` (86400s), `github:releases` (3600s). Invalidation is TTL-only except `games:deleted-slugs`, which `refreshDeletedSlugsCache()` recomputes from the webhook. The site-description games count and landing stats can be 24h stale with no way to bust them short of flushing Redis.
-- **Next** — `export const revalidate` = 86400 on `src/app/(query)/page.tsx`, 3600 on the three `[slug]`/`[team]` routes; API routes set explicit `Cache-Control: public, s-maxage=…, stale-while-revalidate=…` (60/30 for games-list, 3600/60 for games-count, games-teams, github-releases, 86400/60 for landing-stats) and `X-Cache: HIT|MISS` on the two Redis-backed ones.
+- **Redis** (`src/lib/cache/`) — a two-method `Cache` interface (`get`/`set`). There is no `del`, no scan, no prefix. Exactly four keys: `games:count` (86400s, `src/lib/games-count.ts`, only written when count > 0, and the getter is a `"use cache"` function: `cacheLife("hours")`, or `"minutes"` when the count is 0 so a failed query is not baked into prerendered pages), `games:deleted-slugs` (86400s), `landing:stats` (86400s), `github:releases` (3600s). Invalidation is TTL-only except `games:deleted-slugs`, which `refreshDeletedSlugsCache()` recomputes from the webhook. The site-description games count and landing stats can be 24h stale with no way to bust them short of flushing Redis.
+- **Next** — Cache Components rejects `revalidate` / `dynamic` / `fetchCache` exports. Data is cached at the function: the five exports of `src/lib/games.ts`, `getRedirect()` and `sitemap.ts` are `"use cache"` + `cacheLife("hours")`; `LeaderboardSection` is `cacheLife("days")` because its «N днів тому» is relative to today. All `[slug]`/`[team]` pages prerender at build from `generateStaticParams`; unknown params render on demand. Cache Components fails the build when `generateStaticParams` returns `[]`, so `pnpm build` needs a reachable DB; do not add placeholder params to get around it (the Next docs advise against them). `/api/revalidate`'s `revalidatePath()` also discards these `"use cache"` entries for the revalidated paths. API routes set explicit `Cache-Control: public, s-maxage=…, stale-while-revalidate=…` (60/30 for games-list, 3600/60 for games-count, games-teams, github-releases, 86400/60 for landing-stats) and `X-Cache: HIT|MISS` on the two Redis-backed ones.
 
 Without `REDIS_URL`, `src/lib/cache/index.ts` silently substitutes a `MemoryCache` (a per-process `Map`, with the instance parked on `globalThis`). `RedisCache` swallows every error and returns null/undefined. A broken Redis degrades to hitting Supabase on every request with no visible failure — verify with the `X-Cache` header, not by "the site is up".
 
@@ -83,11 +86,11 @@ Authenticates on header `x-revalidate-secret` against `REVALIDATE_SECRET`; body 
 
 ### SEO
 
-`metadataBase` and the `%s | LBK Launcher` title template exist only in `src/app/layout.tsx`. Game routes deliberately break out with `title: { absolute: … }`. Canonicals are hardcoded `https://lbklauncher.com/...` strings in 10 files rather than derived. Deliberate `noindex`: `/games` with any searchParam present, `/games/[slug]` when there is exactly one translation, all of `/open/*`, `/gone`. JSON-LD is a raw `<script type="application/ld+json">` with `dangerouslySetInnerHTML` (root layout plus `games/[slug]/page.tsx` and `GameDetailArticle.tsx`); the root layout escapes `<` per Next's XSS guidance.
+`metadataBase` and the `%s | LBK Launcher` title template exist only in `src/app/layout.tsx`. Game routes deliberately break out with `title: { absolute: … }`. Canonicals are hardcoded `https://lbklauncher.com/...` strings in 10 files rather than derived. Deliberate `noindex`: `/games` with any searchParam present (proxy `X-Robots-Tag`), `/games/[slug]` when there is exactly one translation, all of `/open/*`, `/gone`, `/maintenance`. JSON-LD is a raw `<script type="application/ld+json">` with `dangerouslySetInnerHTML` (root layout plus `games/[slug]/page.tsx` and `GameDetailArticle.tsx`); the root layout escapes `<` per Next's XSS guidance.
 
 `src/lib/game-jsonld.ts` FAQ markup must repeat the visible FAQ text verbatim — `generateFAQLD` and `GameFAQ.tsx` both call `isWorkshopTranslation(game)` (`src/lib/types.ts`), and `GameInstallSteps.tsx` branches on an `isWorkshop` prop that `GameDetailArticle.tsx` computes the same way. Edit copy in one and you must edit the others.
 
-`src/app/sitemap.ts` is hand-maintained and has no `revalidate`, so it is prerendered once at build (`○` in the route table, served with `x-nextjs-cache: HIT`): new translations appear in it only after the next deploy. Its build-time Supabase fetch is stored in `.next/cache/fetch-cache` with a one-year lifetime and reused by later builds, so a stale local `.next/cache` makes `pnpm build` emit an old sitemap. It emits `/games/{slug}` only when a slug has more than one translation, and omits `/collaboration`, `/donaters` and `/guides&tools` (`/tech-stack` is listed).
+`src/app/sitemap.ts` is hand-maintained and `"use cache"` + `cacheLife("hours")`: prerendered at build (`○`), then refreshed at most hourly. It emits `/games/{slug}` only when a slug has more than one translation, and omits `/collaboration`, `/donaters` and `/guides&tools` (`/tech-stack` is listed).
 
 ### Rendering
 
@@ -149,7 +152,7 @@ After any change: `pnpm format && pnpm typecheck && pnpm lint && pnpm knip`. For
 
 ## Do not
 
-- Do not assume ISR is working. `src/app/layout.tsx` awaits `headers()` and no PPR/`cacheComponents` flag is set, which likely opts the whole tree into dynamic rendering despite the `revalidate` exports and `generateStaticParams`. **Verify in the `next build` route table before relying on prerendering.**
+- Do not read `headers()` / `cookies()` / `searchParams` or call `new Date()` outside `"use cache"` in the layout or a page: under Cache Components it either fails `next build` or turns a prerendered route dynamic. Check the `next build` route table (`○` / `●` / `◐`) after any layout or data-layer change.
 - Do not add a raw `games` query without `.eq("approved", true).eq("hide", false)`.
 - Do not rename or relocate `src/proxy.ts` — it is Next 16's middleware and knip's Next plugin recognizes it by name.
 - Do not retype `public/assets/Logo-FanСon.png`. The `С` is U+0421 CYRILLIC CAPITAL ES, and `src/components/landing/PartnerSection.tsx` references it with the same character. Copy-paste the path; a Latin `C` is a silent 404 that looks correct in the diff.

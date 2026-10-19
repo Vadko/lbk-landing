@@ -4,6 +4,10 @@ import { useEffect } from "react";
 
 export function IframeResizeMessenger() {
   useEffect(() => {
+    if (!document.documentElement.hasAttribute("data-page-only")) {
+      return;
+    }
+
     const postHeight = () => {
       window.parent.postMessage(
         { type: "resize", height: document.documentElement.scrollHeight },

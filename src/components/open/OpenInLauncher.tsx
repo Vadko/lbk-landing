@@ -9,6 +9,7 @@ import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useReducer, useRef } from "react";
+import { BodyClass } from "@/components/layout/BodyClass";
 import { ActionIcon } from "@/components/ui/ActionIcon";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
@@ -138,6 +139,7 @@ export function OpenInLauncher({
 
   return (
     <div className="open-launcher-page">
+      <BodyClass name="is-open-launcher" />
       {bannerUrl && (
         <div
           className="open-launcher-bg"

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BodyClass } from "@/components/layout/BodyClass";
 import { BannerParallax } from "./BannerParallax";
 
 interface GameBannerProps {
@@ -10,6 +11,7 @@ interface GameBannerProps {
 export function GameBanner({ bannerUrl, logoUrl, name }: GameBannerProps) {
   return (
     <div className="game-banner">
+      <BodyClass name="is-game-detail" />
       {bannerUrl ? (
         <BannerParallax>
           <Image
