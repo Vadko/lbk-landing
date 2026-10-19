@@ -87,7 +87,7 @@ Authenticates on header `x-revalidate-secret` against `REVALIDATE_SECRET`; body 
 
 `src/lib/game-jsonld.ts` FAQ markup must repeat the visible FAQ text verbatim — `generateFAQLD` and `GameFAQ.tsx` both call `isWorkshopTranslation(game)` (`src/lib/types.ts`), and `GameInstallSteps.tsx` branches on an `isWorkshop` prop that `GameDetailArticle.tsx` computes the same way. Edit copy in one and you must edit the others.
 
-`src/app/sitemap.ts` is hand-maintained, has no `revalidate` (Supabase hit per fetch), emits `/games/{slug}` only when a slug has more than one translation, and omits `/collaboration`, `/donaters` and `/guides&tools` (`/tech-stack` is listed).
+`src/app/sitemap.ts` is hand-maintained and has no `revalidate`, so it is prerendered once at build (`○` in the route table, served with `x-nextjs-cache: HIT`): new translations appear in it only after the next deploy. Its build-time Supabase fetch is stored in `.next/cache/fetch-cache` with a one-year lifetime and reused by later builds, so a stale local `.next/cache` makes `pnpm build` emit an old sitemap. It emits `/games/{slug}` only when a slug has more than one translation, and omits `/collaboration`, `/donaters` and `/guides&tools` (`/tech-stack` is listed).
 
 ### Rendering
 
@@ -111,7 +111,7 @@ embla-carousel → `game-detail/GameGallery.tsx`; yet-another-react-lightbox →
 
 Page views go through Cloudflare Zaraz (`/cdn-cgi/zaraz/i.js` via `next/script` in the root layout). `src/lib/analytics.ts` only fires when `window.zaraz` exists, so off Cloudflare every event is a silent no-op — analytics cannot be verified in dev. The exception is `trackFailedSearch`, which POSTs to the Supabase Edge Function `/functions/v1/track` with the anon key and a `localStorage` UUID (`lb_analytics_uid`), only for queries ≥ 3 chars, debounced 1500ms in `GamesList`. Always add events as thin named wrappers in `src/lib/analytics.ts`; never call `window.zaraz.track` at a call site, and never let analytics throw.
 
-Sentry SDK points at a self-hosted GlitchTip (`SENTRY_URL`/DSN), `enabled: NODE_ENV === "production"`, with `captureConsoleIntegration({ levels: ["error"] })` in all three configs (`instrumentation-client.ts`, `sentry.server.config.ts`, `sentry.edge.config.ts`). Every production `console.error` becomes an issue, so a flaky Redis or Supabase floods the tracker — think before adding one to a hot path.
+Sentry SDK points at a self-hosted GlitchTip (`SENTRY_URL`/DSN), `enabled: NODE_ENV === "production"`, with `captureConsoleIntegration({ levels: ["error"] })` in all three configs (`instrumentation-client.ts`, `sentry.server.config.ts`, `sentry.edge.config.ts`). Every production `console.error` becomes an issue, so a flaky Redis or Supabase floods the tracker — think before adding one to a hot path. All three spread `sentryV10Baseline` from `src/lib/sentry-baseline.ts`: SDK v11 collects more by default (user info/IP, cookies, headers, bodies) and attaches synthetic stack traces, and that module pins the v10 behaviour — loosening it is a privacy decision, not a cleanup. `bundleSizeOptimizations` in `next.config.ts` is webpack-only; Sentry does not support tree-shaking under Turbopack, so it does nothing for this build (measured).
 
 ## Conventions
 
