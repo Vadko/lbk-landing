@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import { headers } from "next/headers";
 import Script from "next/script";
 import "./globals.css";
 import { ClientUtilities } from "@/components/layout/ClientUtilities";
 import { Footer } from "@/components/layout/Footer";
 import { IframeResizeMessenger } from "@/components/layout/IframeResizeMessenger";
 import { Navbar } from "@/components/layout/Navbar";
-import { MaintenancePage } from "@/components/MaintenancePage";
+import { PageOnlyScript } from "@/components/layout/PageOnlyScript";
 import { getGamesCount } from "@/lib/games-count";
-import { isMaintenanceMode } from "@/lib/maintenance";
 
 const outfit = Outfit({
   subsets: ["latin", "latin-ext"],
@@ -98,21 +96,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  if (isMaintenanceMode) {
-    return (
-      <html lang="uk" className={outfit.variable}>
-        <body className="antialiased main-bg">
-          <main className="relative z-10">
-            <MaintenancePage />
-          </main>
-        </body>
-      </html>
-    );
-  }
-
   const description = appDescription(await getGamesCount());
-  const headersList = await headers();
-  const isPageOnly = headersList.get("x-page-only") === "1";
 
   return (
     <html
@@ -122,6 +106,7 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
     >
       <head>
+        <PageOnlyScript />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -151,7 +136,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={`antialiased ${isPageOnly ? "page-only" : "main-bg"} `}>
+      <body className="antialiased main-bg" suppressHydrationWarning>
         {/* Cloudflare Zaraz — executable JS, so loaded via next/script (auto-inject
             is off). Unlike JSON-LD above, which is data and stays a native tag. */}
         <Script
@@ -160,18 +145,10 @@ export default async function RootLayout({
           strategy="afterInteractive"
         />
         <ClientUtilities />
-        {isPageOnly ? (
-          <>
-            <main className="relative z-10">{children}</main>
-            <IframeResizeMessenger />
-          </>
-        ) : (
-          <>
-            <Navbar />
-            <main className="relative z-10 header-padding">{children}</main>
-            <Footer />
-          </>
-        )}
+        <Navbar />
+        <main className="relative z-10 header-padding">{children}</main>
+        <Footer />
+        <IframeResizeMessenger />
       </body>
     </html>
   );

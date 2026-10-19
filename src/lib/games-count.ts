@@ -1,13 +1,16 @@
-import { cache } from "react";
+import { cacheLife } from "next/cache";
 import { getFromCache, setCache } from "@/lib/cache";
 import { createServerClient } from "@/lib/supabase/server";
 
 const GAMES_COUNT_KEY = "games:count";
 const GAMES_COUNT_TTL_SECONDS = 86_400;
 
-export const getGamesCount = cache(async (): Promise<number> => {
+export async function getGamesCount(): Promise<number> {
+  "use cache";
+
   const cached = await getFromCache<number>(GAMES_COUNT_KEY);
   if (cached !== null) {
+    cacheLife("hours");
     return cached;
   }
 
@@ -19,6 +22,9 @@ export const getGamesCount = cache(async (): Promise<number> => {
   const value = count ?? 0;
   if (value > 0) {
     await setCache(GAMES_COUNT_KEY, value, GAMES_COUNT_TTL_SECONDS);
+    cacheLife("hours");
+  } else {
+    cacheLife("minutes");
   }
   return value;
-});
+}

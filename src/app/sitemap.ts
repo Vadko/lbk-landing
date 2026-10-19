@@ -1,8 +1,12 @@
 import type { MetadataRoute } from "next";
+import { cacheLife } from "next/cache";
 import { createServerClient } from "@/lib/supabase/server";
 import { teamToSlug } from "@/lib/transliterate";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  "use cache";
+  cacheLife("hours");
+
   const supabase = createServerClient();
 
   const { data: games } = await supabase

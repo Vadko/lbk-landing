@@ -1,9 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { isMaintenanceMode } from "@/lib/maintenance";
 import { resolveGamePath } from "@/lib/proxy-games";
+import { STATUS_PAGE_HEADER, statusPageResponse } from "@/lib/status-page";
 
 export async function proxy(request: NextRequest) {
-  const { pathname, search, searchParams } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
   const hostname = request.headers.get("host") || "";
   const protocol = request.headers.get("x-forwarded-proto") || "https";
 
@@ -14,12 +15,19 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(newUrl, { status: 301 });
   }
 
-  // 503 + Retry-After so search engines keep the indexed pages instead of the stub.
-  if (isMaintenanceMode) {
-    return NextResponse.rewrite(new URL("/maintenance", request.url), {
-      status: 503,
-      headers: { "Retry-After": "3600" },
+  // Only the proxy's own fetch reaches the status pages; a direct visit gets the 404 it would without them
+  if (pathname === "/gone" || pathname === "/maintenance") {
+    if (request.headers.get(STATUS_PAGE_HEADER) === "1") {
+      return NextResponse.next();
+    }
+    return NextResponse.rewrite(new URL("/_not-found", request.url), {
+      status: 404,
     });
+  }
+
+  // 503 + Retry-After so search engines keep the indexed pages instead of the stub
+  if (isMaintenanceMode()) {
+    return statusPageResponse("/maintenance", 503, { "Retry-After": "3600" });
   }
 
   // 410 Gone / 308 for deleted and renamed translations.
@@ -28,14 +36,12 @@ export async function proxy(request: NextRequest) {
     return gameResponse;
   }
 
-  // Pass ?page=only through as a header so the layout can drop the
-  // header/footer on the server, with no client-render flash.
-  const requestHeaders = new Headers(request.headers);
-  if (searchParams.get("page") === "only") {
-    requestHeaders.set("x-page-only", "1");
+  const response = NextResponse.next();
+  // Filtered catalog URLs stay out of the index; reading searchParams in metadata would make /games dynamic
+  if (pathname === "/games" && search) {
+    response.headers.set("X-Robots-Tag", "noindex, follow");
   }
-
-  return NextResponse.next({ request: { headers: requestHeaders } });
+  return response;
 }
 
 // Apply the proxy to every route except static files and Next.js API routes

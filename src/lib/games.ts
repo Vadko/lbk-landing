@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import { createServerClient } from "@/lib/supabase/server";
 import { teamToSlug } from "@/lib/transliterate";
@@ -10,6 +11,9 @@ import type {
 
 // Get all translations for a specific game slug
 export async function getGamesBySlug(slug: string): Promise<Game[]> {
+  "use cache";
+  cacheLife("hours");
+
   const supabase = createServerClient();
 
   const { data, error } = await supabase
@@ -32,6 +36,9 @@ export async function getGameBySlugAndTeamSlug(
   slug: string,
   teamSlug: string
 ): Promise<Game | null> {
+  "use cache";
+  cacheLife("hours");
+
   const supabase = createServerClient();
 
   // Get all games with this slug and find matching team by transliterated slug
@@ -53,6 +60,9 @@ export async function getGameBySlugAndTeamSlug(
 
 // Get unique game slugs (for generating static paths)
 export async function getAllGameSlugs(): Promise<string[]> {
+  "use cache";
+  cacheLife("hours");
+
   const supabase = createServerClient();
 
   const { data, error } = await supabase
@@ -74,6 +84,9 @@ export async function getAllGameSlugs(): Promise<string[]> {
 export async function getAllGameSlugsWithTeams(): Promise<
   { slug: string; teamSlug: string }[]
 > {
+  "use cache";
+  cacheLife("hours");
+
   const supabase = createServerClient();
 
   const { data, error } = await supabase
@@ -94,6 +107,9 @@ export async function getAllGameSlugsWithTeams(): Promise<
 
 // Fetch first page of games for SSR (no spinner on initial load)
 export async function getInitialGames(): Promise<GamesGroupedResponse> {
+  "use cache";
+  cacheLife("hours");
+
   const supabase = createServerClient();
   const limit = GAMES_PER_PAGE;
 

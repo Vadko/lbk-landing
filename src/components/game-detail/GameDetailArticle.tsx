@@ -71,7 +71,9 @@ export function GameDetailArticle({
             <span>/</span>
             {otherTranslations.length > 0 ? (
               <>
-                <Link href={`/games/${slug}`}>{game.name}</Link>
+                <Link href={`/games/${slug}`} prefetch>
+                  {game.name}
+                </Link>
                 <span>/</span>
                 <span className="current">{game.team}</span>
               </>
@@ -119,6 +121,7 @@ export function GameDetailArticle({
                       <Link
                         key={t.id}
                         href={`/games/${slug}/${teamToSlug(t.team)}`}
+                        prefetch
                         className="game-translation-link"
                       >
                         <span className="game-translation-team">{t.team}</span>

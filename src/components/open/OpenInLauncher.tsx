@@ -9,6 +9,7 @@ import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useReducer, useRef } from "react";
+import { BodyClass } from "@/components/layout/BodyClass";
 import { ActionIcon } from "@/components/ui/ActionIcon";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
@@ -138,6 +139,7 @@ export function OpenInLauncher({
 
   return (
     <div className="open-launcher-page">
+      <BodyClass name="is-open-launcher" />
       {bannerUrl && (
         <div
           className="open-launcher-bg"
@@ -174,7 +176,11 @@ export function OpenInLauncher({
           <div className="open-launcher-status open-launcher-success">
             <SvgIcon icon={faCheckCircle} />
             <p>Лаунчер відкрито!</p>
-            <Link href={gamePageUrl} className="open-launcher-game-link">
+            <Link
+              href={gamePageUrl}
+              prefetch
+              className="open-launcher-game-link"
+            >
               Перейти на сторінку гри
               <SvgIcon icon={faArrowRight} />
             </Link>
@@ -207,7 +213,11 @@ export function OpenInLauncher({
               </button>
             </div>
 
-            <Link href={gamePageUrl} className="open-launcher-game-link">
+            <Link
+              href={gamePageUrl}
+              prefetch
+              className="open-launcher-game-link"
+            >
               Детальніше про переклад <SvgIcon icon={faArrowRight} />
             </Link>
           </div>

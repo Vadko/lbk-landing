@@ -52,8 +52,18 @@ body {
   flex-direction: column;
 }
 
-body.page-only {
+html[data-page-only] .main-bg {
   background: unset;
+}
+
+html[data-page-only] .navbar,
+html[data-page-only] .footer {
+  display: none;
+}
+
+html[data-page-only] .header-padding {
+  padding-top: 0;
+  flex: 0 1 auto;
 }
 
 .main-bg {
@@ -69,17 +79,13 @@ body.page-only {
   }
 }
 
-body:has(.game-detail) {
+body.is-game-detail {
   background-image: none;
 }
 
 .header-padding {
   padding-top: calc(100px + var(--navbar-height));
   flex: 1 0 auto;
-}
-
-main.header-padding:has(.open-launcher-page) {
-  flex: 0 0 auto;
 }
 
 @media screen and (max-width: 767px) {
@@ -1644,6 +1650,15 @@ p + .why-btn {
 }
 
 /* Maintenance */
+body.is-maintenance .navbar,
+body.is-maintenance .footer {
+  display: none;
+}
+
+body.is-maintenance .header-padding {
+  padding-top: 0;
+}
+
 .maintenance-page {
   display: flex;
   align-items: center;
@@ -3935,7 +3950,7 @@ a.release-file-name svg {
 /* ==========================================
    Open in Launcher Page
    ========================================== */
-main.header-padding:has(.open-launcher-page) {
+body.is-open-launcher main.header-padding {
   padding-top: 0;
   flex: 0 0 auto;
 }

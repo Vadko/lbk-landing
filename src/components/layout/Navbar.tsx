@@ -7,7 +7,6 @@ import { faYoutube } from "@fortawesome/free-brands-svg-icons/faYoutube";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { trackViewGamesCatalog } from "@/lib/analytics";
@@ -76,7 +75,6 @@ const navbarSocials = [
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLDivElement | null>(null);
-  const pathname = usePathname();
 
   useEffect(() => {
     const handleResize = () => {
@@ -132,7 +130,7 @@ export function Navbar() {
                     if (link.track === "trackViewGamesCatalog") {
                       trackViewGamesCatalog();
                     }
-                    if (link.href === "/" && pathname === "/") {
+                    if (link.href === "/" && window.location.pathname === "/") {
                       e.preventDefault();
                       window.scrollTo({ top: 0, behavior: "smooth" });
                       window.history.replaceState(null, "", "/");
@@ -199,7 +197,7 @@ export function Navbar() {
                     if (link.track === "trackViewGamesCatalog") {
                       trackViewGamesCatalog();
                     }
-                    if (link.href === "/" && pathname === "/") {
+                    if (link.href === "/" && window.location.pathname === "/") {
                       e.preventDefault();
                       window.scrollTo({ top: 0, behavior: "smooth" });
                       window.history.replaceState(null, "", "/");

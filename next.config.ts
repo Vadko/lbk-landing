@@ -6,8 +6,11 @@ const commit = process.env.SOURCE_COMMIT?.slice(0, 7);
 const release = commit ? `${version}-${commit}` : version;
 
 const nextConfig: NextConfig = {
+  cacheComponents: true,
+  partialPrefetching: true,
   experimental: {
     agentUpgrade: "latest",
+    hideLogsAfterAbort: true,
     // A .next/cache restored between deploys made Turbopack ship a stale CSS chunk alongside fresh JS.
     turbopackFileSystemCacheForBuild: false,
     inlineCss: true,

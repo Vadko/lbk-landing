@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { GamesList } from "@/components/games/GamesList";
 import { getInitialGames } from "@/lib/games";
 import { getGamesCount } from "@/lib/games-count";
 
-export async function generateMetadata({
-  searchParams,
-}: {
-  searchParams: Promise<{ team?: string }>;
-}): Promise<Metadata> {
-  const params = await searchParams;
+export async function generateMetadata(): Promise<Metadata> {
   const count = await getGamesCount();
-  const baseMetadata: Metadata = {
+  return {
     title: `Каталог ігор з українською локалізацією — ${count}+ перекладів`,
     description:
       "Найповніша база ігор з українським перекладом. Шукайте українізатори за назвою, жанром або автором. Дізнайтеся прогрес перекладу та встановлюйте локалізації в один клік через лаунчер.",
@@ -31,19 +25,6 @@ export async function generateMetadata({
       canonical: "https://lbklauncher.com/games",
     },
   };
-
-  // Query params (filters) present — keep the page out of the index
-  if (params && Object.keys(params).length > 0) {
-    return {
-      ...baseMetadata,
-      robots: {
-        index: false,
-        follow: true,
-      },
-    };
-  }
-
-  return baseMetadata;
 }
 
 export default async function GamesPage() {
@@ -59,15 +40,7 @@ export default async function GamesPage() {
           </p>
         </div>
 
-        <Suspense
-          fallback={
-            <div className="loading-spinner">
-              <div className="spinner" />
-            </div>
-          }
-        >
-          <GamesList initialData={initialGames} />
-        </Suspense>
+        <GamesList initialData={initialGames} />
       </div>
     </section>
   );

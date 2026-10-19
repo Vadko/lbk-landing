@@ -14,6 +14,8 @@ interface PageProps {
   params: Promise<{ slug: string; team: string }>;
 }
 
+export const instant = false;
+
 export async function generateStaticParams() {
   const slugsWithTeams = await getAllGameSlugsWithTeams();
   return slugsWithTeams.map(({ slug, teamSlug }) => ({
@@ -82,8 +84,6 @@ export async function generateMetadata({
     },
   };
 }
-
-export const revalidate = 3600;
 
 export default async function GameTranslationPage({ params }: PageProps) {
   const { slug, team: teamSlugParam } = await params;
