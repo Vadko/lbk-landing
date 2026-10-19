@@ -16,6 +16,8 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const instant = false;
+
 export async function generateStaticParams() {
   const slugs = await getAllGameSlugs();
   return slugs.map((slug) => ({ slug }));
@@ -179,6 +181,7 @@ export default async function GamePage({ params }: PageProps) {
                   <Link
                     key={translation.id}
                     href={`/games/${slug}/${teamToSlug(translation.team)}`}
+                    prefetch
                     className="game-translation-card"
                   >
                     <div className="game-translation-card-image">

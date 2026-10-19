@@ -5,21 +5,92 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesPaginated, useTeams } from "@/hooks/useGames";
 import { trackFailedSearch, trackViewSearchResults } from "@/lib/analytics";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import type { GamesGroupedResponse } from "@/lib/types";
 import { GameCard } from "./GameCard";
-import { GamesSearch } from "./GamesSearch";
+import { GamesSearch, type GamesSearchProps } from "./GamesSearch";
 
 interface GamesListProps {
   initialData?: GamesGroupedResponse;
 }
 
+interface GamesListViewProps extends GamesListProps {
+  searchParams: Pick<URLSearchParams, "get">;
+}
+
+interface GamesCatalogProps {
+  searchProps: GamesSearchProps;
+  data: GamesGroupedResponse | undefined;
+  isLoading: boolean;
+  error: unknown;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+}
+
+const noop = () => {};
+
+// GamesListView with no URL params, minus React Query: it reads the clock, which the prerender rejects
+const DEFAULT_SEARCH_PROPS: GamesSearchProps = {
+  value: "",
+  onChange: noop,
+  selectedStatuses: [],
+  onStatusesChange: noop,
+  selectedAuthors: [],
+  onAuthorsChange: noop,
+  authors: [],
+  authorsLoading: true,
+  sortBy: "name",
+  onSortChange: noop,
+  hasVoice: false,
+  onVoiceChange: noop,
+  hasAchievements: false,
+  onAchievementsChange: noop,
+  fromWorkshop: false,
+  onWorkshopChange: noop,
+  selectedTranslationTypes: [],
+  onTranslationTypesChange: noop,
+  onClearStatusFilters: noop,
+};
+
+// useSearchParams() makes the prerender skip its subtree, so the fallback puts the unfiltered catalog into the static HTML
 export function GamesList({ initialData }: GamesListProps) {
+  return (
+    <Suspense
+      fallback={
+        <GamesCatalog
+          searchProps={DEFAULT_SEARCH_PROPS}
+          data={initialData}
+          isLoading={false}
+          error={null}
+          currentPage={1}
+          onPageChange={noop}
+        />
+      }
+    >
+      <GamesListFromUrl initialData={initialData} />
+    </Suspense>
+  );
+}
+
+function GamesListFromUrl({ initialData }: GamesListProps) {
   const searchParams = useSearchParams();
+  return (
+    <GamesListView initialData={initialData} searchParams={searchParams} />
+  );
+}
+
+function GamesListView({ initialData, searchParams }: GamesListViewProps) {
   const router = useRouter();
 
   const [search, setSearch] = useState("");
@@ -231,9 +302,7 @@ export function GamesList({ initialData }: GamesListProps) {
     selectedTranslationTypes
   );
 
-  const allGames = data?.games ?? [];
   const total = data?.total ?? 0;
-  const totalPages = Math.ceil(total / GAMES_PER_PAGE);
 
   // Track search results when user has a search query and results arrive
   const lastTrackedSearch = useRef("");
@@ -289,28 +358,52 @@ export function GamesList({ initialData }: GamesListProps) {
   ]);
 
   return (
+    <GamesCatalog
+      searchProps={{
+        value: search,
+        onChange: setSearch,
+        selectedStatuses,
+        onStatusesChange: handleStatusesChange,
+        selectedAuthors,
+        onAuthorsChange: handleAuthorsChange,
+        authors,
+        authorsLoading,
+        sortBy,
+        onSortChange: handleSortChange,
+        hasVoice,
+        onVoiceChange: handleVoiceChange,
+        hasAchievements,
+        onAchievementsChange: handleAchievementsChange,
+        fromWorkshop,
+        onWorkshopChange: handleWorkshopChange,
+        selectedTranslationTypes,
+        onTranslationTypesChange: handleTranslationTypesChange,
+        onClearStatusFilters: handleClearStatusFilters,
+      }}
+      data={data}
+      isLoading={isLoading}
+      error={error}
+      currentPage={currentPage}
+      onPageChange={handlePageChange}
+    />
+  );
+}
+
+function GamesCatalog({
+  searchProps,
+  data,
+  isLoading,
+  error,
+  currentPage,
+  onPageChange,
+}: GamesCatalogProps) {
+  const allGames = data?.games ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = Math.ceil(total / GAMES_PER_PAGE);
+
+  return (
     <div>
-      <GamesSearch
-        value={search}
-        onChange={setSearch}
-        selectedStatuses={selectedStatuses}
-        onStatusesChange={handleStatusesChange}
-        selectedAuthors={selectedAuthors}
-        onAuthorsChange={handleAuthorsChange}
-        authors={authors}
-        authorsLoading={authorsLoading}
-        sortBy={sortBy}
-        onSortChange={handleSortChange}
-        hasVoice={hasVoice}
-        onVoiceChange={handleVoiceChange}
-        hasAchievements={hasAchievements}
-        onAchievementsChange={handleAchievementsChange}
-        fromWorkshop={fromWorkshop}
-        onWorkshopChange={handleWorkshopChange}
-        selectedTranslationTypes={selectedTranslationTypes}
-        onTranslationTypesChange={handleTranslationTypesChange}
-        onClearStatusFilters={handleClearStatusFilters}
-      />
+      <GamesSearch {...searchProps} />
 
       {!isLoading && (
         <p className="games-count">
@@ -348,7 +441,7 @@ export function GamesList({ initialData }: GamesListProps) {
             <div className="pagination">
               <button
                 className="pagination-btn"
-                onClick={() => handlePageChange(currentPage - 1)}
+                onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
                 aria-label="Попередня сторінка"
               >
@@ -373,7 +466,7 @@ export function GamesList({ initialData }: GamesListProps) {
                     className={`pagination-btn ${
                       currentPage === pageNum ? "active" : ""
                     }`}
-                    onClick={() => handlePageChange(pageNum)}
+                    onClick={() => onPageChange(pageNum)}
                     aria-label={`Сторінка ${pageNum}`}
                     aria-current={currentPage === pageNum ? "page" : undefined}
                   >
@@ -384,7 +477,7 @@ export function GamesList({ initialData }: GamesListProps) {
 
               <button
                 className="pagination-btn"
-                onClick={() => handlePageChange(currentPage + 1)}
+                onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
                 aria-label="Наступна сторінка"
               >

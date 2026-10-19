@@ -176,7 +176,11 @@ export function OpenInLauncher({
           <div className="open-launcher-status open-launcher-success">
             <SvgIcon icon={faCheckCircle} />
             <p>Лаунчер відкрито!</p>
-            <Link href={gamePageUrl} className="open-launcher-game-link">
+            <Link
+              href={gamePageUrl}
+              prefetch
+              className="open-launcher-game-link"
+            >
               Перейти на сторінку гри
               <SvgIcon icon={faArrowRight} />
             </Link>
@@ -209,7 +213,11 @@ export function OpenInLauncher({
               </button>
             </div>
 
-            <Link href={gamePageUrl} className="open-launcher-game-link">
+            <Link
+              href={gamePageUrl}
+              prefetch
+              className="open-launcher-game-link"
+            >
               Детальніше про переклад <SvgIcon icon={faArrowRight} />
             </Link>
           </div>

@@ -25,7 +25,7 @@ import { AIEditedBadgeIcon } from "@/components/ui/icons/AIEditedBadgeIcon";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { trackViewTranslatorsPage } from "@/lib/analytics";
 
-interface GamesSearchProps {
+export interface GamesSearchProps {
   value: string;
   onChange: (value: string) => void;
   // Multi-select statuses

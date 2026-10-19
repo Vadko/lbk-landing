@@ -45,6 +45,7 @@ function TranslationRow({
   return (
     <Link
       href={`/games/${slug}/${teamToSlug(translation.team)}`}
+      prefetch
       className="game-card-translation"
     >
       <span className="game-card-translation-team">
@@ -88,7 +89,7 @@ export function GameCard({ game, priority }: GameCardProps) {
 
   return (
     <div className="game-card">
-      <Link href={cardHref} className="game-card-image-link">
+      <Link href={cardHref} prefetch className="game-card-image-link">
         <div className="game-card-image">
           {imageUrl ? (
             <Image
@@ -108,7 +109,7 @@ export function GameCard({ game, priority }: GameCardProps) {
       </Link>
 
       <div className="game-card-content">
-        <Link href={cardHref}>
+        <Link href={cardHref} prefetch>
           <h3 className="game-card-title">{game.name}</h3>
         </Link>
 

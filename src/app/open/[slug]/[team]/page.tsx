@@ -13,6 +13,8 @@ interface PageProps {
   params: Promise<{ slug: string; team: string }>;
 }
 
+export const instant = false;
+
 export async function generateStaticParams() {
   const slugsWithTeams = await getAllGameSlugsWithTeams();
   return slugsWithTeams.map(({ slug, teamSlug }) => ({

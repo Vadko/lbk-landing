@@ -7,6 +7,7 @@ const release = commit ? `${version}-${commit}` : version;
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  partialPrefetching: true,
   experimental: {
     agentUpgrade: "latest",
     hideLogsAfterAbort: true,

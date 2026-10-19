@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { GamesList } from "@/components/games/GamesList";
 import { getInitialGames } from "@/lib/games";
 import { getGamesCount } from "@/lib/games-count";
@@ -41,15 +40,7 @@ export default async function GamesPage() {
           </p>
         </div>
 
-        <Suspense
-          fallback={
-            <div className="loading-spinner">
-              <div className="spinner" />
-            </div>
-          }
-        >
-          <GamesList initialData={initialGames} />
-        </Suspense>
+        <GamesList initialData={initialGames} />
       </div>
     </section>
   );
