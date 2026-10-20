@@ -1,24 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
-export function SupportSection() {
+export async function SupportSection() {
+  const t = await getTranslations("donaters.support");
+
   return (
     <section className="support-section">
       <div className="container">
         <div className="support-card glass-bg">
           <Image
             src="/assets/help-box.svg"
-            alt="Іконка підтримки LBK Launcher"
+            alt={t("imageAlt")}
             width={155}
             height={150}
           />
 
           <div className="support-card__content">
-            <h2 className="support-card__title">Підтримай LBK Launcher</h2>
-            <p className="support-card__description">
-              Кожен донат допомагає нам орендувати сервери, оплачувати ліцензії
-              та підтримувати творців українських перекладів.
-            </p>
+            <h2 className="support-card__title">{t("title")}</h2>
+            <p className="support-card__description">{t("description")}</p>
           </div>
           <div className="support-card__actions">
             <a
@@ -27,7 +27,7 @@ export function SupportSection() {
               rel="noopener noreferrer"
               href="https://donatello.to/atlantDeMaPeine?g=pidtrimka-roboti-lbk-launcher"
             >
-              Задонатити зараз
+              {t("donate")}
             </a>
             <Link
               className="btn glass-bg"
@@ -35,7 +35,7 @@ export function SupportSection() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Дізнатися більше
+              {t("learnMore")}
             </Link>
           </div>
         </div>

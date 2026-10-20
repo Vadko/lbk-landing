@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import type { ComponentType, SVGProps } from "react";
 import {
   CodeIcon,
@@ -13,56 +14,54 @@ import { HoverCard } from "@/components/ui/HoverCard";
 
 const PARTNER_VALUE_CARDS: Array<{
   Icon: ComponentType<SVGProps<SVGSVGElement>>;
-  title: string;
+  id:
+    | "growth"
+    | "convenience"
+    | "community"
+    | "curator"
+    | "feedback"
+    | "guideDraft"
+    | "links";
   span?: boolean;
-  description: string;
 }> = [
   {
     Icon: GrowthIcon,
-    title: "Зростання аудиторії",
+    id: "growth",
     span: true,
-    description:
-      "Додавання перекладу у сервіс, що вже зібрало більше 20+ тисяч гравців..",
   },
   {
     Icon: DownloadIcon,
-    title: "Зручність гри та поширення",
-    description: "Зручно для ваших гравців завантажити та встановити переклад.",
+    id: "convenience",
   },
   {
     Icon: HeartIcon,
-    title: "Підтримка спільноти",
-    description:
-      "Велика частка користувачів активно підтримує ініціативи спільноти.",
+    id: "community",
   },
   {
     Icon: UsersIcon,
-    title: "Steam-куратор LBK",
-    description: "Додавання вашого перекладу у Steam-куратор LBK.",
+    id: "curator",
   },
   {
     Icon: RocketIcon,
-    title: "Відгуки без форм",
-    description: "Можливість збирати відгуки від користувачів без гугл-форми.",
+    id: "feedback",
   },
   {
     Icon: GlobeIcon,
-    title: "Драфт для посібника",
-    description: "Змога отримати драфт для вашого Steam-посібника.",
+    id: "guideDraft",
   },
   {
     Icon: CodeIcon,
-    title: "Максимум посилань",
+    id: "links",
     span: true,
-    description:
-      "Створення сторінки з максимальною к-стю посилань, а також додаткове поширення в пошуку.",
   },
 ];
 
-export function PartnerValueSection() {
+export async function PartnerValueSection() {
+  const t = await getTranslations("collaboration.value");
+
   return (
     <CardGridSection
-      title="Цінність для партнерів"
+      title={t("title")}
       columns={3}
       centerText
       className="collab-partner-value"
@@ -71,14 +70,14 @@ export function PartnerValueSection() {
         const { Icon } = card;
         return (
           <HoverCard
-            key={card.title}
+            key={card.id}
             className={`hover-card--big collab-value-card${card.span ? " collab-value-card--span" : ""}`}
           >
             <div className="hover-card__icon">
               <Icon width={32} height={32} aria-hidden />
             </div>
-            <h3>{card.title}</h3>
-            <p>{card.description}</p>
+            <h3>{t(`${card.id}.title`)}</h3>
+            <p>{t(`${card.id}.description`)}</p>
           </HoverCard>
         );
       })}

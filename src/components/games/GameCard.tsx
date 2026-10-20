@@ -3,6 +3,7 @@
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { AuthorName } from "@/components/ui/AuthorName";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { TranslateTypeBadge } from "@/components/ui/TranslateTypeBadge";
@@ -15,17 +16,11 @@ interface GameCardProps {
   priority?: boolean;
 }
 
-const STATUS_LABELS: Record<string, { label: string; className: string }> = {
-  completed: { label: "Готово", className: "game-card-status completed" },
-  "in-progress": {
-    label: "Ранній доступ",
-    className: "game-card-status in-progress",
-  },
-  planned: { label: "Заплановано", className: "game-card-status planned" },
-  "tech-improvement": {
-    label: "Технічна доробка",
-    className: "game-card-status tech-improvement",
-  },
+const STATUS_CLASSES: Record<TranslationItem["status"], string> = {
+  completed: "game-card-status completed",
+  "in-progress": "game-card-status in-progress",
+  planned: "game-card-status planned",
+  "tech-improvement": "game-card-status tech-improvement",
 };
 
 function TranslationRow({
@@ -35,7 +30,7 @@ function TranslationRow({
   translation: TranslationItem;
   slug: string;
 }) {
-  const status = STATUS_LABELS[translation.status] || STATUS_LABELS.planned;
+  const t = useTranslations("gameStatus");
   const progress = Math.round(
     ((translation.translation_progress ?? 0) +
       (translation.editing_progress ?? 0)) /
@@ -57,8 +52,10 @@ function TranslationRow({
         )}
       </span>
       <div className="game-card-translation-info">
-        <span className={`game-card-translation-status ${status.className}`}>
-          {status.label}
+        <span
+          className={`game-card-translation-status ${STATUS_CLASSES[translation.status]}`}
+        >
+          {t(translation.status)}
         </span>
         {translation.status !== "planned" && progress > 0 && (
           <div className="game-card-translation-progress">
@@ -77,6 +74,7 @@ function TranslationRow({
 }
 
 export function GameCard({ game, priority }: GameCardProps) {
+  const t = useTranslations("gameCard");
   const imageUrl =
     getImageUrl(game.capsule_path, game.updated_at) ||
     getImageUrl(game.banner_path, game.updated_at);
@@ -94,7 +92,7 @@ export function GameCard({ game, priority }: GameCardProps) {
           {imageUrl ? (
             <Image
               src={imageUrl}
-              alt={`${game.name} — український переклад гри`}
+              alt={t("imageAlt", { game: game.name })}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"

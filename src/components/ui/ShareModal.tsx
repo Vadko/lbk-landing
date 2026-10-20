@@ -10,6 +10,7 @@ import {
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { faCopy, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useActionPhase } from "@/hooks/useActionPhase";
@@ -112,6 +113,7 @@ export function ShareModal({
   shareUrl,
   shareText,
 }: ShareModalProps) {
+  const t = useTranslations("shareGame");
   const {
     phase: copyPhase,
     attempt: attemptCopy,
@@ -196,17 +198,17 @@ export function ShareModal({
           className="share-modal-close"
           onClick={onClose}
           type="button"
-          aria-label="Закрити"
+          aria-label={t("close")}
         >
           <SvgIcon icon={faXmark} />
         </button>
 
         <div className="share-modal-header">
-          <h2>Поширити</h2>
+          <h2>{t("title")}</h2>
         </div>
 
         <div className="share-modal-section">
-          <p className="share-modal-section-title">Поділитися в:</p>
+          <p className="share-modal-section-title">{t("shareIn")}</p>
           <div className="share-modal-socials">
             {socialPlatforms.map((platform) => (
               <button
@@ -223,9 +225,7 @@ export function ShareModal({
         </div>
 
         <div className="share-modal-section">
-          <p className="share-modal-section-title">
-            Або скопіюйте посилання чи текст:
-          </p>
+          <p className="share-modal-section-title">{t("copyHint")}</p>
           <div className="share-modal-link-container">
             <input
               type="text"
@@ -244,13 +244,13 @@ export function ShareModal({
               {/* обидва лейбли в одній клітинці резервують ширину: текст міняється, кнопка — ні */}
               <span style={LABEL_STACK_STYLE}>
                 <span style={GHOST_LABEL_STYLE} aria-hidden="true">
-                  Копіювати текст
+                  {t("copyText")}
                 </span>
                 <span style={GHOST_LABEL_STYLE} aria-hidden="true">
-                  Скопійовано!
+                  {t("copied")}
                 </span>
                 <span style={STACKED_LABEL_STYLE}>
-                  {copied ? "Скопійовано!" : "Копіювати текст"}
+                  {copied ? t("copied") : t("copyText")}
                 </span>
               </span>
             </button>

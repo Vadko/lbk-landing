@@ -4,47 +4,50 @@ import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons/faYoutube";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 
-export function Footer() {
+export async function Footer() {
+  const t = await getTranslations("footer");
+
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer-content">
           <div className="footer-section">
             <h4>LBK Launcher</h4>
-            <p>Зручний менеджер для встановлення українських перекладів ігор</p>
+            <p>{t("tagline")}</p>
           </div>
 
           <div className="footer-section">
-            <h4>Навігація</h4>
+            <h4>{t("navigation")}</h4>
             <ul className="footer-links">
               <li>
-                <Link href="/">Головна</Link>
+                <Link href="/">{t("home")}</Link>
               </li>
               <li>
-                <Link href="/games">Каталог ігор</Link>
+                <Link href="/games">{t("catalog")}</Link>
               </li>
               <li>
-                <Link href="/setup">Встановлення</Link>
+                <Link href="/setup">{t("setup")}</Link>
               </li>
               <li>
-                <Link href="/donaters">Топ донатерів</Link>
+                <Link href="/donaters">{t("donaters")}</Link>
               </li>
               <li>
-                <Link href="/collaboration">Співпраця</Link>
+                <Link href="/collaboration">{t("collaboration")}</Link>
               </li>
               <li>
-                <Link href="/guides&tools">Посібники та інструменти</Link>
+                <Link href="/guides&tools">{t("guides")}</Link>
               </li>
               <li>
-                <Link href="/tech-stack">Технічний стек</Link>
+                <Link href="/tech-stack">{t("techStack")}</Link>
               </li>
             </ul>
           </div>
 
           <div className="footer-section">
-            <h4>Спільнота</h4>
+            <h4>{t("community")}</h4>
             <ul className="footer-links">
               <li>
                 <a
@@ -86,16 +89,16 @@ export function Footer() {
           </div>
 
           <div className="footer-section">
-            <h4>Юридична інформація</h4>
+            <h4>{t("legal")}</h4>
             <ul className="footer-links">
               <li>
-                <Link href="/privacy">Політика приватності</Link>
+                <Link href="/privacy">{t("privacy")}</Link>
               </li>
               <li>
-                <Link href="/terms/players">Умови для гравців</Link>
+                <Link href="/terms/players">{t("termsPlayers")}</Link>
               </li>
               <li>
-                <Link href="/terms/translators">Умови для перекладачів</Link>
+                <Link href="/terms/translators">{t("termsTranslators")}</Link>
               </li>
             </ul>
           </div>
@@ -103,8 +106,9 @@ export function Footer() {
 
         <div className="footer-bottom">
           <p>
-            &copy; 2026 LB Team & GGL Studio. Зроблено з{" "}
-            <SvgIcon icon={faHeart} className="highlight" /> до рідного.
+            {t.rich("copyright", {
+              heart: () => <SvgIcon icon={faHeart} className="highlight" />,
+            })}
           </p>
         </div>
       </div>

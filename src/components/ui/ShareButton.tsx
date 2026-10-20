@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { ShareIcon } from "../icons";
 import { ShareModal } from "./ShareModal";
@@ -17,6 +18,7 @@ export function ShareButton({
   gameTitle,
   teamName,
 }: ShareButtonProps) {
+  const t = useTranslations("shareGame");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Detect mobile device
@@ -26,13 +28,13 @@ export function ShareButton({
       navigator.userAgent
     );
   const shareUrl = `https://lbklauncher.com/open/${gameSlug}/${teamSlug}`;
-  const shareText = `${gameTitle} з українською локалізацією від ${teamName} можна зручно встановити у LBK Launcher`;
+  const shareText = t("text", { game: gameTitle, team: teamName });
 
   const handleClick = () => {
     if (isMobile && navigator.share) {
       navigator
         .share({
-          title: "Відкрити в LBK Launcher",
+          title: t("nativeTitle"),
           text: shareText,
           url: shareUrl,
         })
@@ -55,7 +57,7 @@ export function ShareButton({
         type="button"
       >
         <ShareIcon />
-        Поділитися
+        {t("button")}
       </button>
       <ShareModal
         isOpen={isModalOpen}

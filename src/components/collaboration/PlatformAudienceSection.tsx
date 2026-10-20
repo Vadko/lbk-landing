@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import type { ComponentType, SVGProps } from "react";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
@@ -11,7 +12,7 @@ import {
 
 const PLATFORM_AUDIENCE: Array<{
   icon: ComponentType<SVGProps<SVGSVGElement>>;
-  label: string;
+  id: "localizationTeams" | "fanCommunities" | "indieStudios";
 }> = [
   // {
   //   icon: GamepadIcon,
@@ -19,11 +20,11 @@ const PLATFORM_AUDIENCE: Array<{
   // },
   {
     icon: GlobeIcon,
-    label: "Локалізаційні команди",
+    id: "localizationTeams",
   },
   {
     icon: UsersIcon,
-    label: "Фанатські спільноти",
+    id: "fanCommunities",
   },
   // {
   //   icon: BuildingIcon,
@@ -31,14 +32,16 @@ const PLATFORM_AUDIENCE: Array<{
   // },
   {
     icon: GameConsoleIcon,
-    label: "Інді-студії",
+    id: "indieStudios",
   },
 ];
 
-export function PlatformAudienceSection() {
+export async function PlatformAudienceSection() {
+  const t = await getTranslations("collaboration.audience");
+
   return (
     <CardGridSection
-      title="Для кого ця платформа"
+      title={t("title")}
       columns={3}
       centerText
       className="collab-platform-audience"
@@ -46,9 +49,9 @@ export function PlatformAudienceSection() {
       {PLATFORM_AUDIENCE.map((item) => {
         const Icon = item.icon;
         return (
-          <HoverCard key={item.label} className="collab-audience-card">
+          <HoverCard key={item.id} className="collab-audience-card">
             <Icon aria-hidden className="color-accent" />
-            <h3>{item.label}</h3>
+            <h3>{t(item.id)}</h3>
           </HoverCard>
         );
       })}

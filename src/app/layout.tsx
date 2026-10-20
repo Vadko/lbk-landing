@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import Script from "next/script";
+import { NextIntlClientProvider } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import "./globals.css";
 import { ClientUtilities } from "@/components/layout/ClientUtilities";
 import { Footer } from "@/components/layout/Footer";
@@ -15,36 +17,20 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
-const appDescription = (gamesCount: number) =>
-  `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${gamesCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`;
-
 export async function generateMetadata(): Promise<Metadata> {
-  const description = appDescription(await getGamesCount());
+  const t = await getTranslations("siteMeta");
+  const description = t("description", {
+    count: String(await getGamesCount()),
+  });
 
   return {
     metadataBase: new URL("https://lbklauncher.com"),
     title: {
-      default:
-        "LBK Launcher — Ігри українською: автоматичний українізатор та каталог перекладів",
+      default: t("title"),
       template: "%s | LBK Launcher",
     },
     description,
-    keywords: [
-      "українізатор",
-      "українізатор ігор",
-      "українська локалізація",
-      "грати українською",
-      "ігри українською",
-      "український переклад ігор",
-      "LBK",
-      "LBK лаунчер",
-      "LBK Launcher",
-      "локалізація ігор",
-      "переклад ігор українською",
-      "українізація ігор",
-      "ігри на українській",
-      "українська мова в іграх",
-    ],
+    keywords: t("keywords"),
     authors: [{ name: "LB Team & GGL Studio" }],
     creator: "LB Team & GGL Studio",
     publisher: "LB Team & GGL Studio",
@@ -52,21 +38,21 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       locale: "uk_UA",
       url: "https://lbklauncher.com",
-      siteName: "LBK Launcher — Ігри українською",
-      title: "LBK Launcher — Ігри українською",
+      siteName: t("brandTitle"),
+      title: t("brandTitle"),
       description,
       images: [
         {
           url: "/assets/og-image.webp",
           width: 1200,
           height: 630,
-          alt: "LBK Launcher — Ігри українською",
+          alt: t("brandTitle"),
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "LBK Launcher — Ігри українською мовою",
+      title: t("twitterTitle"),
       description,
       images: ["/assets/og-image.webp"],
     },
@@ -96,7 +82,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const description = appDescription(await getGamesCount());
+  const t = await getTranslations("siteMeta");
+  const description = t("description", {
+    count: String(await getGamesCount()),
+  });
 
   return (
     <html
@@ -144,11 +133,13 @@ export default async function RootLayout({
           referrerPolicy="origin"
           strategy="afterInteractive"
         />
-        <ClientUtilities />
-        <Navbar />
-        <main className="relative z-10 header-padding">{children}</main>
-        <Footer />
-        <IframeResizeMessenger />
+        <NextIntlClientProvider>
+          <ClientUtilities />
+          <Navbar />
+          <main className="relative z-10 header-padding">{children}</main>
+          <Footer />
+          <IframeResizeMessenger />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

@@ -1,81 +1,98 @@
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
+import type { Messages } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { HoverCard } from "../ui/HoverCard";
 import { SvgIcon } from "../ui/SvgIcon";
 
+type SubscriptionFeature =
+  keyof Messages["donaters"]["subscription"]["features"];
+
 interface SubscriptionCardProps {
-  tier: string;
+  tier: keyof Messages["donaters"]["subscription"]["tiers"];
   price?: string;
-  features: string[];
+  features: SubscriptionFeature[];
 }
 
-function SubscriptionCard({ tier, price, features }: SubscriptionCardProps) {
+async function SubscriptionCard({
+  tier,
+  price,
+  features,
+}: SubscriptionCardProps) {
+  const t = await getTranslations("donaters.subscription");
+
   return (
     <div className="subscription-card glass-bg">
       <div className="subscription-card__header">
-        <h3 className="subscription-card__tier">{tier}</h3>
+        <h3 className="subscription-card__tier">{t(`tiers.${tier}`)}</h3>
         {price && (
           <div className="subscription-card__price">
             ₴ {price}
-            <span className="subscription-card__period"> / міс</span>
+            <span className="subscription-card__period"> {t("perMonth")}</span>
           </div>
         )}
       </div>
       <ul className="subscription-card__features">
-        {features.map((feature, index) => (
-          <li key={index} className="subscription-card__feature">
+        {features.map((feature) => (
+          <li key={feature} className="subscription-card__feature">
             <SvgIcon icon={faCheck} className="subscription-card__check" />
-            {feature}
+            {t(`features.${feature}`)}
           </li>
         ))}
       </ul>
       <a className="btn btn-main" href="#">
-        Обрати
+        {t("choose")}
       </a>
     </div>
   );
 }
 
-export function SubscriptionSection() {
-  const bronzeFeatures = ["Золотий значок", "Доступ до чату"];
-  const silverFeatures = ["Бронза +", "Пріоритет у запитах", "Ранній доступ"];
-  const goldFeatures = ["Срібло +", "Ексклюзивний мерч", "Ім'я в титрах"];
+export async function SubscriptionSection() {
+  const t = await getTranslations("donaters.subscription");
+  const bronzeFeatures: SubscriptionFeature[] = ["goldBadge", "chatAccess"];
+  const silverFeatures: SubscriptionFeature[] = [
+    "bronzePlus",
+    "priorityRequests",
+    "earlyAccess",
+  ];
+  const goldFeatures: SubscriptionFeature[] = [
+    "silverPlus",
+    "exclusiveMerch",
+    "nameInCredits",
+  ];
 
   return (
     <section className="subscription-section section-margin">
       <div className="container">
-        <h2 className="section-title center">Підписка на Донателло</h2>
-        <p className="section-description center">
-          Отримайте особливий статус та ексклюзивні можливості, підтримуючи
-          розвиток платформи.
-        </p>
+        <h2 className="section-title center">{t("title")}</h2>
+        <p className="section-description center">{t("description")}</p>
         <HoverCard>
           <div className="subscription-section__grid">
             <div className="subscription-info">
               <div className="subscription-info__content">
-                <h3 className="subscription-info__title">Що дає підписка?</h3>
+                <h3 className="subscription-info__title">
+                  {t("benefitsTitle")}
+                </h3>
                 <p className="subscription-info__description">
-                  Токен Донателло — це ваша перепустка до клубу привілейованих
-                  гравців. Ви отримуєте золоту рамку, пріоритет у запитах на
-                  переклад та доступ до закритих тестів нових функцій лаунчера.
+                  {t("benefitsDescription")}
                 </p>
               </div>
               <a href="#" className="btn btn--big btn-gradient">
-                Стати донатером
+                {t("becomeDonor")}
               </a>
             </div>
             <div className="subscription-tiers">
               <SubscriptionCard
-                tier="Бронза"
+                tier="bronze"
                 price="99"
                 features={bronzeFeatures}
               />
               <SubscriptionCard
-                tier="Срібло"
+                tier="silver"
                 price="249"
                 features={silverFeatures}
               />
               <SubscriptionCard
-                tier="Золото"
+                tier="gold"
                 price="499"
                 features={goldFeatures}
               />

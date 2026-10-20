@@ -1,5 +1,5 @@
 import { faPlay } from "@fortawesome/free-solid-svg-icons/faPlay";
-import React from "react";
+import { getTranslations } from "next-intl/server";
 import { SvgIcon } from "../ui/SvgIcon";
 
 interface VideoCardProps {
@@ -26,14 +26,15 @@ function getYouTubeVideoId(url: string): string | null {
   return null;
 }
 
-export const GameVideo: React.FC<VideoCardProps> = ({ videoUrl }) => {
+export async function GameVideo({ videoUrl }: VideoCardProps) {
+  const t = await getTranslations("gameVideo");
   const videoId = getYouTubeVideoId(videoUrl);
 
   if (!videoId) {
     // If not a YouTube URL or can't extract ID, show a button to open link
     return (
       <>
-        <h2>Відео</h2>
+        <h2>{t("title")}</h2>
         <a
           href={videoUrl}
           target="_blank"
@@ -41,7 +42,7 @@ export const GameVideo: React.FC<VideoCardProps> = ({ videoUrl }) => {
           className="btn btn-neon"
         >
           <SvgIcon icon={faPlay} />
-          <span className="font-medium">Переглянути відео</span>
+          <span className="font-medium">{t("watch")}</span>
         </a>
       </>
     );
@@ -51,7 +52,7 @@ export const GameVideo: React.FC<VideoCardProps> = ({ videoUrl }) => {
 
   return (
     <>
-      <h2>Трейлер українізації</h2>
+      <h2>{t("trailer")}</h2>
       <iframe
         width="100%"
         style={{ aspectRatio: "16/9" }}
@@ -64,4 +65,4 @@ export const GameVideo: React.FC<VideoCardProps> = ({ videoUrl }) => {
       />
     </>
   );
-};
+}

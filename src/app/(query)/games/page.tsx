@@ -1,25 +1,19 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { GamesList } from "@/components/games/GamesList";
 import { getInitialGames } from "@/lib/games";
 import { getGamesCount } from "@/lib/games-count";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const count = await getGamesCount();
+  const t = await getTranslations("catalogPage");
+  const count = String(await getGamesCount());
   return {
-    title: `Каталог ігор з українською локалізацією — ${count}+ перекладів`,
-    description:
-      "Найповніша база ігор з українським перекладом. Шукайте українізатори за назвою, жанром або автором. Дізнайтеся прогрес перекладу та встановлюйте локалізації в один клік через лаунчер.",
-    keywords: [
-      "каталог українських ігор",
-      "список ігор українською",
-      "українізатор ігор список",
-      "ігри з українською локалізацією",
-      "українські переклади ігор каталог",
-    ],
+    title: t("metaTitle", { count }),
+    description: t("metaDescription"),
+    keywords: t("keywords"),
     openGraph: {
-      title: `Каталог ігор з українською локалізацією — ${count}+ перекладів | LBK Launcher`,
-      description:
-        "Найповніша база ігор з українським перекладом. Шукайте українізатори за назвою, жанром або автором. Дізнайтеся прогрес перекладу та встановлюйте локалізації в один клік через лаунчер.",
+      title: t("ogTitle", { count }),
+      description: t("metaDescription"),
     },
     alternates: {
       canonical: "https://lbklauncher.com/games",
@@ -28,16 +22,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function GamesPage() {
+  const t = await getTranslations("catalogPage");
   const initialGames = await getInitialGames();
   return (
     <section className="games-page">
       <div className="container">
         <div className="games-header">
-          <h1 className="page-title">Каталог ігор</h1>
-          <p>
-            Усі ігри з українським перекладом в одному місці. Знайдіть свою
-            улюблену гру та грайте українською.
-          </p>
+          <h1 className="page-title">{t("title")}</h1>
+          <p>{t("lead")}</p>
         </div>
 
         <GamesList initialData={initialGames} />

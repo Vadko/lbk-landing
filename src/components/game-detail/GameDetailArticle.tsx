@@ -1,5 +1,6 @@
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import {
   FundraisingProgress,
@@ -12,7 +13,7 @@ import {
 import { GameTeamLink } from "@/components/ui/GameTeamLink";
 import { MarkdownText } from "@/components/ui/MarkdownText";
 import { SvgIcon } from "@/components/ui/SvgIcon";
-import { STATUS_LABELS } from "@/lib/constants";
+import { STATUS_BADGE_CLASSES } from "@/lib/constants";
 import { getFeaturedInfo } from "@/lib/featuredTranslations";
 import {
   generateBreadcrumbLD,
@@ -33,19 +34,22 @@ interface GameDetailArticleProps {
   otherTranslations: Game[];
 }
 
-export function GameDetailArticle({
+export async function GameDetailArticle({
   game,
   slug,
   otherTranslations,
 }: GameDetailArticleProps) {
-  const status = STATUS_LABELS[game.status] || STATUS_LABELS.planned;
+  const t = await getTranslations();
   const bannerUrl = getImageUrl(game.banner_path, game.updated_at);
   const logoUrl = getImageUrl(game.logo_path, game.updated_at);
   const featuredInfo = getFeaturedInfo(slug, game.team);
 
   const breadcrumbItems = [
-    { name: "Головна", url: "https://lbklauncher.com" },
-    { name: "Каталог", url: "https://lbklauncher.com/games" },
+    { name: t("gameBreadcrumbs.home"), url: "https://lbklauncher.com" },
+    {
+      name: t("gameBreadcrumbs.catalog"),
+      url: "https://lbklauncher.com/games",
+    },
     { name: game.name, url: `https://lbklauncher.com/games/${slug}` },
     ...(otherTranslations.length > 0
       ? [
@@ -65,9 +69,9 @@ export function GameDetailArticle({
       <div className="game-content">
         <div className="container">
           <nav className="game-breadcrumb">
-            <Link href="/">Головна</Link>
+            <Link href="/">{t("gameBreadcrumbs.home")}</Link>
             <span>/</span>
-            <Link href="/games">Каталог</Link>
+            <Link href="/games">{t("gameBreadcrumbs.catalog")}</Link>
             <span>/</span>
             {otherTranslations.length > 0 ? (
               <>
@@ -87,17 +91,22 @@ export function GameDetailArticle({
               <header className="game-header">
                 <div className="game-title-row">
                   <h1 className="page-title">{game.name}</h1>
-                  <span className={status.className}>{status.label}</span>
+                  <span className={STATUS_BADGE_CLASSES[game.status]}>
+                    {t(`gameStatus.${game.status}`)}
+                  </span>
                 </div>
                 {featuredInfo && (
                   <div className="featured-badge-block">
                     <SvgIcon icon={faTrophy} />
-                    {featuredInfo.description}
+                    {t(`featuredBadge.${featuredInfo.id}`)}
                   </div>
                 )}
                 <p className="game-meta">
-                  Переклад від <GameTeamLink team={game.team} />
-                  {game.version && ` • Версія ${game.version}`}
+                  {t.rich("gameDetail.by", {
+                    team: () => <GameTeamLink team={game.team} />,
+                    hasVersion: game.version ? "yes" : "no",
+                    version: game.version ?? "",
+                  })}
                 </p>
                 {(game.ai === "edited" || game.ai === "non-edited") && (
                   <div className="game-ai-badge">
@@ -107,26 +116,28 @@ export function GameDetailArticle({
                       <AIBadgeIcon size={16} />
                     )}
                     {game.ai === "edited"
-                      ? "ШІ + редактура людиною"
-                      : "Переклад ШІ"}
+                      ? t("translationType.ai_edited")
+                      : t("translationType.ai")}
                   </div>
                 )}
               </header>
 
               {otherTranslations.length > 0 && (
                 <section className="game-section game-other-translations">
-                  <h2>Інші переклади цієї гри</h2>
+                  <h2>{t("gameDetail.otherTranslations")}</h2>
                   <div className="game-translations-list">
-                    {otherTranslations.map((t) => (
+                    {otherTranslations.map((other) => (
                       <Link
-                        key={t.id}
-                        href={`/games/${slug}/${teamToSlug(t.team)}`}
+                        key={other.id}
+                        href={`/games/${slug}/${teamToSlug(other.team)}`}
                         prefetch
                         className="game-translation-link"
                       >
-                        <span className="game-translation-team">{t.team}</span>
+                        <span className="game-translation-team">
+                          {other.team}
+                        </span>
                         <span className="game-translation-progress">
-                          {t.translation_progress}%
+                          {other.translation_progress}%
                         </span>
                       </Link>
                     ))}
@@ -144,7 +155,7 @@ export function GameDetailArticle({
 
               {game.screenshots && game.screenshots.length > 0 && (
                 <section className="game-section">
-                  <h2>Галерея</h2>
+                  <h2>{t("gameDetail.gallery")}</h2>
                   <GameGallery
                     slides={game.screenshots}
                     spaceBetween={30}
@@ -170,7 +181,7 @@ export function GameDetailArticle({
 
               {game.description && (
                 <section className="game-section">
-                  <h2>Про переклад</h2>
+                  <h2>{t("gameDetail.aboutTranslation")}</h2>
                   <MarkdownText
                     text={game.description}
                     className="game-description"
@@ -180,7 +191,7 @@ export function GameDetailArticle({
 
               {game.game_description && (
                 <section className="game-section">
-                  <h2>Про гру</h2>
+                  <h2>{t("gameDetail.aboutGame")}</h2>
                   <MarkdownText
                     text={game.game_description}
                     className="game-description"
@@ -203,13 +214,13 @@ export function GameDetailArticle({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generateSoftwareApplicationLD(game)),
+          __html: JSON.stringify(generateSoftwareApplicationLD(t, game)),
         }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generateFAQLD(game)),
+          __html: JSON.stringify(generateFAQLD(t, game)),
         }}
       />
       <script

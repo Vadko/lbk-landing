@@ -2,7 +2,9 @@ minimumReleaseAge: 4320
 dangerouslyAllowAllBuilds: false
 
 allowBuilds:
+  '@parcel/watcher': false
   '@sentry/cli': true
+  '@swc/core': false
   esbuild: true
   sharp: true
   unrs-resolver: true

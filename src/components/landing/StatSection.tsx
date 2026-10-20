@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { ComponentType, SVGProps } from "react";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
@@ -26,39 +27,22 @@ function AnimatedNumber({
 }
 
 export function StatSection() {
+  const t = useTranslations("landingStats");
   const { data: stats } = useLandingStats();
 
   const statsData: Array<{
+    key: "downloads" | "hours" | "creators";
     Icon?: ComponentType<SVGProps<SVGSVGElement>>;
     number?: number;
     suffix?: string;
-    title: string;
-    description: string;
   }> = [
-    {
-      number: stats?.totalDownloads,
-      title: "Завантажень",
-      description: "Скільки завантажили перекладів за весь час",
-    },
-    {
-      number: stats?.totalPlaytimeHours,
-      title: "Годин",
-      description: "Скільки часу награно з нашим лаунчером",
-    },
-    {
-      number: stats?.totalCreators,
-      title: "Творців",
-      description: "Скільки творців перекладу з нами",
-    },
+    { key: "downloads", number: stats?.totalDownloads },
+    { key: "hours", number: stats?.totalPlaytimeHours },
+    { key: "creators", number: stats?.totalCreators },
   ];
 
   return (
-    <CardGridSection
-      id="stats"
-      title="Нас обирають тисячі"
-      columns={3}
-      centerText
-    >
+    <CardGridSection id="stats" title={t("title")} columns={3} centerText>
       {statsData.map((feature, index) => {
         const { Icon } = feature;
         return (
@@ -78,8 +62,8 @@ export function StatSection() {
                 <div className="spinner" style={{ margin: "0 auto" }} />
               )}
             </div>
-            <h3>{feature.title}</h3>
-            <p>{feature.description}</p>
+            <h3>{t(`${feature.key}.title`)}</h3>
+            <p>{t(`${feature.key}.description`)}</p>
           </HoverCard>
         );
       })}

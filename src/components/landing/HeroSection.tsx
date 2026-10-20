@@ -3,13 +3,16 @@ import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import Image from "next/image";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { HeroBadge } from "./hero/HeroBadge";
 import { HeroDownload } from "./hero/HeroDownload";
 import { HeroStats } from "./hero/HeroStats";
 import { TypewriterText } from "./hero/TypewriterText";
 
-export function HeroSection() {
+export async function HeroSection() {
+  const t = await getTranslations("landingHero");
+
   return (
     <section id="hero" className="hero">
       <div className="container hero-wrapper">
@@ -17,21 +20,17 @@ export function HeroSection() {
           <HeroBadge />
 
           <h1 className="hero-title">
-            Ігри українською —<br />
+            {t("title")}
+            <br />
             <TypewriterText />
           </h1>
 
-          <p>
-            Грайте в улюблені ігри рідною мовою. <br />
-            LBK Launcher — це безкоштовний інструмент з відкритим кодом, який
-            автоматизує пошук, встановлення та оновлення українських перекладів
-            для вашої ігрової бібліотеки.
-          </p>
+          <p>{t.rich("lead", { br: () => <br /> })}</p>
 
           <div className="buttons-wrapper">
             <Link href="/games" className="btn btn-neon games-link">
               <SvgIcon icon={faGamepad} />
-              <span>Переглянути всі ігри</span>
+              <span>{t("browseGames")}</span>
               <SvgIcon icon={faArrowRight} />
             </Link>
 
@@ -40,7 +39,7 @@ export function HeroSection() {
 
           <Link href="/setup" className="instruction-link">
             <SvgIcon icon={faBook} />
-            <span>Інструкція зі встановлення</span>
+            <span>{t("setupGuide")}</span>
           </Link>
 
           <HeroStats />
@@ -50,23 +49,27 @@ export function HeroSection() {
           <figure className="hero-figure main-figure">
             <Image
               src="/assets/2.webp"
-              alt="LBK Launcher сторінка гри"
+              alt={t("mainShotAlt")}
               width={600}
               height={400}
               className="hero-img main-shot"
               priority
             />
-            <figcaption className="hero-caption">Сторінка гри</figcaption>
+            <figcaption className="hero-caption">
+              {t("mainShotCaption")}
+            </figcaption>
           </figure>
           <figure className="hero-figure back-figure">
             <Image
               src="/assets/1.webp"
-              alt="LBK Launcher головний екран"
+              alt={t("backShotAlt")}
               width={540}
               height={360}
               className="hero-img back-shot"
             />
-            <figcaption className="hero-caption">Головний екран</figcaption>
+            <figcaption className="hero-caption">
+              {t("backShotCaption")}
+            </figcaption>
           </figure>
         </div>
       </div>

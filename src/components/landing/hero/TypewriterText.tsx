@@ -1,16 +1,18 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
-const PHRASES = ["без зусиль!", "в один клац!", "це просто!", "це топ!"];
+const PHRASES = ["effortless", "oneClick", "simple", "top"] as const;
 
 export function TypewriterText() {
+  const t = useTranslations("landingHero.phrases");
   const [text, setText] = useState("");
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const currentPhrase = PHRASES[phraseIndex];
+    const currentPhrase = t(PHRASES[phraseIndex]);
     const timeout = setTimeout(
       () => {
         if (!isDeleting) {
@@ -32,7 +34,7 @@ export function TypewriterText() {
     );
 
     return () => clearTimeout(timeout);
-  }, [text, isDeleting, phraseIndex]);
+  }, [t, text, isDeleting, phraseIndex]);
 
   return <span className="text-gradient typewriter">{text}</span>;
 }

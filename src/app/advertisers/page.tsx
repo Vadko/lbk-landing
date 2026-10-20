@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { BOT_URL } from "@/lib/constants";
 // import { PageHeroSection } from "@/components/ui/PageHeroSection";
 // import { MetricSection } from "@/components/landing/MetricSection";
 // import { CtaSection } from "@/components/ui/CtaSection";
 // import { WhyAdvertisersChooseUs } from "@/components/advertisers/WhyAdvertisersChooseUs";
 
-export const metadata: Metadata = {
-  title: "Реклама в LBK Launcher",
-  description:
-    "Розмістіть рекламу свого продукту в LBK Launcher та досягніть активної української gaming-аудиторії.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("advertisers");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default function AdvertisersRoutePage() {
   // TODO: Uncomment when advertisers page is ready

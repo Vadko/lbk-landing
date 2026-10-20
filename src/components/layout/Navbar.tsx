@@ -7,6 +7,7 @@ import { faYoutube } from "@fortawesome/free-brands-svg-icons/faYoutube";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { trackViewGamesCatalog } from "@/lib/analytics";
@@ -15,35 +16,35 @@ import { NavbarLogo } from "../icons/NavbarLogo";
 const navbarLinks = [
   {
     href: "/",
-    label: "Головна",
+    label: "home",
     track: null,
   },
   {
     href: "/games",
-    label: "Каталог",
+    label: "catalog",
     track: "trackViewGamesCatalog",
   },
   {
     href: "/#gallery",
-    label: "Галерея",
+    label: "gallery",
     track: null,
   },
   {
     href: "/#showcase",
-    label: "Функції",
+    label: "features",
     track: null,
   },
   {
     href: "/collaboration",
-    label: "Співпраця",
+    label: "collaboration",
     track: null,
   },
   {
     href: "/donaters",
-    label: "Топ донатерів",
+    label: "donaters",
     track: null,
   },
-];
+] as const;
 
 const navbarSocials = [
   {
@@ -73,6 +74,7 @@ const navbarSocials = [
 ];
 
 export function Navbar() {
+  const t = useTranslations("navbar");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLDivElement | null>(null);
 
@@ -137,7 +139,7 @@ export function Navbar() {
                     }
                   }}
                 >
-                  {link.label}
+                  {t(link.label)}
                 </Link>
               </li>
             ))}
@@ -205,7 +207,7 @@ export function Navbar() {
                     closeMobileMenu();
                   }}
                 >
-                  {link.label}
+                  {t(link.label)}
                 </Link>
               </li>
             ))}

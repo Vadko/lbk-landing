@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { CardGridSection } from "@/components/ui/CardGridSection";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { useCountUp } from "@/hooks/useCountUp";
@@ -39,27 +40,23 @@ function AnimatedMetric({
 }
 
 export function MetricSection() {
+  const t = useTranslations("landingStats");
   const { data: stats } = useLandingStats();
 
-  const metrics = [
+  const metrics: Array<{
+    key: "players" | "dau" | "creators";
+    number?: number;
+    formatFn?: (num: number) => string;
+    suffix?: string;
+  }> = [
     {
+      key: "players",
       number: stats?.totalUniquePlayers,
       formatFn: formatCompactNumber,
       suffix: "+",
-      title: "Гравців загалом",
-      description: "Уся база активних гравців",
     },
-    {
-      number: stats?.dau,
-      formatFn: formatCompactNumber,
-      title: "DAU",
-      description: "Активна аудиторія кожного дня",
-    },
-    {
-      number: stats?.totalCreators,
-      title: "Творців",
-      description: "Скільки творців перекладу з нами",
-    },
+    { key: "dau", number: stats?.dau, formatFn: formatCompactNumber },
+    { key: "creators", number: stats?.totalCreators },
   ];
 
   return (
@@ -77,8 +74,8 @@ export function MetricSection() {
               <div className="spinner" style={{ margin: "0 auto" }} />
             )}
           </div>
-          <h3>{feature.title}</h3>
-          <p>{feature.description}</p>
+          <h3>{t(`${feature.key}.title`)}</h3>
+          <p>{t(`${feature.key}.description`)}</p>
         </HoverCard>
       ))}
     </CardGridSection>
