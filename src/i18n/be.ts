@@ -1,3 +1,5 @@
+import type { Messages } from "./uk";
+
 export const be = {
   advertisers: {
     title: "Рэклама ў LBK Launcher",
@@ -1467,4 +1469,4 @@ export const be = {
       lead: "Калі ў вас ёсць пытанні, звяжыцеся з намі:",
     },
   },
-} as const;
+} as const satisfies Messages;

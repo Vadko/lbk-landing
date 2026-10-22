@@ -1,3 +1,5 @@
+import type { Messages } from "./uk";
+
 export const en = {
   advertisers: {
     title: "Advertise in LBK Launcher",
@@ -1456,4 +1458,4 @@ export const en = {
       lead: "If you have any questions, please contact us:",
     },
   },
-} as const;
+} as const satisfies Messages;

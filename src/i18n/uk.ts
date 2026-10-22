@@ -1490,3 +1490,7 @@ export const uk = {
     },
   },
 } as const;
+
+type Widen<T> = { [K in keyof T]: T[K] extends string ? string : Widen<T[K]> };
+
+export type Messages = Widen<typeof uk>;
