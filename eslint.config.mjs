@@ -34,9 +34,9 @@ const eslintConfig = defineConfig([
     },
   },
   {
-    // The dictionary, and lists of people and team names, which are data rather than copy.
+    // Dictionaries and lists of people and team names.
     files: [
-      "src/i18n/uk.ts",
+      "src/i18n/{uk,en,be}.ts",
       "src/lib/specialTranslators.ts",
       "src/components/collaboration/PartnersListSection.tsx",
       "src/components/donaters/LeaderboardSection.tsx",
