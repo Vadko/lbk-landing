@@ -198,6 +198,7 @@ export default async function PrivacyPage() {
       <section>
         <h2>{t("crashReports.title")}</h2>
         <p>{t("crashReports.body")}</p>
+        <p>{t("crashReports.optIn")}</p>
         <p>{t.rich("crashReports.glitchtip", { b })}</p>
       </section>
 
