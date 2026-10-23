@@ -54,3 +54,6 @@ jobs:
 
       - name: Knip check
         run: pnpm knip
+
+      - name: Tests
+        run: pnpm test:run
