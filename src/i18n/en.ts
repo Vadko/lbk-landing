@@ -1286,7 +1286,7 @@ export const en = {
         ui: "FontAwesome, Lightbox, morphicons",
         analytics: "Cloudflare Zaraz",
         errors: "Sentry SDK → self-hosted GlitchTip",
-        deploy: "Coolify (nixpacks, next start)",
+        deploy: "Coolify (Railpack, next start)",
       },
     },
     admin: {
@@ -1308,7 +1308,7 @@ export const en = {
           "Media, Scan, Steam Guides, Steam Curator, Steam Updates, Steam Apps, Telegram, Fundraising",
         archiveScan: "MetaDefender Cloud (OPSWAT) + filescan.io",
         errors: "Sentry SDK → self-hosted GlitchTip",
-        deploy: "Coolify (nixpacks, next start)",
+        deploy: "Coolify (Railpack, next start)",
       },
     },
     launcher: {
