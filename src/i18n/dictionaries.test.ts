@@ -1,6 +1,14 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import { isStructurallySame, parse } from "@formatjs/icu-messageformat-parser";
+import {
+  isPluralElement,
+  isPoundElement,
+  isSelectElement,
+  isStructurallySame,
+  isTagElement,
+  type MessageFormatElement,
+  parse,
+} from "@formatjs/icu-messageformat-parser";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import { be } from "./be";
@@ -48,6 +56,43 @@ function structureError(source: string, translation: string) {
   } catch (error) {
     return String(error);
   }
+}
+
+// A plural of only `=N` cases and `other` that never prints `#` is a switch, not a count with word forms.
+function missingPluralForms(
+  locale: string,
+  elements: MessageFormatElement[]
+): string[] {
+  return elements.flatMap((element) => {
+    const nested =
+      isPluralElement(element) || isSelectElement(element)
+        ? Object.values(element.options).flatMap((option) =>
+            missingPluralForms(locale, option.value)
+          )
+        : isTagElement(element)
+          ? missingPluralForms(locale, element.children)
+          : [];
+    if (!isPluralElement(element)) {
+      return nested;
+    }
+    const isSwitch = Object.entries(element.options).every(
+      ([form, option]) =>
+        (form === "other" || form.startsWith("=")) &&
+        !option.value.some(isPoundElement)
+    );
+    if (isSwitch) {
+      return nested;
+    }
+    const forms = new Intl.PluralRules(locale, {
+      type: element.pluralType,
+    }).resolvedOptions().pluralCategories;
+    return [
+      ...forms
+        .filter((form) => !(form in element.options))
+        .map((form) => `${element.value} ${form}`),
+      ...nested,
+    ];
+  });
 }
 
 function listSources(dir: string): string[] {
@@ -299,6 +344,17 @@ describe.each(
       .filter(([key, text]) => text.trim() && !translated.get(key)?.trim())
       .map(([key]) => key);
     expect(empty).toEqual([]);
+  });
+});
+
+describe.each(
+  Object.entries({ uk, be, en })
+)("%s plurals", (locale, dictionary) => {
+  it("have every form the locale tells apart", () => {
+    const missing = flatten(dictionary).flatMap(([key, text]) =>
+      missingPluralForms(locale, parse(text)).map((form) => `${key}: ${form}`)
+    );
+    expect(missing).toEqual([]);
   });
 });
 

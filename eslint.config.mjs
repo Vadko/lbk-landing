@@ -34,6 +34,20 @@ const eslintConfig = defineConfig([
     },
   },
   {
+    // Tests read the text from the dictionary too, including inside regexes.
+    files: ["src/**/*.test.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        ...noUkrainianLiterals,
+        {
+          selector: `Literal[regex.pattern=${CYRILLIC}]`,
+          message: noUkrainianLiterals[0].message,
+        },
+      ],
+    },
+  },
+  {
     // Dictionaries and lists of people and team names.
     files: [
       "src/i18n/{uk,en,be}.ts",
