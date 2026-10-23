@@ -55,5 +55,5 @@ jobs:
       - name: Knip check
         run: pnpm knip
 
-      - name: Unused dictionary keys
-        run: pnpm i18n:unused
+      - name: Tests
+        run: pnpm test:run

@@ -1,6 +1,15 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
+import { isStructurallySame, parse } from "@formatjs/icu-messageformat-parser";
 import ts from "typescript";
+import { describe, expect, it } from "vitest";
+import { be } from "./be";
+import { en } from "./en";
+import { uk } from "./uk";
+
+interface Dictionary {
+  [key: string]: string | Dictionary;
+}
 
 interface Template {
   pattern: RegExp;
@@ -16,7 +25,7 @@ interface Source {
   unknownDynamic: boolean;
 }
 
-const ROOT = join(import.meta.dirname, "..");
+const ROOT = join(import.meta.dirname, "../..");
 const DICTIONARY_DIR = join(ROOT, "src/i18n");
 const TRANSLATOR_FACTORIES = new Set([
   "useTranslations",
@@ -24,47 +33,21 @@ const TRANSLATOR_FACTORIES = new Set([
   "createTranslator",
 ]);
 
-function parse(file: string) {
-  return ts.createSourceFile(
-    file,
-    readFileSync(file, "utf8"),
-    ts.ScriptTarget.Latest,
-    true
+function flatten(dictionary: Dictionary, prefix = ""): [string, string][] {
+  return Object.entries(dictionary).flatMap(
+    ([key, value]): [string, string][] => {
+      const path = prefix ? `${prefix}.${key}` : key;
+      return typeof value === "string" ? [[path, value]] : flatten(value, path);
+    }
   );
 }
 
-function dictionaryKeys(node: ts.Expression, prefix: string): string[] {
-  let object = node;
-  while (ts.isAsExpression(object) || ts.isSatisfiesExpression(object)) {
-    object = object.expression;
+function structureError(source: string, translation: string) {
+  try {
+    return isStructurallySame(parse(source), parse(translation)).error?.message;
+  } catch (error) {
+    return String(error);
   }
-  if (!ts.isObjectLiteralExpression(object)) {
-    return [prefix];
-  }
-  return object.properties.flatMap((property) => {
-    if (
-      !ts.isPropertyAssignment(property) ||
-      !(ts.isIdentifier(property.name) || ts.isStringLiteral(property.name))
-    ) {
-      throw new Error(`Unsupported property in uk.ts under "${prefix}"`);
-    }
-    const key = prefix ? `${prefix}.${property.name.text}` : property.name.text;
-    return dictionaryKeys(property.initializer, key);
-  });
-}
-
-function readDictionary() {
-  const declaration = parse(join(DICTIONARY_DIR, "uk.ts"))
-    .statements.filter(ts.isVariableStatement)
-    .flatMap((statement) => statement.declarationList.declarations)
-    .find((item) => ts.isIdentifier(item.name) && item.name.text === "uk");
-  const keys = declaration?.initializer
-    ? dictionaryKeys(declaration.initializer, "")
-    : [];
-  if (!keys.length || keys.includes("")) {
-    throw new Error("Could not read the keys of `uk` in src/i18n/uk.ts");
-  }
-  return keys;
 }
 
 function listSources(dir: string): string[] {
@@ -75,7 +58,7 @@ function listSources(dir: string): string[] {
         ? []
         : listSources(path);
     }
-    return /\.tsx?$/.test(entry.name) && !/\.d\.ts$/.test(entry.name)
+    return /\.tsx?$/.test(entry.name) && !/\.(test|d)\.tsx?$/.test(entry.name)
       ? [path]
       : [];
   });
@@ -221,7 +204,14 @@ function parseSource(path: string): Source {
     }
     ts.forEachChild(node, visit);
   };
-  visit(parse(path));
+  visit(
+    ts.createSourceFile(
+      path,
+      readFileSync(path, "utf8"),
+      ts.ScriptTarget.Latest,
+      true
+    )
+  );
   for (const callee of dynamicCallees) {
     const namespace = translators.get(callee);
     if (namespace) {
@@ -289,10 +279,31 @@ function findUnusedKeys(keys: string[]) {
   });
 }
 
-const unused = findUnusedKeys(readDictionary());
-if (unused.length) {
-  console.error(
-    `Keys in src/i18n/uk.ts that the code never reads:\n${unused.join("\n")}`
-  );
-  process.exit(1);
-}
+const messages = flatten(uk);
+
+describe.each(
+  Object.entries({ be, en })
+)("%s dictionary", (_locale, dictionary) => {
+  const translated = new Map(flatten(dictionary));
+
+  it("keeps the arguments and tags of every uk message", () => {
+    const mismatches = messages.flatMap(([key, text]) => {
+      const error = structureError(text, translated.get(key) ?? "");
+      return error ? [`${key}: ${error}`] : [];
+    });
+    expect(mismatches).toEqual([]);
+  });
+
+  it("has no empty message where uk has text", () => {
+    const empty = messages
+      .filter(([key, text]) => text.trim() && !translated.get(key)?.trim())
+      .map(([key]) => key);
+    expect(empty).toEqual([]);
+  });
+});
+
+describe("uk dictionary", () => {
+  it("has no key the code never reads", () => {
+    expect(findUnusedKeys(messages.map(([key]) => key))).toEqual([]);
+  });
+});
