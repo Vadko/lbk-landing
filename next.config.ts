@@ -9,6 +9,8 @@ const release = commit ? `${version}-${commit}` : version;
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
+  // ~4.9k pages prerender against Supabase; the default 60 s caps a "use cache" fill at 54 s.
+  staticPageGenerationTimeout: 180,
   cacheComponents: true,
   partialPrefetching: true,
   experimental: {
