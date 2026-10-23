@@ -5,7 +5,7 @@ Public marketing + catalog site for LBK Launcher (`https://lbklauncher.com`): la
 ## Commands
 
 ```bash
-pnpm install --frozen-lockfile   # pnpm 11.4.0 exactly (packageManager + volta + CI + nixpacks)
+pnpm install --frozen-lockfile   # pnpm 11.4.0 exactly (packageManager + volta + CI; Railpack reads packageManager)
 pnpm dev                         # localhost:3000
 pnpm typecheck                   # tsc --noEmit          — CI gate 1
 pnpm lint                        # eslint src            — CI gate 2
@@ -177,4 +177,4 @@ Nothing validates env vars. `src/lib/images.ts` and `src/lib/supabase/server.ts`
 
 `pnpm-workspace.yaml` sets `minimumReleaseAge: 4320` (packages published in the last 3 days will not install) and `dangerouslyAllowAllBuilds: false` with an explicit `allowBuilds` list (`@sentry/cli`, `esbuild`, `sharp`, `unrs-resolver`, `workerd`) — a new dep with a postinstall script must be added there or its build step is skipped silently. `.npmrc` sets `save-exact=true`; pin new deps exactly (only `embla-carousel-*`, `react-markdown`, `remark-breaks` still carry carets).
 
-Deploy is nixpacks. `nixpacks.toml` pins the nixpkgs archive and `nodejs_22` from it (that revision, not volta or a Coolify `NIXPACKS_NODE_VERSION`, decides the deployed Node) and a corepack/pnpm 11.4.0 install; it defines no build/start phase, so those are auto-detected as `pnpm build` / `pnpm start`. There is no `output: "standalone"`, so the runtime needs full `node_modules`. The `.vercel`/`.open-next`/`.wrangler` entries in `.gitignore` are leftovers from an abandoned Cloudflare Workers deploy.
+Deploy is Coolify 4.5 with Railpack 0.40.1. It installs exactly the `.nvmrc` Node through mise (volta is not read; without `.nvmrc` it takes its own `lts`), pnpm from `packageManager`, and runs `pnpm run build` / `pnpm run start`. There is no `output: "standalone"`, so the runtime needs full `node_modules`, which Railpack keeps (no pruning). `railpack.json` keeps pnpm's cache (`/root/.cache/pnpm`) in a BuildKit cache rather than the image, so an install with an unchanged `pnpm-lock.yaml` skips the supply-chain check until Coolify's Docker cleanup (`docker buildx prune`, nightly by default) wipes it; its `deployOutputs: []` stops that config step from adding its whole `/app` as an extra image layer. The `.vercel`/`.open-next`/`.wrangler` entries in `.gitignore` are leftovers from an abandoned Cloudflare Workers deploy.

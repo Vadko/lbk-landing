@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "caches": {
+    "pnpm-metadata": { "directory": "/root/.cache/pnpm" }
+  },
+  "steps": {
+    "install": {
+      "caches": ["...", "pnpm-metadata"],
+      "deployOutputs": []
+    }
+  }
+}
