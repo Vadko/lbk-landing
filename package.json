@@ -13,11 +13,12 @@
     "format:check": "biome format src",
     "typecheck": "tsc --noEmit",
     "knip": "knip",
+    "i18n:unused": "node scripts/i18n-unused.mts",
     "prepare": "husky"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json,css,scss}": [
-      "biome check --write"
+      "biome check --write --no-errors-on-unmatched"
     ]
   },
   "dependencies": {
