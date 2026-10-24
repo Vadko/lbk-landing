@@ -59,6 +59,16 @@ const bot = (chunks: ReactNode) => (
   </a>
 );
 
+const turnstile = (chunks: ReactNode) => (
+  <a
+    href="https://www.cloudflare.com/turnstile-privacy-policy/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {chunks}
+  </a>
+);
+
 export default async function PrivacyPage() {
   const t = await getTranslations("privacyPolicy");
   const tLegal = await getTranslations("legalLayout");
@@ -267,6 +277,7 @@ export default async function PrivacyPage() {
         <ul>
           <li>{t.rich("recipients.external.mixpanel", { b })}</li>
           <li>{t.rich("recipients.external.zaraz", { b })}</li>
+          <li>{t.rich("recipients.external.turnstile", { b, turnstile })}</li>
           <li>{t.rich("recipients.external.googleAnalytics", { b })}</li>
           <li>{t.rich("recipients.external.resend", { b })}</li>
           <li>{t.rich("recipients.external.youtube", { b })}</li>
