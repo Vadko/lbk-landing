@@ -746,7 +746,7 @@ export const en = {
     title: "Privacy policy",
     metaDescription:
       "What data the LBK Launcher website and app collect, why they collect it, who receives it and how you can manage it.",
-    lastUpdated: "22 October 2026",
+    lastUpdated: "24 October 2026",
     intro: {
       service:
         "LBK Launcher is a service for finding, installing and updating Ukrainian localizations.",
@@ -807,7 +807,7 @@ export const en = {
       publicBody:
         "Aggregated figures may be used in public statistics, promotional materials and partner presentations without MachineID or other identifiers of individual installations.",
       noTracking:
-        "The app and website do not use advertising networks, tracking pixels, session recording or device/browser fingerprinting. We do not sell personal data or share it with data brokers.",
+        "The app and website do not use advertising networks, tracking pixels, session recording or device/browser fingerprinting for tracking. We do not sell personal data or share it with data brokers.",
     },
     localOnly: {
       title: "3. Data processed only on your device",
@@ -995,6 +995,8 @@ export const en = {
       external: {
         mixpanel: "<b>Mixpanel</b> — app product analytics;",
         zaraz: "<b>Cloudflare Zaraz</b> — public website analytics;",
+        turnstile:
+          "<b>Cloudflare Turnstile</b> — checks that an action comes from a person, not a bot: when signing in, registering or resetting a password in the admin panel, and when publishing reviews in the app. For this, Cloudflare processes the IP address, TLS fingerprint, User-Agent header and site key, solely to protect against bots, without identifying or profiling anyone. Details are in the <turnstile>Turnstile Privacy Addendum</turnstile> by Cloudflare;",
         googleAnalytics: "<b>Google Analytics</b> — dashboard analytics;",
         resend: "<b>Resend</b> — account emails and service notifications;",
         youtube: "<b>YouTube / Google</b> — embedded videos;",
@@ -1015,7 +1017,7 @@ export const en = {
       title: "15. Where data are processed",
       servers: "LBK's own servers are located in <b>Germany</b>.",
       external:
-        "Some external services may process data in other countries, including the United States. These include Mixpanel, Resend, Google/YouTube, GitHub and Steam.",
+        "Some external services may process data in other countries, including the United States. These include Cloudflare, Mixpanel, Resend, Google/YouTube, GitHub and Steam.",
     },
     rights: {
       title: "16. Your rights and consent management",
@@ -1060,7 +1062,7 @@ export const en = {
           "does not include MachineID in public or aggregated statistics;",
         ads: "does not show behavior-based advertising;",
         fingerprint:
-          "does not use browser fingerprinting or record on-screen activity.",
+          "does not use browser fingerprinting for tracking or record on-screen activity.",
       },
     },
     changes: {
