@@ -8,5 +8,8 @@
       "caches": ["...", "pnpm-metadata"],
       "deployOutputs": []
     }
+  },
+  "deploy": {
+    "aptPackages": ["...", "curl"]
   }
 }
