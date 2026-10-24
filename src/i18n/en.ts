@@ -996,7 +996,7 @@ export const en = {
         mixpanel: "<b>Mixpanel</b> — app product analytics;",
         zaraz: "<b>Cloudflare Zaraz</b> — public website analytics;",
         turnstile:
-          "<b>Cloudflare Turnstile</b> — checks that an action comes from a person, not a bot: when signing in, registering or resetting a password in the admin panel, and when publishing reviews in the app. For this, Cloudflare processes the IP address, TLS fingerprint, User-Agent header and site key, solely to protect against bots, without identifying or profiling anyone. Details are in the <turnstile>Turnstile Privacy Addendum</turnstile> by Cloudflare;",
+          "<b>Cloudflare Turnstile</b> — bot protection on admin panel forms and when publishing reviews in the app (<turnstile>Turnstile Privacy Addendum</turnstile>);",
         googleAnalytics: "<b>Google Analytics</b> — dashboard analytics;",
         resend: "<b>Resend</b> — account emails and service notifications;",
         youtube: "<b>YouTube / Google</b> — embedded videos;",

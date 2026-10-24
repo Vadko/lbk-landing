@@ -1000,7 +1000,7 @@ export const be = {
         mixpanel: "<b>Mixpanel</b> — прадуктовая аналітыка праграмы;",
         zaraz: "<b>Cloudflare Zaraz</b> — аналітыка публічнага сайта;",
         turnstile:
-          "<b>Cloudflare Turnstile</b> — праверка, што дзеянне выконвае чалавек, а не бот: пры ўваходзе, рэгістрацыі і аднаўленні пароля ў панэлі кіравання, а таксама пры публікацыі водгукаў у праграме. Для гэтага Cloudflare апрацоўвае IP-адрас, TLS-адбітак, загаловак User-Agent і ключ сайта — толькі для абароны ад ботаў, без ідэнтыфікацыі ці прафілявання. Падрабязней — у <turnstile>Turnstile Privacy Addendum</turnstile> ад Cloudflare;",
+          "<b>Cloudflare Turnstile</b> — абарона ад ботаў у формах панэлі кіравання і пры публікацыі водгукаў у праграме (<turnstile>Turnstile Privacy Addendum</turnstile>);",
         googleAnalytics:
           "<b>Google Analytics</b> — аналітыка панэлі кіравання;",
         resend:

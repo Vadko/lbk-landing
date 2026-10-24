@@ -1018,7 +1018,7 @@ export const uk = {
         mixpanel: "<b>Mixpanel</b> — продуктова аналітика застосунку;",
         zaraz: "<b>Cloudflare Zaraz</b> — аналітика публічного сайту;",
         turnstile:
-          "<b>Cloudflare Turnstile</b> — перевірка, що дію виконує людина, а не бот: під час входу, реєстрації та відновлення пароля в адміністративній панелі й під час публікації відгуків у застосунку. Для цього Cloudflare обробляє IP-адресу, TLS-відбиток, заголовок User-Agent і ключ сайту — лише для захисту від ботів, без ідентифікації чи профілювання. Докладніше — у <turnstile>Turnstile Privacy Addendum</turnstile> від Cloudflare;",
+          "<b>Cloudflare Turnstile</b> — захист від ботів у формах адміністративної панелі та під час публікації відгуків у застосунку (<turnstile>Turnstile Privacy Addendum</turnstile>);",
         googleAnalytics:
           "<b>Google Analytics</b> — аналітика адміністративної панелі;",
         resend:
