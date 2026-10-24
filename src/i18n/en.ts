@@ -497,7 +497,7 @@ export const en = {
       workshop: {
         question: "Is Steam Workshop supported?",
         answer:
-          "For these translations, LBK Launcher displays information and provides a direct link to their Steam page.",
+          "Yes. For these translations, LBK Launcher displays information and provides a direct link to their Steam page.",
       },
       workshopUpdates: {
         question: "Do Steam Workshop translations update automatically?",
