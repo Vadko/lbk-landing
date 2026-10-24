@@ -590,7 +590,7 @@ export const en = {
       version: "Version {version}, released {date}",
       versionUnknown: "Version ...",
     },
-    stats: { games: "<count></count>+ Games", users: "<count></count>+ Users" },
+    stats: { games: "<count></count>+ games", users: "<count></count>+ users" },
     download: {
       steamDeck: "Install on Steam Deck",
       macos: "Download for macOS",
@@ -1004,7 +1004,7 @@ export const en = {
           "<b>Internal team notification channels</b> — alerts about new requests so LBK Team can review and respond promptly.",
       },
       partners:
-        "The localization catalog is synchronized with a partner service daily. No player data are shared during synchronization. Before publication, archives uploaded by translators are scanned for viruses using the external Metadefender service. No player data are sent for this scan.",
+        "The localization catalog is synchronized with a partner service daily. No player data are shared during synchronization. Before publication, archives uploaded by translators are scanned for viruses using the external MetaDefender service. No player data are sent for this scan.",
     },
     steamFallback: {
       title: "14. Steam: local library detection and server fallback",
@@ -1254,7 +1254,7 @@ export const en = {
       localDb: "Local database",
       sync: "Synchronization",
       archives: "Archives",
-      workshop: "workshop",
+      workshop: "Workshop",
       build: "Build",
       distribution: "Distribution",
       updates: "Updates",
