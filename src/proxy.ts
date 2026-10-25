@@ -15,6 +15,11 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(newUrl, { status: 301 });
   }
 
+  // The launcher's captcha window keeps working through maintenance; the page itself sets noindex
+  if (pathname === "/captcha") {
+    return NextResponse.next();
+  }
+
   // Only the proxy's own fetch reaches the status pages; a direct visit gets the 404 it would without them
   if (pathname === "/gone" || pathname === "/maintenance") {
     if (request.headers.get(STATUS_PAGE_HEADER) === "1") {

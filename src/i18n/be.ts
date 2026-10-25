@@ -24,6 +24,11 @@ export const be = {
     },
   },
   authorsPopover: { otherAuthors: "Іншыя аўтары:" },
+  captchaPage: {
+    title: "Праверка бяспекі LBK Launcher",
+    description:
+      "Гэтую старонку адкрывае LBK Launcher, калі вы пішаце ў водгуках: Cloudflare Turnstile правярае, што піша чалавек. Тут нічога рабіць не трэба.",
+  },
   catalogList: {
     found: "Знойдзена: <b>{total}</b>",
     errorTitle: "Памылка",
