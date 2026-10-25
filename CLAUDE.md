@@ -1,6 +1,6 @@
 # lbk-landing
 
-Public marketing + catalog site for LBK Launcher (`https://lbklauncher.com`): landing, game catalog, per-translation pages, donaters, collaboration, guides&tools, tech-stack, setup, legal. Next.js 16.4.2 App Router (`cacheComponents: true`) / React 19.2.6 / pnpm 11.4.0 / Node 22. Reads the **same Supabase Postgres as lbk-admin, but anon-key only**, with an ioredis key/value cache in front. All user-facing copy is served in Ukrainian through next-intl from `src/i18n/uk.ts` (with `en`/`be` kept key-for-key in sync); the only tests are the dictionary checks in `src/i18n/dictionaries.test.ts`.
+Public marketing + catalog site for LBK Launcher (`https://lbklauncher.com`): landing, game catalog, per-translation pages, donaters, collaboration, guides&tools, tech-stack, setup, legal. Next.js 16.4.2 App Router (`cacheComponents: true`) / React 19.2.6 / pnpm 11.4.0 / Node 22. Reads the **same Supabase Postgres as lbk-admin, but anon-key only**, with an ioredis key/value cache in front. All user-facing copy is served in Ukrainian through next-intl from `src/i18n/uk.ts` (with `en`/`be` kept key-for-key in sync); the only tests are the dictionary checks in `src/i18n/dictionaries.test.ts` and the `/captcha` page tests in `src/lib/captcha/`.
 
 ## Commands
 
@@ -30,18 +30,29 @@ Request path: `src/proxy.ts` → route segment (`src/app/**`) → `src/lib/*` se
 
 ### Proxy (`src/proxy.ts`)
 
-Next 16 renamed `middleware.ts` to `proxy.ts`. There is no `src/middleware.ts`. It exports `proxy(request)` plus `config.matcher` (excludes `api`, `_next/static`, `_next/image`, `favicon.ico`, image extensions). It does four things, in order:
+Next 16 renamed `middleware.ts` to `proxy.ts`. There is no `src/middleware.ts`. It exports `proxy(request)` plus `config.matcher` (excludes `api`, `_next/static`, `_next/image`, `favicon.ico`, image extensions). It does five things, in order:
 
 1. 301 `www.` → apex.
-2. When `MAINTENANCE_MODE=true` (server-only, read per request by `isMaintenanceMode()`, so a restart toggles it without a rebuild), answer every page with the `/maintenance` page at 503 + `Retry-After` (see below). That page hides the Navbar/Footer through `<BodyClass name="is-maintenance" />`.
-3. `resolveGamePath()` from `src/lib/proxy-games.ts` — returns `null` for anything that is not `/games/:slug[/:team]`, so the Redis + Supabase work only happens on game URLs. **Do not hoist that check**, or every request starts paying for it.
-4. `/games` with any query string → `X-Robots-Tag: noindex, follow`. It lives here because reading `searchParams` in `generateMetadata` would make `/games` dynamic.
+2. `/captcha` passes straight through, so the launcher's captcha window keeps working during maintenance.
+3. When `MAINTENANCE_MODE=true` (server-only, read per request by `isMaintenanceMode()`, so a restart toggles it without a rebuild), answer every page with the `/maintenance` page at 503 + `Retry-After` (see below). That page hides the Navbar/Footer through `<BodyClass name="is-maintenance" />`.
+4. `resolveGamePath()` from `src/lib/proxy-games.ts` — returns `null` for anything that is not `/games/:slug[/:team]`, so the Redis + Supabase work only happens on game URLs. **Do not hoist that check**, or every request starts paying for it.
+5. `/games` with any query string → `X-Robots-Tag: noindex, follow`. It lives here because reading `searchParams` in `generateMetadata` would make `/games` dynamic.
 
 A status the proxy puts on a **rewrite** does not survive: the page render's `200` overwrites it (`app-page-runtime.js`, `cachedData.status`), and Next can render a page only as 200/401/403/404. So for 410 and 503, `statusPageResponse()` (`src/lib/status-page.ts`) fetches the prerendered `/gone` or `/maintenance` page from this same server (`http://localhost:$PORT`; Next sets `PORT` to the port it listens on) with header `x-lbk-status-page: 1` and re-sends it with the real status and `Cache-Control: no-store`; if that fetch fails, it sends the status with an empty body and logs. Without the header, the proxy answers `/gone` and `/maintenance` with a 404, so they are not browsable directly. Both are ordinary pages styled by `globals.css`.
 
 ### 410 Gone pipeline
 
 `deleted_games` tombstone table → cached slug set (`src/lib/deleted-slugs-cache.ts`) → on a hit, a live HEAD count on `games` (the slug may have been re-created) → then `slug_redirects` (a rename must 308, not 410) → only then `statusPageResponse("/gone", 410)` — the `src/app/gone/page.tsx` `StatusPage`, `noindex, follow`. The proxy runs outside a render, so it calls the uncached `fetchRedirect()`; `getRedirect()` wraps it in `"use cache"`, which throws in the proxy.
+
+### `/captcha` — launcher bridge contract
+
+`src/app/captcha/route.ts` serves a self-contained HTML page (no layout, no Zaraz, no Next scripts) that the launcher loads in a hidden Electron window to get Cloudflare Turnstile tokens for public review writes. It is prerendered (`○`); Cloudflare serves extensionless HTML as `DYNAMIC`, so the `s-maxage` Next adds is never used — a "cache everything" rule on this path would pin an old page. Without `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (build-time, the «LBK Launcher» widget, which must list `lbklauncher.com`) it answers 503. `src/lib/captcha/page-headers.ts` sends `X-Robots-Tag: noindex, nofollow` (plus the matching robots meta), `Referrer-Policy: no-referrer` and a CSP of `default-src 'none'` that allows only the inline script by its sha256 plus `challenges.cloudflare.com` in `script-src`/`frame-src`/`connect-src`, so scripts Cloudflare injects at the edge (Zaraz, JS Detections) are blocked; `render-page.test.ts` fails when the hash stops matching. The inline script carries `data-cfasync="false"`, because Rocket Loader would otherwise retype it and load its own loader, which the CSP blocks, and the page would never run. The script (`src/lib/captcha/page-script.ts`, a string run under `node:vm` in `page-script.test.ts`) does nothing unless `window.lbkCaptchaHost` exists. That object is the launcher preload's `contextBridge` API, and these five functions are the contract — change them only together with the launcher:
+
+- `onRequest(listener)` — the page subscribes once; each request is `{ requestId, action, cData }` (`[A-Za-z0-9_-]`, at most 64 / 32 / 255 chars). A request with a bad id is dropped; a bad action or cData is rejected with `invalid_request`.
+- `ready()` once `api.js?render=explicit` has loaded (requests that arrive earlier are queued), or `unavailable("script_error")` when it fails; then every queued and every later request is rejected with `script_error`.
+- `resolve(requestId, token)` or `reject(requestId, code)` exactly once per request with a valid id. A code is a Turnstile error code (a numeric string such as `600010`) or one of `invalid_request`, `script_error`, `timeout`, `unsupported`, `render_failed`.
+
+Each request renders a fresh widget with its own `action`/`cData`, `retry: "never"` and `refresh-expired: "never"`, and removes it after answering: retries belong to the launcher. A token is single-use and expires after 300 s, so the launcher asks for a new one for every write attempt, a retry included, and never resends one. The verifying side is lbk-admin's `supabase/functions/_shared/turnstile.ts`: it accepts the actions `review`, `reply`, `edit`, `nickname`, expects `cData` = the first 16 bytes of sha256(machineId) in hex, and the hostname in `TURNSTILE_LAUNCHER_HOSTNAME`. Cloudflare's test keys work on `localhost`: `1x00000000000000000000BB` always passes (token `XXXX.DUMMY.TOKEN.XXXX`), `2x00000000000000000000BB` always fails (`600010`).
 
 ### Redirect semantics — keep the 308/307 split
 
@@ -87,7 +98,7 @@ Authenticates on header `x-revalidate-secret` against `REVALIDATE_SECRET`; body 
 
 ### SEO
 
-`metadataBase` and the `%s | LBK Launcher` title template exist only in `src/app/layout.tsx`. Game routes deliberately break out with `title: { absolute: … }`. Canonicals are hardcoded `https://lbklauncher.com/...` strings in 10 files rather than derived. Deliberate `noindex`: `/games` with any searchParam present (proxy `X-Robots-Tag`), `/games/[slug]` when there is exactly one translation, all of `/open/*`, `/gone`, `/maintenance`. JSON-LD is a raw `<script type="application/ld+json">` with `dangerouslySetInnerHTML` (root layout plus `games/[slug]/page.tsx` and `GameDetailArticle.tsx`); the root layout escapes `<` per Next's XSS guidance.
+`metadataBase` and the `%s | LBK Launcher` title template exist only in `src/app/layout.tsx`. Game routes deliberately break out with `title: { absolute: … }`. Canonicals are hardcoded `https://lbklauncher.com/...` strings in 10 files rather than derived. Deliberate `noindex`: `/games` with any searchParam present (proxy `X-Robots-Tag`), `/games/[slug]` when there is exactly one translation, all of `/open/*`, `/gone`, `/maintenance`, `/captcha` (header and meta, `noindex, nofollow`). JSON-LD is a raw `<script type="application/ld+json">` with `dangerouslySetInnerHTML` (root layout plus `games/[slug]/page.tsx` and `GameDetailArticle.tsx`); the root layout escapes `<` per Next's XSS guidance.
 
 `src/lib/game-jsonld.ts` FAQ markup must repeat the visible FAQ text verbatim — `generateFAQLD` and `GameFAQ.tsx` both call `isWorkshopTranslation(game)` (`src/lib/types.ts`), and `GameInstallSteps.tsx` branches on an `isWorkshop` prop that `GameDetailArticle.tsx` computes the same way. Edit copy in one and you must edit the others.
 
@@ -121,6 +132,7 @@ Sentry SDK points at a self-hosted GlitchTip (`SENTRY_URL`/DSN), `enabled: NODE_
 
 - Components: `export function X()` / `export const X`. `export default` is reserved for App Router files and for exactly two components — `game-detail/GameGallery.tsx` (imported statically by `GameDetailArticle.tsx`) and `ui/GalleryLightbox.tsx` (the only `dynamic()` import without a `.then` wrapper).
 - Props: `interface <Component>Props` declared immediately above the component, destructured in the signature.
+- **One component per file; split by responsibility as you write.** A `.tsx` file declares one component. A sub-component, hook or helper with a job of its own goes into its own file beside it, named after its export, even when only that one file uses it. Several declarations share a file only when they are small private parts of the one thing it exports: a guard, a formatter, a local type. The same holds outside React: a module that has grown a second responsibility is split, and a helper that a second file needs moves to a shared module instead of being copied. `max-lines` (400) is the ceiling, not the signal to split.
 - `"use client"` is always literally line 1, and only where a browser API/hook is genuinely needed. Data-fetching pages and presentational game-detail components stay server components.
 - `@/` alias for cross-directory imports; relative paths for siblings and intra-feature. Let Biome sort imports — never reorder by hand.
 - Barrels exist for exactly three folders (`components/donaters`, `components/game-detail`, `components/icons`); the game-detail and icons ones are deliberately incomplete. Adding a component there does not mean adding it to the barrel.
@@ -145,7 +157,7 @@ Keep any comment you do write to a single line; do not write multi-line comment 
 
 ## Testing and verification
 
-The only test file is `src/i18n/dictionaries.test.ts` (Vitest, node environment; `vitest.config.ts` collects only `src/**/*.test.{ts,tsx}` and resolves `@/` from tsconfig; `pnpm test:run`, or `pnpm vitest run <path>`). Nothing else — components, routes, data fetching — is tested. CI (`.github/workflows/ci.yml`) runs only `typecheck`, `lint`, `format:check`, `knip`, `test:run` on Node 22 — and **never `next build`**. Server/client boundary errors, bad metadata, Supabase-at-build-time failures and Sentry plugin errors reach production unverified.
+Test files are `src/i18n/dictionaries.test.ts` and the two `/captcha` tests in `src/lib/captcha/` (Vitest, node environment; `vitest.config.ts` collects only `src/**/*.test.{ts,tsx}` and resolves `@/` from tsconfig; `pnpm test:run`, or `pnpm vitest run <path>`). Nothing else — components, routes, data fetching — is tested. CI (`.github/workflows/ci.yml`) runs only `typecheck`, `lint`, `format:check`, `knip`, `test:run` on Node 22 — and **never `next build`**. Server/client boundary errors, bad metadata, Supabase-at-build-time failures and Sentry plugin errors reach production unverified.
 
 After any change: `pnpm format && pnpm typecheck && pnpm lint && pnpm knip && pnpm test:run`. For anything touching data fetching, server components, routing or metadata, also run `pnpm build` locally, and check the route table (`○` static vs `ƒ` dynamic) before optimizing anything that assumes prerendering.
 
@@ -171,7 +183,7 @@ After any change: `pnpm format && pnpm typecheck && pnpm lint && pnpm knip && pn
 
 ## Environment and deploy
 
-Build-time, inlined into the client bundle (rotating any of these needs a rebuild, not a restart): `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_STORAGE_IMAGES_URL`, `NEXT_PUBLIC_SENTRY_DSN`, plus `SENTRY_AUTH_TOKEN`/`SENTRY_ORG`/`SENTRY_PROJECT`/`SENTRY_URL` and `SOURCE_COMMIT` (Sentry release name is `${package version}-${commit.slice(0,7)}`; version is still `0.1.0` and never bumped). Server-runtime only: `REDIS_URL`, `REVALIDATE_SECRET`, `GITHUB_TOKEN` (optional, raises the GitHub API rate limit for `/api/github-releases`).
+Build-time, inlined into the client bundle (rotating any of these needs a rebuild, not a restart): `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (baked into the prerendered `/captcha`), `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_STORAGE_IMAGES_URL`, `NEXT_PUBLIC_SENTRY_DSN`, plus `SENTRY_AUTH_TOKEN`/`SENTRY_ORG`/`SENTRY_PROJECT`/`SENTRY_URL` and `SOURCE_COMMIT` (Sentry release name is `${package version}-${commit.slice(0,7)}`; version is still `0.1.0` and never bumped). Server-runtime only: `REDIS_URL`, `REVALIDATE_SECRET`, `GITHUB_TOKEN` (optional, raises the GitHub API rate limit for `/api/github-releases`).
 
 Nothing validates env vars. `src/lib/images.ts` and `src/lib/supabase/server.ts` use `!` at module scope, so a missing value yields `undefined/...` URLs rather than an error.
 

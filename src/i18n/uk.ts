@@ -24,6 +24,11 @@ export const uk = {
   authorsPopover: {
     otherAuthors: "Інші автори:",
   },
+  captchaPage: {
+    title: "Перевірка безпеки LBK Launcher",
+    description:
+      "Цю сторінку відкриває LBK Launcher, коли ви пишете у відгуках: Cloudflare Turnstile перевіряє, що пише людина. Тут нічого робити не треба.",
+  },
   catalogList: {
     found: "Знайдено: <b>{total}</b>",
     errorTitle: "Помилка",

@@ -23,6 +23,11 @@ export const en = {
     },
   },
   authorsPopover: { otherAuthors: "Other creators:" },
+  captchaPage: {
+    title: "LBK Launcher security check",
+    description:
+      "LBK Launcher opens this page when you post in reviews: Cloudflare Turnstile checks that a person is writing. There is nothing to do here.",
+  },
   catalogList: {
     found: "Found: <b>{total}</b>",
     errorTitle: "Error",
