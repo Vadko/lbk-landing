@@ -1,7 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { isLauncherUserAgent } from "@/lib/captcha/is-launcher-user-agent";
 import { isMaintenanceMode } from "@/lib/maintenance";
 import { resolveGamePath } from "@/lib/proxy-games";
 import { STATUS_PAGE_HEADER, statusPageResponse } from "@/lib/status-page";
+
+function notFound(request: NextRequest) {
+  return NextResponse.rewrite(new URL("/_not-found", request.url), {
+    status: 404,
+  });
+}
 
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
@@ -15,9 +22,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(newUrl, { status: 301 });
   }
 
-  // The launcher's captcha window keeps working through maintenance; the page itself sets noindex
+  // Only the launcher's captcha window sees the page, through maintenance too; anything else gets a 404
   if (pathname === "/captcha") {
-    return NextResponse.next();
+    if (isLauncherUserAgent(request.headers.get("user-agent"))) {
+      return NextResponse.next();
+    }
+    return notFound(request);
   }
 
   // Only the proxy's own fetch reaches the status pages; a direct visit gets the 404 it would without them
@@ -25,9 +35,7 @@ export async function proxy(request: NextRequest) {
     if (request.headers.get(STATUS_PAGE_HEADER) === "1") {
       return NextResponse.next();
     }
-    return NextResponse.rewrite(new URL("/_not-found", request.url), {
-      status: 404,
-    });
+    return notFound(request);
   }
 
   // 503 + Retry-After so search engines keep the indexed pages instead of the stub
