@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import { headers } from "next/headers";
 import Script from "next/script";
+import { NextIntlClientProvider } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import "./globals.css";
 import { ClientUtilities } from "@/components/layout/ClientUtilities";
 import { Footer } from "@/components/layout/Footer";
 import { IframeResizeMessenger } from "@/components/layout/IframeResizeMessenger";
 import { Navbar } from "@/components/layout/Navbar";
-import { MaintenancePage } from "@/components/MaintenancePage";
+import { PageOnlyScript } from "@/components/layout/PageOnlyScript";
 import { getGamesCount } from "@/lib/games-count";
-import { isMaintenanceMode } from "@/lib/maintenance";
-import { QueryProvider } from "@/providers/QueryProvider";
 
 const outfit = Outfit({
   subsets: ["latin", "latin-ext"],
@@ -18,36 +17,20 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
-const appDescription = (gamesCount: number) =>
-  `Завантажуйте LBK Launcher для швидкого встановлення українських локалізацій. Понад ${gamesCount} українізаторів, автоматичне оновлення та підтримка Steam Deck. Грайте в улюблені ігри рідною мовою без зайвих зусиль.`;
-
 export async function generateMetadata(): Promise<Metadata> {
-  const description = appDescription(await getGamesCount());
+  const t = await getTranslations("siteMeta");
+  const description = t("description", {
+    count: String(await getGamesCount()),
+  });
 
   return {
     metadataBase: new URL("https://lbklauncher.com"),
     title: {
-      default:
-        "LBK Launcher — Ігри українською: автоматичний українізатор та каталог перекладів",
+      default: t("title"),
       template: "%s | LBK Launcher",
     },
     description,
-    keywords: [
-      "українізатор",
-      "українізатор ігор",
-      "українська локалізація",
-      "грати українською",
-      "ігри українською",
-      "український переклад ігор",
-      "LBK",
-      "LBK лаунчер",
-      "LBK Launcher",
-      "локалізація ігор",
-      "переклад ігор українською",
-      "українізація ігор",
-      "ігри на українській",
-      "українська мова в іграх",
-    ],
+    keywords: t("keywords"),
     authors: [{ name: "LB Team & GGL Studio" }],
     creator: "LB Team & GGL Studio",
     publisher: "LB Team & GGL Studio",
@@ -55,21 +38,21 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       locale: "uk_UA",
       url: "https://lbklauncher.com",
-      siteName: "LBK Launcher — Ігри українською",
-      title: "LBK Launcher — Ігри українською",
+      siteName: t("brandTitle"),
+      title: t("brandTitle"),
       description,
       images: [
         {
           url: "/assets/og-image.webp",
           width: 1200,
           height: 630,
-          alt: "LBK Launcher — Ігри українською",
+          alt: t("brandTitle"),
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "LBK Launcher — Ігри українською мовою",
+      title: t("twitterTitle"),
       description,
       images: ["/assets/og-image.webp"],
     },
@@ -99,21 +82,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  if (isMaintenanceMode) {
-    return (
-      <html lang="uk" className={outfit.variable}>
-        <body className="antialiased main-bg">
-          <main className="relative z-10">
-            <MaintenancePage />
-          </main>
-        </body>
-      </html>
-    );
-  }
-
-  const description = appDescription(await getGamesCount());
-  const headersList = await headers();
-  const isPageOnly = headersList.get("x-page-only") === "1";
+  const t = await getTranslations("siteMeta");
+  const description = t("description", {
+    count: String(await getGamesCount()),
+  });
 
   return (
     <html
@@ -123,6 +95,7 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
     >
       <head>
+        <PageOnlyScript />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -152,7 +125,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={`antialiased ${isPageOnly ? "page-only" : "main-bg"} `}>
+      <body className="antialiased main-bg" suppressHydrationWarning>
         {/* Cloudflare Zaraz — executable JS, so loaded via next/script (auto-inject
             is off). Unlike JSON-LD above, which is data and stays a native tag. */}
         <Script
@@ -160,23 +133,13 @@ export default async function RootLayout({
           referrerPolicy="origin"
           strategy="afterInteractive"
         />
-        <ClientUtilities />
-        {isPageOnly ? (
-          <>
-            <QueryProvider>
-              <main className="relative z-10">{children}</main>
-            </QueryProvider>
-            <IframeResizeMessenger />
-          </>
-        ) : (
-          <>
-            <Navbar />
-            <QueryProvider>
-              <main className="relative z-10 header-padding">{children}</main>
-            </QueryProvider>
-            <Footer />
-          </>
-        )}
+        <NextIntlClientProvider>
+          <ClientUtilities />
+          <Navbar />
+          <main className="relative z-10 header-padding">{children}</main>
+          <Footer />
+          <IframeResizeMessenger />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

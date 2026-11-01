@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { AIBadgeIcon } from "./icons/AIBadgeIcon";
 import { AIEditedBadgeIcon } from "./icons/AIEditedBadgeIcon";
@@ -13,6 +14,7 @@ export function TranslateTypeBadge({
   type,
   className = "",
 }: TranslateTypeBadgeProps) {
+  const t = useTranslations("translationType");
   const [showTooltip, setShowTooltip] = useState(false);
   if (!type) {
     return null;
@@ -31,7 +33,7 @@ export function TranslateTypeBadge({
       </span>
       {showTooltip && (
         <div className="translate-type-badge__tooltip" role="tooltip">
-          {type === "edited" ? "ШІ + редактура людиною" : "Переклад ШІ"}
+          {type === "edited" ? t("ai_edited") : t("ai")}
         </div>
       )}
     </div>

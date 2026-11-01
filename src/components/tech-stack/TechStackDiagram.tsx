@@ -11,6 +11,7 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import type { Edge, Node, NodeProps } from "@xyflow/react";
+import { type Messages, useTranslations } from "next-intl";
 import { memo } from "react";
 
 // ━━━ Colors ━━━
@@ -120,11 +121,13 @@ const ServiceNode = memo(function ServiceNode({
 
 type InfraNodeType = Node<{
   label: string;
-  subtitle: string;
+  subtitle: keyof Messages["techStack"]["diagram"];
   color: string;
 }>;
 
 const InfraNode = memo(function InfraNode({ data }: NodeProps<InfraNodeType>) {
+  const t = useTranslations("techStack.diagram");
+
   return (
     <div
       className="ts-node ts-node--infra"
@@ -150,7 +153,7 @@ const InfraNode = memo(function InfraNode({ data }: NodeProps<InfraNodeType>) {
       />
       <Handle type="source" position={Position.Bottom} id="s-bottom" />
       <h3 className="ts-node__title">{data.label}</h3>
-      <p className="ts-node__subtitle">{data.subtitle}</p>
+      <p className="ts-node__subtitle">{t(data.subtitle)}</p>
     </div>
   );
 });
@@ -194,7 +197,7 @@ const initialNodes: Node[] = [
     position: { x: 370, y: -160 },
     data: {
       label: "lbk-deploy-translation",
-      subtitle: "GitHub Action",
+      subtitle: "deployAction",
       color: C.admin,
     },
   },
@@ -204,7 +207,7 @@ const initialNodes: Node[] = [
     position: { x: 690, y: -160 },
     data: {
       label: "lbk-flatpak",
-      subtitle: "Flatpak-репозиторій",
+      subtitle: "flatpak",
       color: C.launcher,
     },
   },
@@ -290,7 +293,7 @@ const initialNodes: Node[] = [
     position: { x: 980, y: 0 },
     data: {
       label: "Coolify",
-      subtitle: "Хостинг наших сервісів",
+      subtitle: "coolify",
       color: "#8B5CF6",
     },
   },
@@ -300,7 +303,7 @@ const initialNodes: Node[] = [
     position: { x: 980, y: 110 },
     data: {
       label: "Sentry / GlitchTip",
-      subtitle: "Error Monitoring",
+      subtitle: "sentry",
       color: "#F43F5E",
     },
   },
@@ -310,7 +313,7 @@ const initialNodes: Node[] = [
     position: { x: 980, y: 220 },
     data: {
       label: "GitHub",
-      subtitle: "CI/CD & Releases",
+      subtitle: "github",
       color: "#E5E7EB",
     },
   },
@@ -320,7 +323,7 @@ const initialNodes: Node[] = [
     position: { x: 980, y: 330 },
     data: {
       label: "Workers",
-      subtitle: "8 фонових сервісів",
+      subtitle: "workers",
       color: C.admin,
     },
   },

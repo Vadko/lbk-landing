@@ -5,6 +5,7 @@ import { faLinux } from "@fortawesome/free-brands-svg-icons/faLinux";
 import { faSteam } from "@fortawesome/free-brands-svg-icons/faSteam";
 import { faWindows } from "@fortawesome/free-brands-svg-icons/faWindows";
 import { faBox } from "@fortawesome/free-solid-svg-icons/faBox";
+import { useTranslations } from "next-intl";
 import { useCallback } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useClientValue } from "@/hooks/useClientValue";
@@ -17,6 +18,7 @@ import {
 import { trackFileDownload } from "@/lib/analytics";
 
 export function HeroDownload() {
+  const t = useTranslations("landingHero.download");
   const { data: release } = useGitHubRelease();
   const downloadLinks = getDownloadLinks(release);
   const os = useClientValue(detectOS, "windows");
@@ -66,15 +68,15 @@ export function HeroDownload() {
 
   const getMainDownloadLabel = () => {
     if (isSteamDeck) {
-      return "Встановити на Steam Deck";
+      return t("steamDeck");
     }
     if (os === "macos") {
-      return "Завантажити для macOS";
+      return t("macos");
     }
     if (os === "linux") {
-      return "Завантажити для Linux";
+      return t("linux");
     }
-    return "Завантажити для Windows";
+    return t("windows");
   };
 
   const getMainDownloadSubtitle = () => {

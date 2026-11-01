@@ -1,6 +1,7 @@
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faHome } from "@fortawesome/free-solid-svg-icons/faHome";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 
 interface StatusPageProps {
@@ -9,7 +10,9 @@ interface StatusPageProps {
   text: string;
 }
 
-export function StatusPage({ code, title, text }: StatusPageProps) {
+export async function StatusPage({ code, title, text }: StatusPageProps) {
+  const t = await getTranslations("statusPage");
+
   return (
     <section className="not-found-page">
       <div className="not-found-content">
@@ -19,11 +22,11 @@ export function StatusPage({ code, title, text }: StatusPageProps) {
         <div className="not-found-buttons">
           <Link href="/" className="btn btn-main">
             <SvgIcon icon={faHome} />
-            На головну
+            {t("home")}
           </Link>
           <Link href="/games" className="btn glass-bg">
             <SvgIcon icon={faGamepad} />
-            Каталог ігор
+            {t("catalog")}
           </Link>
         </div>
       </div>

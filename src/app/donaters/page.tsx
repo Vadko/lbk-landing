@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { DonatersStatsSection } from "@/components/donaters/DonatersStatsSection";
@@ -8,20 +9,24 @@ import { SpecialThanksSection } from "@/components/donaters/SpecialThanksSection
 import { SupportSection } from "@/components/donaters/SupportSection";
 import { PageHeroSection } from "@/components/ui/PageHeroSection";
 
-export const metadata: Metadata = {
-  title: "Топ донатерів",
-  description:
-    "Підтримайте проєкт — і ваше ім'я буде тут. Кожна гривня наближає нові українські локалізації.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("donaters");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
-export default function DonatersRoutePage() {
+export default async function DonatersRoutePage() {
+  const t = await getTranslations("donaters");
+
   return (
     <>
       <PageViewTracker event="view_donaters_page" />
       <PageHeroSection
-        title="Топ донатерів"
-        description="Підтримайте проєкт — і ваше ім&apos;я буде тут. Кожна гривня наближає нові українські локалізації."
-        ctaText="Підтримати на Donatello"
+        title={t("title")}
+        description={t("description")}
+        ctaText={t("heroCta")}
         ctaHref="https://donatello.to/atlantDeMaPeine?g=pidtrimka-roboti-lbk-launcher"
       />
       <DonatersStatsSection />

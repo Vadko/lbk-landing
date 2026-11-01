@@ -1,42 +1,41 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import type { ComponentType, SVGProps } from "react";
 import { GamepadIcon, GlobeIcon, UsersIcon } from "@/components/icons";
 import { HoverCard } from "@/components/ui/HoverCard";
 
 interface ValueCard {
   Icon: ComponentType<SVGProps<SVGSVGElement>>;
-  title: string;
-  description: string;
+  id: "engagement" | "reach" | "demographics";
 }
 
 const VALUE_CARDS: ValueCard[] = [
   {
     Icon: UsersIcon,
-    title: "Висока залученість аудиторії",
-    description: "Гравці активно використовують лаунчер щодня",
+    id: "engagement",
   },
   {
     Icon: GlobeIcon,
-    title: "Передбачуваний охоплення",
-    description: "Стабільні показники DAU та утримання",
+    id: "reach",
   },
   {
     Icon: GamepadIcon,
-    title: "Геймерська демографія",
-    description: "Реклама показується у релевантному, природному середовищі",
+    id: "demographics",
   },
 ];
 
-export function WhyAdvertisersChooseUs() {
+export async function WhyAdvertisersChooseUs() {
+  const t = await getTranslations("advertisers.why");
+
   return (
     <section className="why-advertisers-section">
       <div className="container">
-        <h2 className="section-title">Чому рекламодавці обирають нас</h2>
+        <h2 className="section-title">{t("title")}</h2>
         <div className="why-advertisers__grid">
           <HoverCard className="why-advertisers__main-card">
             <Image
               src="/assets/abstract-stat-image.svg"
-              alt="+35% органічне зростання аудиторії"
+              alt={t("imageAlt")}
               width={411}
               height={512}
             />
@@ -47,13 +46,13 @@ export function WhyAdvertisersChooseUs() {
             {VALUE_CARDS.map((card) => {
               const { Icon } = card;
               return (
-                <HoverCard key={card.title} className="why-advertisers__card">
+                <HoverCard key={card.id} className="why-advertisers__card">
                   <div className="hover-card__icon">
                     <Icon width={32} height={32} aria-hidden />
                   </div>
                   <div className="card__content">
-                    <h3>{card.title}</h3>
-                    <p>{card.description}</p>
+                    <h3>{t(`${card.id}.title`)}</h3>
+                    <p>{t(`${card.id}.description`)}</p>
                   </div>
                 </HoverCard>
               );

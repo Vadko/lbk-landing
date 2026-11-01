@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { OpenInLauncher } from "@/components/open/OpenInLauncher";
 import {
   getAllGameSlugsWithTeams,
@@ -12,6 +13,8 @@ import { teamToSlug } from "@/lib/transliterate";
 interface PageProps {
   params: Promise<{ slug: string; team: string }>;
 }
+
+export const instant = false;
 
 export async function generateStaticParams() {
   const slugsWithTeams = await getAllGameSlugsWithTeams();
@@ -26,18 +29,23 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug, team: teamSlugParam } = await params;
   const game = await getGameBySlugAndTeamSlug(slug, teamSlugParam);
+  const tMeta = await getTranslations("gameMeta");
+  const t = await getTranslations("openLauncher");
 
   if (!game) {
-    return { title: "Переклад не знайдено" };
+    return { title: tMeta("translationNotFound") };
   }
 
-  const description = `Відкрити ${game.name} українською від ${game.team} в LBK Launcher. Встановіть переклад в один клац!`;
+  const description = t("metaDescription", {
+    game: game.name,
+    team: game.team,
+  });
 
   return {
-    title: `Відкрити ${game.name} в LBK Launcher`,
+    title: t("metaTitle", { game: game.name }),
     description,
     openGraph: {
-      title: `Відкрити ${game.name} в LBK Launcher`,
+      title: t("metaTitle", { game: game.name }),
       description,
       images: game.banner_path
         ? [getImageUrl(game.banner_path, game.updated_at)!]
@@ -47,7 +55,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `Відкрити ${game.name} в LBK Launcher`,
+      title: t("metaTitle", { game: game.name }),
       description,
       images: game.banner_path
         ? [getImageUrl(game.banner_path, game.updated_at)!]
@@ -59,8 +67,6 @@ export async function generateMetadata({
     },
   };
 }
-
-export const revalidate = 3600;
 
 export default async function OpenGamePage({ params }: PageProps) {
   const { slug, team: teamSlugParam } = await params;

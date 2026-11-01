@@ -1,6 +1,7 @@
+import { cacheLife } from "next/cache";
 import { createServerClient } from "@/lib/supabase/server";
 
-export async function getRedirect(oldPath: string): Promise<string | null> {
+export async function fetchRedirect(oldPath: string): Promise<string | null> {
   const supabase = createServerClient();
 
   const { data } = await supabase
@@ -10,6 +11,13 @@ export async function getRedirect(oldPath: string): Promise<string | null> {
     .maybeSingle();
 
   return data?.new_path ?? null;
+}
+
+export async function getRedirect(oldPath: string): Promise<string | null> {
+  "use cache";
+  cacheLife("hours");
+
+  return fetchRedirect(oldPath);
 }
 
 export async function resolveMovedGamePath(

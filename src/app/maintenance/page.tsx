@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { isMaintenanceMode } from "@/lib/maintenance";
+import { getTranslations } from "next-intl/server";
+import { BodyClass } from "@/components/layout/BodyClass";
+import { MaintenancePage } from "@/components/MaintenancePage";
 
-// A static page would send the 503 with a year-long s-maxage that a CDN could keep after maintenance ends.
-export const dynamic = "force-dynamic";
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("maintenance");
 
-export const metadata: Metadata = {
-  title: "Технічні роботи",
-  robots: { index: false, follow: false },
-};
+  return {
+    title: t("title"),
+    robots: { index: false, follow: false },
+  };
+}
 
-// Only the proxy's 503 rewrite target; the root layout renders the stub itself.
 export default function Maintenance() {
-  if (!isMaintenanceMode) {
-    notFound();
-  }
-
-  return null;
+  return (
+    <>
+      <BodyClass name="is-maintenance" />
+      <MaintenancePage />
+    </>
+  );
 }

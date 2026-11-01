@@ -12,7 +12,8 @@ import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons/faFileArrowDo
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
 import Link from "next/link";
-import { useState, useSyncExternalStore } from "react";
+import { type Messages, useTranslations } from "next-intl";
+import { type ReactNode, useState, useSyncExternalStore } from "react";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import {
@@ -46,6 +47,8 @@ const getOSPlatform = (): Platform => {
 
 const emptySubscribe = () => () => {};
 
+const strong = (chunks: ReactNode) => <strong>{chunks}</strong>;
+
 export default function SetupPage() {
   const detectedPlatform = useSyncExternalStore(
     emptySubscribe,
@@ -56,6 +59,7 @@ export default function SetupPage() {
     useState<Platform>(detectedPlatform);
   const { data: releaseData, isLoading } = useGitHubRelease();
   const downloadLinks = getDownloadLinks(releaseData);
+  const t = useTranslations("setup");
 
   return (
     <section className="setup-page">
@@ -63,14 +67,10 @@ export default function SetupPage() {
         <div className="setup-header">
           <Link href="/" className="back-link--plain">
             <SvgIcon icon={faArrowLeft} />
-            На головну
+            {t("backHome")}
           </Link>
-          <h1 className="page-title page-title--hero">
-            Встановлення LBK Launcher
-          </h1>
-          <p>
-            Покрокова інструкція для встановлення лаунчера на вашу платформу
-          </p>
+          <h1 className="page-title page-title--hero">{t("title")}</h1>
+          <p>{t("subtitle")}</p>
         </div>
 
         {/* Platform Tabs */}
@@ -116,12 +116,12 @@ export default function SetupPage() {
         <div className="setup-notes">
           <h2>
             <SvgIcon icon={faCircleInfo} />
-            Загальна інформація
+            {t("notes.title")}
           </h2>
           <ul>
-            <li>Автоматичні оновлення працюють на всіх платформах</li>
-            <li>Після першого запуску лаунчер працює офлайн</li>
-            <li>Дані локалізацій синхронізуються автоматично</li>
+            <li>{t("notes.autoUpdates")}</li>
+            <li>{t("notes.offline")}</li>
+            <li>{t("notes.sync")}</li>
           </ul>
         </div>
 
@@ -130,7 +130,7 @@ export default function SetupPage() {
           <Link href="/" className="btn btn-gradient btn--big">
             <SvgIcon icon={faDownload} />
             <div className="dl-info">
-              <span>Завантажити LBK Launcher</span>
+              <span>{t("downloadCta")}</span>
               <small>Windows / macOS / Linux</small>
             </div>
           </Link>
@@ -149,15 +149,17 @@ function WindowsInstructions({
   portableUrl: string | null;
   version: string | null;
 }) {
+  const t = useTranslations("setup");
+
   return (
     <div className="setup-platform">
       <h2>
         <SvgIcon icon={faWindows} />
-        Встановлення на Windows
+        {t("windows.title")}
       </h2>
 
       <div className="setup-section">
-        <h3>Варіанти завантаження</h3>
+        <h3>{t("downloadOptions")}</h3>
         <ul className="setup-files">
           <li>
             {setupUrl ? (
@@ -167,7 +169,8 @@ function WindowsInstructions({
             ) : (
               <code>LBK-Launcher-win-Setup.exe</code>
             )}{" "}
-            — інсталятор{version ? ` (v${version})` : ""}
+            {t("windows.setupFile")}
+            {version ? ` (v${version})` : ""}
           </li>
           <li>
             {portableUrl ? (
@@ -177,17 +180,17 @@ function WindowsInstructions({
             ) : (
               <code>LBK-Launcher-win-Portable.exe</code>
             )}{" "}
-            — портативна версія (без встановлення)
+            {t("windows.portableFile")}
           </li>
         </ul>
       </div>
 
       <div className="setup-section">
-        <h3>Кроки встановлення</h3>
+        <h3>{t("installSteps")}</h3>
         <ol className="setup-steps">
-          <li>Завантажте файл інсталятора або портативну версію</li>
-          <li>Запустіть завантажений файл</li>
-          <li>Дотримуйтеся інструкцій на екрані</li>
+          <li>{t("windows.stepDownload")}</li>
+          <li>{t("windows.stepRun")}</li>
+          <li>{t("windows.stepFollow")}</li>
         </ol>
       </div>
     </div>
@@ -203,15 +206,17 @@ function MacOSInstructions({
   x64Url: string | null;
   version: string | null;
 }) {
+  const t = useTranslations("setup");
+
   return (
     <div className="setup-platform">
       <h2>
         <SvgIcon icon={faApple} />
-        Встановлення на macOS
+        {t("macos.title")}
       </h2>
 
       <div className="setup-section">
-        <h3>Варіанти завантаження</h3>
+        <h3>{t("downloadOptions")}</h3>
         <ul className="setup-files">
           <li>
             {armUrl ? (
@@ -221,7 +226,7 @@ function MacOSInstructions({
             ) : (
               <code>LBK-Launcher-*-arm64.dmg</code>
             )}{" "}
-            — для Apple Silicon
+            {t("macos.armFile")}
           </li>
           <li>
             {x64Url ? (
@@ -231,17 +236,17 @@ function MacOSInstructions({
             ) : (
               <code>LBK-Launcher-*-x64.dmg</code>
             )}{" "}
-            — для Intel
+            {t("macos.intelFile")}
           </li>
         </ul>
       </div>
 
       <div className="setup-section">
-        <h3>Кроки встановлення</h3>
+        <h3>{t("installSteps")}</h3>
         <ol className="setup-steps">
-          <li>Завантажте відповідний DMG файл (Apple Silicon або Intel)</li>
-          <li>Відкрийте DMG файл</li>
-          <li>Перетягніть програму до папки Applications</li>
+          <li>{t("macos.stepDownload")}</li>
+          <li>{t("macos.stepOpen")}</li>
+          <li>{t("macos.stepDrag")}</li>
         </ol>
       </div>
     </div>
@@ -249,23 +254,26 @@ function MacOSInstructions({
 }
 
 function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
+  const t = useTranslations("setup");
   const flatpakrefUrl =
     "https://flatpak.lbklauncher.com/com.lbk.launcher.flatpakref";
+  const flatpakLink = (chunks: ReactNode) => (
+    <a href={flatpakrefUrl} className="setup-link">
+      {chunks}
+    </a>
+  );
 
   return (
     <div className="setup-platform">
       <h2>
         <SvgIcon icon={faLinux} />
-        Встановлення на Linux
+        {t("linux.title")}
       </h2>
 
       <div className="setup-section">
-        <h3>Варіанти завантаження</h3>
+        <h3>{t("downloadOptions")}</h3>
         <ul className="setup-files">
-          <li>
-            <strong>Flatpak</strong> — рекомендовано для Steam Deck та
-            дистрибутивів з підтримкою Flatpak
-          </li>
+          <li>{t.rich("linux.flatpakFile", { b: strong })}</li>
           <li>
             {appImageUrl ? (
               <a href={appImageUrl} className="setup-link">
@@ -274,58 +282,49 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
             ) : (
               <code>LBK-Launcher-linux.AppImage</code>
             )}{" "}
-            — універсальний формат
+            {t("linux.appImageFile")}
           </li>
           <li>
-            <code>LBK-Launcher-linux.rpm</code> — для Fedora/RHEL
+            <code>LBK-Launcher-linux.rpm</code> {t("linux.rpmFile")}
           </li>
         </ul>
       </div>
 
       <div className="setup-section">
         <h3>
-          <SvgIcon icon={faStar} /> Встановлення Flatpak (рекомендовано)
+          <SvgIcon icon={faStar} /> {t("linux.flatpakTitle")}
         </h3>
-        <p>
-          Найпростіший спосіб встановити лаунчер. Відкрийте{" "}
-          <a href={flatpakrefUrl} className="setup-link">
-            посилання на flatpakref
-          </a>{" "}
-          — система запропонує встановити застосунок автоматично.
-        </p>
-        <p>Або через термінал:</p>
+        <p>{t.rich("linux.flatpakIntro", { link: flatpakLink })}</p>
+        <p>{t("linux.viaTerminal")}</p>
         <div className="setup-code">
           <code>flatpak install --user {flatpakrefUrl}</code>
           <CopyButton
             text={`flatpak install --user ${flatpakrefUrl}`}
-            title="Скопіювати команду"
+            title={t("copyCommand")}
           />
         </div>
       </div>
 
       <div className="setup-section">
-        <h3>Встановлення AppImage</h3>
+        <h3>{t("linux.appImageTitle")}</h3>
         <ol className="setup-steps">
-          <li>Завантажте AppImage файл</li>
-          <li>
-            Зробіть файл виконуваним (ПКМ → Властивості → Права → Дозволити
-            виконання)
-          </li>
-          <li>Двічі клацніть для запуску або виконайте в терміналі</li>
+          <li>{t("linux.appImageDownload")}</li>
+          <li>{t("linux.appImageExecutable")}</li>
+          <li>{t("linux.appImageRun")}</li>
         </ol>
       </div>
 
       <div className="setup-section">
-        <h3>Встановлення RPM</h3>
+        <h3>{t("linux.rpmTitle")}</h3>
         <ol className="setup-steps">
-          <li>Завантажте RPM файл</li>
-          <li>Встановіть через пакетний менеджер:</li>
+          <li>{t("linux.rpmDownload")}</li>
+          <li>{t("linux.rpmInstall")}</li>
         </ol>
         <div className="setup-code">
           <code>sudo rpm -i LBK-Launcher-linux.rpm</code>
           <CopyButton
             text="sudo rpm -i LBK-Launcher-linux.rpm"
-            title="Скопіювати команду"
+            title={t("copyCommand")}
           />
         </div>
       </div>
@@ -334,103 +333,81 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
 }
 
 function SteamDeckInstructions() {
+  const t = useTranslations("setup.steamDeck");
+  const tSetup = useTranslations("setup");
   const flatpakrefUrl =
     "https://flatpak.lbklauncher.com/com.lbk.launcher.flatpakref";
+  const flatpakLink = (chunks: ReactNode) => (
+    <a href={flatpakrefUrl} className="setup-link">
+      {chunks}
+    </a>
+  );
 
   return (
     <div className="setup-platform">
       <h2>
         <SvgIcon icon={faSteam} />
-        Встановлення на Steam Deck
+        {t("title")}
       </h2>
 
       {/* Recommended: Flatpak */}
       <div className="setup-section">
         <h3>
-          <SvgIcon icon={faStar} /> Спосіб 1: Flatpak (рекомендовано)
+          <SvgIcon icon={faStar} /> {t("flatpakTitle")}
         </h3>
-        <p>
-          Найпростіший спосіб — встановити через Flatpak. Відкрийте{" "}
-          <a href={flatpakrefUrl} className="setup-link">
-            це посилання
-          </a>{" "}
-          у браузері на Steam Deck, і система запропонує встановити застосунок
-          автоматично.
-        </p>
+        <p>{t.rich("flatpakIntro", { link: flatpakLink })}</p>
         <ol className="setup-steps">
-          <li>
-            <strong>Перейдіть у режим робочого столу: </strong> Затисніть кнопку
-            живлення → &quot;Перейти на робочий стіл&quot;
-          </li>
-          <li>
-            <strong>Відкрийте Firefox: </strong> Використовуйте Firefox (не
-            Chrome), оскільки він краще інтегрований з системою
-          </li>
-          <li>
-            <strong>Відкрийте посилання: </strong> У Firefox перейдіть за{" "}
-            <a href={flatpakrefUrl} className="setup-link">
-              посиланням на flatpakref
-            </a>
-            . Система автоматично відкриє Discover і запропонує встановити LBK
-            Launcher.
-          </li>
-          <li>
-            <strong>Встановіть: </strong> Натисніть &quot;Install&quot; у
-            Discover
-          </li>
+          <li>{t.rich("desktopMode", { b: strong })}</li>
+          <li>{t.rich("openFirefox", { b: strong })}</li>
+          <li>{t.rich("openLink", { b: strong, link: flatpakLink })}</li>
+          <li>{t.rich("install", { b: strong })}</li>
         </ol>
-        <p>
-          <strong>Примітка: </strong> Якщо браузер пропонує просто завантажити
-          файл замість відкриття Discover, встановіть через термінал (Konsole):
-        </p>
+        <p>{t.rich("note", { b: strong })}</p>
         <div className="setup-code">
           <code>flatpak install --user {flatpakrefUrl}</code>
           <CopyButton
             text={`flatpak install --user ${flatpakrefUrl}`}
-            title="Скопіювати команду"
+            title={tSetup("copyCommand")}
           />
         </div>
       </div>
 
       {/* Alternative: AppImage */}
       <div className="setup-section">
-        <h3>Спосіб 2: AppImage</h3>
+        <h3>{t("appImageTitle")}</h3>
         <ol className="setup-steps">
+          <li>{t.rich("desktopMode", { b: strong })}</li>
           <li>
-            <strong>Перейдіть у режим робочого столу: </strong> Затисніть кнопку
-            живлення → &quot;Перейти на робочий стіл&quot;
+            {t.rich("appImageDownload", {
+              b: strong,
+              code: (chunks) => <code>{chunks}</code>,
+            })}
           </li>
           <li>
-            <strong>Завантажте:</strong> Відкрийте браузер та завантажте файл{" "}
-            <code>LBK-Launcher-linux.AppImage</code>
-          </li>
-          <li>
-            <strong>Надайте права:</strong>
+            <strong>{t("permissions")}</strong>
             <ul>
-              <li>Відкрийте файловий менеджер Dolphin</li>
-              <li>Перейдіть до папки завантажень</li>
-              <li>ПКМ на AppImage → Властивості → Права</li>
-              <li>
-                Увімкніть &quot;Виконання: Дозволити виконання як програми&quot;
-              </li>
+              <li>{t("openDolphin")}</li>
+              <li>{t("openDownloads")}</li>
+              <li>{t("openProperties")}</li>
+              <li>{t("allowExecution")}</li>
             </ul>
           </li>
           <li>
-            <strong>Додайте до Steam (опціонально):</strong>
+            <strong>{t("addToSteam")}</strong>
             <ul>
-              <li>Запустіть Steam</li>
-              <li>
-                Оберіть &quot;Додати гру&quot; → &quot;Додати гру не зі
-                Steam&quot;
-              </li>
-              <li>Перейдіть до завантажень та оберіть AppImage</li>
-              <li>Підтвердьте додавання</li>
+              <li>{t("launchSteam")}</li>
+              <li>{t("addNonSteamGame")}</li>
+              <li>{t("pickAppImage")}</li>
+              <li>{t("confirmAdd")}</li>
             </ul>
             <p>
-              За бажанням можна завантажити медіа для оформлення бібліотеки:{" "}
-              <a href="https://github.com/Vadko/lbk-launcher/releases/download/v2.5.0/Steam.media.zip">
-                Steam media.zip
-              </a>
+              {t.rich("libraryMedia", {
+                link: (chunks) => (
+                  <a href="https://github.com/Vadko/lbk-launcher/releases/download/v2.5.0/Steam.media.zip">
+                    {chunks}
+                  </a>
+                ),
+              })}
             </p>
           </li>
         </ol>
@@ -439,10 +416,7 @@ function SteamDeckInstructions() {
       <div className="setup-section">
         <div className="setup-tip">
           <SvgIcon icon={faGamepad} />
-          <span>
-            Лаунчер автоматично підтримує навігацію геймпадом при натисканні
-            будь-якої кнопки контролера.
-          </span>
+          <span>{t("gamepadTip")}</span>
         </div>
       </div>
     </div>
@@ -451,6 +425,8 @@ function SteamDeckInstructions() {
 
 type DownloadLinks = ReturnType<typeof getDownloadLinks>;
 
+type ReleaseFileDescription = keyof Messages["setup"]["releaseFiles"]["files"];
+
 function ReleaseFilesBlock({
   links,
   isLoading,
@@ -458,6 +434,7 @@ function ReleaseFilesBlock({
   links: DownloadLinks;
   isLoading: boolean;
 }) {
+  const t = useTranslations("setup.releaseFiles");
   const v = links.version ?? "...";
 
   const files: {
@@ -465,49 +442,49 @@ function ReleaseFilesBlock({
     url: string | null;
     platform: string;
     icon: typeof faWindows;
-    desc: string;
+    desc: ReleaseFileDescription;
   }[] = [
     {
       name: "LBK-Launcher-win-Setup.exe",
       url: links.windows,
       platform: "Windows",
       icon: faWindows,
-      desc: "Інсталятор — рекомендовано для більшості користувачів",
+      desc: "windowsSetup",
     },
     {
       name: "LBK-Launcher-win-Portable.exe",
       url: links.windowsPortable,
       platform: "Windows",
       icon: faWindows,
-      desc: "Портативна версія — без встановлення, запускається з будь-якого місця",
+      desc: "windowsPortable",
     },
     {
       name: `LBK-Launcher-${v}-arm64.dmg`,
       url: links.macosArm,
       platform: "macOS",
       icon: faApple,
-      desc: "Apple Silicon",
+      desc: "macosArm",
     },
     {
       name: `LBK-Launcher-${v}-x64.dmg`,
       url: links.macosX64,
       platform: "macOS",
       icon: faApple,
-      desc: "Intel Mac",
+      desc: "macosX64",
     },
     {
       name: "LBK-Launcher-linux.AppImage",
       url: links.linux,
       platform: "Linux",
       icon: faLinux,
-      desc: "Універсальний формат — працює на більшості дистрибутивів",
+      desc: "linuxAppImage",
     },
     {
       name: "LBK-Launcher-linux.rpm",
       url: links.linuxRpm,
       platform: "Linux",
       icon: faLinux,
-      desc: "RPM пакет для Fedora / RHEL",
+      desc: "linuxRpm",
     },
   ];
 
@@ -516,7 +493,8 @@ function ReleaseFilesBlock({
       <div className="setup-release-files-header">
         <h2>
           <SvgIcon icon={faFileArrowDown} />
-          Файли релізу{links.version ? ` v${links.version}` : ""}
+          {t("title")}
+          {links.version ? ` v${links.version}` : ""}
         </h2>
         <a
           href="https://github.com/Vadko/lbk-launcher/releases"
@@ -525,11 +503,11 @@ function ReleaseFilesBlock({
           className="setup-github-link"
         >
           <SvgIcon icon={faGithub} />
-          Всі релізи на GitHub
+          {t("allReleases")}
         </a>
       </div>
       {isLoading ? (
-        <p className="setup-loading">Завантаження...</p>
+        <p className="setup-loading">{t("loading")}</p>
       ) : (
         <div className="release-files-grid">
           {files.map((f) => (
@@ -548,7 +526,7 @@ function ReleaseFilesBlock({
                   <code>{f.name}</code>
                 </span>
               )}
-              <p className="release-file-desc">{f.desc}</p>
+              <p className="release-file-desc">{t(`files.${f.desc}`)}</p>
             </div>
           ))}
         </div>

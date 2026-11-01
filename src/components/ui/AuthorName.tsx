@@ -1,6 +1,7 @@
 "use client";
 
 import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
+import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { getSpecialTranslatorInfo } from "@/lib/specialTranslators";
@@ -17,6 +18,8 @@ export function AuthorName({
   className = "",
   maxVisible = 3,
 }: AuthorNameProps) {
+  const t = useTranslations("authorsPopover");
+  const tSpecial = useTranslations("donaters.specialTranslators");
   const [showPopover, setShowPopover] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -35,7 +38,7 @@ export function AuthorName({
         <span className={isSpecial ? "special-author" : ""}>
           {author}
           {isSpecial && specialInfo && (
-            <Tooltip content={specialInfo.description}>
+            <Tooltip content={tSpecial(specialInfo.descriptionKey)}>
               <SvgIcon icon={faStar} className="special-author-star" />
             </Tooltip>
           )}
@@ -69,7 +72,7 @@ export function AuthorName({
 
           {showPopover && (
             <div ref={popoverRef} className="authors-popover">
-              <div className="authors-popover-title">Інші автори:</div>
+              <div className="authors-popover-title">{t("otherAuthors")}</div>
               <div className="authors-popover-list">
                 {hiddenAuthors.map((author) => {
                   const specialInfo = getSpecialTranslatorInfo(author);
@@ -81,7 +84,7 @@ export function AuthorName({
                         {author}
                       </span>
                       {isSpecial && specialInfo && (
-                        <Tooltip content={specialInfo.description}>
+                        <Tooltip content={tSpecial(specialInfo.descriptionKey)}>
                           <SvgIcon
                             icon={faStar}
                             className="special-author-star"

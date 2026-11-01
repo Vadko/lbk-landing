@@ -1,6 +1,7 @@
 import { faBookOpen } from "@fortawesome/free-solid-svg-icons/faBookOpen";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faUsers } from "@fortawesome/free-solid-svg-icons/faUsers";
+import { getTranslations } from "next-intl/server";
 
 // import { SvgIcon } from "@/components/ui/SvgIcon";
 
@@ -26,15 +27,14 @@ const PARTNERS: Array<{ icon: IconDef; label: string }> = [
   { icon: faGamepad, label: "Кавунові переклади" },
 ];
 
-export function PartnersListSection() {
+export async function PartnersListSection() {
+  const t = await getTranslations("collaboration");
   const items = [...PARTNERS, ...PARTNERS];
 
   return (
     <section className="section-margin">
       <div className="container">
-        <h2 className="section-title center">
-          Спілки перекладачів, що вже з нами
-        </h2>
+        <h2 className="section-title center">{t("partnersTitle")}</h2>
       </div>
 
       <div className="collab-partners-ticker">

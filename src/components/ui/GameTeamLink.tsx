@@ -2,6 +2,7 @@
 
 import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { getSpecialTranslatorInfo } from "@/lib/specialTranslators";
@@ -13,6 +14,8 @@ interface GameTeamLinkProps {
 }
 
 export function GameTeamLink({ team, maxVisible = 3 }: GameTeamLinkProps) {
+  const t = useTranslations("authorsPopover");
+  const tSpecial = useTranslations("donaters.specialTranslators");
   const [showPopover, setShowPopover] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -35,7 +38,7 @@ export function GameTeamLink({ team, maxVisible = 3 }: GameTeamLinkProps) {
           {author}
         </Link>
         {isSpecial && specialInfo && (
-          <Tooltip content={specialInfo.description}>
+          <Tooltip content={tSpecial(specialInfo.descriptionKey)}>
             <SvgIcon icon={faStar} className="special-author-star" />
           </Tooltip>
         )}
@@ -68,7 +71,7 @@ export function GameTeamLink({ team, maxVisible = 3 }: GameTeamLinkProps) {
 
           {showPopover && (
             <div ref={popoverRef} className="authors-popover">
-              <div className="authors-popover-title">Інші автори:</div>
+              <div className="authors-popover-title">{t("otherAuthors")}</div>
               <div className="authors-popover-list">
                 {hiddenAuthors.map((author) => {
                   const specialInfo = getSpecialTranslatorInfo(author);
@@ -83,7 +86,7 @@ export function GameTeamLink({ team, maxVisible = 3 }: GameTeamLinkProps) {
                         {author}
                       </Link>
                       {isSpecial && specialInfo && (
-                        <Tooltip content={specialInfo.description}>
+                        <Tooltip content={tSpecial(specialInfo.descriptionKey)}>
                           <SvgIcon
                             icon={faStar}
                             className="special-author-star"

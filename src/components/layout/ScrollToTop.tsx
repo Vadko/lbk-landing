@@ -1,10 +1,12 @@
 "use client";
 
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons/faArrowUp";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 
 export function ScrollToTop() {
+  const t = useTranslations("scrollToTop");
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export function ScrollToTop() {
     <button
       className={`icon-btn scroll-top ${isVisible ? "visible" : ""}`}
       onClick={scrollToTop}
-      title="Наверх"
+      title={t("title")}
     >
       <SvgIcon icon={faArrowUp} />
     </button>

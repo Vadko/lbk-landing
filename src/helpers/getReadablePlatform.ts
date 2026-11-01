@@ -1,17 +1,17 @@
+import type { createTranslator, Messages } from "next-intl";
+import { Constants } from "@/lib/database.types";
 import type { Platform } from "@/lib/types";
 
-export const getReadablePlatform = (platform: string): string => {
-  const platformMap: Record<Platform, string> = {
-    steam: "Steam",
-    epic: "Epic Games Store",
-    gog: "GOG",
-    rockstar: "Rockstar Games Launcher",
-    xbox: "Xbox app",
-    uplay: "Ubisoft Connect",
-    ea: "EA App",
-    emulator: "Емулятор",
-    other: "Інша",
-  };
+type PlatformTranslator = ReturnType<
+  typeof createTranslator<Messages, "storePlatform">
+>;
 
-  return platformMap[platform as Platform] ?? platform;
-};
+const PLATFORMS: readonly string[] = Constants.public.Enums.install_source;
+
+const isPlatform = (platform: string): platform is Platform =>
+  PLATFORMS.includes(platform);
+
+export const getReadablePlatform = (
+  t: PlatformTranslator,
+  platform: string
+): string => (isPlatform(platform) ? t(platform) : platform);

@@ -1,233 +1,130 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import type { ReactNode } from "react";
 import { BOT_URL } from "@/lib/constants";
 import { LegalLayout } from "../../legal-layout";
 
-export const metadata: Metadata = {
-  title: "Правила користування для перекладачів",
-  description:
-    "Умови публікації перекладів у LBK Launcher. Правила для команд та авторів українізаторів ігор.",
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    canonical: "https://lbklauncher.com/terms/translators",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("translatorTerms");
+  return {
+    title: t("title"),
+    description: t("description"),
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical: "https://lbklauncher.com/terms/translators",
+    },
+  };
+}
 
-export default function TermsTranslatorsPage() {
+const b = (chunks: ReactNode) => <strong>{chunks}</strong>;
+
+export default async function TermsTranslatorsPage() {
+  const t = await getTranslations("translatorTerms");
+
   return (
-    <LegalLayout
-      title="Правила користування для перекладачів"
-      lastUpdated="6 жовтня 2026"
-    >
+    <LegalLayout title={t("title")} lastUpdated={t("lastUpdated")}>
       <section>
-        <p>
-          Вітаємо у спільноті! Цей документ регулює відносини між вами
-          (Перекладачем) та командами <strong>GameGlobe Localization</strong> і{" "}
-          <strong>Little Bit</strong> (далі — <strong>LBK Team</strong>). Наша
-          мета — забезпечити гравців якісним контентом та підтримувати
-          прозорість у розробці локалізацій.
-        </p>
+        <p>{t.rich("intro", { b })}</p>
       </section>
       <section>
         <h2>
-          <strong>1. Права на контент та доповнення</strong>
+          <strong>{t("rights.title")}</strong>
         </h2>
         <p>
-          Додаючи свій переклад на платформу{" "}
-          <a href="https://lbklauncher.com/">https://lbklauncher.com/</a>, ви
-          погоджуєтеся з наступним:
+          {t.rich("rights.lead", {
+            link: (chunks) => <a href="https://lbklauncher.com/">{chunks}</a>,
+          })}
         </p>
         <ul>
+          <li>{t.rich("rights.extension", { b })}</li>
+          <li>{t.rich("rights.distribution", { b })}</li>
+          <li>{t.rich("rights.authorship", { b })}</li>
           <li>
-            <strong>Доповнення продукту: </strong> LBK Team має право
-            доповнювати ваш переклад (досягнення, текстури, дубляж тощо) для
-            забезпечення цілісності ігрового досвіду лише за умови текстового
-            узгодження усіх авторів перекладу. Якщо цього дозволу немає -
-            локалізація не розширюється.
-          </li>
-          <li>
-            <strong>Дистрибуція: </strong> Ми маємо право розміщувати посилання
-            на вашу роботу на афілійованих ресурсах (наприклад,{" "}
-            <strong>pcgamingwiki</strong>) для популяризації української
-            локалізації.
-          </li>
-          <li>
-            <strong>Авторство та лінки: </strong> В інтерфейсі буде відображено
-            назву вашої спілки/ім’я автора та посилання на соцмережі, які ви
-            надали в адмінпанелі.
-          </li>
-          <li>
-            <strong>Статуси перекладача: </strong> При реєстрації вам буде
-            надано статус «Перекладача». Після тривалої та позитивної історії
-            співпраці адміністрація може видати статус «Перевіреного
-            перекладача», що спрощує модерацію контенту та автооновлення.
-            Прикладом такого автора є Срібномовний Дракон.
+            {t.rich("rights.statuses", { b })}
             <ul>
-              <li>
-                запит на отримання статусу перекладач ініціює самостійно у боті
-                підтримки.
-              </li>
-              <li>
-                адміністрація анулює статус, якщо будуть порушені правила
-                співпраці, наведені нижче, або виявлені інші зловживання, що
-                шкодять репутації LBK.
-              </li>
+              <li>{t("rights.statusRequest")}</li>
+              <li>{t("rights.statusRevoke")}</li>
             </ul>
           </li>
         </ul>
       </section>
       <section>
         <h2>
-          <strong>2. Якість контенту та використання ШІ</strong>
+          <strong>{t("quality.title")}</strong>
         </h2>
         <ul>
           <li>
-            <strong>Оригінал перекладу: </strong> Ми додаємо переклади тільки
-            виконані з мови оригіналу, та які замінюють у грі будь-який
-            переклад, окрім ру. Позиція команди:
+            {t.rich("quality.original", { b })}
             <ul>
-              <li>
-                тільки з мови оригіналу, можна отримати якісний продукт, а не
-                переклад з перекладу.
-              </li>
-              <li>
-                заміна ру мови дає негативну статистику у Steam та інших
-                сервісах.
-              </li>
+              <li>{t("quality.originalOnly")}</li>
+              <li>{t("quality.noRuReplacement")}</li>
             </ul>
           </li>
+          <li>{t.rich("quality.gameAuthorship", { b })}</li>
           <li>
-            <strong>Авторство гри: </strong> Ми не додаємо ігри де фактичними
-            розробниками та паблішери є компанії з РФ, наприклад - Mouthwash,
-            Graveyard keeper та ін.
-          </li>
-          <li>
-            <strong>Маркування ШІ: </strong> Якщо переклад створено за допомогою
-            штучного інтелекту, сервіс та сайт автоматично встановлять
-            відповідні позначки. Ми виступаємо за чесність перед гравцями. Також
-            переклади, створені за допомогою ШІ, мають наступні обмеження:
+            {t.rich("quality.aiLabel", { b })}
             <ul>
-              <li>не додаються у систему рекомендацій.</li>
-              <li>
-                можна викласти у ранній доступ лише з поступом перекладу від
-                50%, або ж автор перекладу переконає нас у ранньому доступі з
-                меншим відсотком у ситуації, коли гра занадто велика — AC:
-                Odyssey тощо.
-              </li>
-              <li>
-                статус «Заплановано» для ШІ-перекладів також не підтримується.
-              </li>
-              <li>
-                якщо під час перевірки якості перекладу командою модерації буде
-                виявлено мінімальну редактуру або ж переклад в «один промпт» —
-                ваша робота може не пройти публікацію, або ж раніше опублікована
-                робота може бути прихована.
-              </li>
+              <li>{t("quality.aiNoRecommendations")}</li>
+              <li>{t("quality.aiEarlyAccess")}</li>
+              <li>{t("quality.aiNoPlanned")}</li>
+              <li>{t("quality.aiLowEffort")}</li>
             </ul>
           </li>
-          <li>
-            <strong>Заміна ШІ: </strong> Ми намагаємось пропонувати найкращий
-            переклад нашим користувачам, тому у разі виходу більш якісного
-            перекладу ваш переклад може стати нижче у списку до завантаження.
-            Він також може бути повністю видалений, якщо зроблений за допомогою
-            ШІ та має низьку якість.
-          </li>
-          <li>
-            <strong>Негативні відгуки: </strong> У разі отримання численних
-            негативних відгуків щодо якості перекладу, LBK Team зв’яжеться з
-            вами для узгодження виправлень. Якщо виправлення не будуть внесені
-            оперативно — переклад може бути вилучено.
-          </li>
-          <li>
-            <strong>Намірена шкода: </strong> Будь-який контент, що має на меті
-            завдати технічної чи репутаційної шкоди гравцям або платформі, не
-            буде допущений до публікації.
-          </li>
-          <li>
-            <strong>Власна технологічна система: </strong> якщо ви
-            використовуєте файли .exe і вони впливають на працездатність інших
-            перекладів чи програми, то ваші локалізації будуть видалені, а ви
-            втратите доступ до платформи.
-          </li>
+          <li>{t.rich("quality.aiReplacement", { b })}</li>
+          <li>{t.rich("quality.negativeFeedback", { b })}</li>
+          <li>{t.rich("quality.intentionalHarm", { b })}</li>
+          <li>{t.rich("quality.ownTech", { b })}</li>
         </ul>
       </section>
       <section>
         <h2>
-          <strong>3. Моніторинг прогресу та збір коштів</strong>
+          <strong>{t("fundraising.title")}</strong>
         </h2>
-        <p>
-          Для забезпечення довіри гравців та запобігання неправомірному
-          збагаченню діють наступні правила:
-        </p>
+        <p>{t("fundraising.lead")}</p>
         <ul>
-          <li>
-            <strong>Відповідність обіцянкам: </strong> У разі виявлення ознак
-            експлуатації функції зборів або невиконання обіцянок, закладених
-            автором у межах збору коштів, LBK Team зв’яжеться з вами для
-            перевірки фактичного прогресу роботи та стану зборів.
-          </li>
-          <li>
-            <strong>Призупинення публікації: </strong> Якщо за результатами
-            перевірки буде виявлено введення гравців в оману або відсутність
-            реального поступу в роботі над перекладом, такий проект буде
-            приховано з платформи, щоб уникнути подальшого неправомірного збору
-            коштів.
-          </li>
-          <li>
-            <strong>Некомерційний доступ: </strong> Незважаючи на можливість
-            добровільних пожертв (donations) автору, безпосередній доступ до
-            файлів перекладу на платформі має залишатися безкоштовним для всіх
-            користувачів.
-          </li>
+          <li>{t.rich("fundraising.promises", { b })}</li>
+          <li>{t.rich("fundraising.suspension", { b })}</li>
+          <li>{t.rich("fundraising.freeAccess", { b })}</li>
         </ul>
       </section>
       <section>
         <h2>
-          <strong>4. Відповідальність та вилучення</strong>
+          <strong>{t("liability.title")}</strong>
         </h2>
         <ul>
+          <li>{t.rich("liability.disclaimer", { b })}</li>
           <li>
-            <strong>Відмова від відповідальності: </strong> LBK Team не несе
-            відповідальності за технічні помилки, збої або вильоти гри, що
-            спричинені файлами перекладу автора.
-          </li>
-          <li>
-            <strong>Право на вилучення: </strong> За вашим запитом через бот{" "}
-            <a href={BOT_URL}>{BOT_URL}</a> ми можемо повністю вилучити вашу
-            роботу.
+            {t.rich("liability.removal", {
+              b,
+              botUrl: BOT_URL,
+              bot: (chunks) => <a href={BOT_URL}>{chunks}</a>,
+            })}
           </li>
         </ul>
       </section>
       <section>
         <h2>
-          <strong>5. Політика приватності (Privacy Policy)</strong>
+          <strong>{t("privacy.title")}</strong>
         </h2>
         <ul>
+          <li>{t.rich("privacy.account", { b })}</li>
+          <li>{t.rich("privacy.notifications", { b })}</li>
           <li>
-            <strong>Дані акаунта: </strong> для роботи акаунта ми зберігаємо
-            вашу електронну пошту та імʼя. Публічно на сайті показується лише
-            назва команди або псевдонім автора перекладу.
-          </li>
-          <li>
-            <strong>Сповіщення: </strong> на вашу пошту надходять листи про
-            статус ваших перекладів і про нові відгуки — їх доставляє зовнішній
-            поштовий сервіс.
-          </li>
-          <li>
-            <strong>Повний перелік: </strong> які саме дані збирають сайт і
-            застосунок, навіщо, кому передаються та скільки зберігаються,
-            описано в <a href="/privacy">Політиці приватності</a> — вона має
-            перевагу над цим розділом.
+            {t.rich("privacy.fullList", {
+              b,
+              link: (chunks) => <a href="/privacy">{chunks}</a>,
+            })}
           </li>
         </ul>
       </section>
       <section>
         <h2>
-          <strong>Контакти</strong>
+          <strong>{t("contacts.title")}</strong>
         </h2>
-        <p>Якщо у вас є запитання, не вагайтеся зв’язатися з нами:</p>
+        <p>{t("contacts.lead")}</p>
         <ul>
           <li>
             <strong>Email: </strong>{" "}

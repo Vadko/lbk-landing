@@ -2,12 +2,19 @@
 
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
-import Lightbox from "yet-another-react-lightbox";
-import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import "yet-another-react-lightbox/styles.css";
 import { getImageUrl } from "@/lib/images";
+
+const GameLightbox = dynamic(
+  () =>
+    import("./GameLightbox").then((m) => ({
+      default: m.GameLightbox,
+    })),
+  { ssr: false }
+);
 
 type Props = {
   slides: Array<string>;
@@ -28,8 +35,10 @@ export default function GameGallery({
   autoplay = false,
   updated_at,
 }: Props) {
+  const t = useTranslations("gameGallery");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxMounted, setLightboxMounted] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const slidesUrls = slides
@@ -86,6 +95,7 @@ export default function GameGallery({
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
+    setLightboxMounted(true);
     setLightboxOpen(true);
   };
 
@@ -114,7 +124,7 @@ export default function GameGallery({
                   <div className="embla-zoom-container">
                     <Image
                       src={slide}
-                      alt={`Ігровий скріншот ${index + 1}`}
+                      alt={t("screenshotAlt", { number: String(index + 1) })}
                       className="main-slider-slide__image cursor-zoom-in"
                       fill
                     />
@@ -133,7 +143,7 @@ export default function GameGallery({
                   type="button"
                   className={`embla__dot ${index === selectedIndex ? "embla__dot--active" : ""}`}
                   onClick={() => emblaMainApi?.scrollTo(index)}
-                  aria-label={`Перейти до слайду ${index + 1}`}
+                  aria-label={t("goToSlide", { number: String(index + 1) })}
                 />
               ))}
             </div>
@@ -157,7 +167,7 @@ export default function GameGallery({
                   >
                     <Image
                       src={thumbSrc}
-                      alt={`Мініатюра ігрового скріншоту ${index + 1}`}
+                      alt={t("thumbAlt", { number: String(index + 1) })}
                       fill
                     />
                   </div>
@@ -171,18 +181,15 @@ export default function GameGallery({
         )}
       </div>
 
-      {/* Lightbox для zoom */}
-      <Lightbox
-        open={lightboxOpen}
-        close={() => setLightboxOpen(false)}
-        index={lightboxIndex}
-        slides={slidesUrls.map((src) => ({ src }))}
-        plugins={[Zoom]}
-        zoom={{
-          maxZoomPixelRatio: 3,
-          scrollToZoom: true,
-        }}
-      />
+      {/* Не розмонтовуємо після закриття, інакше зникне анімація закриття */}
+      {lightboxMounted && (
+        <GameLightbox
+          open={lightboxOpen}
+          close={() => setLightboxOpen(false)}
+          index={lightboxIndex}
+          slides={slidesUrls}
+        />
+      )}
     </>
   );
 }

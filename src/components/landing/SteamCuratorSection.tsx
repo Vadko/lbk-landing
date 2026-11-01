@@ -1,19 +1,18 @@
 "use client";
 
-import React from "react";
+import { useTranslations } from "next-intl";
 import { SteamSearchIcon } from "../icons/SteamSearchIcon";
 import { HoverCard } from "../ui/HoverCard";
 
 export function SteamCuratorSection() {
+  const t = useTranslations("landingCurator");
+
   return (
     <section className="container steam-curator">
       <HoverCard className="steam-curator--wrapper">
         <div>
-          <h2 className="section-title">LBK стежить за перекладами</h2>
-          <p className="section-description">
-            Ми ваш надійний куратор у Steam — підпишіться і не пропустіть
-            жодного оновлення.
-          </p>
+          <h2 className="section-title">{t("title")}</h2>
+          <p className="section-description">{t("description")}</p>
           <div className="steam-curator--btn-wrapper">
             <a
               className="btn btn-neon"
@@ -21,7 +20,7 @@ export function SteamCuratorSection() {
               rel="noopener noreferrer"
               href="https://steamcommunity.com/groups/LBKLauncher"
             >
-              Вступити до групи
+              {t("joinGroup")}
             </a>
             <a
               className="btn btn-main"
@@ -29,7 +28,7 @@ export function SteamCuratorSection() {
               rel="noopener noreferrer"
               href="https://store.steampowered.com/curator/46014434-LBK-Launcher"
             >
-              Підписатися на куратора
+              {t("followCurator")}
             </a>
           </div>
         </div>

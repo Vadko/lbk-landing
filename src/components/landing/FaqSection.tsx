@@ -2,71 +2,37 @@
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesCount } from "@/hooks/useGames";
 import { BOT_URL } from "@/lib/constants";
 
 const FAQ_ITEMS = [
-  {
-    question: "Як це працює?",
-    answer:
-      "Усе дуже просто: завантажте лаунчер — він автоматично знайде встановлені ігри на вашому пристрої. Оберіть потрібну гру й натисніть «Встановити переклад». Готово!",
-  },
-  {
-    question: "Які ігри підтримуються?",
-    answer: "games-count",
-  },
-  {
-    question: "Чи безпечно використовувати LBK Launcher?",
-    answer:
-      "Так, лаунчер має відкритий вихідний код, що виключає наявність шкідливого ПЗ. Система резервного копіювання гарантує цілісність файлів вашої гри.",
-  },
-  {
-    question: "Лаунчер безкоштовний?",
-    answer:
-      "Так, LBK Launcher повністю безкоштовний — і таким залишиться назавжди. Ми робимо це для української спільноти геймерів.",
-  },
-  {
-    question: "Для яких платформ доступний лаунчер?",
-    answer:
-      "Ви можете завантажити LBK Launcher для Windows, Linux (AppImage) та macOS. Окрему увагу приділено підтримці Steam Deck.",
-  },
-  {
-    question: "Як додати свій переклад до лаунчера?",
-    answer: `Напишіть нам у Telegram через бота <a href='${BOT_URL}' target='_blank' rel='noopener noreferrer'>@lbk_launcher_bot</a>. Обговоримо деталі й допоможемо інтегрувати ваш переклад — швидко та просто!`,
-  },
-  {
-    question: "Чи підтримується Steam майстерня?",
-    answer:
-      "В цьому сценарії LBK Launcher виконує тільки інформаційну функцію з прямим посиланням у Steam.",
-  },
-  {
-    question: "Чи автоновлюються переклади із майстерні Steam?",
-    answer:
-      "Ні, ми тільки інформуємо про наявний переклад. Ми не відповідаємо за відповідність інформації на сторінці в майстерні.",
-  },
-  {
-    question: "Звідки беруться переклади?",
-    answer:
-      "Ми співпрацюємо з провідними командами перекладачів та інді-авторами. Ви також можете додати свій переклад до нашого каталогу через Telegram-бота.",
-  },
-  {
-    question: "На чому зроблений лаунчер?",
-    answer: "tech-stack",
-  },
-  {
-    question: "Як видалити переклад і повернути оригінал?",
-    answer:
-      "Оберіть гру в лаунчері й натисніть кнопку «Видалити переклад». Лаунчер автоматично відновить оригінальні файли з резервної копії. Резервна копія створюється локально і не має терміну зберігання.",
-  },
-  {
-    question: "Якщо я зіштовхнувся з проблемою?",
-    answer: `Зверніться до нашої служби підтримки через Telegram-бота <a href='${BOT_URL}' target='_blank' rel='noopener noreferrer'>@lbk_launcher_bot</a>. Ми допоможемо вирішити будь-які проблеми швидко та ефективно.`,
-  },
-];
+  "howItWorks",
+  "games",
+  "safety",
+  "free",
+  "platforms",
+  "addTranslation",
+  "workshop",
+  "workshopUpdates",
+  "sources",
+  "techStack",
+  "uninstall",
+  "support",
+] as const;
+
+type FaqItem = (typeof FAQ_ITEMS)[number];
+
+const botLink = (chunks: React.ReactNode) => (
+  <a href={BOT_URL} target="_blank" rel="noopener noreferrer">
+    {chunks}
+  </a>
+);
 
 export function FaqSection() {
+  const t = useTranslations("landingFaq");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const { data: gamesCount } = useGamesCount();
 
@@ -74,33 +40,34 @@ export function FaqSection() {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const renderAnswer = (answer: string) => {
-    if (answer === "tech-stack") {
-      return (
-        <p>
-          Лаунчер — це Electron із React і TypeScript, локальною базою SQLite та
-          синхронізацією через self-hosted Supabase.{" "}
-          <Link href="/tech-stack">
-            Повна схема архітектури та технічний стек
-          </Link>{" "}
-          — там усі три проєкти, спільний backend та інфраструктура.
-        </p>
-      );
+  const renderAnswer = (item: FaqItem) => {
+    switch (item) {
+      case "techStack":
+        return (
+          <p>
+            {t.rich("items.techStack.answer", {
+              link: (chunks) => <Link href="/tech-stack">{chunks}</Link>,
+            })}
+          </p>
+        );
+      case "games":
+        return (
+          <p>
+            {t("items.games.answer", {
+              count: String(gamesCount ?? ""),
+            })}
+          </p>
+        );
+      case "addTranslation":
+      case "support":
+        return <p>{t.rich(`items.${item}.answer`, { bot: botLink })}</p>;
+      default:
+        return <p>{t(`items.${item}.answer`)}</p>;
     }
-    if (answer === "games-count") {
-      return (
-        <p>
-          Наразі підтримується {gamesCount}+ ігор, і цей список постійно
-          поповнюється. Серед них — популярні AAA-тайтли, інді-ігри та класика.
-          Повний перелік доступний у самому лаунчері.
-        </p>
-      );
-    }
-    return <p dangerouslySetInnerHTML={{ __html: answer }}></p>;
   };
 
-  const column1: typeof FAQ_ITEMS = [];
-  const column2: typeof FAQ_ITEMS = [];
+  const column1: FaqItem[] = [];
+  const column2: FaqItem[] = [];
 
   FAQ_ITEMS.forEach((item, index) => {
     if (index % 2 === 0) {
@@ -110,27 +77,24 @@ export function FaqSection() {
     }
   });
 
-  const renderFaqItem = (
-    item: (typeof FAQ_ITEMS)[0],
-    originalIndex: number
-  ) => (
+  const renderFaqItem = (item: FaqItem, originalIndex: number) => (
     <div
       key={originalIndex}
       className={`faq-item glass-bg ${openIndex === originalIndex ? "active" : ""}`}
     >
       <button className="faq-question" onClick={() => toggle(originalIndex)}>
-        <span>{item.question}</span>
+        <span>{t(`items.${item}.question`)}</span>
         <SvgIcon icon={faChevronDown} />
       </button>
 
-      <div className="faq-answer">{renderAnswer(item.answer)}</div>
+      <div className="faq-answer">{renderAnswer(item)}</div>
     </div>
   );
 
   return (
     <section id="faq" className="section-margin">
       <div className="container">
-        <h2 className="section-title center">Часті питання</h2>
+        <h2 className="section-title center">{t("title")}</h2>
 
         <div className="faq-list">
           <div className="faq-column">

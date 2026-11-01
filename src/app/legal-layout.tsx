@@ -1,5 +1,6 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 
@@ -9,11 +10,13 @@ interface LegalLayoutProps {
   lastUpdated?: string;
 }
 
-export function LegalLayout({
+export async function LegalLayout({
   children,
   title,
   lastUpdated,
 }: LegalLayoutProps) {
+  const t = await getTranslations("legalLayout");
+
   return (
     <section className="legal-page">
       <div className="container">
@@ -21,7 +24,9 @@ export function LegalLayout({
           <header className="legal-header">
             <h1 className="page-title">{title}</h1>
             {lastUpdated && (
-              <p className="legal-updated">Оновлено: {lastUpdated}</p>
+              <p className="legal-updated">
+                {t("updated", { date: lastUpdated })}
+              </p>
             )}
           </header>
 
@@ -30,7 +35,7 @@ export function LegalLayout({
           <div className="legal-footer">
             <Link href="/" className="btn glass-bg legal-back-btn">
               <SvgIcon icon={faArrowLeft} />
-              Повернутися на головну
+              {t("backHome")}
             </Link>
           </div>
         </div>

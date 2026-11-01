@@ -3,46 +3,35 @@ import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
 import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
 import { faUsers } from "@fortawesome/free-solid-svg-icons/faUsers";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { BOT_URL } from "@/lib/constants";
 import { CardGridSection } from "../ui/CardGridSection";
 import { HoverCard } from "../ui/HoverCard";
 
 const CARDS = [
+  { key: "addGame", icon: faRocket, link: BOT_URL, linkIcon: faTelegram },
   {
-    icon: faRocket,
-    title: "Додайте свою гру",
-    description:
-      "Український переклад вашої гри стане доступний тисячам користувачів.",
-    link: BOT_URL,
-    linkText: "Написати нам",
-    linkIcon: faTelegram,
-  },
-  {
+    key: "community",
     icon: faUsers,
-    title: "Спільнота",
-    description:
-      "Приєднуйтеся до нашого Telegram-каналу — для новин, пропозицій і спілкування.",
     link: "https://t.me/LittleBitUA",
-    linkText: "Приєднатися",
     linkIcon: faTelegram,
   },
   {
+    key: "makeTranslation",
     icon: faBook,
-    title: "Зробіть свій переклад",
-    description:
-      "Список корисних матеріалів, що стануть у нагоді, якщо ви хочете спробувати.",
     link: "/guides&tools",
-    linkText: "Спробувати",
     linkIcon: faBook,
   },
-];
+] as const;
 
 export function CollaborationSection() {
+  const t = useTranslations("landingCommunity");
+
   return (
     <CardGridSection
       id="collaboration"
-      title="Приєднуйтеся до спільноти"
+      title={t("title")}
       columns={3}
       centerText
     >
@@ -51,8 +40,8 @@ export function CollaborationSection() {
           <div className="collab-icon">
             <SvgIcon icon={card.icon} />
           </div>
-          <h3>{card.title}</h3>
-          <p>{card.description}</p>
+          <h3>{t(`cards.${card.key}.title`)}</h3>
+          <p>{t(`cards.${card.key}.description`)}</p>
           {card.link.includes("http") ? (
             <a
               href={card.link}
@@ -61,12 +50,12 @@ export function CollaborationSection() {
               className="btn btn-main collab-btn"
             >
               <SvgIcon icon={card.linkIcon} />
-              {card.linkText}
+              {t(`cards.${card.key}.link`)}
             </a>
           ) : (
             <Link href={card.link} className="btn btn-main collab-btn">
               <SvgIcon icon={card.linkIcon} />
-              {card.linkText}
+              {t(`cards.${card.key}.link`)}
             </Link>
           )}
         </HoverCard>

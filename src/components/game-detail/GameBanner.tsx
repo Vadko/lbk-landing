@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
+import { BodyClass } from "@/components/layout/BodyClass";
 import { BannerParallax } from "./BannerParallax";
 
 interface GameBannerProps {
@@ -7,14 +9,21 @@ interface GameBannerProps {
   name: string;
 }
 
-export function GameBanner({ bannerUrl, logoUrl, name }: GameBannerProps) {
+export async function GameBanner({
+  bannerUrl,
+  logoUrl,
+  name,
+}: GameBannerProps) {
+  const t = await getTranslations("gameDetail");
+
   return (
     <div className="game-banner">
+      <BodyClass name="is-game-detail" />
       {bannerUrl ? (
         <BannerParallax>
           <Image
             src={bannerUrl}
-            alt={`${name} — український переклад`}
+            alt={t("bannerAlt", { game: name })}
             fill
             sizes="100vw"
             className="object-cover"

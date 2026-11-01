@@ -1,17 +1,21 @@
+import { getTranslations } from "next-intl/server";
 import { AnimatedMill } from "./AnimatedMill";
+import { MillIcon } from "./MillIcon";
 
-export function MaintenancePage() {
+export async function MaintenancePage() {
+  const t = await getTranslations("maintenance");
+
   return (
     <section className="maintenance-page">
       <div className="maintenance-content">
-        <AnimatedMill className="maintenance-mill" />
-        <h1 className="maintenance-title">Технічні роботи</h1>
-        <p className="maintenance-text">
-          Наразі проводяться технічні роботи. Будь ласка, поверніться пізніше.
-        </p>
+        <AnimatedMill>
+          <MillIcon className="maintenance-mill" />
+        </AnimatedMill>
+        <h1 className="maintenance-title">{t("title")}</h1>
+        <p className="maintenance-text">{t("text")}</p>
         <div className="maintenance-status">
           <span className="maintenance-status-dot" />
-          <span>Оновлення в процесі</span>
+          <span>{t("status")}</span>
         </div>
       </div>
     </section>

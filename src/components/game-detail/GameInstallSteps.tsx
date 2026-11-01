@@ -1,43 +1,27 @@
+import { getTranslations } from "next-intl/server";
+
 interface GameInstallStepsProps {
   gameName: string;
   /** Steam installs a Workshop translation itself — the launcher only informs here */
   isWorkshop?: boolean;
 }
 
-export function GameInstallSteps({
+export async function GameInstallSteps({
   gameName,
   isWorkshop = false,
 }: GameInstallStepsProps) {
+  const t = await getTranslations("gameInstall");
+  const kind = isWorkshop ? "workshop" : "launcher";
+  const b = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
+
   return (
     <section className="game-section game-install-section">
-      <h2>Як встановити український переклад {gameName}</h2>
+      <h2>{t("title", { game: gameName })}</h2>
       <ol className="game-install-steps">
-        <li>
-          <strong>
-            {isWorkshop ? "Завантажте Steam" : "Завантажте LBK Launcher"}
-          </strong>{" "}
-          {isWorkshop
-            ? "— безкоштовну програму для встановлення ігор"
-            : "— безкоштовну програму для встановлення українських перекладів ігор"}
-        </li>
-        <li>
-          <strong>Знайдіть {gameName}</strong>{" "}
-          {isWorkshop
-            ? "у каталозі майстерні Steam"
-            : "у каталозі ігор лаунчера"}
-        </li>
-        <li>
-          <strong>
-            {isWorkshop ? 'Натисніть "Підписатися"' : 'Натисніть "Встановити"'}
-          </strong>{" "}
-          {isWorkshop
-            ? "— модифікація автоматично завантажиться та встановиться"
-            : "— переклад автоматично завантажиться та встановиться"}
-        </li>
-        <li>
-          <strong>Запустіть гру</strong> та насолоджуйтеся українською
-          локалізацією!
-        </li>
+        <li>{t.rich("download", { kind, b })}</li>
+        <li>{t.rich("find", { game: gameName, kind, b })}</li>
+        <li>{t.rich("install", { kind, b })}</li>
+        <li>{t.rich("play", { b })}</li>
       </ol>
     </section>
   );

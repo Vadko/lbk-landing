@@ -1,119 +1,90 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { TechStackDiagram } from "@/components/tech-stack/TechStackDiagram";
 
-export const metadata: Metadata = {
-  title: "Технічний стек",
-  description:
-    "Архітектура та технічний стек екосистеми LBK Launcher — три проєкти, спільний backend та інфраструктура.",
-  alternates: {
-    canonical: "https://lbklauncher.com/tech-stack",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("techStack");
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: {
+      canonical: "https://lbklauncher.com/tech-stack",
+    },
+  };
+}
 
-const PROJECTS = [
-  {
-    name: "Landing",
-    repo: "lbk-landing",
-    color: "#00c2ff",
-    description: "Публічний сайт з каталогом ігор та інструкціями",
-    stack: {
-      Фреймворк: "Next.js 16 (App Router), React 19",
-      Стилі: "Tailwind CSS 4, PostCSS",
-      Дані: "TanStack Query v5, Supabase",
-      Кеш: "Redis (ioredis)",
-      Пошук: "Postgres FTS + fuzzy RPC (pg_trgm)",
-      SEO: "JSON-LD, OpenGraph, динамічний Sitemap",
-      UI: "FontAwesome, Lightbox, morphicons",
-      Аналітика: "Cloudflare Zaraz",
-      Помилки: "Sentry SDK → self-hosted GlitchTip",
-      Деплой: "Coolify (nixpacks, next start)",
-    },
-  },
-  {
-    name: "Admin",
-    repo: "lbk-admin",
-    color: "#a8cf96",
-    description: "Панель керування перекладами, іграми та користувачами",
-    stack: {
-      Фреймворк: "Next.js 16 (App Router), React 19",
-      Стилі: "Tailwind CSS 4, PostCSS",
-      Дані: "TanStack Query v5, Supabase",
-      Realtime: "Supabase broadcast для сповіщень",
-      Форми: "React Hook Form + Zod",
-      Email: "Resend (@lbk/email)",
-      UI: "Recharts, PhotoSwipe, Lucide, morphicons",
-      Тести: "Vitest, Testing Library",
-      Аналітика: "Google Analytics 4",
-      API: "Токени lbk_, OpenAPI 3.1 на Scalar",
-      Інтеграції: "lbk-deploy-translation (GitHub Action)",
-      Пакети: "@lbk/db-types, email, notify, scan-core, steam-workshop",
-      Workers:
-        "Media, Scan, Steam Guides, Steam Curator, Steam Updates, Steam Apps, Telegram, Fundraising",
-      "Скан архівів": "MetaDefender Cloud (OPSWAT) + filescan.io",
-      Помилки: "Sentry SDK → self-hosted GlitchTip",
-      Деплой: "Coolify (nixpacks, next start)",
-    },
-  },
-  {
-    name: "Launcher",
-    repo: "lbk-launcher",
-    color: "#ffa47a",
-    description: "Десктопний додаток для встановлення українських перекладів",
-    stack: {
-      Фреймворк: "Electron 44, React 19, Vite 7",
-      Стилі: "Tailwind CSS 4, Framer Motion",
-      Стейт: "Zustand, TanStack Query v5",
-      "Локальна БД": "SQLite (better-sqlite3, worker threads, spellfix1)",
-      Синхронізація: "Supabase REST + Realtime WebSocket",
-      Архіви: "node-7z + 7zip-bin (zip)",
-      Майстерня: "Steam Workshop",
-      Аналітика: "Mixpanel",
-      Помилки: "Sentry SDK (Electron) → GlitchTip",
-      Збірка: "electron-builder — NSIS, portable, dmg, zip, AppImage, rpm",
-      Дистрибуція: "GitHub Releases, AUR, Flatpak",
-      Оновлення: "electron-updater (GitHub Releases)",
-      E2E: "Playwright",
-    },
-  },
-];
+const LANDING_STACK = [
+  "framework",
+  "styles",
+  "data",
+  "cache",
+  "search",
+  "seo",
+  "ui",
+  "analytics",
+  "errors",
+  "deploy",
+] as const;
 
-const SUPABASE = {
-  "База даних": "PostgreSQL",
-  Автентифікація: "Email + Google OAuth",
-  Сховище: "game-images, game-archives, banner-images",
-  Realtime: "WebSocket підписки для синхронізації лаунчера",
-  "Edge Functions": "10 функцій на Deno — Telegram-бот, завантаження, фідбек",
-  Розширення: "pg_cron, pg_net, pg_trgm, http",
-};
+const ADMIN_STACK = [
+  "framework",
+  "styles",
+  "data",
+  "realtime",
+  "forms",
+  "email",
+  "ui",
+  "tests",
+  "analytics",
+  "api",
+  "integrations",
+  "packages",
+  "workers",
+  "archiveScan",
+  "errors",
+  "deploy",
+] as const;
 
-const AUX_REPOS = [
-  {
-    name: "lbk-deploy-translation",
-    color: "#a8cf96",
-    description:
-      "GitHub Action, якою команди перекладачів заливають архіви просто з власного CI",
-    stack: {
-      Використання: "Vadko/lbk-deploy-translation@v1",
-      Середовище: "Node 20, бандл @vercel/ncc у комітнутий dist/",
-      Завантаження: "tus-js-client — resumable-аплоад у Supabase Storage",
-      Валідація: "Zod, p-map для паралельних архівів",
-      Тести: "Vitest, Biome, версіонування через release-please",
-    },
-  },
-  {
-    name: "lbk-flatpak",
-    color: "#ffa47a",
-    description:
-      "Пакування лаунчера у Flatpak для Linux — власний підписаний репозиторій",
-    stack: {
-      Джерело: "AppImage з релізів lbk-launcher",
-      Пакет: "com.lbk.launcher, runtime org.freedesktop.Platform 25.08",
-      Репозиторій: "OSTree з GPG-підписом",
-      Доставка: "ghcr.io + nginx:alpine → flatpak.lbklauncher.com",
-      Особливість: "i386-стек для umu/Proton у пісочниці",
-    },
-  },
-];
+const LAUNCHER_STACK = [
+  "framework",
+  "styles",
+  "state",
+  "localDb",
+  "sync",
+  "archives",
+  "workshop",
+  "analytics",
+  "errors",
+  "build",
+  "distribution",
+  "updates",
+  "e2e",
+] as const;
+
+const SUPABASE_STACK = [
+  "database",
+  "auth",
+  "storage",
+  "realtime",
+  "edgeFunctions",
+  "extensions",
+] as const;
+
+const DEPLOY_TRANSLATION_STACK = [
+  "usage",
+  "environment",
+  "upload",
+  "validation",
+  "tests",
+] as const;
+
+const FLATPAK_STACK = [
+  "source",
+  "package",
+  "repository",
+  "delivery",
+  "feature",
+] as const;
 
 const SHARED_TECH = [
   "TypeScript",
@@ -124,14 +95,102 @@ const SHARED_TECH = [
   "Knip",
 ];
 
-export default function TechStackPage() {
+interface StackRow {
+  key: string;
+  label: string;
+  value: string;
+}
+
+interface StackListProps {
+  rows: StackRow[];
+}
+
+function StackList({ rows }: StackListProps) {
+  return (
+    <dl className="ts-details__list">
+      {rows.map((row) => (
+        <div key={row.key} className="ts-details__row">
+          <dt>{row.label}</dt>
+          <dd>{row.value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+export default async function TechStackPage() {
+  const t = await getTranslations("techStack");
+
+  const projects = [
+    {
+      name: "Landing",
+      repo: "lbk-landing",
+      color: "#00c2ff",
+      description: t("landing.description"),
+      stack: LANDING_STACK.map((key) => ({
+        key,
+        label: t(`labels.${key}`),
+        value: t(`landing.stack.${key}`),
+      })),
+    },
+    {
+      name: "Admin",
+      repo: "lbk-admin",
+      color: "#a8cf96",
+      description: t("admin.description"),
+      stack: ADMIN_STACK.map((key) => ({
+        key,
+        label: t(`labels.${key}`),
+        value: t(`admin.stack.${key}`),
+      })),
+    },
+    {
+      name: "Launcher",
+      repo: "lbk-launcher",
+      color: "#ffa47a",
+      description: t("launcher.description"),
+      stack: LAUNCHER_STACK.map((key) => ({
+        key,
+        label: t(`labels.${key}`),
+        value: t(`launcher.stack.${key}`),
+      })),
+    },
+  ];
+
+  const supabaseStack = SUPABASE_STACK.map((key) => ({
+    key,
+    label: t(`labels.${key}`),
+    value: t(`supabase.stack.${key}`),
+  }));
+
+  const auxRepos = [
+    {
+      name: "lbk-deploy-translation",
+      color: "#a8cf96",
+      description: t("deployTranslation.description"),
+      stack: DEPLOY_TRANSLATION_STACK.map((key) => ({
+        key,
+        label: t(`labels.${key}`),
+        value: t(`deployTranslation.stack.${key}`),
+      })),
+    },
+    {
+      name: "lbk-flatpak",
+      color: "#ffa47a",
+      description: t("flatpak.description"),
+      stack: FLATPAK_STACK.map((key) => ({
+        key,
+        label: t(`labels.${key}`),
+        value: t(`flatpak.stack.${key}`),
+      })),
+    },
+  ];
+
   return (
     <>
       <section className="container page-hero">
-        <h1 className="hero-title">Технічний стек</h1>
-        <p className="hero-description">
-          Архітектура та технології екосистеми LBK Launcher
-        </p>
+        <h1 className="hero-title">{t("title")}</h1>
+        <p className="hero-description">{t("heroDescription")}</p>
       </section>
 
       <section className="container tech-stack-section">
@@ -169,11 +228,11 @@ export default function TechStackPage() {
         <TechStackDiagram />
 
         <div className="ts-shared">
-          <h3 className="ts-shared__title">Спільні технології</h3>
+          <h3 className="ts-shared__title">{t("sharedTitle")}</h3>
           <div className="ts-shared__tags">
-            {SHARED_TECH.map((t) => (
-              <span key={t} className="ts-shared__badge">
-                {t}
+            {SHARED_TECH.map((tech) => (
+              <span key={tech} className="ts-shared__badge">
+                {tech}
               </span>
             ))}
           </div>
@@ -183,7 +242,7 @@ export default function TechStackPage() {
       {/* Detailed project info */}
       <section className="container ts-details">
         <div className="ts-details__grid">
-          {PROJECTS.map((project) => (
+          {projects.map((project) => (
             <div
               key={project.repo}
               className="ts-details__card"
@@ -192,14 +251,7 @@ export default function TechStackPage() {
               <h3 className="ts-details__name">{project.name}</h3>
               <span className="ts-details__repo">{project.repo}</span>
               <p className="ts-details__desc">{project.description}</p>
-              <dl className="ts-details__list">
-                {Object.entries(project.stack).map(([key, value]) => (
-                  <div key={key} className="ts-details__row">
-                    <dt>{key}</dt>
-                    <dd>{value}</dd>
-                  </div>
-                ))}
-              </dl>
+              <StackList rows={project.stack} />
             </div>
           ))}
 
@@ -209,25 +261,16 @@ export default function TechStackPage() {
           >
             <h3 className="ts-details__name">Supabase</h3>
             <span className="ts-details__repo">Self-hosted</span>
-            <p className="ts-details__desc">
-              Єдиний backend для всіх трьох проєктів
-            </p>
-            <dl className="ts-details__list">
-              {Object.entries(SUPABASE).map(([key, value]) => (
-                <div key={key} className="ts-details__row">
-                  <dt>{key}</dt>
-                  <dd>{value}</dd>
-                </div>
-              ))}
-            </dl>
+            <p className="ts-details__desc">{t("supabaseDescription")}</p>
+            <StackList rows={supabaseStack} />
           </div>
         </div>
       </section>
 
       <section className="container ts-aux">
-        <h2 className="ts-aux__title">Допоміжні репозиторії</h2>
+        <h2 className="ts-aux__title">{t("auxTitle")}</h2>
         <div className="ts-aux__grid">
-          {AUX_REPOS.map((repo) => (
+          {auxRepos.map((repo) => (
             <div
               key={repo.name}
               className="ts-details__card"
@@ -235,14 +278,7 @@ export default function TechStackPage() {
             >
               <h3 className="ts-details__name">{repo.name}</h3>
               <p className="ts-details__desc">{repo.description}</p>
-              <dl className="ts-details__list">
-                {Object.entries(repo.stack).map(([key, value]) => (
-                  <div key={key} className="ts-details__row">
-                    <dt>{key}</dt>
-                    <dd>{value}</dd>
-                  </div>
-                ))}
-              </dl>
+              <StackList rows={repo.stack} />
             </div>
           ))}
         </div>

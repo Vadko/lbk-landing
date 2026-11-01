@@ -2,6 +2,7 @@
 
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faUsers } from "@fortawesome/free-solid-svg-icons/faUsers";
+import { useTranslations } from "next-intl";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useCountUp } from "@/hooks/useCountUp";
 import { useGamesCount } from "@/hooks/useGames";
@@ -16,6 +17,7 @@ function AnimatedStat({ value }: { value: number }) {
 }
 
 export function HeroStats() {
+  const t = useTranslations("landingHero.stats");
   const { data: gamesCount } = useGamesCount();
   const { data: stats } = useLandingStats();
   const totalUniquePlayers = stats?.totalUniquePlayers ?? 0;
@@ -25,14 +27,18 @@ export function HeroStats() {
       <div>
         <SvgIcon icon={faGamepad} />
         <span>
-          <AnimatedStat value={gamesCount ?? 0} />+ Ігор
+          {t.rich("games", {
+            count: () => <AnimatedStat value={gamesCount ?? 0} />,
+          })}
         </span>
       </div>
       {totalUniquePlayers > 0 && (
         <div>
           <SvgIcon icon={faUsers} />
           <span>
-            <AnimatedStat value={totalUniquePlayers} />+ Користувачів
+            {t.rich("users", {
+              count: () => <AnimatedStat value={totalUniquePlayers} />,
+            })}
           </span>
         </div>
       )}

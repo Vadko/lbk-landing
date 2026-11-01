@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { HoverCard } from "@/components/ui/HoverCard";
 
 export function PartnerSection() {
+  const t = useTranslations("landingPartners");
   const partnersData: Array<{
     name: string;
     Logo: string;
@@ -44,7 +46,7 @@ export function PartnerSection() {
             );
           })}
         </div>
-        <p className="h3">Нам довіряють та з нами працюють.</p>
+        <p className="h3">{t("trust")}</p>
       </HoverCard>
     </section>
   );

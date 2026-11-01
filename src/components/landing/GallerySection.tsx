@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 const GalleryLightbox = dynamic(
@@ -10,82 +11,42 @@ const GalleryLightbox = dynamic(
 );
 
 const GALLERY_ITEMS = [
-  {
-    src: "/assets/1.webp",
-    alt: "Головний екран LBK Launcher",
-    label: "Головний екран",
-    description:
-      "Каталог ігор з українськими перекладами. Шукайте, фільтруйте та встановлюйте локалізації в один клац.",
-    large: true,
-  },
-  {
-    src: "/assets/2.webp",
-    alt: "Сторінка гри в LBK Launcher",
-    label: "Сторінка перекладу",
-    description:
-      "Сторінка перекладу: опис, скріншоти, системні вимоги та інші деталі.",
-  },
-  {
-    src: "/assets/3.webp",
-    alt: "Налаштування LBK Launcher",
-    label: "Налаштування",
-    description:
-      "Гнучкі налаштування: анімації, видимість перекладів, сповіщення та автооновлення.",
-  },
-  {
-    src: "/assets/4.webp",
-    alt: "Сповіщення LBK Launcher",
-    label: "Сповіщення",
-    description:
-      "Отримуйте сповіщення про нові переклади та оновлення встановлених локалізацій.",
-  },
-  {
-    src: "/assets/5.webp",
-    alt: "Деталі гри в LBK Launcher",
-    label: "Деталі перекладу",
-    description:
-      "Детальна інформація про переклад: прогрес, команда перекладачів, версія та опис.",
-  },
-  {
-    src: "/assets/6.webp",
-    alt: "Процес завантаження в LBK Launcher",
-    label: "Процес завантаження",
-    description:
-      "Швидке завантаження та автоматичне встановлення перекладу прямо в папку з грою.",
-  },
-];
-
-const slides = GALLERY_ITEMS.map((item) => ({
-  src: item.src,
-  alt: item.alt,
-  title: item.label,
-  description: item.description,
-}));
+  { key: "main", src: "/assets/1.webp", large: true },
+  { key: "translation", src: "/assets/2.webp" },
+  { key: "settings", src: "/assets/3.webp" },
+  { key: "notifications", src: "/assets/4.webp" },
+  { key: "details", src: "/assets/5.webp" },
+  { key: "download", src: "/assets/6.webp" },
+] as const;
 
 export function GallerySection() {
+  const t = useTranslations("landingGallery");
   const [lightboxIndex, setLightboxIndex] = useState(-1);
+  const items = GALLERY_ITEMS.map((item) => ({
+    ...item,
+    alt: t(`items.${item.key}.alt`),
+    label: t(`items.${item.key}.label`),
+    description: t(`items.${item.key}.description`),
+  }));
 
   return (
     <section id="gallery" className="section-margin">
       <div className="container">
-        <h2 className="section-title center">Погляньте на лаунчер</h2>
-        <p className="section-description center">
-          Сучасний дизайн, зручний інтерфейс і все потрібне для комфортної гри
-          українською.
-        </p>
+        <h2 className="section-title center">{t("title")}</h2>
+        <p className="section-description center">{t("description")}</p>
 
         <div className="gallery-grid">
-          {GALLERY_ITEMS.map((item, index) => (
+          {items.map((item, index) => (
             <div
               key={index}
-              className={`gallery-item ${item.large ? "large" : ""}`}
+              className={`gallery-item ${"large" in item ? "large" : ""}`}
               onClick={() => setLightboxIndex(index)}
             >
               <Image
                 src={item.src}
                 alt={item.alt}
-                width={item.large ? 800 : 400}
-                height={item.large ? 600 : 300}
+                width={"large" in item ? 800 : 400}
+                height={"large" in item ? 600 : 300}
               />
               <div className="gallery-overlay">
                 <span>{item.label}</span>
@@ -104,7 +65,12 @@ export function GallerySection() {
           open
           index={lightboxIndex}
           close={() => setLightboxIndex(-1)}
-          slides={slides}
+          slides={items.map((item) => ({
+            src: item.src,
+            alt: item.alt,
+            title: item.label,
+            description: item.description,
+          }))}
         />
       )}
     </section>

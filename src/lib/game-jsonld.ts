@@ -1,11 +1,17 @@
+import type { createTranslator, Messages } from "next-intl";
 import { type Game, isWorkshopTranslation } from "./types";
 
-export function generateSoftwareApplicationLD(game: Game) {
+type Translator = ReturnType<typeof createTranslator<Messages>>;
+
+export function generateSoftwareApplicationLD(t: Translator, game: Game) {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: `${game.name} — Український переклад від ${game.team}`,
-    description: `Український переклад ${game.name} від ${game.team}. Завантажте безкоштовно через LBK Launcher.`,
+    name: t("gameFaq.softwareName", { game: game.name, team: game.team }),
+    description: t("gameMeta.description", {
+      game: game.name,
+      team: game.team,
+    }),
     applicationCategory: "GameApplication",
     operatingSystem: game.platforms?.join(", ") || "Windows",
     author: {
@@ -22,10 +28,11 @@ export function generateSoftwareApplicationLD(game: Game) {
   };
 }
 
-export function generateFAQLD(game: Game) {
+export function generateFAQLD(t: Translator, game: Game) {
   // The markup has to repeat the visible page text, otherwise Google sees one
   // answer and the user another
   const isWorkshop = isWorkshopTranslation(game);
+  const kind = isWorkshop ? "workshop" : "launcher";
 
   return {
     "@context": "https://schema.org",
@@ -33,34 +40,36 @@ export function generateFAQLD(game: Game) {
     mainEntity: [
       {
         "@type": "Question",
-        name: `Чи безкоштовний український переклад ${game.name}?`,
+        name: t("gameFaq.freeQuestion", { game: game.name }),
         acceptedAnswer: {
           "@type": "Answer",
-          text: isWorkshop
-            ? `Так, переклад ${game.name} від команди ${game.team} повністю безкоштовний. Встановіть українську локалізацію за кілька клаців через Steam майстерню.`
-            : `Так, переклад ${game.name} від команди ${game.team} повністю безкоштовний. Завантажте LBK Launcher та встановіть українську локалізацію за кілька клаців.`,
+          text: t("gameFaq.freeAnswer", {
+            game: game.name,
+            team: game.team,
+            kind,
+          }),
         },
       },
       {
         "@type": "Question",
-        name: `Як встановити український переклад ${game.name}?`,
+        name: t("gameFaq.installQuestion", { game: game.name }),
         acceptedAnswer: {
           "@type": "Answer",
-          text: isWorkshop
-            ? `Завантажте Steam, знайдіть ${game.name} у каталозі майстерні Steam та натисніть "Підписатися". Модифікація автоматично завантажиться та встановиться.`
-            : `Завантажте безкоштовний LBK Launcher з lbklauncher.com, знайдіть ${game.name} у каталозі ігор та натисніть "Встановити". Переклад автоматично завантажиться та встановиться.`,
+          text: t("gameFaq.installAnswer", { game: game.name, kind }),
         },
       },
       {
         "@type": "Question",
-        name: `Чи потрібна ліцензійна гра для встановлення перекладу ${game.name}?`,
+        name: t("gameFaq.licenseQuestionNamed", { game: game.name }),
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Так, для коректної роботи перекладу потрібна оригінальна гра ${game.name}. Переклад працює з версіями з ${
-            isWorkshop
+          text: t("gameFaq.licenseAnswer", {
+            game: game.name,
+            source: "versions",
+            platforms: isWorkshop
               ? "Steam"
-              : game.platforms?.join(", ") || "Steam, GOG, Epic Games"
-          }.`,
+              : game.platforms?.join(", ") || "Steam, GOG, Epic Games",
+          }),
         },
       },
     ],

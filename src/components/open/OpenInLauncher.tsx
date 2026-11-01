@@ -8,7 +8,9 @@ import { faRotate } from "@fortawesome/free-solid-svg-icons/faRotate";
 import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useEffect, useReducer, useRef } from "react";
+import { BodyClass } from "@/components/layout/BodyClass";
 import { ActionIcon } from "@/components/ui/ActionIcon";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
@@ -87,6 +89,7 @@ export function OpenInLauncher({
   bannerUrl,
   logoUrl,
 }: OpenInLauncherProps) {
+  const t = useTranslations("openLauncher");
   const [state, dispatch] = useReducer(reducer, {
     status: "attempting",
     countdown: 3,
@@ -138,6 +141,7 @@ export function OpenInLauncher({
 
   return (
     <div className="open-launcher-page">
+      <BodyClass name="is-open-launcher" />
       {bannerUrl && (
         <div
           className="open-launcher-bg"
@@ -160,12 +164,12 @@ export function OpenInLauncher({
         )}
 
         <h1 className="open-launcher-title">{gameName}</h1>
-        <p className="open-launcher-team">Переклад від {team}</p>
+        <p className="open-launcher-team">{t("by", { team })}</p>
 
         {state.status === "attempting" && (
           <div className="open-launcher-status">
             <div className="open-launcher-spinner" />
-            <p>Відкриваємо LBK Launcher...</p>
+            <p>{t("opening")}</p>
             <span className="open-launcher-countdown">{state.countdown}</span>
           </div>
         )}
@@ -173,9 +177,13 @@ export function OpenInLauncher({
         {state.status === "opened" && (
           <div className="open-launcher-status open-launcher-success">
             <SvgIcon icon={faCheckCircle} />
-            <p>Лаунчер відкрито!</p>
-            <Link href={gamePageUrl} className="open-launcher-game-link">
-              Перейти на сторінку гри
+            <p>{t("opened")}</p>
+            <Link
+              href={gamePageUrl}
+              prefetch
+              className="open-launcher-game-link"
+            >
+              {t("goToGame")}
               <SvgIcon icon={faArrowRight} />
             </Link>
           </div>
@@ -184,14 +192,14 @@ export function OpenInLauncher({
         {state.status === "failed" && (
           <div className="open-launcher-status open-launcher-failed">
             <SvgIcon icon={faDownload} />
-            <h2>LBK Launcher не встановлено</h2>
-            <p>Щоб грати в {gameName} українською, вам потрібен LBK Launcher</p>
+            <h2>{t("notInstalled")}</h2>
+            <p>{t("needLauncher", { game: gameName })}</p>
 
             <div className="open-launcher-actions">
               <Link href="/" className="btn btn-gradient btn--big">
                 <SvgIcon icon={faWindows} />
                 <div className="dl-info">
-                  <span>Завантажити лаунчер</span>
+                  <span>{t("download")}</span>
                   <small>Windows / macOS / Linux</small>
                 </div>
               </Link>
@@ -203,20 +211,24 @@ export function OpenInLauncher({
                 aria-busy={retry.phase === "pending"}
               >
                 <ActionIcon phase={retry.phase} icon={faRotate} />
-                Спробувати знову
+                {t("retry")}
               </button>
             </div>
 
-            <Link href={gamePageUrl} className="open-launcher-game-link">
-              Детальніше про переклад <SvgIcon icon={faArrowRight} />
+            <Link
+              href={gamePageUrl}
+              prefetch
+              className="open-launcher-game-link"
+            >
+              {t("details")} <SvgIcon icon={faArrowRight} />
             </Link>
           </div>
         )}
 
         <CopyButton
           text={`https://lbklauncher.com/open/${gameSlug}/${teamSlug}`}
-          title="Копіювати посилання"
-          label="Копіювати посилання"
+          title={t("copyLink")}
+          label={t("copyLink")}
           icon={faShareNodes}
           className="btn glass-bg"
         />

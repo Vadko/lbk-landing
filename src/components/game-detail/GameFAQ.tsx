@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { getReadablePlatform } from "@/helpers/getReadablePlatform";
 import { type Game, isWorkshopTranslation } from "@/lib/types";
 
@@ -5,56 +6,52 @@ interface GameFAQProps {
   game: Game;
 }
 
-export function GameFAQ({ game }: GameFAQProps) {
+export async function GameFAQ({ game }: GameFAQProps) {
+  const t = await getTranslations("gameFaq");
+  const tPlatform = await getTranslations("storePlatform");
   const isWorkshop = isWorkshopTranslation(game);
+  const kind = isWorkshop ? "workshop" : "launcher";
 
   return (
     <section className="game-section game-faq">
-      <h2>Часті питання про переклад {game.name}</h2>
+      <h2>{t("title", { game: game.name })}</h2>
       <div className="faq-list">
         <details className="faq-item">
-          <summary>Чи безкоштовний український переклад {game.name}?</summary>
-          <p>
-            Так, переклад {game.name} від команди {game.team} повністю
-            безкоштовний.{" "}
-            {isWorkshop
-              ? "Встановіть українську локалізацію за кілька клаців через Steam майстерню."
-              : "Завантажте LBK Launcher та встановіть українську локалізацію за кілька клаців."}
-          </p>
+          <summary>{t("freeQuestion", { game: game.name })}</summary>
+          <p>{t("freeAnswer", { game: game.name, team: game.team, kind })}</p>
         </details>
         <details className="faq-item">
-          <summary>
-            Чи потрібна ліцензійна гра для встановлення перекладу?
-          </summary>
+          <summary>{t("licenseQuestion")}</summary>
           <p>
-            Так, для коректної роботи перекладу потрібна оригінальна гра{" "}
-            {game.name}. Переклад працює з{" "}
             {/* Майстерня живе лише в Steam — решта магазинів для неї не існує */}
-            {isWorkshop
-              ? "версіями з Steam"
-              : game.platforms.includes("other")
-                ? "оригінальним лаунчером гри"
-                : `версіями з ${
-                    game.platforms?.map(getReadablePlatform).join(", ") ||
-                    "Steam, GOG, Epic Games"
-                  }`}
-            .
+            {t("licenseAnswer", {
+              game: game.name,
+              source:
+                !isWorkshop && game.platforms.includes("other")
+                  ? "launcher"
+                  : "versions",
+              platforms: isWorkshop
+                ? "Steam"
+                : game.platforms
+                    ?.map((platform) =>
+                      getReadablePlatform(tPlatform, platform)
+                    )
+                    .join(", ") || "Steam, GOG, Epic Games",
+            })}
           </p>
         </details>
         <details className="faq-item">
-          <summary>Як оновити переклад до нової версії?</summary>
-          <p>
-            {isWorkshop
-              ? "LBK Launcher автоматично не перевіряє оновлення. Коли вийде нова версія перекладу, ви отримаєте сповіщення та зможете оновити переклад в Steam в один клац."
-              : "LBK Launcher автоматично перевіряє оновлення. Коли вийде нова версія перекладу, ви отримаєте сповіщення та зможете оновити в один клац."}
-          </p>
+          <summary>{t("updateQuestion")}</summary>
+          <p>{t("updateAnswer", { kind })}</p>
         </details>
         {(game.voice_progress ?? 0) > 0 && (
           <details className="faq-item">
-            <summary>Чи є українське озвучення для {game.name}?</summary>
+            <summary>{t("voiceQuestion", { game: game.name })}</summary>
             <p>
-              Так! Команда {game.team} працює над українським озвученням. Наразі
-              озвучено {game.voice_progress}% гри.
+              {t("voiceAnswer", {
+                team: game.team,
+                progress: String(game.voice_progress),
+              })}
             </p>
           </details>
         )}

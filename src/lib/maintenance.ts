@@ -1,2 +1,3 @@
-export const isMaintenanceMode =
-  process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
+export function isMaintenanceMode(): boolean {
+  return process.env.MAINTENANCE_MODE === "true";
+}
