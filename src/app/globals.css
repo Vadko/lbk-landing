@@ -3010,13 +3010,14 @@ input[type="search"]::-webkit-search-decoration {
 
 /* Game Reviews */
 .game-reviews {
-  min-height: 320px;
+  /* Opaque sage, so a branch corner does not darken where it leaves the trunk */
+  --review-line: color-mix(in srgb, var(--color-main) 45%, var(--bg-base));
 }
 
 .game-reviews-header {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   padding-bottom: 16px;
   margin-bottom: 20px;
   border-bottom: 1px solid var(--glass-border);
@@ -3033,65 +3034,172 @@ input[type="search"]::-webkit-search-decoration {
   color: var(--text-sec);
 }
 
-.game-reviews-state {
-  display: flex;
-  justify-content: center;
-  padding: 48px 0;
-  color: var(--text-sec);
-  text-align: center;
-}
-
 .game-reviews-empty {
   margin: 0;
   font-size: 0.875rem;
   color: var(--text-sec);
 }
 
-.game-reviews-spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid var(--glass-border);
-  border-top-color: var(--color-main);
-  border-radius: 50%;
-  animation: game-reviews-spin 0.8s linear infinite;
-}
-
-@keyframes game-reviews-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .review-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  transition: opacity 0.2s ease;
 }
 
-.review-list.loading {
-  opacity: 0.6;
+.review-thread + .review-thread {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.review-item {
+.review-line {
+  position: absolute;
+  border-left: 1px solid var(--review-line);
+}
+
+.review-entry {
+  position: relative;
   display: flex;
+  gap: 16px;
+  min-width: 0;
+}
+
+.review-entry-trunk {
+  left: 14px;
+  top: 40px;
+  bottom: 0;
+}
+
+.review-entry--root .review-entry-trunk {
+  left: 20px;
+  top: 52px;
+}
+
+.review-avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+.review-avatar--root {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+}
+
+.review-avatar--player,
+.review-removed .review-avatar {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-sec);
+}
+
+.review-avatar--author {
+  background: rgba(var(--color-main-rgb), 0.2);
+  color: var(--color-main);
+}
+
+.review-avatar--moderator {
+  background: rgba(var(--color-accent-rgb), 0.2);
+  color: var(--color-accent);
+}
+
+.review-entry-body {
+  display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: 10px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  gap: 6px;
+  min-width: 0;
+}
+
+.review-entry-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.review-entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  min-width: 0;
+}
+
+.review-entry-header > .review-pill {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.review-author {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.review-author--team {
+  color: var(--color-main);
+}
+
+.review-reply-to {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  color: var(--text-sec);
+}
+
+/* Turned a quarter, the up-turning arrow reads as a reply arrow */
+.review-reply-to-icon {
+  flex-shrink: 0;
+  transform: rotate(90deg);
 }
 
 .review-date {
-  margin: 0;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--text-sec);
 }
 
 .review-text {
   margin: 0;
   font-size: 0.875rem;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
+  line-height: 1.43;
+  color: var(--text-primary);
+  white-space: pre-line;
+  overflow-wrap: break-word;
+}
+
+.review-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px solid;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.review-pill svg {
+  flex-shrink: 0;
+}
+
+.review-pill--main {
+  border-color: rgba(var(--color-main-rgb), 0.4);
+  background: rgba(var(--color-main-rgb), 0.15);
+  color: var(--color-main);
+}
+
+.review-pill--accent {
+  border-color: rgba(var(--color-accent-rgb), 0.4);
+  background: rgba(var(--color-accent-rgb), 0.15);
+  color: var(--color-accent);
 }
 
 .review-images {
@@ -3100,124 +3208,154 @@ input[type="search"]::-webkit-search-decoration {
   gap: 8px;
 }
 
-.review-image-btn {
-  position: relative;
+.review-image {
   width: 64px;
   height: 64px;
   padding: 0;
   overflow: hidden;
-  background: none;
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
+  background: none;
   cursor: zoom-in;
   transition: border-color 0.2s ease;
 }
 
-.review-image-btn:hover {
+.review-image:hover {
   border-color: var(--color-main);
 }
 
-.review-image-btn img {
+.review-image img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-.review-replies {
-  display: flex;
-  flex-direction: column;
-  margin: -10px 0 0 12px;
+.review-removed {
+  align-items: flex-start;
+  min-height: 40px;
 }
 
-.review-reply {
+.review-removed p {
+  margin: 0;
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 28px;
+  color: var(--text-sec);
+}
+
+/* A row hangs from the centre of its parent's avatar: 40px for the review, 28px for a reply */
+.review-row {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px 0 0 24px;
-  border-left: 1px solid var(--color-main);
+  padding-top: 16px;
 }
 
-.review-reply.last {
-  border-left-color: transparent;
+.review-row--review {
+  --branch-x: 20px;
+  padding-left: 56px;
 }
 
-.review-reply::before {
-  content: "";
-  position: absolute;
-  left: 0;
+.review-row--reply {
+  --branch-x: 14px;
+  padding-left: 44px;
+}
+
+.review-row--toggle {
+  padding-top: 8px;
+}
+
+.review-row-trunk {
+  left: var(--branch-x);
   top: 0;
-  width: 20px;
-  height: 22px;
-  border-left: 1px solid var(--color-main);
-  border-bottom: 1px solid var(--color-main);
+  bottom: 0;
+}
+
+.review-row-trunk.is-last {
+  bottom: auto;
+  height: 18px;
+}
+
+.review-row--toggle .review-row-trunk.is-last {
+  height: 12px;
+}
+
+/* The 12px corner ends at the vertical centre of the row's avatar or toggle */
+.review-row-corner {
+  left: var(--branch-x);
+  top: 18px;
+  width: var(--branch-x);
+  height: 12px;
+  border-bottom: 1px solid var(--review-line);
   border-bottom-left-radius: 12px;
 }
 
-.review-reply-head {
-  display: flex;
+.review-row--toggle .review-row-corner {
+  top: 12px;
+}
+
+.review-replies-toggle {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-}
-
-.review-reply-badge {
-  padding: 2px 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-main);
-  background: rgba(var(--color-main-rgb), 0.15);
-  border-radius: 6px;
-}
-
-.reviews-pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 20px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-}
-
-.reviews-pagination-control,
-.reviews-pagination-page,
-.reviews-pagination-ellipsis {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  font: inherit;
-  color: var(--text-primary);
-  background: none;
+  margin-left: -12px;
+  padding: 6px 12px;
   border: none;
   border-radius: 8px;
-}
-
-.reviews-pagination-control,
-.reviews-pagination-page {
+  background: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.43;
+  color: var(--color-main);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
-.reviews-pagination-page {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.reviews-pagination-control:hover,
-.reviews-pagination-page:hover {
+.review-replies-toggle:hover {
   background: var(--glass-bg-hover);
 }
 
-.reviews-pagination-control:disabled {
-  opacity: 0.3;
-  pointer-events: none;
+.review-reveal {
+  display: grid;
+  animation: review-reveal 220ms ease-out;
 }
 
-.reviews-pagination-page.active {
-  color: var(--bg-base);
-  background: var(--color-main);
+.review-reveal > div {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@keyframes review-reveal {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+  to {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-reveal {
+    animation: none;
+  }
+}
+
+.review-sentinel {
+  height: 4px;
+}
+
+.review-list-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 0;
+}
+
+.review-list-state p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-sec);
 }
 
 /* Game Progress */

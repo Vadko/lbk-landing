@@ -26,8 +26,8 @@ import { type Game, isWorkshopTranslation } from "@/lib/types";
 import { AIBadgeIcon } from "../ui/icons/AIBadgeIcon";
 import { AIEditedBadgeIcon } from "../ui/icons/AIEditedBadgeIcon";
 import GameGallery from "./GameGallery";
-import { GameReviews } from "./GameReviews";
 import { GameVideo } from "./GameVideo";
+import { GameReviews } from "./reviews/GameReviews";
 
 interface GameDetailArticleProps {
   game: Game;
@@ -200,12 +200,12 @@ export async function GameDetailArticle({
                 </section>
               )}
 
+              <GameReviews gameId={game.id} />
               <GameInstallSteps
                 gameName={game.name}
                 isWorkshop={isWorkshopTranslation(game)}
               />
               <GameFAQ game={game} />
-              <GameReviews gameId={game.id} />
             </div>
 
             <GameSidebar game={game} />

@@ -14,6 +14,9 @@ importers:
       '@fortawesome/free-solid-svg-icons':
         specifier: 7.2.0
         version: 7.2.0
+      '@lbklauncher/dicebear-vyshyvanka':
+        specifier: 2.0.0
+        version: 2.0.0
       '@sentry/nextjs':
         specifier: 11.8.0
         version: 11.8.0(@babel/core@7.29.7)(next@16.4.2(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@types/node@20.19.35)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react@19.2.6)(vite@8.3.4(@types/node@20.19.35)(jiti@2.7.0)(yaml@2.9.1))
@@ -247,6 +250,10 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
+
+  '@dicebear/core@10.7.0':
+    resolution: {integrity: sha512-JUOzKOd8RUByJJo8ZL+C7YE/pvEsWewfpbWUmR8OIQZWv/PvUQHnohdevySC3icyyxe6EIU/8B/rQgA42us1QA==}
+    engines: {node: '>=22.0.0'}
 
   '@eloqnt/config@0.1.1':
     resolution: {integrity: sha512-YRDigSaiJEzKDfzTth5kG+L/PKfB3mo8h7yNzpXExPfvQmcD05WoZT57PdhJE0jI+Vva6eb0OCU8hnHHgdME3g==}
@@ -546,6 +553,10 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@lbklauncher/dicebear-vyshyvanka@2.0.0':
+    resolution: {integrity: sha512-s15XwCMppZOpta2wU+c8/88WUtfjbmk6dPpKC+zIkK+RtrXtLMaBFG4PG/lQ/wheNteUY7F06TM6hdG73r9nFw==}
+    engines: {node: '>=22.0.0'}
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     resolution: {integrity: sha512-oTXEIha4SsuXdTA4Iyskj0kpdx2yVXdhd75c2v3xGrHFfVMsbhTPZU/nMPL4sWKo4pBHm3aucLaqGlF696dTyQ==}
@@ -4111,6 +4122,8 @@ snapshots:
   '@biomejs/cli-win32-x64@2.5.3':
     optional: true
 
+  '@dicebear/core@10.7.0': {}
+
   '@eloqnt/config@0.1.1': {}
 
   '@eloqnt/format-json@0.1.0':
@@ -4376,6 +4389,10 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
+
+  '@lbklauncher/dicebear-vyshyvanka@2.0.0':
+    dependencies:
+      '@dicebear/core': 10.7.0
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     optional: true

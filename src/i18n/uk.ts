@@ -352,6 +352,26 @@ export const uk = {
     fonts: "Шрифти",
     textures: "Текстури",
   },
+  gameReviews: {
+    title: "Відгуки спільноти",
+    count:
+      "{count, plural, one {# коментар} few {# коментарі} many {# коментарів} other {# коментарі}}",
+    empty: "Поки що немає відгуків.",
+    loadFailed: "Не вдалося завантажити відгуки. Спробуйте пізніше.",
+    loadMoreFailed: "Не вдалося завантажити ще відгуки.",
+    retry: "Спробувати ще раз",
+    today: "Сьогодні, {time}",
+    yesterday: "Вчора, {time}",
+    edited: "змінено",
+    translationAuthor: "Автор перекладу",
+    moderator: "Модератор",
+    bug: "Помилка",
+    removed: "Видалено модератором",
+    showMoreReplies:
+      "{count, plural, one {Показати ще # відповідь} few {Показати ще # відповіді} many {Показати ще # відповідей} other {Показати ще # відповіді}}",
+    hideReplies: "Згорнути відповіді",
+    screenshotAlt: "Скріншот {number}",
+  },
   gameSelect: {
     subtitle:
       "Для цієї гри доступні переклади: {count}. Оберіть варіант від команди, яка вам більше подобається.",
