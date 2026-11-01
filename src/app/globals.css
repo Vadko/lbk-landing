@@ -3014,24 +3014,87 @@ input[type="search"]::-webkit-search-decoration {
   --review-line: color-mix(in srgb, var(--color-main) 45%, var(--bg-base));
 }
 
+.game-section.game-reviews {
+  scroll-margin-top: 16px;
+  border-color: rgba(var(--color-main-rgb), 0.35);
+  box-shadow: 0 12px 40px rgba(var(--color-main-rgb), 0.08);
+}
+
 .game-reviews-header {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px 16px;
   padding-bottom: 16px;
   margin-bottom: 20px;
   border-bottom: 1px solid var(--glass-border);
 }
 
-.game-reviews-header h2 {
-  margin-bottom: 0;
+.game-reviews-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
 }
 
-.game-reviews-count {
-  min-height: 18px;
+.game-reviews-heading svg {
+  flex-shrink: 0;
+  font-size: 1.3rem;
+  color: var(--color-main);
+}
+
+.game-reviews-heading h2 {
+  margin: 0;
+}
+
+.game-reviews-total {
+  min-width: 28px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(var(--color-main-rgb), 0.15);
+  color: var(--color-main);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.btn-neon.game-reviews-launcher {
+  width: auto;
+  gap: 10px;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+}
+
+.game-reviews-hint {
+  grid-column: 1 / -1;
   margin: 0;
   font-size: 0.875rem;
   color: var(--text-sec);
+}
+
+.game-reviews-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-top: 12px;
+  padding: 6px 14px;
+  border: 1px solid rgba(var(--color-main-rgb), 0.35);
+  border-radius: 20px;
+  background: rgba(var(--color-main-rgb), 0.1);
+  color: var(--color-main);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.game-reviews-chip:hover {
+  border-color: var(--color-main);
+  background: rgba(var(--color-main-rgb), 0.2);
 }
 
 .game-reviews-empty {
@@ -3685,7 +3748,8 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 @media (max-width: 768px) {
-  .btn-launcher {
+  .btn-launcher,
+  .game-reviews-launcher {
     display: none;
   }
 }

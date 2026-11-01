@@ -348,6 +348,9 @@ export const en = {
     title: "Community reviews",
     count: "{count, plural, one {# comment} other {# comments}}",
     empty: "No reviews yet.",
+    openInLauncher: "Open in launcher",
+    writeHint:
+      "You can leave a review in the launcher after installing the translation.",
     loadFailed: "Could not load reviews. Try again later.",
     loadMoreFailed: "Could not load more reviews.",
     retry: "Try again",

@@ -28,6 +28,7 @@ import { AIEditedBadgeIcon } from "../ui/icons/AIEditedBadgeIcon";
 import GameGallery from "./GameGallery";
 import { GameVideo } from "./GameVideo";
 import { GameReviews } from "./reviews/GameReviews";
+import { GameReviewsChip } from "./reviews/GameReviewsChip";
 
 interface GameDetailArticleProps {
   game: Game;
@@ -121,6 +122,7 @@ export async function GameDetailArticle({
                       : t("translationType.ai")}
                   </div>
                 )}
+                <GameReviewsChip gameId={game.id} />
               </header>
 
               {otherTranslations.length > 0 && (
@@ -200,7 +202,11 @@ export async function GameDetailArticle({
                 </section>
               )}
 
-              <GameReviews gameId={game.id} />
+              <GameReviews
+                gameId={game.id}
+                gameSlug={game.slug}
+                team={game.team}
+              />
               <GameInstallSteps
                 gameName={game.name}
                 isWorkshop={isWorkshopTranslation(game)}
