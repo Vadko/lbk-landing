@@ -153,6 +153,8 @@ describe("captcha page script", () => {
     options.callback("late-token");
 
     await expect(answer).resolves.toEqual({ error: "300030" });
+    page.flushTimers();
+    expect(page.turnstile.remove).toHaveBeenCalledOnce();
   });
 
   it("answers a timed-out or unsupported challenge", async () => {
