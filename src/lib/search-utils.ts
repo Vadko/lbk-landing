@@ -27,14 +27,17 @@ export function getTranslitVariant(input: string): string | null {
   return getTransliteration(input);
 }
 
-function tokenize(value: string): string[] {
-  return value
-    .toLowerCase()
-    .split(/[^\p{L}\p{N}]+/u)
-    .filter((t) => t.length >= 2);
+function tokenize(value: string, keepDigits: boolean): string[] {
+  const parts = value.toLowerCase().split(/[^\p{L}\p{N}]+/u);
+  const words = parts.filter((t) => t.length >= 2);
+
+  if (!keepDigits || words.length === 0) {
+    return words;
+  }
+  return parts.filter((t) => t.length >= 2 || /^\p{N}+$/u.test(t));
 }
 
-export function buildFtsQuery(input: string): string {
+function buildFtsQuery(input: string, keepDigits: boolean): string {
   if (!input) {
     return "";
   }
@@ -42,9 +45,9 @@ export function buildFtsQuery(input: string): string {
   const buildExpr = (tokens: string[]) =>
     tokens.map((t) => `'${t}':*`).join(" & ");
 
-  const primary = tokenize(input);
+  const primary = tokenize(input, keepDigits);
   const translit = getTransliteration(input);
-  const translitTokens = translit ? tokenize(translit) : [];
+  const translitTokens = translit ? tokenize(translit, keepDigits) : [];
 
   const exprs: string[] = [];
   if (primary.length) {
@@ -55,4 +58,9 @@ export function buildFtsQuery(input: string): string {
   }
 
   return exprs.join(" | ");
+}
+
+export function buildFtsQueries(input: string): string[] {
+  const queries = [buildFtsQuery(input, true), buildFtsQuery(input, false)];
+  return [...new Set(queries)].filter(Boolean);
 }
