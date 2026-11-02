@@ -1,8 +1,8 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { Link } from "@/i18n/navigation";
 
 interface LegalLayoutProps {
   children: ReactNode;

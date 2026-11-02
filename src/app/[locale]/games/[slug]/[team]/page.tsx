@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { GameDetailArticle } from "@/components/game-detail";
+import { permanentRedirect } from "@/i18n/navigation";
 import { resolveLocale } from "@/i18n/resolve-locale";
 import { routing } from "@/i18n/routing";
 import {
@@ -77,14 +78,14 @@ export async function generateMetadata({
 }
 
 export default async function GameTranslationPage({ params }: PageProps) {
-  await resolveLocale(params);
+  const locale = await resolveLocale(params);
   const { slug, team: teamSlugParam } = await params;
   const game = await getGameBySlugAndTeamSlug(slug, teamSlugParam);
 
   if (!game) {
     const newPath = await resolveMovedGamePath(slug, teamSlugParam);
     if (newPath) {
-      permanentRedirect(newPath);
+      permanentRedirect({ href: newPath, locale });
     }
     notFound();
   }

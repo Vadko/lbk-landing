@@ -1,11 +1,11 @@
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { GameBanner, GameDetailArticle } from "@/components/game-detail";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { Link, permanentRedirect } from "@/i18n/navigation";
 import { resolveLocale } from "@/i18n/resolve-locale";
 import { routing } from "@/i18n/routing";
 import { STATUS_BADGE_CLASSES } from "@/lib/constants";
@@ -116,14 +116,14 @@ export async function generateMetadata({
 }
 
 export default async function GamePage({ params }: PageProps) {
-  await resolveLocale(params);
+  const locale = await resolveLocale(params);
   const { slug } = await params;
   const translations = await getGamesBySlug(slug);
 
   if (translations.length === 0) {
     const newPath = await getRedirect(`/games/${slug}`);
     if (newPath) {
-      permanentRedirect(newPath);
+      permanentRedirect({ href: newPath, locale });
     }
     notFound();
   }

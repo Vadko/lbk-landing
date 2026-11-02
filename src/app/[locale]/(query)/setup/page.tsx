@@ -11,7 +11,6 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
 import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons/faFileArrowDown";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
-import Link from "next/link";
 import { type Messages, useTranslations } from "next-intl";
 import { type ReactNode, useState, useSyncExternalStore } from "react";
 import { CopyButton } from "@/components/ui/CopyButton";
@@ -21,6 +20,7 @@ import {
   getDownloadLinks,
   useGitHubRelease,
 } from "@/hooks/useGitHubRelease";
+import { Link } from "@/i18n/navigation";
 
 type Platform = "windows" | "macos" | "linux" | "steamdeck";
 

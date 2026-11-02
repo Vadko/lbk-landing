@@ -7,7 +7,6 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
 import { faRotate } from "@fortawesome/free-solid-svg-icons/faRotate";
 import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import Image from "next/image";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useEffect, useReducer, useRef } from "react";
 import { BodyClass } from "@/components/layout/BodyClass";
@@ -15,6 +14,7 @@ import { ActionIcon } from "@/components/ui/ActionIcon";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useActionPhase } from "@/hooks/useActionPhase";
+import { Link } from "@/i18n/navigation";
 
 interface OpenInLauncherProps {
   gameName: string;

@@ -6,10 +6,10 @@ import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons/faYoutube";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { Link, usePathname } from "@/i18n/navigation";
 import { trackViewGamesCatalog } from "@/lib/analytics";
 import { NavbarLogo } from "../icons/NavbarLogo";
 
@@ -75,6 +75,7 @@ const navbarSocials = [
 
 export function Navbar() {
   const t = useTranslations("navbar");
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLDivElement | null>(null);
 
@@ -132,10 +133,14 @@ export function Navbar() {
                     if (link.track === "trackViewGamesCatalog") {
                       trackViewGamesCatalog();
                     }
-                    if (link.href === "/" && window.location.pathname === "/") {
+                    if (link.href === "/" && pathname === "/") {
                       e.preventDefault();
                       window.scrollTo({ top: 0, behavior: "smooth" });
-                      window.history.replaceState(null, "", "/");
+                      window.history.replaceState(
+                        null,
+                        "",
+                        window.location.pathname
+                      );
                     }
                   }}
                 >
@@ -199,10 +204,14 @@ export function Navbar() {
                     if (link.track === "trackViewGamesCatalog") {
                       trackViewGamesCatalog();
                     }
-                    if (link.href === "/" && window.location.pathname === "/") {
+                    if (link.href === "/" && pathname === "/") {
                       e.preventDefault();
                       window.scrollTo({ top: 0, behavior: "smooth" });
-                      window.history.replaceState(null, "", "/");
+                      window.history.replaceState(
+                        null,
+                        "",
+                        window.location.pathname
+                      );
                     }
                     closeMobileMenu();
                   }}
