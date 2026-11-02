@@ -1,3 +1,5 @@
+import ru from "convert-layout/ru";
+import uk from "convert-layout/uk";
 import CyrillicToTranslit from "cyrillic-to-translit-js";
 
 const translitUk = CyrillicToTranslit({ preset: "uk" });
@@ -27,6 +29,14 @@ export function getTranslitVariant(input: string): string | null {
   return getTransliteration(input);
 }
 
+// The query as typed with the other keyboard layout on: "цфк" is "war", "Dslmvfr" is "Відьмак"
+function switchLayout(input: string): string | null {
+  const switched = /\p{Script=Cyrillic}/u.test(input)
+    ? ru.toEn(uk.toEn(input))
+    : uk.fromEn(input);
+  return switched === input ? null : switched;
+}
+
 function tokenize(value: string, keepDigits: boolean): string[] {
   const parts = value.toLowerCase().split(/[^\p{L}\p{N}]+/u);
   const words = parts.filter((t) => t.length >= 2);
@@ -37,7 +47,11 @@ function tokenize(value: string, keepDigits: boolean): string[] {
   return parts.filter((t) => t.length >= 2 || /^\p{N}+$/u.test(t));
 }
 
-function buildFtsQuery(input: string, keepDigits: boolean): string {
+function buildFtsQuery(
+  input: string,
+  keepDigits: boolean,
+  transliterate: boolean
+): string {
   if (!input) {
     return "";
   }
@@ -46,7 +60,7 @@ function buildFtsQuery(input: string, keepDigits: boolean): string {
     tokens.map((t) => `'${t}':*`).join(" & ");
 
   const primary = tokenize(input, keepDigits);
-  const translit = getTransliteration(input);
+  const translit = transliterate ? getTransliteration(input) : null;
   const translitTokens = translit ? tokenize(translit, keepDigits) : [];
 
   const exprs: string[] = [];
@@ -60,7 +74,18 @@ function buildFtsQuery(input: string, keepDigits: boolean): string {
   return exprs.join(" | ");
 }
 
+// Strictest first: with the numbers, without them, then in the other layout, which is never transliterated again ("tym" → "ень" → "en")
 export function buildFtsQueries(input: string): string[] {
-  const queries = [buildFtsQuery(input, true), buildFtsQuery(input, false)];
+  const switched = switchLayout(input);
+  const queries = [
+    buildFtsQuery(input, true, true),
+    buildFtsQuery(input, false, true),
+    ...(switched
+      ? [
+          buildFtsQuery(switched, true, false),
+          buildFtsQuery(switched, false, false),
+        ]
+      : []),
+  ];
   return [...new Set(queries)].filter(Boolean);
 }

@@ -186,6 +186,21 @@ describe("GET /api/games-list", () => {
     expect(slugsOf(body)).toEqual(["gta_5"]);
   });
 
+  it("tries the other keyboard layout before the fuzzy fallback", async () => {
+    db.state.answer = (query) =>
+      ftsQueryOf(query) === "('war':*)"
+        ? { data: [row("war_thunder")], error: null, count: 1 }
+        : { data: [], error: null, count: 0 };
+
+    // eslint-disable-next-line no-restricted-syntax -- "war" typed with the Ukrainian layout on
+    const { body } = await get({ search: "цфк" });
+
+    expect(db.state.queries.map((q) => q.source)).not.toContain(
+      "fuzzy_search_games"
+    );
+    expect(slugsOf(body)).toEqual(["war_thunder"]);
+  });
+
   it("retries without the number on the filtered path too", async () => {
     const series = [
       { ...row("fallout_nv"), translations: [{ status: "completed" }] },

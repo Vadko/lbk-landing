@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax -- keyboard-layout query forms are Cyrillic */
 import { describe, expect, it } from "vitest";
 import { buildFtsQueries, getTranslitVariant } from "./search-utils";
 
@@ -8,10 +9,12 @@ function translitOf(input: string): string {
 describe("buildFtsQueries", () => {
   it("tries the number first, then the query without it", () => {
     const translit = translitOf("gta");
-    expect(buildFtsQueries("gta 5")).toEqual([
-      `('gta':* & '5':*) | ('${translit}':* & '5':*)`,
-      `('gta':*) | ('${translit}':*)`,
-    ]);
+    const [withNumber, withoutNumber] = buildFtsQueries("gta 5");
+    expect(withNumber).toContain(
+      `('gta':* & '5':*) | ('${translit}':* & '5':*)`
+    );
+    expect(withoutNumber).toContain(`('gta':*) | ('${translit}':*)`);
+    expect(withoutNumber).not.toContain("'5'");
   });
 
   it("keeps the number in a Cyrillic query and its transliteration", () => {
@@ -22,18 +25,23 @@ describe("buildFtsQueries", () => {
     expect(withoutNumber).not.toContain("'3'");
   });
 
-  it("never builds a lone number from one-letter words", () => {
-    expect(buildFtsQueries("s.t.a.l.k.e.r. 2")).toEqual([]);
-    expect(buildFtsQueries("x 2")).toEqual([]);
+  it("tries the other keyboard layout last", () => {
+    expect(buildFtsQueries("цфк").at(-1)).toBe("('war':*)");
+    expect(buildFtsQueries("Dslmvfr").at(-1)).toBe("('відьмак':*)");
   });
 
-  it("builds one query when there is no single-digit number", () => {
-    const translit = translitOf("witcher");
-    expect(buildFtsQueries("witcher")).toEqual([
-      `('witcher':*) | ('${translit}':*)`,
-    ]);
-    expect(buildFtsQueries("cyberpunk 2077")).toHaveLength(1);
+  it.each([
+    "s.t.a.l.k.e.r. 2",
+    "x 2",
+  ])("never turns %s into a lone number", (input) => {
+    expect(buildFtsQueries(input).join(" ")).not.toContain("('2':*)");
+  });
+
+  it("never drops a number that is a word of its own", () => {
     expect(buildFtsQueries("2077")).toEqual(["('2077':*)"]);
+    for (const query of buildFtsQueries("cyberpunk 2077")) {
+      expect(query).toContain("'2077':*");
+    }
   });
 
   it("returns nothing for an empty query", () => {
