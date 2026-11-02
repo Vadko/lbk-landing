@@ -676,6 +676,14 @@ export const be = {
     },
     dau: { title: "DAU", description: "Штодзённыя актыўныя карыстальнікі" },
   },
+  languageSwitcher: {
+    label: "Мова сайта",
+    names: {
+      uk: "Українська",
+      en: "English",
+      be: "Беларуская",
+    },
+  },
   legalLayout: {
     updated: "Абноўлена: {date}",
     backHome: "На галоўную",

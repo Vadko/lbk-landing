@@ -674,6 +674,14 @@ export const en = {
     },
     dau: { title: "DAU", description: "Daily active users" },
   },
+  languageSwitcher: {
+    label: "Site language",
+    names: {
+      uk: "Українська",
+      en: "English",
+      be: "Беларуская",
+    },
+  },
   legalLayout: {
     updated: "Updated: {date}",
     backHome: "Back to home",

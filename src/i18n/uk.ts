@@ -690,6 +690,14 @@ export const uk = {
       description: "Щоденні активні користувачі",
     },
   },
+  languageSwitcher: {
+    label: "Мова сайту",
+    names: {
+      uk: "Українська",
+      en: "English",
+      be: "Беларуская",
+    },
+  },
   legalLayout: {
     updated: "Оновлено: {date}",
     backHome: "Повернутися на головну",

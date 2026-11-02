@@ -12,6 +12,7 @@ import { SvgIcon } from "@/components/ui/SvgIcon";
 import { Link, usePathname } from "@/i18n/navigation";
 import { trackViewGamesCatalog } from "@/lib/analytics";
 import { NavbarLogo } from "../icons/NavbarLogo";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const navbarLinks = [
   {
@@ -151,6 +152,7 @@ export function Navbar() {
           </ul>
 
           <div className="nav-socials">
+            <LanguageSwitcher placement="down" />
             {navbarSocials.map((social) => (
               <a
                 key={social.name}
@@ -222,13 +224,7 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mobile-nav-menu__socials">
-            {/* <button
-              type="button"
-              className="mobile-nav-menu__social mobile-nav-menu__social--plain"
-              aria-label="Language switch"
-            >
-              <i className="fa-solid fa-globe" />
-            </button> */}
+            <LanguageSwitcher placement="up" onChange={closeMobileMenu} />
             {navbarSocials.map((social) => (
               <a
                 key={social.name}
