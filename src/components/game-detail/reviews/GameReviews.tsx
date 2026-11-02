@@ -1,40 +1,34 @@
-import { getTranslations } from "next-intl/server";
-import { getFirstReviewsPage } from "@/lib/reviews/reviews-cache";
+import type { Game } from "@/lib/types";
+import { GameReviewsFilter } from "./GameReviewsFilter";
 import { GameReviewsHeader } from "./GameReviewsHeader";
-import { MoreReviews } from "./MoreReviews";
-import { ReviewThread } from "./ReviewThread";
+import { ReviewList } from "./ReviewList";
 
 interface GameReviewsProps {
-  gameId: string;
-  gameSlug: string;
-  team: string;
+  game: Game;
 }
 
-export async function GameReviews({
-  gameId,
-  gameSlug,
-  team,
-}: GameReviewsProps) {
-  const t = await getTranslations("gameReviews");
-  const page = await getFirstReviewsPage(gameId);
-
+export function GameReviews({ game }: GameReviewsProps) {
   return (
     <section id="reviews" className="game-section game-reviews">
-      <GameReviewsHeader total={page?.total} gameSlug={gameSlug} team={team} />
+      <GameReviewsHeader
+        count={game.reviews}
+        gameSlug={game.slug}
+        team={game.team}
+      />
 
-      {page?.items.length === 0 ? (
-        <p className="game-reviews-empty">{t("empty")}</p>
-      ) : (
-        <div className="review-list">
-          {page?.items.map((review) => (
-            <ReviewThread key={review.id} review={review} />
-          ))}
-          {/* Without a first page the browser asks for it again */}
-          {(!page || page.nextCursor) && (
-            <MoreReviews gameId={gameId} cursor={page?.nextCursor ?? null} />
-          )}
-        </div>
-      )}
+      <GameReviewsFilter
+        reviews={game.reviews}
+        errorReviews={game.error_reviews}
+        lists={{
+          all: <ReviewList gameId={game.id} />,
+          feedback: game.reviews > 0 && (
+            <ReviewList gameId={game.id} type="feedback" />
+          ),
+          error: game.reviews > 0 && (
+            <ReviewList gameId={game.id} type="error" />
+          ),
+        }}
+      />
     </section>
   );
 }

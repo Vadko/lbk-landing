@@ -1,17 +1,18 @@
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { getTranslations } from "next-intl/server";
-import { RocketIcon } from "@/components/icons";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { launcherGameUrl } from "@/lib/launcherGameUrl";
 
 interface GameReviewsHeaderProps {
-  total: number | undefined;
+  count: number;
   gameSlug: string;
   team: string;
 }
 
 export async function GameReviewsHeader({
-  total,
+  count,
   gameSlug,
   team,
 }: GameReviewsHeaderProps) {
@@ -22,14 +23,15 @@ export async function GameReviewsHeader({
       <div className="game-reviews-heading">
         <SvgIcon icon={faComments} />
         <h2>{t("title")}</h2>
-        {!!total && <span className="game-reviews-total">{total}</span>}
+        {count > 0 && <span className="game-reviews-total">{count}</span>}
       </div>
       <a
         href={launcherGameUrl(gameSlug, team, "reviews")}
         className="btn btn-neon game-reviews-launcher"
       >
-        <RocketIcon />
+        <SvgIcon icon={faGamepad} />
         {t("openInLauncher")}
+        <SvgIcon icon={faArrowRight} className="game-reviews-launcher-arrow" />
       </a>
       <p className="game-reviews-hint">{t("writeHint")}</p>
     </div>

@@ -347,10 +347,16 @@ export const en = {
   gameReviews: {
     title: "Community reviews",
     count: "{count, plural, one {# comment} other {# comments}}",
+    filters: {
+      all: "All",
+      feedback: "Reviews",
+      error: "Errors",
+    },
     empty: "No reviews yet.",
+    emptyErrors: "No error reports yet.",
     openInLauncher: "Open in launcher",
     writeHint:
-      "You can leave a review in the launcher after installing the translation.",
+      "Reviews are left by players who installed the translation through the launcher.",
     loadFailed: "Could not load reviews. Try again later.",
     loadMoreFailed: "Could not load more reviews.",
     retry: "Try again",

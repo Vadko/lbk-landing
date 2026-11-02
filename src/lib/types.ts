@@ -85,8 +85,10 @@ export interface GameReviewRemovedReply {
 
 export type GameReviewThreadReply = GameReviewReply | GameReviewRemovedReply;
 
+export type GameReviewType = Database["public"]["Enums"]["feedback_type"];
+
 export interface GameReview extends GameReviewEntry {
-  type: Database["public"]["Enums"]["feedback_type"];
+  type: GameReviewType;
   // Signed URLs that expire six hours after the page was fetched
   screenshots: string[];
   replies: GameReviewThreadReply[];
@@ -94,6 +96,5 @@ export interface GameReview extends GameReviewEntry {
 
 export interface GameReviewsPage {
   items: GameReview[];
-  total: number;
   nextCursor: string | null;
 }

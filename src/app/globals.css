@@ -3015,9 +3015,14 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 .game-section.game-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   scroll-margin-top: 16px;
-  border-color: rgba(var(--color-main-rgb), 0.35);
-  box-shadow: 0 12px 40px rgba(var(--color-main-rgb), 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .game-reviews-header {
@@ -3025,9 +3030,6 @@ input[type="search"]::-webkit-search-decoration {
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 8px 16px;
-  padding-bottom: 16px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--glass-border);
 }
 
 .game-reviews-heading {
@@ -3039,18 +3041,22 @@ input[type="search"]::-webkit-search-decoration {
 
 .game-reviews-heading svg {
   flex-shrink: 0;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: var(--color-main);
 }
 
 .game-reviews-heading h2 {
   margin: 0;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.8rem;
 }
 
 .game-reviews-total {
   min-width: 28px;
   padding: 2px 10px;
-  border-radius: 999px;
+  border-radius: 20px;
   background: rgba(var(--color-main-rgb), 0.15);
   color: var(--color-main);
   font-size: 0.875rem;
@@ -3066,35 +3072,79 @@ input[type="search"]::-webkit-search-decoration {
   font-size: 0.95rem;
 }
 
+.game-reviews-launcher-arrow {
+  font-size: 1rem;
+}
+
 .game-reviews-hint {
   grid-column: 1 / -1;
   margin: 0;
   font-size: 0.875rem;
+  line-height: 1.4rem;
   color: var(--text-sec);
 }
 
-.game-reviews-chip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: fit-content;
-  margin-top: 12px;
-  padding: 6px 14px;
-  border: 1px solid rgba(var(--color-main-rgb), 0.35);
-  border-radius: 20px;
-  background: rgba(var(--color-main-rgb), 0.1);
+.game-reviews-link {
   color: var(--color-main);
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.15s ease;
 }
 
-.game-reviews-chip:hover {
-  border-color: var(--color-main);
-  background: rgba(var(--color-main-rgb), 0.2);
+.game-reviews-link:hover {
+  color: var(--color-accent);
+}
+
+.game-reviews-link svg {
+  margin-right: 6px;
+  font-size: 0.875rem;
+}
+
+.review-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.review-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.review-filter[aria-pressed="false"]:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.review-filter-count {
+  color: var(--text-sec);
+  font-weight: 400;
+}
+
+.review-filter[aria-pressed="true"] {
+  background: var(--color-main);
+  color: #121213;
+}
+
+.review-filter[aria-pressed="true"] .review-filter-count {
+  color: rgba(18, 18, 19, 0.6);
+}
+
+.review-divider {
+  margin: 0;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .game-reviews-empty {

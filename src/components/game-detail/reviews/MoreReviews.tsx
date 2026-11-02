@@ -7,11 +7,12 @@ import { Fragment, type ReactNode, useState } from "react";
 import { ActionIcon } from "@/components/ui/ActionIcon";
 import { useActionPhase } from "@/hooks/useActionPhase";
 import { useInfiniteScrollSentinel } from "@/hooks/useInfiniteScrollSentinel";
+import type { GameReviewType } from "@/lib/types";
 import { loadMoreReviews } from "./loadMoreReviews";
 
 interface MoreReviewsProps {
   gameId: string;
-  // Null when the server could not render the first page
+  type?: GameReviewType;
   cursor: string | null;
 }
 
@@ -20,7 +21,11 @@ interface Batch {
   threads: ReactNode;
 }
 
-export function MoreReviews({ gameId, cursor: firstCursor }: MoreReviewsProps) {
+export function MoreReviews({
+  gameId,
+  type,
+  cursor: firstCursor,
+}: MoreReviewsProps) {
   const t = useTranslations("gameReviews");
   const [batches, setBatches] = useState<Batch[]>([]);
   const [cursor, setCursor] = useState(firstCursor);
@@ -34,7 +39,7 @@ export function MoreReviews({ gameId, cursor: firstCursor }: MoreReviewsProps) {
   const load = async (): Promise<boolean> => {
     setIsLoading(true);
     try {
-      const page = await loadMoreReviews(gameId, cursor);
+      const page = await loadMoreReviews(gameId, cursor, type);
       setBatches((current) => [...current, { cursor, threads: page.threads }]);
       // A repeated cursor would re-arm the sentinel after every load
       setHasMore(page.nextCursor !== null && page.nextCursor !== cursor);

@@ -1,4 +1,4 @@
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import { createServerClient } from "@/lib/supabase/server";
 import { teamToSlug } from "@/lib/transliterate";
@@ -8,6 +8,9 @@ import type {
   GamesGroupedResponse,
   TranslationItem,
 } from "@/lib/types";
+
+// The game row carries the review counters, so a moderation decision busts it
+export const gameTag = (gameId: string) => `game:${gameId}`;
 
 // Get all translations for a specific game slug
 export async function getGamesBySlug(slug: string): Promise<Game[]> {
@@ -28,6 +31,7 @@ export async function getGamesBySlug(slug: string): Promise<Game[]> {
     return [];
   }
 
+  cacheTag(...data.map((game) => gameTag(game.id)));
   return data;
 }
 
@@ -55,6 +59,9 @@ export async function getGameBySlugAndTeamSlug(
 
   // Find the game where team slug matches
   const game = data.find((g) => teamToSlug(g.team) === teamSlug);
+  if (game) {
+    cacheTag(gameTag(game.id));
+  }
   return game || null;
 }
 

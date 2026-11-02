@@ -1,5 +1,6 @@
 import { revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
+import { gameTag } from "@/lib/games";
 import { reviewsTag } from "@/lib/reviews/reviews-cache";
 
 // lbk-admin calls this whenever a public thread of the game changes
@@ -20,8 +21,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // A takedown must not be served stale even once
     revalidateTag(reviewsTag(gameId), { expire: 0 });
+    revalidateTag(gameTag(gameId), { expire: 0 });
 
     return NextResponse.json({ revalidated: true, gameId });
   } catch (error) {
