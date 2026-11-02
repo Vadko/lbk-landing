@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
 import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
@@ -12,12 +11,7 @@ import { PageOnlyScript } from "@/components/layout/PageOnlyScript";
 import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
 import { routing } from "@/i18n/routing";
 import { getGamesCount } from "@/lib/games-count";
-
-const outfit = Outfit({
-  subsets: ["latin", "latin-ext"],
-  display: "swap",
-  variable: "--font-outfit",
-});
+import { outfit } from "../fonts";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
