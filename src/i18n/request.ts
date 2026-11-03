@@ -1,3 +1,4 @@
+import { locale as rootLocale } from "next/root-params";
 import { getRequestConfig } from "next-intl/server";
 import { be } from "./be";
 import { en } from "./en";
@@ -6,8 +7,8 @@ import { type Messages, uk } from "./uk";
 
 const dictionaries: Record<Locale, Messages> = { uk, en, be };
 
-export default getRequestConfig(async ({ requestLocale }) => {
-  const requested = await requestLocale;
+export default getRequestConfig(async ({ locale: override }) => {
+  const requested = override ?? (await rootLocale());
   const locale = isLocale(requested) ? requested : routing.defaultLocale;
   return {
     locale,

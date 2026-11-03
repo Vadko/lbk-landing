@@ -4,6 +4,7 @@ import { GamesList } from "@/components/games/GamesList";
 import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
 import { getInitialGames } from "@/lib/games";
 import { getGamesCount } from "@/lib/games-count";
+import { localizedAlternates } from "@/lib/localizedAlternates";
 
 export async function generateMetadata({
   params,
@@ -19,9 +20,7 @@ export async function generateMetadata({
       title: t("ogTitle", { count }),
       description: t("metaDescription"),
     },
-    alternates: {
-      canonical: "https://lbklauncher.com/games",
-    },
+    alternates: localizedAlternates("/games", locale),
   };
 }
 

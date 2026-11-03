@@ -1,7 +1,23 @@
 import type { MetadataRoute } from "next";
 import { cacheLife } from "next/cache";
+import { routing } from "@/i18n/routing";
+import { localizedAlternates, localizedUrl } from "@/lib/localizedAlternates";
 import { createServerClient } from "@/lib/supabase/server";
 import { teamToSlug } from "@/lib/transliterate";
+
+type SitemapEntry = MetadataRoute.Sitemap[number];
+
+function withLocales(
+  path: string,
+  entry: Omit<SitemapEntry, "url" | "alternates">
+): MetadataRoute.Sitemap {
+  const { languages } = localizedAlternates(path, routing.defaultLocale);
+  return routing.locales.map((locale) => ({
+    ...entry,
+    url: localizedUrl(path, locale),
+    alternates: { languages },
+  }));
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   "use cache";
@@ -34,67 +50,62 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           new Date(t.updated_at) > latest ? new Date(t.updated_at) : latest,
         new Date(0)
       );
-      gameUrls.push({
-        url: `https://lbklauncher.com/games/${slug}`,
-        lastModified: latestUpdate,
-        changeFrequency: "weekly",
-        priority: 0.7,
-      });
+      gameUrls.push(
+        ...withLocales(`/games/${slug}`, {
+          lastModified: latestUpdate,
+          changeFrequency: "weekly",
+          priority: 0.7,
+        })
+      );
     }
 
     for (const translation of translations) {
-      gameUrls.push({
-        url: `https://lbklauncher.com/games/${slug}/${teamToSlug(translation.team)}`,
-        lastModified: new Date(translation.updated_at),
-        changeFrequency: "weekly",
-        priority: 0.6,
-      });
+      gameUrls.push(
+        ...withLocales(`/games/${slug}/${teamToSlug(translation.team)}`, {
+          lastModified: new Date(translation.updated_at),
+          changeFrequency: "weekly",
+          priority: 0.6,
+        })
+      );
     }
   }
 
   return [
-    {
-      url: "https://lbklauncher.com",
+    ...withLocales("/", {
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
-    },
-    {
-      url: "https://lbklauncher.com/games",
+    }),
+    ...withLocales("/games", {
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
-    },
-    {
-      url: "https://lbklauncher.com/setup",
+    }),
+    ...withLocales("/setup", {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
-    },
-    {
-      url: "https://lbklauncher.com/tech-stack",
+    }),
+    ...withLocales("/tech-stack", {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.3,
-    },
-    {
-      url: "https://lbklauncher.com/privacy",
+    }),
+    ...withLocales("/privacy", {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.5,
-    },
-    {
-      url: "https://lbklauncher.com/terms/players",
+    }),
+    ...withLocales("/terms/players", {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.5,
-    },
-    {
-      url: "https://lbklauncher.com/terms/translators",
+    }),
+    ...withLocales("/terms/translators", {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.5,
-    },
+    }),
     ...gameUrls,
   ];
 }

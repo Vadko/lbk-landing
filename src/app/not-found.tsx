@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
@@ -8,7 +8,6 @@ import { routing } from "@/i18n/routing";
 import { outfit } from "./fonts";
 
 export default async function GlobalNotFound() {
-  setRequestLocale(routing.defaultLocale);
   const t = await getTranslations("statusPage.notFound");
 
   return (

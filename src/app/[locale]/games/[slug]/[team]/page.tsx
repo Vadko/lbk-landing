@@ -11,6 +11,10 @@ import {
   getGamesBySlug,
 } from "@/lib/games";
 import { getImageUrl } from "@/lib/images";
+import {
+  localizedAlternates,
+  openGraphLocale,
+} from "@/lib/localizedAlternates";
 import { resolveMovedGamePath } from "@/lib/redirects";
 import { teamToSlug } from "@/lib/transliterate";
 
@@ -61,7 +65,7 @@ export async function generateMetadata({
         ? [getImageUrl(game.banner_path, game.updated_at)!]
         : undefined,
       type: "article",
-      locale: "uk_UA",
+      locale: openGraphLocale(locale),
     },
     twitter: {
       card: "summary_large_image",
@@ -71,9 +75,10 @@ export async function generateMetadata({
         ? [getImageUrl(game.banner_path, game.updated_at)!]
         : undefined,
     },
-    alternates: {
-      canonical: `https://lbklauncher.com/games/${slug}/${teamToSlug(game.team)}`,
-    },
+    alternates: localizedAlternates(
+      `/games/${slug}/${teamToSlug(game.team)}`,
+      locale
+    ),
   };
 }
 

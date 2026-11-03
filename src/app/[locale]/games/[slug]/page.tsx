@@ -12,6 +12,11 @@ import { STATUS_BADGE_CLASSES } from "@/lib/constants";
 import { generateBreadcrumbLD } from "@/lib/game-jsonld";
 import { getAllGameSlugs, getGamesBySlug } from "@/lib/games";
 import { getImageUrl } from "@/lib/images";
+import {
+  localizedAlternates,
+  localizedUrl,
+  openGraphLocale,
+} from "@/lib/localizedAlternates";
 import { getRedirect } from "@/lib/redirects";
 import { teamToSlug } from "@/lib/transliterate";
 
@@ -63,7 +68,7 @@ export async function generateMetadata({
           ? [getImageUrl(game.banner_path, game.updated_at)!]
           : undefined,
         type: "article",
-        locale: "uk_UA",
+        locale: openGraphLocale(locale),
       },
       twitter: {
         card: "summary_large_image",
@@ -73,9 +78,10 @@ export async function generateMetadata({
           ? [getImageUrl(game.banner_path, game.updated_at)!]
           : undefined,
       },
-      alternates: {
-        canonical: `https://lbklauncher.com/games/${slug}/${teamToSlug(game.team)}`,
-      },
+      alternates: localizedAlternates(
+        `/games/${slug}/${teamToSlug(game.team)}`,
+        locale
+      ),
     };
   }
 
@@ -99,7 +105,7 @@ export async function generateMetadata({
         ? [getImageUrl(game.banner_path, game.updated_at)!]
         : undefined,
       type: "article",
-      locale: "uk_UA",
+      locale: openGraphLocale(locale),
     },
     twitter: {
       card: "summary_large_image",
@@ -109,9 +115,7 @@ export async function generateMetadata({
         ? [getImageUrl(game.banner_path, game.updated_at)!]
         : undefined,
     },
-    alternates: {
-      canonical: `https://lbklauncher.com/games/${slug}`,
-    },
+    alternates: localizedAlternates(`/games/${slug}`, locale),
   };
 }
 
@@ -261,13 +265,13 @@ export default async function GamePage({ params }: PageProps) {
             generateBreadcrumbLD([
               {
                 name: t("gameBreadcrumbs.home"),
-                url: "https://lbklauncher.com",
+                url: localizedUrl("/", locale),
               },
               {
                 name: t("gameBreadcrumbs.catalog"),
-                url: "https://lbklauncher.com/games",
+                url: localizedUrl("/games", locale),
               },
-              { name: game.name, url: `https://lbklauncher.com/games/${slug}` },
+              { name: game.name, url: localizedUrl(`/games/${slug}`, locale) },
             ])
           ),
         }}

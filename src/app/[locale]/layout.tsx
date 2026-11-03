@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import {
+  localizedAlternates,
+  localizedUrl,
+  openGraphLocale,
+} from "@/lib/localizedAlternates";
 import "../globals.css";
 import { ClientUtilities } from "@/components/layout/ClientUtilities";
 import { Footer } from "@/components/layout/Footer";
@@ -39,8 +44,8 @@ export async function generateMetadata({
     publisher: "LB Team & GGL Studio",
     openGraph: {
       type: "website",
-      locale: "uk_UA",
-      url: "https://lbklauncher.com",
+      locale: openGraphLocale(locale),
+      url: localizedUrl("/", locale),
       siteName: t("brandTitle"),
       title: t("brandTitle"),
       description,
@@ -70,9 +75,7 @@ export async function generateMetadata({
         "max-snippet": -1,
       },
     },
-    alternates: {
-      canonical: "https://lbklauncher.com/",
-    },
+    alternates: localizedAlternates("/", locale),
     icons: {
       icon: "/assets/favicon.ico",
       apple: "/assets/favicon.ico",
@@ -107,7 +110,7 @@ export default async function RootLayout({
               "@type": "SoftwareApplication",
               name: "LBK Launcher",
               description,
-              url: "https://lbklauncher.com",
+              url: localizedUrl("/", locale),
               downloadUrl:
                 "https://github.com/Vadko/lbk-launcher/releases/latest",
               operatingSystem: "Windows, macOS, Linux",
@@ -122,7 +125,7 @@ export default async function RootLayout({
                 name: "LB Team & GGL Studio",
                 url: "https://t.me/LittleBitUA",
               },
-              inLanguage: "uk",
+              inLanguage: locale,
               // `.replace` below sanitizes "<" per Next's JSON-LD XSS guidance.
             }).replace(/</g, "\\u003c"),
           }}

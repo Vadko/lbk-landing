@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
 import { BOT_URL } from "@/lib/constants";
+import { localizedAlternates } from "@/lib/localizedAlternates";
 import { LegalLayout } from "../../legal-layout";
 
 export async function generateMetadata({
@@ -18,9 +19,7 @@ export async function generateMetadata({
       index: true,
       follow: true,
     },
-    alternates: {
-      canonical: "https://lbklauncher.com/terms/players",
-    },
+    alternates: localizedAlternates("/terms/players", locale),
   };
 }
 

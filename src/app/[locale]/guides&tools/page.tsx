@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { Messages } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
+import { localizedAlternates } from "@/lib/localizedAlternates";
 
 export async function generateMetadata({
   params,
@@ -11,9 +12,7 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
-    alternates: {
-      canonical: "https://lbklauncher.com/guides&tools",
-    },
+    alternates: localizedAlternates("/guides&tools", locale),
   };
 }
 

@@ -10,6 +10,7 @@ import {
   getGameBySlugAndTeamSlug,
 } from "@/lib/games";
 import { getImageUrl } from "@/lib/images";
+import { openGraphLocale } from "@/lib/localizedAlternates";
 import { resolveMovedGamePath } from "@/lib/redirects";
 import { teamToSlug } from "@/lib/transliterate";
 
@@ -56,7 +57,7 @@ export async function generateMetadata({
         ? [getImageUrl(game.banner_path, game.updated_at)!]
         : undefined,
       type: "website",
-      locale: "uk_UA",
+      locale: openGraphLocale(locale),
     },
     twitter: {
       card: "summary_large_image",

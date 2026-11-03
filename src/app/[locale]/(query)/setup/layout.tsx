@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
+import { localizedAlternates } from "@/lib/localizedAlternates";
 
 export async function generateMetadata({
   params,
@@ -23,9 +24,7 @@ export async function generateMetadata({
       title: t("ogTitle"),
       description: t("ogDescription"),
     },
-    alternates: {
-      canonical: "https://lbklauncher.com/setup",
-    },
+    alternates: localizedAlternates("/setup", locale),
   };
 }
 
