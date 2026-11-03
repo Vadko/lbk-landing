@@ -2,11 +2,30 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import type { Database } from "@/lib/database.types";
-import { buildFtsQuery, getTranslitVariant } from "@/lib/search-utils";
+import { buildFtsQueries, getTranslitVariant } from "@/lib/search-utils";
 import { createServerClient } from "@/lib/supabase/server";
 import type { GameGroup, TranslationItem } from "@/lib/types";
 
 type GamesGroupedRow = Database["public"]["Views"]["games_grouped"]["Row"];
+
+interface FtsPage {
+  rows: GamesGroupedRow[];
+  total: number;
+}
+
+// The FTS queries run from the strictest, so the first that finds a game wins
+async function firstFound(
+  ftsQueries: (string | undefined)[],
+  fetch: (ftsQuery?: string) => Promise<FtsPage>
+): Promise<FtsPage> {
+  for (const ftsQuery of ftsQueries) {
+    const page = await fetch(ftsQuery);
+    if (page.total > 0) {
+      return page;
+    }
+  }
+  return { rows: [], total: 0 };
+}
 
 function isValidGameRow(
   row: GamesGroupedRow
@@ -113,47 +132,41 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(result, { headers: cacheHeaders() });
     }
 
-    if (search && search.trim().length < 3) {
+    const ftsQueries = search ? buildFtsQueries(search) : [undefined];
+    if (search && (search.trim().length < 3 || ftsQueries.length === 0)) {
       const result = await fuzzySearch(supabase, search, offset, limit, sortBy);
       return NextResponse.json(result, { headers: cacheHeaders() });
     }
 
     const orderAscending = sortBy === "name" || !sortBy;
 
-    let query = supabase
-      .from("games_grouped")
-      .select("*", { count: "exact" })
-      .order(sortBy || "name", { ascending: orderAscending, nullsFirst: false })
-      .range(offset, offset + limit - 1);
-
-    if (search) {
-      const ftsQuery = buildFtsQuery(search);
-      if (!ftsQuery) {
-        const result = await fuzzySearch(
-          supabase,
-          search,
-          offset,
-          limit,
-          sortBy
-        );
-        return NextResponse.json(result, { headers: cacheHeaders() });
+    const fetchPage = async (ftsQuery?: string): Promise<FtsPage> => {
+      const query = supabase
+        .from("games_grouped")
+        .select("*", { count: "exact" })
+        .order(sortBy || "name", {
+          ascending: orderAscending,
+          nullsFirst: false,
+        })
+        .order("slug", { ascending: true })
+        .range(offset, offset + limit - 1);
+      const { data, error, count } = await (ftsQuery
+        ? query.textSearch("name_fts", ftsQuery, { config: "simple" })
+        : query);
+      // PGRST103: the page starts past the last row of this FTS query; the next one or the fuzzy fallback answers it
+      if (error && !(ftsQuery && error.code === "PGRST103")) {
+        throw new Error(error.message);
       }
-      query = query.textSearch("name_fts", ftsQuery, { config: "simple" });
-    }
+      return { rows: data ?? [], total: count ?? 0 };
+    };
 
-    const { data, error, count } = await query;
-
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    const games = (data ?? []).filter(isValidGameRow).map(mapRowToGameGroup);
-    const total = count ?? 0;
-
+    const { rows, total } = await firstFound(ftsQueries, fetchPage);
     if (search && total === 0) {
       const result = await fuzzySearch(supabase, search, offset, limit, sortBy);
       return NextResponse.json(result, { headers: cacheHeaders() });
     }
+
+    const games = rows.filter(isValidGameRow).map(mapRowToGameGroup);
 
     return NextResponse.json(
       {
@@ -186,16 +199,21 @@ async function fuzzySearch(
 ) {
   const normalized = search.toLowerCase().trim();
   const translit = getTranslitVariant(search);
-  const orderAscending = sortBy === "name" || !sortBy;
 
-  const { data, error } = await supabase
-    .rpc("fuzzy_search_games", {
-      search_query: normalized,
-      search_query_translit: translit ?? undefined,
-      similarity_threshold: 0.15,
-      limit_val: 50,
-    })
-    .order(sortBy || "name", { ascending: orderAscending, nullsFirst: false });
+  let query = supabase.rpc("fuzzy_search_games", {
+    search_query: normalized,
+    search_query_translit: translit ?? undefined,
+    similarity_threshold: 0.15,
+    limit_val: 50,
+  });
+  // The RPC returns its rows by relevance; the UI's default "name" sort keeps that order
+  if (sortBy && sortBy !== "name") {
+    query = query
+      .order(sortBy, { ascending: false, nullsFirst: false })
+      .order("slug", { ascending: true });
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("Fuzzy search error:", error.message);
@@ -254,7 +272,8 @@ async function fetchWithFilter(
     );
   };
 
-  if (search && search.trim().length < 3) {
+  const ftsQueries = search ? buildFtsQueries(search) : [undefined];
+  if (search && (search.trim().length < 3 || ftsQueries.length === 0)) {
     const fuzzyResult = await fuzzySearch(supabase, search, 0, 50, sortBy);
     const filtered = await applyFilters(fuzzyResult.games);
     const total = filtered.length;
@@ -267,23 +286,22 @@ async function fetchWithFilter(
   }
 
   const orderAscending = sortBy === "name" || !sortBy;
-  let query = supabase
-    .from("games_grouped")
-    .select("*")
-    .order(sortBy || "name", { ascending: orderAscending, nullsFirst: false });
+  const fetchAll = async (ftsQuery?: string): Promise<FtsPage> => {
+    const query = supabase
+      .from("games_grouped")
+      .select("*")
+      .order(sortBy || "name", { ascending: orderAscending, nullsFirst: false })
+      .order("slug", { ascending: true });
+    const { data, error } = await (ftsQuery
+      ? query.textSearch("name_fts", ftsQuery, { config: "simple" })
+      : query);
+    if (error) {
+      throw new Error(error.message);
+    }
+    return { rows: data ?? [], total: data?.length ?? 0 };
+  };
 
-  if (search) {
-    const ftsQuery = buildFtsQuery(search);
-    query = query.textSearch("name_fts", ftsQuery, { config: "simple" });
-  }
-
-  const { data, error } = await query;
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  const rows = data ?? [];
-
+  const { rows } = await firstFound(ftsQueries, fetchAll);
   if (search && rows.length === 0) {
     const fuzzyResult = await fuzzySearch(supabase, search, 0, 50, sortBy);
     const filtered = await applyFilters(fuzzyResult.games);
