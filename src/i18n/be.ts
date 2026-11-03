@@ -348,6 +348,35 @@ export const be = {
     fonts: "Шрыфты",
     textures: "Тэкстуры",
   },
+  gameReviews: {
+    title: "Водгукі супольнасці",
+    count:
+      "{count, plural, one {# каментарый} few {# каментарыі} many {# каментарыяў} other {# каментарыя}}",
+    filters: {
+      all: "Усе",
+      feedback: "Водгукі",
+      error: "Памылкі",
+    },
+    empty: "Пакуль няма водгукаў.",
+    emptyErrors: "Пакуль няма паведамленняў пра памылкі.",
+    openInLauncher: "Адкрыць у лаўнчары",
+    writeHint:
+      "Водгукі пакідаюць гульцы, якія ўсталявалі пераклад праз лаўнчар.",
+    loadFailed: "Не ўдалося загрузіць водгукі. Паспрабуйце пазней.",
+    loadMoreFailed: "Не ўдалося загрузіць больш водгукаў.",
+    retry: "Паспрабаваць яшчэ раз",
+    today: "Сёння, {time}",
+    yesterday: "Учора, {time}",
+    edited: "зменена",
+    translationAuthor: "Аўтар перакладу",
+    moderator: "Мадэратар",
+    bug: "Памылка",
+    removed: "Выдалена мадэратарам",
+    showMoreReplies:
+      "{count, plural, one {Паказаць яшчэ # адказ} few {Паказаць яшчэ # адказы} many {Паказаць яшчэ # адказаў} other {Паказаць яшчэ # адказу}}",
+    hideReplies: "Згарнуць адказы",
+    screenshotAlt: "Здымак экрана {number}",
+  },
   gameSelect: {
     subtitle:
       "Для гэтай гульні даступна перакладаў: {count}. Выберыце каманду, якой давяраеце.",

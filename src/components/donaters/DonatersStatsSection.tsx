@@ -34,12 +34,12 @@ export function DonatersStatsSection() {
     id: "collected" | "donors";
   }> = [
     {
-      number: 114,
+      number: 126,
       suffix: "K",
       id: "collected",
     },
     {
-      number: 858,
+      number: 932,
       id: "donors",
     },
   ];

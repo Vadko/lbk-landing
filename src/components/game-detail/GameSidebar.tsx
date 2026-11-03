@@ -12,6 +12,7 @@ import { getTranslations } from "next-intl/server";
 import { ShareButton } from "@/components/ui/ShareButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { getReadablePlatform } from "@/helpers/getReadablePlatform";
+import { launcherGameUrl } from "@/lib/launcherGameUrl";
 import { teamToSlug } from "@/lib/transliterate";
 import type { Game } from "@/lib/types";
 import { RocketIcon } from "../icons";
@@ -51,7 +52,7 @@ export async function GameSidebar({ game }: GameSidebarProps) {
         {game.slug && game.team && (
           <>
             <a
-              href={`lbk://games/${game.slug}/${encodeURIComponent(game.team)}`}
+              href={launcherGameUrl(game.slug, game.team)}
               className="btn btn-neon btn-launcher"
             >
               <RocketIcon />
