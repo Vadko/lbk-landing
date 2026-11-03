@@ -20,12 +20,20 @@ export function GameReviews({ game }: GameReviewsProps) {
         reviews={game.reviews}
         errorReviews={game.error_reviews}
         lists={{
-          all: <ReviewList gameId={game.id} />,
-          feedback: game.reviews > 0 && (
-            <ReviewList gameId={game.id} type="feedback" />
+          all: <ReviewList gameId={game.id} count={game.reviews} />,
+          feedback: (
+            <ReviewList
+              gameId={game.id}
+              count={game.reviews - game.error_reviews}
+              type="feedback"
+            />
           ),
-          error: game.reviews > 0 && (
-            <ReviewList gameId={game.id} type="error" />
+          error: (
+            <ReviewList
+              gameId={game.id}
+              count={game.error_reviews}
+              type="error"
+            />
           ),
         }}
       />

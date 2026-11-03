@@ -6,14 +6,16 @@ import { ReviewThread } from "./ReviewThread";
 
 interface ReviewListProps {
   gameId: string;
+  count: number;
   type?: GameReviewType;
 }
 
-export async function ReviewList({ gameId, type }: ReviewListProps) {
+export async function ReviewList({ gameId, count, type }: ReviewListProps) {
   const t = await getTranslations("gameReviews");
-  const page = await getFirstReviewsPage(gameId, type);
+  // A list the counters show as empty skips the function, so a build does not call it for every game
+  const page = count > 0 ? await getFirstReviewsPage(gameId, type) : null;
 
-  if (page?.items.length === 0) {
+  if (count === 0 || page?.items.length === 0) {
     return (
       <p className="game-reviews-empty">
         {t(type === "error" ? "emptyErrors" : "empty")}
