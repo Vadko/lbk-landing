@@ -17,6 +17,11 @@ export default async function GlobalNotFound() {
       className={outfit.variable}
       data-scroll-behavior="smooth"
     >
+      <head>
+        <title>{`${t("title")} | LBK Launcher`}</title>
+        <meta name="robots" content="noindex" />
+        <link rel="icon" href="/assets/favicon.ico" />
+      </head>
       <body className="antialiased main-bg" suppressHydrationWarning>
         <NextIntlClientProvider>
           <Navbar />

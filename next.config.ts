@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   experimental: {
+    globalNotFound: true,
     agentUpgrade: "latest",
     hideLogsAfterAbort: true,
     // A .next/cache restored between deploys made Turbopack ship a stale CSS chunk alongside fresh JS.

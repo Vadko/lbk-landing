@@ -17,3 +17,11 @@ export function localizedPath(path: string, locale: Locale): string {
   }
   return path === "/" ? `/${locale}` : `/${locale}${path}`;
 }
+
+export function localeSwitchHref(
+  pathname: string,
+  locale: Locale,
+  suffix: string
+): string {
+  return `${localizedPath(splitLocale(pathname).path, locale)}${suffix}`;
+}

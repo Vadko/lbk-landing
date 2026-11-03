@@ -2,10 +2,11 @@
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons/faGlobe";
+import { usePathname, useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { localeSwitchHref } from "@/i18n/locale-path";
 import { type Locale, routing } from "@/i18n/routing";
 import { stepLocale } from "@/i18n/step-locale";
 
@@ -62,7 +63,7 @@ export function LanguageSwitcher({
       return;
     }
     const { search, hash } = window.location;
-    router.replace(`${pathname}${search}${hash}`, { locale: next });
+    router.replace(localeSwitchHref(pathname, next, `${search}${hash}`));
   };
 
   const focusOption = (option: Locale) => {
