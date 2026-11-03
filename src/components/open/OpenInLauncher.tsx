@@ -15,6 +15,7 @@ import { ActionIcon } from "@/components/ui/ActionIcon";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useActionPhase } from "@/hooks/useActionPhase";
+import { launcherGameUrl } from "@/lib/launcherGameUrl";
 
 interface OpenInLauncherProps {
   gameName: string;
@@ -97,7 +98,7 @@ export function OpenInLauncher({
   const retry = useActionPhase();
 
   const linkRef = useRef<HTMLAnchorElement>(null);
-  const launcherUrl = `lbk://games/${gameSlug}/${encodeURIComponent(team)}`;
+  const launcherUrl = launcherGameUrl(gameSlug, team);
   const gamePageUrl = `/games/${gameSlug}/${teamSlug}`;
 
   // The first attempt is automatic, so it bypasses the button phase

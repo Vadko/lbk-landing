@@ -3008,6 +3008,469 @@ input[type="search"]::-webkit-search-decoration {
   line-height: 1.7;
 }
 
+/* Game Reviews */
+.game-reviews {
+  /* Opaque sage, so a branch corner does not darken where it leaves the trunk */
+  --review-line: color-mix(in srgb, var(--color-main) 45%, var(--bg-base));
+}
+
+.game-section.game-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  scroll-margin-top: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.game-reviews-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px 16px;
+}
+
+.game-reviews-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.game-reviews-heading svg {
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  color: var(--color-main);
+}
+
+.game-reviews-heading h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.8rem;
+}
+
+.game-reviews-total {
+  min-width: 28px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  background: rgba(var(--color-main-rgb), 0.15);
+  color: var(--color-main);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.btn-neon.game-reviews-launcher {
+  width: auto;
+  gap: 10px;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+}
+
+.game-reviews-launcher-arrow {
+  font-size: 1rem;
+}
+
+.game-reviews-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.4rem;
+  color: var(--text-sec);
+}
+
+.game-reviews-link {
+  color: var(--color-main);
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.15s ease;
+}
+
+.game-reviews-link:hover {
+  color: var(--color-accent);
+}
+
+.game-reviews-link svg {
+  margin-right: 6px;
+  font-size: 0.875rem;
+}
+
+.review-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.review-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.review-filter[aria-pressed="false"]:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.review-filter-count {
+  color: var(--text-sec);
+  font-weight: 400;
+}
+
+.review-filter[aria-pressed="true"] {
+  background: var(--color-main);
+  color: #121213;
+}
+
+.review-filter[aria-pressed="true"] .review-filter-count {
+  color: rgba(18, 18, 19, 0.6);
+}
+
+.review-divider {
+  margin: 0;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.game-reviews-empty {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-sec);
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.review-thread + .review-thread {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.review-line {
+  position: absolute;
+  border-left: 1px solid var(--review-line);
+}
+
+.review-entry {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  min-width: 0;
+}
+
+.review-entry-trunk {
+  left: 14px;
+  top: 40px;
+  bottom: 0;
+}
+
+.review-entry--root .review-entry-trunk {
+  left: 20px;
+  top: 52px;
+}
+
+.review-avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+.review-avatar--root {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+}
+
+.review-avatar--player,
+.review-removed .review-avatar {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-sec);
+}
+
+.review-avatar--author {
+  background: rgba(var(--color-main-rgb), 0.2);
+  color: var(--color-main);
+}
+
+.review-avatar--moderator {
+  background: rgba(var(--color-accent-rgb), 0.2);
+  color: var(--color-accent);
+}
+
+.review-entry-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.review-entry-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.review-entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  min-width: 0;
+}
+
+.review-entry-header > .review-pill {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.review-author {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.review-author--team {
+  color: var(--color-main);
+}
+
+.review-reply-to {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  color: var(--text-sec);
+}
+
+/* Turned a quarter, the up-turning arrow reads as a reply arrow */
+.review-reply-to-icon {
+  flex-shrink: 0;
+  transform: rotate(90deg);
+}
+
+.review-date {
+  font-size: 0.75rem;
+  color: var(--text-sec);
+}
+
+.review-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.43;
+  color: var(--text-primary);
+  white-space: pre-line;
+  overflow-wrap: break-word;
+}
+
+.review-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px solid;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.review-pill svg {
+  flex-shrink: 0;
+}
+
+.review-pill--main {
+  border-color: rgba(var(--color-main-rgb), 0.4);
+  background: rgba(var(--color-main-rgb), 0.15);
+  color: var(--color-main);
+}
+
+.review-pill--accent {
+  border-color: rgba(var(--color-accent-rgb), 0.4);
+  background: rgba(var(--color-accent-rgb), 0.15);
+  color: var(--color-accent);
+}
+
+.review-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.review-image {
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: none;
+  cursor: zoom-in;
+  transition: border-color 0.2s ease;
+}
+
+.review-image:hover {
+  border-color: var(--color-main);
+}
+
+.review-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.review-removed {
+  align-items: flex-start;
+  min-height: 40px;
+}
+
+.review-removed p {
+  margin: 0;
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 28px;
+  color: var(--text-sec);
+}
+
+/* A row hangs from the centre of its parent's avatar: 40px for the review, 28px for a reply */
+.review-row {
+  position: relative;
+  padding-top: 16px;
+}
+
+.review-row--review {
+  --branch-x: 20px;
+  padding-left: 56px;
+}
+
+.review-row--reply {
+  --branch-x: 14px;
+  padding-left: 44px;
+}
+
+.review-row--toggle {
+  padding-top: 8px;
+}
+
+.review-row-trunk {
+  left: var(--branch-x);
+  top: 0;
+  bottom: 0;
+}
+
+.review-row-trunk.is-last {
+  bottom: auto;
+  height: 18px;
+}
+
+.review-row--toggle .review-row-trunk.is-last {
+  height: 12px;
+}
+
+/* The 12px corner ends at the vertical centre of the row's avatar or toggle */
+.review-row-corner {
+  left: var(--branch-x);
+  top: 18px;
+  width: var(--branch-x);
+  height: 12px;
+  border-bottom: 1px solid var(--review-line);
+  border-bottom-left-radius: 12px;
+}
+
+.review-row--toggle .review-row-corner {
+  top: 12px;
+}
+
+.review-replies-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: -12px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.43;
+  color: var(--color-main);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.review-replies-toggle:hover {
+  background: var(--glass-bg-hover);
+}
+
+.review-reveal {
+  display: grid;
+  animation: review-reveal 220ms ease-out;
+}
+
+.review-reveal > div {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@keyframes review-reveal {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+  to {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-reveal {
+    animation: none;
+  }
+}
+
+.review-sentinel {
+  height: 4px;
+}
+
+.review-list-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 0;
+}
+
+.review-list-state p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-sec);
+}
+
 /* Game Progress */
 .game-progress-list {
   display: flex;
@@ -3335,7 +3798,8 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 @media (max-width: 768px) {
-  .btn-launcher {
+  .btn-launcher,
+  .game-reviews-launcher {
     display: none;
   }
 }
@@ -3529,6 +3993,10 @@ input[type="search"]::-webkit-search-decoration {
 
   .game-section.game-faq {
     order: 12;
+  }
+
+  .game-section.game-reviews {
+    order: 13;
   }
 
   /* Hide everything except share on mobile */
