@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 
 export async function SupportSection() {
   const t = await getTranslations("donaters.support");

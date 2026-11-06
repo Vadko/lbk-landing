@@ -35,6 +35,9 @@ interface Source {
 
 const ROOT = join(import.meta.dirname, "../..");
 const DICTIONARY_DIR = join(ROOT, "src/i18n");
+const DICTIONARY_FILES = new Set(
+  ["uk", "en", "be"].map((locale) => join(DICTIONARY_DIR, `${locale}.ts`))
+);
 const TRANSLATOR_FACTORIES = new Set([
   "useTranslations",
   "getTranslations",
@@ -99,11 +102,11 @@ function listSources(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const path = join(dir, entry.name);
     if (entry.isDirectory()) {
-      return entry.name.startsWith(".") || path === DICTIONARY_DIR
-        ? []
-        : listSources(path);
+      return entry.name.startsWith(".") ? [] : listSources(path);
     }
-    return /\.tsx?$/.test(entry.name) && !/\.(test|d)\.tsx?$/.test(entry.name)
+    return /\.tsx?$/.test(entry.name) &&
+      !/\.(test|d)\.tsx?$/.test(entry.name) &&
+      !DICTIONARY_FILES.has(path)
       ? [path]
       : [];
   });

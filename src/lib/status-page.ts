@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { localizedPath } from "@/i18n/locale-path";
+import { type Locale, routing } from "@/i18n/routing";
 
 export const STATUS_PAGE_HEADER = "x-lbk-status-page";
 
@@ -6,7 +8,8 @@ export const STATUS_PAGE_HEADER = "x-lbk-status-page";
 export async function statusPageResponse(
   path: "/gone" | "/maintenance",
   status: number,
-  headers: Record<string, string> = {}
+  headers: Record<string, string> = {},
+  locale: Locale = routing.defaultLocale
 ): Promise<NextResponse> {
   const init = {
     status,
@@ -20,7 +23,7 @@ export async function statusPageResponse(
   try {
     // Next sets PORT to the port it actually listens on, in dev and start alike
     const page = await fetch(
-      `http://localhost:${process.env.PORT ?? 3000}${path}`,
+      `http://localhost:${process.env.PORT ?? 3000}${localizedPath(path, locale)}`,
       {
         headers: { [STATUS_PAGE_HEADER]: "1" },
         cache: "no-store",

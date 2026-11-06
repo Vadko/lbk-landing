@@ -4,7 +4,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
   Suspense,
@@ -16,6 +16,7 @@ import {
 } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesPaginated, useTeams } from "@/hooks/useGames";
+import { useRouter } from "@/i18n/navigation";
 import { trackFailedSearch, trackViewSearchResults } from "@/lib/analytics";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import type { GamesGroupedResponse } from "@/lib/types";

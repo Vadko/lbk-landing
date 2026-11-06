@@ -1,7 +1,14 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { refreshDeletedSlugsCache } from "@/lib/deleted-slugs-cache";
+import { internalPaths } from "@/lib/internal-paths";
 import { teamToSlug } from "@/lib/transliterate";
+
+function revalidateEveryLocale(path: string) {
+  for (const internal of internalPaths(path)) {
+    revalidatePath(internal);
+  }
+}
 
 export async function POST(request: NextRequest) {
   const secret = request.headers.get("x-revalidate-secret");
@@ -26,7 +33,7 @@ export async function POST(request: NextRequest) {
         `/games/${slug}/${teamSlug}`,
         `/open/${slug}/${teamSlug}`,
       ]) {
-        revalidatePath(path);
+        revalidateEveryLocale(path);
         paths.push(path);
       }
     }
@@ -38,16 +45,16 @@ export async function POST(request: NextRequest) {
         `/games/${slug}/${oldTeamSlug}`,
         `/open/${slug}/${oldTeamSlug}`,
       ]) {
-        revalidatePath(path);
+        revalidateEveryLocale(path);
         paths.push(path);
       }
     }
 
     // Game overview page (all teams)
-    revalidatePath(`/games/${slug}`);
+    revalidateEveryLocale(`/games/${slug}`);
     paths.push(`/games/${slug}`);
     // Games list page
-    revalidatePath("/games");
+    revalidateEveryLocale("/games");
     paths.push("/games");
 
     // Only a deletion changes the deleted-slugs set. Recompute it admin-side

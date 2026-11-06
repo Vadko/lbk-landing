@@ -1,0 +1,152 @@
+import type { Metadata } from "next";
+import Script from "next/script";
+import { NextIntlClientProvider } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import {
+  localizedAlternates,
+  localizedUrl,
+  openGraphLocale,
+} from "@/lib/localizedAlternates";
+import "../globals.css";
+import { ClientUtilities } from "@/components/layout/ClientUtilities";
+import { Footer } from "@/components/layout/Footer";
+import { IframeResizeMessenger } from "@/components/layout/IframeResizeMessenger";
+import { Navbar } from "@/components/layout/Navbar";
+import { PageOnlyScript } from "@/components/layout/PageOnlyScript";
+import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
+import { routing } from "@/i18n/routing";
+import { getGamesCount } from "@/lib/games-count";
+import { outfit } from "../fonts";
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: LocaleParams): Promise<Metadata> {
+  const locale = await resolveLocale(params);
+  const t = await getTranslations({ locale, namespace: "siteMeta" });
+  const description = t("description", {
+    count: String(await getGamesCount()),
+  });
+
+  return {
+    metadataBase: new URL("https://lbklauncher.com"),
+    title: {
+      default: t("title"),
+      template: "%s | LBK Launcher",
+    },
+    description,
+    keywords: t("keywords"),
+    authors: [{ name: "LB Team & GGL Studio" }],
+    creator: "LB Team & GGL Studio",
+    publisher: "LB Team & GGL Studio",
+    openGraph: {
+      type: "website",
+      locale: openGraphLocale(locale),
+      url: localizedUrl("/", locale),
+      siteName: t("brandTitle"),
+      title: t("brandTitle"),
+      description,
+      images: [
+        {
+          url: "/assets/og-image.webp",
+          width: 1200,
+          height: 630,
+          alt: t("brandTitle"),
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("twitterTitle"),
+      description,
+      images: ["/assets/og-image.webp"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    alternates: localizedAlternates("/", locale),
+    icons: {
+      icon: "/assets/favicon.ico",
+      apple: "/assets/favicon.ico",
+    },
+  };
+}
+
+export default async function RootLayout({
+  children,
+  params,
+}: LocaleParams & { children: React.ReactNode }) {
+  const locale = await resolveLocale(params);
+  const t = await getTranslations({ locale, namespace: "siteMeta" });
+  const description = t("description", {
+    count: String(await getGamesCount()),
+  });
+
+  return (
+    <html
+      lang={locale}
+      suppressHydrationWarning
+      className={outfit.variable}
+      data-scroll-behavior="smooth"
+    >
+      <head>
+        <PageOnlyScript />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "LBK Launcher",
+              description,
+              url: localizedUrl("/", locale),
+              downloadUrl:
+                "https://github.com/Vadko/lbk-launcher/releases/latest",
+              operatingSystem: "Windows, macOS, Linux",
+              applicationCategory: "GameApplication",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "UAH",
+              },
+              author: {
+                "@type": "Organization",
+                name: "LB Team & GGL Studio",
+                url: "https://t.me/LittleBitUA",
+              },
+              inLanguage: locale,
+              // `.replace` below sanitizes "<" per Next's JSON-LD XSS guidance.
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
+      </head>
+      <body className="antialiased main-bg" suppressHydrationWarning>
+        {/* Cloudflare Zaraz — executable JS, so loaded via next/script (auto-inject
+            is off). Unlike JSON-LD above, which is data and stays a native tag. */}
+        <Script
+          src="/cdn-cgi/zaraz/i.js"
+          referrerPolicy="origin"
+          strategy="afterInteractive"
+        />
+        <NextIntlClientProvider>
+          <ClientUtilities />
+          <Navbar />
+          <main className="relative z-10 header-padding">{children}</main>
+          <Footer />
+          <IframeResizeMessenger />
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}

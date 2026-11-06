@@ -3,6 +3,7 @@ import { faMedal } from "@fortawesome/free-solid-svg-icons/faMedal";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import { cacheLife } from "next/cache";
 import { getTranslations } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
 import { SvgIcon } from "../ui/SvgIcon";
 
 interface Donator {
@@ -75,10 +76,17 @@ function formatLastDonation(isoDate: string, t: LeaderboardTranslator): string {
   return t("monthsAgo", { count: Math.round(dayDiff / 30) });
 }
 
-export async function LeaderboardSection() {
+interface LeaderboardSectionProps {
+  locale: Locale;
+}
+
+export async function LeaderboardSection({ locale }: LeaderboardSectionProps) {
   "use cache";
   cacheLife("days");
-  const t = await getTranslations("donaters.leaderboard");
+  const t = await getTranslations({
+    locale,
+    namespace: "donaters.leaderboard",
+  });
 
   return (
     <section className="section-margin">

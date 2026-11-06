@@ -1,5 +1,4 @@
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import {
@@ -13,6 +12,7 @@ import {
 import { GameTeamLink } from "@/components/ui/GameTeamLink";
 import { MarkdownText } from "@/components/ui/MarkdownText";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { Link } from "@/i18n/navigation";
 import { STATUS_BADGE_CLASSES } from "@/lib/constants";
 import { getFeaturedInfo } from "@/lib/featuredTranslations";
 import {
