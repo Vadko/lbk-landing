@@ -299,7 +299,7 @@ code {
   gap: 6px;
   height: 32px;
   padding: 0 10px;
-  border-radius: 10px;
+  border-radius: 12px !important;
   color: var(--text-sec);
   font: inherit;
   font-size: 0.875rem;
@@ -330,7 +330,7 @@ code {
   margin: 0;
   padding: 4px;
   list-style: none;
-  border-radius: 12px;
+  border-radius: 12px !important;
 }
 
 .language-switcher__list--down {
