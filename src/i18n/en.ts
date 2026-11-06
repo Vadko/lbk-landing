@@ -344,6 +344,34 @@ export const en = {
     fonts: "Fonts",
     textures: "Textures",
   },
+  gameReviews: {
+    title: "Community reviews",
+    count: "{count, plural, one {# comment} other {# comments}}",
+    filters: {
+      all: "All",
+      feedback: "Reviews",
+      error: "Errors",
+    },
+    empty: "No reviews yet.",
+    emptyErrors: "No error reports yet.",
+    openInLauncher: "Open in launcher",
+    writeHint:
+      "Reviews are left by players who installed the translation through the launcher.",
+    loadFailed: "Could not load reviews. Try again later.",
+    loadMoreFailed: "Could not load more reviews.",
+    retry: "Try again",
+    today: "Today, {time}",
+    yesterday: "Yesterday, {time}",
+    edited: "edited",
+    translationAuthor: "Translation creator",
+    moderator: "Moderator",
+    bug: "Bug",
+    removed: "Removed by a moderator",
+    showMoreReplies:
+      "{count, plural, one {Show # more reply} other {Show # more replies}}",
+    hideReplies: "Collapse replies",
+    screenshotAlt: "Screenshot {number}",
+  },
   gameSelect: {
     subtitle:
       "There are {count} translations available for this game. Choose the team you prefer.",

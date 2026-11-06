@@ -15,6 +15,8 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   experimental: {
     globalNotFound: true,
+    // The build shares an 8-core host with Supabase, and the default 7 page workers swapped it out
+    cpus: 3,
     agentUpgrade: "latest",
     hideLogsAfterAbort: true,
     // A .next/cache restored between deploys made Turbopack ship a stale CSS chunk alongside fresh JS.

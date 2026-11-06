@@ -54,3 +54,47 @@ export interface GitHubRelease {
     download_count: number;
   }[];
 }
+
+export interface GameReviewAuthor {
+  role: Database["public"]["Enums"]["review_author_role"];
+  // A player's nickname or the translation's team; staff stay unnamed
+  name: string | null;
+  avatarSeed: string | null;
+}
+
+interface GameReviewEntry {
+  id: string;
+  text: string;
+  createdAt: string;
+  editedAt: string | null;
+  author: GameReviewAuthor;
+}
+
+export interface GameReviewReply extends GameReviewEntry {
+  // The reply this one answers; null when it answers the review itself
+  parentId: string | null;
+}
+
+// The server keeps a removed reply as a stub only while a visible reply hangs under it
+export interface GameReviewRemovedReply {
+  id: string;
+  parentId: string | null;
+  createdAt: string;
+  removed: true;
+}
+
+export type GameReviewThreadReply = GameReviewReply | GameReviewRemovedReply;
+
+export type GameReviewType = Database["public"]["Enums"]["feedback_type"];
+
+export interface GameReview extends GameReviewEntry {
+  type: GameReviewType;
+  // Signed URLs that expire six hours after the page was fetched
+  screenshots: string[];
+  replies: GameReviewThreadReply[];
+}
+
+export interface GameReviewsPage {
+  items: GameReview[];
+  nextCursor: string | null;
+}
