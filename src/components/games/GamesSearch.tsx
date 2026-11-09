@@ -20,7 +20,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AIBadgeIcon } from "@/components/ui/icons/AIBadgeIcon";
 import { AIEditedBadgeIcon } from "@/components/ui/icons/AIEditedBadgeIcon";
 import { SvgIcon } from "@/components/ui/SvgIcon";
@@ -165,16 +165,18 @@ export function GamesSearch({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Filter authors based on search
-  const authorQuery = authorSearch.toLowerCase();
-  const filteredAuthors = authorSearch.trim()
-    ? authors.filter((a) => a.toLowerCase().includes(authorQuery))
-    : authors;
-
-  // Paginated authors to display
-  const visibleAuthors = filteredAuthors.slice(0, authorsDisplayed);
-
-  const hasMoreAuthors = authorsDisplayed < filteredAuthors.length;
+  // Kept on purpose: without it the compiler folds the author list into one cache with the whole toolbar
+  const { filteredAuthors, visibleAuthors, hasMoreAuthors } = useMemo(() => {
+    const query = authorSearch.toLowerCase();
+    const filtered = authorSearch.trim()
+      ? authors.filter((a) => a.toLowerCase().includes(query))
+      : authors;
+    return {
+      filteredAuthors: filtered,
+      visibleAuthors: filtered.slice(0, authorsDisplayed),
+      hasMoreAuthors: authorsDisplayed < filtered.length,
+    };
+  }, [authors, authorSearch, authorsDisplayed]);
 
   // Handle search input change with pagination reset
   const handleAuthorSearchChange = (newValue: string) => {
