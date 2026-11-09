@@ -796,7 +796,7 @@ export const uk = {
     title: "Політика приватності",
     metaDescription:
       "Які дані збирають сайт і застосунок LBK Launcher, навіщо, кому вони передаються та як ними керувати.",
-    lastUpdated: "24 жовтня 2026",
+    lastUpdated: "9 листопада 2026",
     intro: {
       service:
         "LBK Launcher — сервіс для пошуку, встановлення та оновлення українських локалізацій.",
@@ -1055,8 +1055,8 @@ export const uk = {
           "<b>Cloudflare Turnstile</b> — захист від ботів у формах адміністративної панелі та під час публікації відгуків у застосунку (<turnstile>Turnstile Privacy Addendum</turnstile>);",
         googleAnalytics:
           "<b>Google Analytics</b> — аналітика адміністративної панелі;",
-        resend:
-          "<b>Resend</b> — доставка листів для акаунтів/службових повідомлень;",
+        amazonSes:
+          "<b>Amazon SES</b> — доставка листів для акаунтів/службових повідомлень; листи надсилає useSend, розгорнутий на власних серверах LBK;",
         youtube: "<b>YouTube / Google</b> — вбудоване відео;",
         steam: "<b>Steam</b> — дані, потрібні для роботи інтеграції Steam;",
         github: "<b>GitHub</b> — розповсюдження релізів та перевірка оновлень;",
@@ -1076,7 +1076,7 @@ export const uk = {
       title: "15. Де обробляються дані",
       servers: "Власні сервери LBK розташовані в <b>Німеччині</b>.",
       external:
-        "Частина зовнішніх сервісів може обробляти дані в інших країнах, зокрема у США — це стосується Cloudflare, Mixpanel, Resend, Google/YouTube, GitHub і Steam.",
+        "Частина зовнішніх сервісів може обробляти дані в інших країнах, зокрема у США — це стосується Cloudflare, Mixpanel, Amazon (AWS), Google/YouTube, GitHub і Steam.",
     },
     rights: {
       title: "16. Права та керування згодою",
@@ -1361,7 +1361,7 @@ export const uk = {
         data: "TanStack Query v5, Supabase",
         realtime: "Supabase Broadcast для сповіщень",
         forms: "React Hook Form + Zod",
-        email: "Resend (@lbk/email)",
+        email: "useSend (self-hosted) + Amazon SES (@lbk/email)",
         ui: "Recharts, PhotoSwipe, Lucide, morphicons",
         tests: "Vitest, Testing Library",
         analytics: "Google Analytics 4",
