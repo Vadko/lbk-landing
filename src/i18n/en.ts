@@ -779,7 +779,7 @@ export const en = {
     title: "Privacy policy",
     metaDescription:
       "What data the LBK Launcher website and app collect, why they collect it, who receives it and how you can manage it.",
-    lastUpdated: "24 October 2026",
+    lastUpdated: "9 November 2026",
     intro: {
       service:
         "LBK Launcher is a service for finding, installing and updating Ukrainian localizations.",
@@ -1031,7 +1031,8 @@ export const en = {
         turnstile:
           "<b>Cloudflare Turnstile</b> — bot protection on admin panel forms and when publishing reviews in the app (<turnstile>Turnstile Privacy Addendum</turnstile>);",
         googleAnalytics: "<b>Google Analytics</b> — dashboard analytics;",
-        resend: "<b>Resend</b> — account emails and service notifications;",
+        amazonSes:
+          "<b>Amazon SES</b> — delivery of account emails and service notifications, sent through useSend hosted on LBK's own servers;",
         youtube: "<b>YouTube / Google</b> — embedded videos;",
         steam: "<b>Steam</b> — data needed for Steam integration;",
         github: "<b>GitHub</b> — release distribution and update checks;",
@@ -1050,7 +1051,7 @@ export const en = {
       title: "15. Where data are processed",
       servers: "LBK's own servers are located in <b>Germany</b>.",
       external:
-        "Some external services may process data in other countries, including the United States. These include Cloudflare, Mixpanel, Resend, Google/YouTube, GitHub and Steam.",
+        "Some external services may process data in other countries, including the United States. These include Cloudflare, Mixpanel, Google/YouTube, GitHub and Steam.",
     },
     rights: {
       title: "16. Your rights and consent management",
@@ -1332,7 +1333,7 @@ export const en = {
         data: "TanStack Query v5, Supabase",
         realtime: "Supabase Broadcast for notifications",
         forms: "React Hook Form + Zod",
-        email: "Resend (@lbk/email)",
+        email: "useSend (self-hosted) + Amazon SES (@lbk/email)",
         ui: "Recharts, PhotoSwipe, Lucide, morphicons",
         tests: "Vitest, Testing Library",
         analytics: "Google Analytics 4",

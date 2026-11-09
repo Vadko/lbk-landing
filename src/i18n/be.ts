@@ -782,7 +782,7 @@ export const be = {
     title: "Палітыка прыватнасці",
     metaDescription:
       "Якія даныя збіраюць сайт і праграма LBK Launcher, навошта, каму перадаюць і як імі кіраваць.",
-    lastUpdated: "24 кастрычніка 2026",
+    lastUpdated: "9 лістапада 2026",
     intro: {
       service:
         "LBK Launcher — сэрвіс для пошуку, усталявання і абнаўлення ўкраінскіх лакалізацый.",
@@ -1037,8 +1037,8 @@ export const be = {
           "<b>Cloudflare Turnstile</b> — абарона ад ботаў у формах панэлі кіравання і пры публікацыі водгукаў у праграме (<turnstile>Turnstile Privacy Addendum</turnstile>);",
         googleAnalytics:
           "<b>Google Analytics</b> — аналітыка панэлі кіравання;",
-        resend:
-          "<b>Resend</b> — лісты для ўліковых запісаў і службовыя апавяшчэнні;",
+        amazonSes:
+          "<b>Amazon SES</b> — дастаўка лістоў для ўліковых запісаў і службовых апавяшчэнняў; лісты адпраўляе useSend, разгорнуты на ўласных серверах LBK;",
         youtube: "<b>YouTube / Google</b> — убудаваныя відэа;",
         steam: "<b>Steam</b> — даныя для інтэграцыі са Steam;",
         github:
@@ -1059,7 +1059,7 @@ export const be = {
       title: "15. Дзе апрацоўваюцца даныя",
       servers: "Уласныя серверы LBK знаходзяцца ў <b>Германіі</b>.",
       external:
-        "Некаторыя знешнія сэрвісы могуць апрацоўваць даныя ў іншых краінах, у тым ліку ў ЗША. Да іх належаць Cloudflare, Mixpanel, Resend, Google/YouTube, GitHub і Steam.",
+        "Некаторыя знешнія сэрвісы могуць апрацоўваць даныя ў іншых краінах, у тым ліку ў ЗША. Да іх належаць Cloudflare, Mixpanel, Google/YouTube, GitHub і Steam.",
     },
     rights: {
       title: "16. Вашы правы і кіраванне згодай",
@@ -1343,7 +1343,7 @@ export const be = {
         data: "TanStack Query v5, Supabase",
         realtime: "Supabase Broadcast для апавяшчэнняў",
         forms: "React Hook Form + Zod",
-        email: "Resend (@lbk/email)",
+        email: "useSend (self-hosted) + Amazon SES (@lbk/email)",
         ui: "Recharts, PhotoSwipe, Lucide, morphicons",
         tests: "Vitest, Testing Library",
         analytics: "Google Analytics 4",

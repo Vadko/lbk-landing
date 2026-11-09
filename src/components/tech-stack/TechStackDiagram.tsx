@@ -247,7 +247,7 @@ const initialNodes: Node[] = [
         "TanStack Query",
         "RHF + Zod",
         "Recharts",
-        "Resend",
+        "useSend",
         "Realtime",
       ],
     },
@@ -360,10 +360,10 @@ const initialNodes: Node[] = [
     data: { label: "MetaDefender" },
   },
   {
-    id: "resend",
+    id: "usesend",
     type: "external",
     position: { x: 730, y: 430 },
-    data: { label: "Resend" },
+    data: { label: "useSend + SES" },
   },
   {
     id: "ga",
@@ -473,9 +473,9 @@ const initialEdges: Edge[] = [
     style: { stroke: C.landing, opacity: 0.7 },
   },
   {
-    id: "e-admin-resend",
+    id: "e-admin-usesend",
     source: "admin",
-    target: "resend",
+    target: "usesend",
     type: "smoothstep",
     style: { stroke: C.admin, opacity: 0.7 },
   },
