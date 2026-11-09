@@ -6,7 +6,6 @@ import { faSteam } from "@fortawesome/free-brands-svg-icons/faSteam";
 import { faWindows } from "@fortawesome/free-brands-svg-icons/faWindows";
 import { faBox } from "@fortawesome/free-solid-svg-icons/faBox";
 import { useTranslations } from "next-intl";
-import { useCallback } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useClientValue } from "@/hooks/useClientValue";
 import {
@@ -17,23 +16,23 @@ import {
 } from "@/hooks/useGitHubRelease";
 import { trackFileDownload } from "@/lib/analytics";
 
+const fireConfetti = () => {
+  void import("canvas-confetti").then((mod) => {
+    mod.default({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ["#00C2FF", "#BD00FF", "#ffffff"],
+    });
+  });
+};
+
 export function HeroDownload() {
   const t = useTranslations("landingHero.download");
   const { data: release } = useGitHubRelease();
-  const downloadLinks = getDownloadLinks(release);
   const os = useClientValue(detectOS, "windows");
   const macArch = useClientValue(detectMacArch, "arm64");
-
-  const fireConfetti = useCallback(() => {
-    import("canvas-confetti").then((mod) => {
-      mod.default({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ["#00C2FF", "#BD00FF", "#ffffff"],
-      });
-    });
-  }, []);
+  const downloadLinks = getDownloadLinks(release);
 
   const handleDownload = (url: string | null) => {
     if (url) {

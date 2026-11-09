@@ -6,14 +6,7 @@ import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExcla
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import {
-  Suspense,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { Suspense, useEffect, useEffectEvent, useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesPaginated, useTeams } from "@/hooks/useGames";
 import { trackFailedSearch, trackViewSearchResults } from "@/lib/analytics";
@@ -97,171 +90,121 @@ function GamesListView({ initialData, searchParams }: GamesListViewProps) {
   const [search, setSearch] = useState("");
 
   // Read current page from URL params
-  const currentPage = useMemo(() => {
-    const pageParam = searchParams.get("page");
-    const page = pageParam ? parseInt(pageParam, 10) : 1;
-    return page > 0 ? page : 1;
-  }, [searchParams]);
+  const pageParam = searchParams.get("page");
+  const parsedPage = pageParam ? parseInt(pageParam, 10) : 1;
+  const currentPage = parsedPage > 0 ? parsedPage : 1;
 
   // Fetch authors list (renamed from teams for clarity)
   const { data: authors = [], isLoading: authorsLoading } = useTeams();
 
   // Read selected statuses from URL params (comma-separated)
-  const selectedStatuses = useMemo(() => {
-    const statusesParam = searchParams.get("statuses");
-    if (!statusesParam) {
-      return [];
-    }
-    return statusesParam.split(",").filter(Boolean);
-  }, [searchParams]);
+  const statusesParam = searchParams.get("statuses");
+  const selectedStatuses = statusesParam
+    ? statusesParam.split(",").filter(Boolean)
+    : [];
 
   // Read selected authors from URL params (comma-separated)
-  const selectedAuthors = useMemo(() => {
-    const authorsParam = searchParams.get("authors");
-    // Support old 'team' param for backward compatibility
-    const teamParam = searchParams.get("team");
-    if (authorsParam) {
-      return authorsParam.split(",").filter(Boolean);
-    }
-    if (teamParam) {
-      return [teamParam];
-    }
-    return [];
-  }, [searchParams]);
+  const authorsParam = searchParams.get("authors");
+  // Support old 'team' param for backward compatibility
+  const teamParam = searchParams.get("team");
+  const selectedAuthors = authorsParam
+    ? authorsParam.split(",").filter(Boolean)
+    : teamParam
+      ? [teamParam]
+      : [];
 
   // Read sort option from URL params
-  const sortBy = useMemo(() => {
-    const sortParam = searchParams.get("sort");
-    return sortParam || "name";
-  }, [searchParams]);
+  const sortBy = searchParams.get("sort") || "name";
 
   // Read has-voice filter from URL params
-  const hasVoice = useMemo(() => {
-    return searchParams.get("voice") === "1";
-  }, [searchParams]);
+  const hasVoice = searchParams.get("voice") === "1";
 
   // Read has-achievements filter from URL params
-  const hasAchievements = useMemo(() => {
-    return searchParams.get("achievements") === "1";
-  }, [searchParams]);
+  const hasAchievements = searchParams.get("achievements") === "1";
 
   // Read the "Workshop only" filter from the URL
-  const fromWorkshop = useMemo(() => {
-    return searchParams.get("workshop") === "1";
-  }, [searchParams]);
+  const fromWorkshop = searchParams.get("workshop") === "1";
 
   // Read the selected translation types (human / AI / AI + edited) from the URL params
-  const selectedTranslationTypes = useMemo(() => {
-    const typesParam = searchParams.get("translationTypes");
-    if (!typesParam) {
-      return [];
-    }
-    return typesParam.split(",").filter(Boolean);
-  }, [searchParams]);
+  const typesParam = searchParams.get("translationTypes");
+  const selectedTranslationTypes = typesParam
+    ? typesParam.split(",").filter(Boolean)
+    : [];
 
   // Update the URL with partial changes: positional boolean arguments are far too easy to mix up here
-  const updateFilters = useCallback(
-    (patch: {
-      statuses?: string[];
-      authors?: string[];
-      page?: number;
-      sortBy?: string;
-      hasVoice?: boolean;
-      hasAchievements?: boolean;
-      fromWorkshop?: boolean;
-      translationTypes?: string[];
-    }) => {
-      const next = {
-        statuses: selectedStatuses,
-        authors: selectedAuthors,
-        page: 1,
-        sortBy,
-        hasVoice,
-        hasAchievements,
-        fromWorkshop,
-        translationTypes: selectedTranslationTypes,
-        ...patch,
-      };
-
-      const params = new URLSearchParams();
-      if (next.statuses.length > 0) {
-        params.set("statuses", next.statuses.join(","));
-      }
-      if (next.authors.length > 0) {
-        params.set("authors", next.authors.join(","));
-      }
-      if (next.sortBy && next.sortBy !== "name") {
-        params.set("sort", next.sortBy);
-      }
-      if (next.hasVoice) {
-        params.set("voice", "1");
-      }
-      if (next.hasAchievements) {
-        params.set("achievements", "1");
-      }
-      if (next.fromWorkshop) {
-        params.set("workshop", "1");
-      }
-      if (next.translationTypes.length > 0) {
-        params.set("translationTypes", next.translationTypes.join(","));
-      }
-      if (next.page > 1) {
-        params.set("page", next.page.toString());
-      }
-      const queryString = params.toString();
-      router.push(queryString ? `/games?${queryString}` : "/games");
-    },
-    [
-      router,
-      selectedStatuses,
-      selectedAuthors,
+  const updateFilters = (patch: {
+    statuses?: string[];
+    authors?: string[];
+    page?: number;
+    sortBy?: string;
+    hasVoice?: boolean;
+    hasAchievements?: boolean;
+    fromWorkshop?: boolean;
+    translationTypes?: string[];
+  }) => {
+    const next = {
+      statuses: selectedStatuses,
+      authors: selectedAuthors,
+      page: 1,
       sortBy,
       hasVoice,
       hasAchievements,
       fromWorkshop,
-      selectedTranslationTypes,
-    ]
-  );
+      translationTypes: selectedTranslationTypes,
+      ...patch,
+    };
 
-  const handleStatusesChange = useCallback(
-    (statuses: string[]) => updateFilters({ statuses }),
-    [updateFilters]
-  );
+    const params = new URLSearchParams();
+    if (next.statuses.length > 0) {
+      params.set("statuses", next.statuses.join(","));
+    }
+    if (next.authors.length > 0) {
+      params.set("authors", next.authors.join(","));
+    }
+    if (next.sortBy && next.sortBy !== "name") {
+      params.set("sort", next.sortBy);
+    }
+    if (next.hasVoice) {
+      params.set("voice", "1");
+    }
+    if (next.hasAchievements) {
+      params.set("achievements", "1");
+    }
+    if (next.fromWorkshop) {
+      params.set("workshop", "1");
+    }
+    if (next.translationTypes.length > 0) {
+      params.set("translationTypes", next.translationTypes.join(","));
+    }
+    if (next.page > 1) {
+      params.set("page", next.page.toString());
+    }
+    const queryString = params.toString();
+    router.push(queryString ? `/games?${queryString}` : "/games");
+  };
 
-  const handleAuthorsChange = useCallback(
-    (authors: string[]) => updateFilters({ authors }),
-    [updateFilters]
-  );
+  const handleStatusesChange = (statuses: string[]) =>
+    updateFilters({ statuses });
 
-  const handleSortChange = useCallback(
-    (newSortBy: string) => updateFilters({ sortBy: newSortBy }),
-    [updateFilters]
-  );
+  const handleAuthorsChange = (authors: string[]) => updateFilters({ authors });
 
-  const handleVoiceChange = useCallback(
-    (newHasVoice: boolean) => updateFilters({ hasVoice: newHasVoice }),
-    [updateFilters]
-  );
+  const handleSortChange = (newSortBy: string) =>
+    updateFilters({ sortBy: newSortBy });
 
-  const handleAchievementsChange = useCallback(
-    (newHasAchievements: boolean) =>
-      updateFilters({ hasAchievements: newHasAchievements }),
-    [updateFilters]
-  );
+  const handleVoiceChange = (newHasVoice: boolean) =>
+    updateFilters({ hasVoice: newHasVoice });
 
-  const handleWorkshopChange = useCallback(
-    (newFromWorkshop: boolean) =>
-      updateFilters({ fromWorkshop: newFromWorkshop }),
-    [updateFilters]
-  );
+  const handleAchievementsChange = (newHasAchievements: boolean) =>
+    updateFilters({ hasAchievements: newHasAchievements });
 
-  const handleTranslationTypesChange = useCallback(
-    (translationTypes: string[]) => updateFilters({ translationTypes }),
-    [updateFilters]
-  );
+  const handleWorkshopChange = (newFromWorkshop: boolean) =>
+    updateFilters({ fromWorkshop: newFromWorkshop });
+
+  const handleTranslationTypesChange = (translationTypes: string[]) =>
+    updateFilters({ translationTypes });
 
   // Reset the statuses and derived flags in one transition, otherwise they overwrite each other
-  const handleClearStatusFilters = useCallback(() => {
+  const handleClearStatusFilters = () => {
     updateFilters({
       statuses: [],
       hasVoice: false,
@@ -269,15 +212,12 @@ function GamesListView({ initialData, searchParams }: GamesListViewProps) {
       fromWorkshop: false,
       translationTypes: [],
     });
-  }, [updateFilters]);
+  };
 
-  const handlePageChange = useCallback(
-    (page: number) => {
-      updateFilters({ page });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    },
-    [updateFilters]
-  );
+  const handlePageChange = (page: number) => {
+    updateFilters({ page });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const isDefaultView =
     currentPage === 1 &&
@@ -340,23 +280,17 @@ function GamesListView({ initialData, searchParams }: GamesListViewProps) {
 
   // Reset to page 1 when search query changes
   const prevSearch = useRef(search);
+  const resetPageForSearch = useEffectEvent(() => {
+    if (currentPage > 1) {
+      updateFilters({ page: 1 });
+    }
+  });
   useEffect(() => {
     if (search !== prevSearch.current) {
       prevSearch.current = search;
-      if (currentPage > 1) {
-        updateFilters({ page: 1 });
-      }
+      resetPageForSearch();
     }
-  }, [
-    search,
-    currentPage,
-    selectedStatuses,
-    selectedAuthors,
-    sortBy,
-    hasVoice,
-    hasAchievements,
-    updateFilters,
-  ]);
+  }, [search]);
 
   return (
     <GamesCatalog

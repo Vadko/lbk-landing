@@ -121,6 +121,10 @@ Same header and secret as `/api/revalidate`; body `{ gameId }`; `revalidateTag("
 
 Client pages that need metadata get a sibling `layout.tsx` whose only job is to export it (`src/app/(query)/setup/layout.tsx`). `src/app/legal-layout.tsx` is deliberately **not** named `layout.tsx` so Next does not treat it as a route layout; `privacy` and `terms/*` import `LegalLayout` as a plain component.
 
+### React Compiler
+
+`reactCompiler: true` in `next.config.ts` (with `babel-plugin-react-compiler`) memoizes every component and hook; Next runs it through Babel only on files with JSX or hooks. A component that breaks the Rules of React is silently left uncompiled, so `eslint.config.mjs` raises every rule of `eslint-plugin-react-hooks`' `recommended-latest` to an error and CI's `pnpm lint` fails on it. Fix the code instead of disabling a rule; a library the compiler cannot reason about shows up as `incompatible-library`. New code needs no `useMemo` / `useCallback` / `memo` for performance.
+
 ### Styling
 
 `src/app/globals.css` is 5,547 lines of hand-written semantic CSS: 657 top-level class rules, 42 media queries, `:root` custom properties (`--color-main`, `--glass-bg`, `--navbar-height`, rewritten at runtime by `Navbar.tsx`), 2 `@property` rules, 9 keyframes, organized by `/* Section */` comments. There is no `tailwind.config.*` and no `@theme`; the only Tailwind line is `@import "tailwindcss";` and there are zero `@apply` directives. Add new UI styles to the matching section of `globals.css` as kebab-case semantic classes (`glass-bg`, `game-card-status`, `hover-card--big`, `section-margin`). Raw utilities appear roughly 20 times in the whole repo (mostly in `MarkdownText.tsx`) — do not reach for utility soup. Biome formats `globals.css` at 80 columns.
