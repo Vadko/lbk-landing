@@ -1059,7 +1059,7 @@ export const be = {
       title: "15. Дзе апрацоўваюцца даныя",
       servers: "Уласныя серверы LBK знаходзяцца ў <b>Германіі</b>.",
       external:
-        "Некаторыя знешнія сэрвісы могуць апрацоўваць даныя ў іншых краінах, у тым ліку ў ЗША. Да іх належаць Cloudflare, Mixpanel, Amazon (AWS), Google/YouTube, GitHub і Steam.",
+        "Некаторыя знешнія сэрвісы могуць апрацоўваць даныя ў іншых краінах, у тым ліку ў ЗША. Да іх належаць Cloudflare, Mixpanel, Google/YouTube, GitHub і Steam.",
     },
     rights: {
       title: "16. Вашы правы і кіраванне згодай",

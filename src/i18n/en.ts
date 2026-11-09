@@ -1051,7 +1051,7 @@ export const en = {
       title: "15. Where data are processed",
       servers: "LBK's own servers are located in <b>Germany</b>.",
       external:
-        "Some external services may process data in other countries, including the United States. These include Cloudflare, Mixpanel, Amazon (AWS), Google/YouTube, GitHub and Steam.",
+        "Some external services may process data in other countries, including the United States. These include Cloudflare, Mixpanel, Google/YouTube, GitHub and Steam.",
     },
     rights: {
       title: "16. Your rights and consent management",

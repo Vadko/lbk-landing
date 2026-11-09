@@ -1076,7 +1076,7 @@ export const uk = {
       title: "15. Де обробляються дані",
       servers: "Власні сервери LBK розташовані в <b>Німеччині</b>.",
       external:
-        "Частина зовнішніх сервісів може обробляти дані в інших країнах, зокрема у США — це стосується Cloudflare, Mixpanel, Amazon (AWS), Google/YouTube, GitHub і Steam.",
+        "Частина зовнішніх сервісів може обробляти дані в інших країнах, зокрема у США — це стосується Cloudflare, Mixpanel, Google/YouTube, GitHub і Steam.",
     },
     rights: {
       title: "16. Права та керування згодою",
