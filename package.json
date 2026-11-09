@@ -46,9 +46,11 @@
     "yet-another-react-lightbox": "3.32.0"
   },
   "devDependencies": {
+    "@babel/core": "7.29.7",
     "@biomejs/biome": "2.5.3",
     "@formatjs/icu-messageformat-parser": "3.5.21",
     "@tailwindcss/postcss": "4.2.1",
+    "@types/babel__core": "7.20.5",
     "@types/canvas-confetti": "1.9.0",
     "@types/convert-layout": "0.5.3",
     "@types/node": "20.19.35",
@@ -56,8 +58,10 @@
     "@types/react-dom": "19.2.3",
     "@typescript-eslint/eslint-plugin": "8.56.1",
     "@typescript-eslint/parser": "8.56.1",
+    "babel-plugin-react-compiler": "1.0.0",
     "eslint": "9.39.3",
     "eslint-config-next": "16.0.10",
+    "eslint-plugin-react-hooks": "7.1.1",
     "husky": "9.1.7",
     "knip": "5.85.0",
     "lint-staged": "16.4.0",

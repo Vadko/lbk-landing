@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useCallback, useMemo, useRef } from "react";
+import { type ReactNode, useRef } from "react";
 
 interface HoverCardProps {
   children: ReactNode;
@@ -12,31 +12,24 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
   const angleRef = useRef(0);
   const animationRef = useRef<number | null>(null);
 
-  // Detect a touch device (once on mount)
-  const isTouchDevice = useMemo(() => {
-    if (typeof window === "undefined") {
-      return false;
+  const isTouchDevice =
+    typeof window !== "undefined" &&
+    ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isTouchDevice || !cardRef.current) {
+      return;
     }
-    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  }, []);
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const posX = (x / rect.width) * 100;
+    const posY = (y / rect.height) * 100;
+    cardRef.current.style.setProperty("--mouse-x", `${posX}%`);
+    cardRef.current.style.setProperty("--mouse-y", `${posY}%`);
+  };
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (isTouchDevice || !cardRef.current) {
-        return;
-      }
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const posX = (x / rect.width) * 100;
-      const posY = (y / rect.height) * 100;
-      cardRef.current.style.setProperty("--mouse-x", `${posX}%`);
-      cardRef.current.style.setProperty("--mouse-y", `${posY}%`);
-    },
-    [isTouchDevice]
-  );
-
-  const handleMouseLeave = useCallback(() => {
+  const handleMouseLeave = () => {
     if (isTouchDevice) {
       return;
     }
@@ -49,7 +42,7 @@ export function HoverCard({ children, className = "" }: HoverCardProps) {
       cardRef.current.style.setProperty("--mouse-x", "50%");
       cardRef.current.style.setProperty("--mouse-y", "50%");
     }
-  }, [isTouchDevice]);
+  };
 
   return (
     <div

@@ -1,6 +1,7 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
+import reactHooks from "eslint-plugin-react-hooks";
 
 const CYRILLIC = "/[А-Яа-яЁёҐґЄєІіЇї]/";
 const noUkrainianLiterals = [
@@ -24,6 +25,12 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    // The React Compiler skips or miscompiles a component that breaks these, so they fail lint
+    rules: Object.fromEntries(
+      Object.keys(reactHooks.configs["recommended-latest"].rules).map((rule) => [rule, "error"]),
+    ),
+  },
   {
     rules: {
       "@typescript-eslint/no-unused-vars": [

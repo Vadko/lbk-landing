@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
   // ~4.9k pages prerender against Supabase; the default 60 s caps a "use cache" fill at 54 s.
   staticPageGenerationTimeout: 180,
   cacheComponents: true,
+  reactCompiler: true,
   partialPrefetching: true,
   experimental: {
     // The build shares an 8-core host with Supabase, and the default 7 page workers swapped it out

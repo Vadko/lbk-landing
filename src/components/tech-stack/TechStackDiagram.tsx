@@ -12,7 +12,6 @@ import {
 import "@xyflow/react/dist/style.css";
 import type { Edge, Node, NodeProps } from "@xyflow/react";
 import { type Messages, useTranslations } from "next-intl";
-import { memo } from "react";
 
 // ━━━ Colors ━━━
 const C = {
@@ -31,9 +30,7 @@ type ProjectNodeType = Node<{
   color: string;
 }>;
 
-const ProjectNode = memo(function ProjectNode({
-  data,
-}: NodeProps<ProjectNodeType>) {
+function ProjectNode({ data }: NodeProps<ProjectNodeType>) {
   return (
     <div
       className="ts-node ts-node--project"
@@ -53,7 +50,7 @@ const ProjectNode = memo(function ProjectNode({
       </div>
     </div>
   );
-});
+}
 
 type ServiceNodeType = Node<{
   label: string;
@@ -62,9 +59,7 @@ type ServiceNodeType = Node<{
   color: string;
 }>;
 
-const ServiceNode = memo(function ServiceNode({
-  data,
-}: NodeProps<ServiceNodeType>) {
+function ServiceNode({ data }: NodeProps<ServiceNodeType>) {
   return (
     <div
       className="ts-node ts-node--service"
@@ -117,7 +112,7 @@ const ServiceNode = memo(function ServiceNode({
       </div>
     </div>
   );
-});
+}
 
 type InfraNodeType = Node<{
   label: string;
@@ -125,7 +120,7 @@ type InfraNodeType = Node<{
   color: string;
 }>;
 
-const InfraNode = memo(function InfraNode({ data }: NodeProps<InfraNodeType>) {
+function InfraNode({ data }: NodeProps<InfraNodeType>) {
   const t = useTranslations("techStack.diagram");
 
   return (
@@ -156,28 +151,24 @@ const InfraNode = memo(function InfraNode({ data }: NodeProps<InfraNodeType>) {
       <p className="ts-node__subtitle">{t(data.subtitle)}</p>
     </div>
   );
-});
+}
 
 type ExternalNodeType = Node<{ label: string }>;
 
-const ExternalNode = memo(function ExternalNode({
-  data,
-}: NodeProps<ExternalNodeType>) {
+function ExternalNode({ data }: NodeProps<ExternalNodeType>) {
   return (
     <div className="ts-node ts-node--external">
       <Handle type="target" position={Position.Top} />
       <span>{data.label}</span>
     </div>
   );
-});
+}
 
 type AnnotationNodeType = Node<{ label: string }>;
 
-const AnnotationNode = memo(function AnnotationNode({
-  data,
-}: NodeProps<AnnotationNodeType>) {
+function AnnotationNode({ data }: NodeProps<AnnotationNodeType>) {
   return <div className="ts-annotation">{data.label}</div>;
-});
+}
 
 // ━━━ Node Types ━━━
 const nodeTypes = {
