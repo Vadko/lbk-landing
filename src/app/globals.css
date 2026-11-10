@@ -2430,6 +2430,7 @@ input[type="search"]::-webkit-search-decoration {
 
 /* Game Card */
 .game-card {
+  position: relative;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
@@ -2528,9 +2529,21 @@ input[type="search"]::-webkit-search-decoration {
   color: #3b82f6;
 }
 
-/* Game Card Image Link */
-.game-card-image-link {
-  display: block;
+/* Game Card Link: the title link covers the whole card */
+.game-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.game-card-link:focus-visible {
+  outline: none;
+}
+
+.game-card-link:focus-visible::after {
+  border-radius: 16px;
+  outline: 2px solid var(--color-main);
+  outline-offset: -2px;
 }
 
 /* Game Card Translations List */
@@ -2543,6 +2556,7 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 .game-card-translation {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 6px;
