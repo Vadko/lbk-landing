@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { catalogOrder, isNameSort } from "@/lib/catalogSearchOrder";
+import { isNameSort, orderCatalog } from "@/lib/catalogOrder";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import type { Database } from "@/lib/database.types";
 import { buildFtsQueries, getTranslitVariant } from "@/lib/search-utils";
@@ -140,12 +140,11 @@ export async function GET(request: NextRequest) {
     }
 
     const fetchPage = async (ftsQuery?: string): Promise<FtsPage> => {
-      const query = catalogOrder(sortBy, search)
-        .reduce(
-          (ordered, [column, options]) => ordered.order(column, options),
-          supabase.from("games_grouped").select("*", { count: "exact" })
-        )
-        .range(offset, offset + limit - 1);
+      const query = orderCatalog(
+        supabase.from("games_grouped").select("*", { count: "exact" }),
+        sortBy,
+        search
+      ).range(offset, offset + limit - 1);
       const { data, error, count } = await (ftsQuery
         ? query.textSearch("name_fts", ftsQuery, { config: "simple" })
         : query);
@@ -282,9 +281,10 @@ async function fetchWithFilter(
   }
 
   const fetchAll = async (ftsQuery?: string): Promise<FtsPage> => {
-    const query = catalogOrder(sortBy, search).reduce(
-      (ordered, [column, options]) => ordered.order(column, options),
-      supabase.from("games_grouped").select("*")
+    const query = orderCatalog(
+      supabase.from("games_grouped").select("*"),
+      sortBy,
+      search
     );
     const { data, error } = await (ftsQuery
       ? query.textSearch("name_fts", ftsQuery, { config: "simple" })

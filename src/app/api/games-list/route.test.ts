@@ -231,10 +231,13 @@ describe("GET /api/games-list", () => {
     expect(slugsOf(body)).toEqual(["fallout_nv"]);
   });
 
-  it("orders a search under the default sort by manual translations, then rating", async () => {
+  it.each([
+    ["the default sort", { search: "doom" }],
+    ["the name sort", { search: "doom", sortBy: "name" }],
+  ])("orders a search under %s by manual translations, then rating", async (_label, params) => {
     db.state.answer = () => ({ data: [row("doom")], error: null, count: 1 });
 
-    await get({ search: "doom" });
+    await get(params);
 
     expect(ordersOf(db.state.queries[0])).toEqual(BY_RANK);
   });
