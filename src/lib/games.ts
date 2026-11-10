@@ -1,7 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import { createServerClient } from "@/lib/supabase/server";
-import { byTranslationRank } from "@/lib/translationRank";
 import { teamToSlug } from "@/lib/transliterate";
 import type {
   Game,
@@ -25,14 +24,19 @@ export async function getGamesBySlug(slug: string): Promise<Game[]> {
     .select("*")
     .eq("slug", slug)
     .eq("approved", true)
-    .eq("hide", false);
+    .eq("hide", false)
+    // is_manual and rating are lbk-admin's computed fields (migration 211): manual translations first, then by translation_rating()
+    .order("is_manual", { ascending: false })
+    .order("rating", { ascending: false })
+    .order("translation_progress", { ascending: false })
+    .order("id");
 
   if (error) {
     return [];
   }
 
   cacheTag(...data.map((game) => gameTag(game.id)));
-  return data.sort(byTranslationRank);
+  return data;
 }
 
 // Get a specific translation by slug and team slug (transliterated)

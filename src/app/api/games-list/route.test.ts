@@ -60,10 +60,6 @@ function row(slug: string) {
   return { slug, name: slug, translations: [] };
 }
 
-function withAi(slug: string, ais: (string | null)[]) {
-  return { ...row(slug), translations: ais.map((ai) => ({ ai })) };
-}
-
 const BY_RANK = [
   ["has_manual", { ascending: false }],
   ["rating", { ascending: false, nullsFirst: false }],
@@ -254,13 +250,8 @@ describe("GET /api/games-list", () => {
     ]);
   });
 
-  it("moves fuzzy matches with a manual translation first, keeping the relevance order", async () => {
-    const fuzzy = [
-      withAi("ai_best", ["edited"]),
-      withAi("mixed", ["non-edited", null]),
-      withAi("ai_next", ["non-edited"]),
-      withAi("manual", [null]),
-    ];
+  it("keeps the fuzzy RPC's order, which lists games with a manual translation first", async () => {
+    const fuzzy = [row("mixed"), row("manual"), row("ai_best"), row("ai_next")];
     db.state.answer = (query) =>
       query.source === "fuzzy_search_games"
         ? { data: fuzzy, error: null, count: null }

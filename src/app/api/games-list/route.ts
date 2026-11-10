@@ -1,10 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import {
-  catalogOrder,
-  isNameSort,
-  manualFirst,
-} from "@/lib/catalogSearchOrder";
+import { catalogOrder, isNameSort } from "@/lib/catalogSearchOrder";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import type { Database } from "@/lib/database.types";
 import { buildFtsQueries, getTranslitVariant } from "@/lib/search-utils";
@@ -206,7 +202,7 @@ async function fuzzySearch(
     similarity_threshold: 0.15,
     limit_val: 50,
   });
-  // The RPC returns its rows by relevance; the UI's default "name" sort keeps that order, games with a manual translation first
+  // The RPC lists games with a manual translation first, each part by relevance; the UI's default "name" sort keeps that order
   if (!isNameSort(sortBy)) {
     query = query
       .order(sortBy, { ascending: false, nullsFirst: false })
@@ -220,8 +216,7 @@ async function fuzzySearch(
     return { games: [], total: 0, hasMore: false, nextOffset: offset + limit };
   }
 
-  const found = (data ?? []).filter(isValidGameRow).map(mapRowToGameGroup);
-  const allGames = isNameSort(sortBy) ? manualFirst(found) : found;
+  const allGames = (data ?? []).filter(isValidGameRow).map(mapRowToGameGroup);
   const total = allGames.length;
   const paginatedGames = allGames.slice(offset, offset + limit);
 

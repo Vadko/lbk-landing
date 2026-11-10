@@ -1,6 +1,3 @@
-import { isManualTranslation } from "./translationRank";
-import type { GameGroup } from "./types";
-
 type CatalogOrder = [
   column: string,
   options: { ascending: boolean; nullsFirst?: boolean },
@@ -25,14 +22,4 @@ export function catalogOrder(sortBy?: string, search?: string): CatalogOrder[] {
           ],
         ];
   return [...order, ["slug", { ascending: true }]];
-}
-
-const hasManualTranslation = (game: GameGroup) =>
-  game.translations.some(isManualTranslation);
-
-export function manualFirst(games: GameGroup[]): GameGroup[] {
-  return [
-    ...games.filter(hasManualTranslation),
-    ...games.filter((game) => !hasManualTranslation(game)),
-  ];
 }
