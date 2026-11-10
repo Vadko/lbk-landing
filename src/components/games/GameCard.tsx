@@ -87,27 +87,25 @@ export function GameCard({ game, priority }: GameCardProps) {
 
   return (
     <div className="game-card">
-      <Link href={cardHref} prefetch className="game-card-image-link">
-        <div className="game-card-image">
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={t("imageAlt", { game: game.name })}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover"
-              priority={priority}
-            />
-          ) : (
-            <div className="game-card-placeholder">
-              <SvgIcon icon={faGamepad} />
-            </div>
-          )}
-        </div>
-      </Link>
+      <div className="game-card-image">
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={t("imageAlt", { game: game.name })}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+            priority={priority}
+          />
+        ) : (
+          <div className="game-card-placeholder">
+            <SvgIcon icon={faGamepad} />
+          </div>
+        )}
+      </div>
 
       <div className="game-card-content">
-        <Link href={cardHref} prefetch>
+        <Link href={cardHref} prefetch className="game-card-link">
           <h3 className="game-card-title">{game.name}</h3>
         </Link>
 

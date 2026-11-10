@@ -1,5 +1,10 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import {
+  catalogOrder,
+  isNameSort,
+  manualFirst,
+} from "@/lib/catalogSearchOrder";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import type { Database } from "@/lib/database.types";
 import { buildFtsQueries, getTranslitVariant } from "@/lib/search-utils";
@@ -138,17 +143,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(result, { headers: cacheHeaders() });
     }
 
-    const orderAscending = sortBy === "name" || !sortBy;
-
     const fetchPage = async (ftsQuery?: string): Promise<FtsPage> => {
-      const query = supabase
-        .from("games_grouped")
-        .select("*", { count: "exact" })
-        .order(sortBy || "name", {
-          ascending: orderAscending,
-          nullsFirst: false,
-        })
-        .order("slug", { ascending: true })
+      const query = catalogOrder(sortBy, search)
+        .reduce(
+          (ordered, [column, options]) => ordered.order(column, options),
+          supabase.from("games_grouped").select("*", { count: "exact" })
+        )
         .range(offset, offset + limit - 1);
       const { data, error, count } = await (ftsQuery
         ? query.textSearch("name_fts", ftsQuery, { config: "simple" })
@@ -206,8 +206,8 @@ async function fuzzySearch(
     similarity_threshold: 0.15,
     limit_val: 50,
   });
-  // The RPC returns its rows by relevance; the UI's default "name" sort keeps that order
-  if (sortBy && sortBy !== "name") {
+  // The RPC returns its rows by relevance; the UI's default "name" sort keeps that order, games with a manual translation first
+  if (!isNameSort(sortBy)) {
     query = query
       .order(sortBy, { ascending: false, nullsFirst: false })
       .order("slug", { ascending: true });
@@ -220,7 +220,8 @@ async function fuzzySearch(
     return { games: [], total: 0, hasMore: false, nextOffset: offset + limit };
   }
 
-  const allGames = (data ?? []).filter(isValidGameRow).map(mapRowToGameGroup);
+  const found = (data ?? []).filter(isValidGameRow).map(mapRowToGameGroup);
+  const allGames = isNameSort(sortBy) ? manualFirst(found) : found;
   const total = allGames.length;
   const paginatedGames = allGames.slice(offset, offset + limit);
 
@@ -285,13 +286,11 @@ async function fetchWithFilter(
     };
   }
 
-  const orderAscending = sortBy === "name" || !sortBy;
   const fetchAll = async (ftsQuery?: string): Promise<FtsPage> => {
-    const query = supabase
-      .from("games_grouped")
-      .select("*")
-      .order(sortBy || "name", { ascending: orderAscending, nullsFirst: false })
-      .order("slug", { ascending: true });
+    const query = catalogOrder(sortBy, search).reduce(
+      (ordered, [column, options]) => ordered.order(column, options),
+      supabase.from("games_grouped").select("*")
+    );
     const { data, error } = await (ftsQuery
       ? query.textSearch("name_fts", ftsQuery, { config: "simple" })
       : query);

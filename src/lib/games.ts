@@ -1,6 +1,7 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import { createServerClient } from "@/lib/supabase/server";
+import { byTranslationRank } from "@/lib/translationRank";
 import { teamToSlug } from "@/lib/transliterate";
 import type {
   Game,
@@ -24,15 +25,14 @@ export async function getGamesBySlug(slug: string): Promise<Game[]> {
     .select("*")
     .eq("slug", slug)
     .eq("approved", true)
-    .eq("hide", false)
-    .order("translation_progress", { ascending: false });
+    .eq("hide", false);
 
   if (error) {
     return [];
   }
 
   cacheTag(...data.map((game) => gameTag(game.id)));
-  return data;
+  return data.sort(byTranslationRank);
 }
 
 // Get a specific translation by slug and team slug (transliterated)
