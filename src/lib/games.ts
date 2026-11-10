@@ -19,17 +19,10 @@ export async function getGamesBySlug(slug: string): Promise<Game[]> {
 
   const supabase = createServerClient();
 
-  const { data, error } = await supabase
-    .from("games")
-    .select("*")
-    .eq("slug", slug)
-    .eq("approved", true)
-    .eq("hide", false)
-    // is_manual and rating are lbk-admin's computed fields (migration 211): manual translations first, then by translation_rating()
-    .order("is_manual", { ascending: false })
-    .order("rating", { ascending: false })
-    .order("translation_progress", { ascending: false })
-    .order("id");
+  // lbk-admin's migration 212: the approved, visible translations, manual first, then by translation_rating()
+  const { data, error } = await supabase.rpc("get_game_translations", {
+    p_slug: slug,
+  });
 
   if (error) {
     return [];
