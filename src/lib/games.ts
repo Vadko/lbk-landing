@@ -1,4 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { orderCatalog } from "@/lib/catalogOrder";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import { createServerClient } from "@/lib/supabase/server";
 import { teamToSlug } from "@/lib/transliterate";
@@ -117,11 +118,11 @@ export async function getInitialGames(): Promise<GamesGroupedResponse> {
   const supabase = createServerClient();
   const limit = GAMES_PER_PAGE;
 
-  const { data, error, count } = await supabase
-    .from("games_grouped")
-    .select("*", { count: "exact" })
-    .order("name", { ascending: true, nullsFirst: false })
-    .range(0, limit - 1);
+  // The same order /api/games-list pages by, or page 2 repeats and skips games at the boundary
+  const { data, error, count } = await orderCatalog(
+    supabase.from("games_grouped").select("*", { count: "exact" }),
+    "name"
+  ).range(0, limit - 1);
 
   if (error) {
     return { games: [], total: 0, hasMore: false, nextOffset: limit };
