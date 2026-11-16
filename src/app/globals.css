@@ -333,6 +333,10 @@ code {
   border-radius: 12px !important;
 }
 
+.language-switcher__list.glass-bg {
+  background: rgba(var(--color-bg-rgb), 0.92);
+}
+
 .language-switcher__list--down {
   top: calc(100% + 8px);
 }

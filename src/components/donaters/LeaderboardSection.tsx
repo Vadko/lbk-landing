@@ -44,11 +44,15 @@ type LeaderboardTranslator = Awaited<
   ReturnType<typeof getTranslations<"donaters.leaderboard">>
 >;
 
-function formatLastDonation(isoDate: string, t: LeaderboardTranslator): string {
+function formatLastDonation(
+  isoDate: string,
+  locale: Locale,
+  t: LeaderboardTranslator
+): string {
   const date = new Date(isoDate);
   const now = new Date();
 
-  const time = date.toLocaleTimeString("uk-UA", {
+  const time = date.toLocaleTimeString(locale, {
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -121,7 +125,9 @@ export async function LeaderboardSection({ locale }: LeaderboardSectionProps) {
                       </span>
                     </td>
                     <td>₴ {donator.amount}</td>
-                    <td>{formatLastDonation(donator.lastDonation, t)}</td>
+                    <td>
+                      {formatLastDonation(donator.lastDonation, locale, t)}
+                    </td>
                   </tr>
                 );
               })}

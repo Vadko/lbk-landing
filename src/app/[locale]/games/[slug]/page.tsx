@@ -239,7 +239,7 @@ export default async function GamePage({ params }: PageProps) {
                         {t("gameSelect.updated", {
                           date: new Date(
                             translation.translation_updated_at
-                          ).toLocaleString("uk-UA", {
+                          ).toLocaleString(locale, {
                             day: "numeric",
                             month: "short",
                             year: "numeric",

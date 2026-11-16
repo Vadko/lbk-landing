@@ -708,6 +708,7 @@ export const en = {
       uk: "Українська",
       en: "English",
       be: "Беларуская",
+      pl: "Polski",
     },
   },
   legalLayout: {

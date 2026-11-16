@@ -7,6 +7,7 @@ const OPEN_GRAPH_LOCALES: Record<Locale, string> = {
   uk: "uk_UA",
   en: "en_US",
   be: "be_BY",
+  pl: "pl_PL",
 };
 
 export function openGraphLocale(locale: Locale): string {

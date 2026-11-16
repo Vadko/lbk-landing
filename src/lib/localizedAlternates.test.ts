@@ -29,6 +29,7 @@ describe("localizedAlternates", () => {
         uk: "https://lbklauncher.com/games",
         en: "https://lbklauncher.com/en/games",
         be: "https://lbklauncher.com/be/games",
+        pl: "https://lbklauncher.com/pl/games",
         "x-default": "https://lbklauncher.com/games",
       },
     });
@@ -40,6 +41,7 @@ describe("openGraphLocale", () => {
     ["uk", "uk_UA"],
     ["en", "en_US"],
     ["be", "be_BY"],
+    ["pl", "pl_PL"],
   ] as const)("%s -> %s", (locale, expected) => {
     expect(openGraphLocale(locale)).toBe(expected);
   });

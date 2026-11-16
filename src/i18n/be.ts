@@ -616,8 +616,8 @@ export const be = {
     backShotAlt: "Галоўны экран LBK Launcher",
     backShotCaption: "Галоўны экран",
     phrases: {
-      effortless: "без лішніх намаганняў!",
-      oneClick: "адным націскам!",
+      effortless: "без высілку!",
+      oneClick: "адным клікам!",
       simple: "гэта проста!",
       top: "гэта крута!",
     },
@@ -711,6 +711,7 @@ export const be = {
       uk: "Українська",
       en: "English",
       be: "Беларуская",
+      pl: "Polski",
     },
   },
   legalLayout: {

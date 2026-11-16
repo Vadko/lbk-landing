@@ -13,6 +13,7 @@ import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import { be } from "./be";
 import { en } from "./en";
+import { pl } from "./pl";
 import { uk } from "./uk";
 
 interface Dictionary {
@@ -36,7 +37,7 @@ interface Source {
 const ROOT = join(import.meta.dirname, "../..");
 const DICTIONARY_DIR = join(ROOT, "src/i18n");
 const DICTIONARY_FILES = new Set(
-  ["uk", "en", "be"].map((locale) => join(DICTIONARY_DIR, `${locale}.ts`))
+  ["uk", "en", "be", "pl"].map((locale) => join(DICTIONARY_DIR, `${locale}.ts`))
 );
 const TRANSLATOR_FACTORIES = new Set([
   "useTranslations",
@@ -330,7 +331,7 @@ function findUnusedKeys(keys: string[]) {
 const messages = flatten(uk);
 
 describe.each(
-  Object.entries({ be, en })
+  Object.entries({ be, en, pl })
 )("%s dictionary", (_locale, dictionary) => {
   const translated = new Map(flatten(dictionary));
 
@@ -351,7 +352,7 @@ describe.each(
 });
 
 describe.each(
-  Object.entries({ uk, be, en })
+  Object.entries({ uk, be, en, pl })
 )("%s plurals", (locale, dictionary) => {
   it("have every form the locale tells apart", () => {
     const missing = flatten(dictionary).flatMap(([key, text]) =>

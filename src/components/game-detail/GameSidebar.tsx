@@ -7,7 +7,7 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons/faGlobe";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { ShareButton } from "@/components/ui/ShareButton";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { getReadablePlatform } from "@/helpers/getReadablePlatform";
@@ -25,6 +25,7 @@ interface GameSidebarProps {
 export async function GameSidebar({ game }: GameSidebarProps) {
   const t = await getTranslations("gameSidebar");
   const tPlatform = await getTranslations("storePlatform");
+  const locale = await getLocale();
   const socialLinks = [
     { url: game.telegram, icon: faTelegram, label: "Telegram" },
     { url: game.discord, icon: faDiscord, label: "Discord" },
@@ -106,7 +107,7 @@ export async function GameSidebar({ game }: GameSidebarProps) {
               <strong>
                 {!game.downloads || game.downloads < 20
                   ? t("downloadsFew")
-                  : game.downloads.toLocaleString("uk-UA")}
+                  : game.downloads.toLocaleString(locale)}
               </strong>
             </div>
           ) : null}
@@ -123,7 +124,7 @@ export async function GameSidebar({ game }: GameSidebarProps) {
           <div className="game-stat">
             <span>{t("created")}</span>
             <strong>
-              {new Date(game.created_at).toLocaleDateString("uk-UA", {
+              {new Date(game.created_at).toLocaleDateString(locale, {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
@@ -134,7 +135,7 @@ export async function GameSidebar({ game }: GameSidebarProps) {
           <div className="game-stat">
             <span>{t("updated")}</span>
             <strong>
-              {new Date(game.translation_updated_at).toLocaleString("uk-UA", {
+              {new Date(game.translation_updated_at).toLocaleString(locale, {
                 day: "numeric",
                 month: "short",
                 year: "numeric",
