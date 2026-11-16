@@ -3,6 +3,7 @@ import { faMedal } from "@fortawesome/free-solid-svg-icons/faMedal";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import { cacheLife } from "next/cache";
 import { getTranslations } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
 import { SvgIcon } from "../ui/SvgIcon";
 
 interface Donator {
@@ -43,11 +44,15 @@ type LeaderboardTranslator = Awaited<
   ReturnType<typeof getTranslations<"donaters.leaderboard">>
 >;
 
-function formatLastDonation(isoDate: string, t: LeaderboardTranslator): string {
+function formatLastDonation(
+  isoDate: string,
+  locale: Locale,
+  t: LeaderboardTranslator
+): string {
   const date = new Date(isoDate);
   const now = new Date();
 
-  const time = date.toLocaleTimeString("uk-UA", {
+  const time = date.toLocaleTimeString(locale, {
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -75,10 +80,17 @@ function formatLastDonation(isoDate: string, t: LeaderboardTranslator): string {
   return t("monthsAgo", { count: Math.round(dayDiff / 30) });
 }
 
-export async function LeaderboardSection() {
+interface LeaderboardSectionProps {
+  locale: Locale;
+}
+
+export async function LeaderboardSection({ locale }: LeaderboardSectionProps) {
   "use cache";
   cacheLife("days");
-  const t = await getTranslations("donaters.leaderboard");
+  const t = await getTranslations({
+    locale,
+    namespace: "donaters.leaderboard",
+  });
 
   return (
     <section className="section-margin">
@@ -113,7 +125,9 @@ export async function LeaderboardSection() {
                       </span>
                     </td>
                     <td>₴ {donator.amount}</td>
-                    <td>{formatLastDonation(donator.lastDonation, t)}</td>
+                    <td>
+                      {formatLastDonation(donator.lastDonation, locale, t)}
+                    </td>
                   </tr>
                 );
               })}

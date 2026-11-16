@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   partialPrefetching: true,
   experimental: {
+    globalNotFound: true,
     // The build shares an 8-core host with Supabase, and the default 7 page workers swapped it out
     cpus: 3,
     agentUpgrade: "latest",

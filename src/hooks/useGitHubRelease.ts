@@ -146,9 +146,9 @@ export function detectOS():
   return "unknown";
 }
 
-export function formatDate(dateString: string): string {
+export function formatDate(dateString: string, locale: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString("uk-UA", {
+  return date.toLocaleDateString(locale, {
     day: "numeric",
     month: "short",
     year: "numeric",

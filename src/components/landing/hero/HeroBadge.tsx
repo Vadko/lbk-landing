@@ -1,7 +1,7 @@
 "use client";
 
 import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import {
   formatDate,
@@ -11,6 +11,7 @@ import {
 
 export function HeroBadge() {
   const t = useTranslations("landingHero.badge");
+  const locale = useLocale();
   const { data: release, isLoading } = useGitHubRelease();
   const downloadLinks = getDownloadLinks(release);
 
@@ -19,7 +20,7 @@ export function HeroBadge() {
     : downloadLinks.version && downloadLinks.publishedAt
       ? t("version", {
           version: downloadLinks.version,
-          date: formatDate(downloadLinks.publishedAt),
+          date: formatDate(downloadLinks.publishedAt, locale),
         })
       : t("versionUnknown");
 

@@ -1,6 +1,5 @@
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
-import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import {
   FundraisingProgress,
@@ -13,6 +12,7 @@ import {
 import { GameTeamLink } from "@/components/ui/GameTeamLink";
 import { MarkdownText } from "@/components/ui/MarkdownText";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { Link } from "@/i18n/navigation";
 import { STATUS_BADGE_CLASSES } from "@/lib/constants";
 import { getFeaturedInfo } from "@/lib/featuredTranslations";
 import {
@@ -21,6 +21,7 @@ import {
   generateSoftwareApplicationLD,
 } from "@/lib/game-jsonld";
 import { getImageUrl } from "@/lib/images";
+import { localizedUrl } from "@/lib/localizedAlternates";
 import { teamToSlug } from "@/lib/transliterate";
 import { type Game, isWorkshopTranslation } from "@/lib/types";
 import { AIBadgeIcon } from "../ui/icons/AIBadgeIcon";
@@ -42,22 +43,26 @@ export async function GameDetailArticle({
   otherTranslations,
 }: GameDetailArticleProps) {
   const t = await getTranslations();
+  const locale = await getLocale();
   const bannerUrl = getImageUrl(game.banner_path, game.updated_at);
   const logoUrl = getImageUrl(game.logo_path, game.updated_at);
   const featuredInfo = getFeaturedInfo(slug, game.team);
 
   const breadcrumbItems = [
-    { name: t("gameBreadcrumbs.home"), url: "https://lbklauncher.com" },
+    { name: t("gameBreadcrumbs.home"), url: localizedUrl("/", locale) },
     {
       name: t("gameBreadcrumbs.catalog"),
-      url: "https://lbklauncher.com/games",
+      url: localizedUrl("/games", locale),
     },
-    { name: game.name, url: `https://lbklauncher.com/games/${slug}` },
+    { name: game.name, url: localizedUrl(`/games/${slug}`, locale) },
     ...(otherTranslations.length > 0
       ? [
           {
             name: game.team,
-            url: `https://lbklauncher.com/games/${slug}/${teamToSlug(game.team)}`,
+            url: localizedUrl(
+              `/games/${slug}/${teamToSlug(game.team)}`,
+              locale
+            ),
           },
         ]
       : []),

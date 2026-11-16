@@ -15,16 +15,16 @@ function kyivDay(date: Date): { year: number; start: number } {
   return { year, start: Date.UTC(year, month - 1, day) };
 }
 
-const timeOf = (date: Date) =>
-  date.toLocaleTimeString("uk-UA", {
+const timeOf = (date: Date, locale: string) =>
+  date.toLocaleTimeString(locale, {
     timeZone: TIME_ZONE,
     hour: "2-digit",
     minute: "2-digit",
   });
 
-const dayOf = (date: Date, withYear: boolean) =>
+const dayOf = (date: Date, locale: string, withYear: boolean) =>
   date
-    .toLocaleDateString("uk-UA", {
+    .toLocaleDateString(locale, {
       timeZone: TIME_ZONE,
       day: "numeric",
       month: "short",
@@ -33,14 +33,15 @@ const dayOf = (date: Date, withYear: boolean) =>
     .replace(".", "");
 
 // A cached render cannot know today, so it carries the full date
-export function absoluteReviewDate(iso: string): string {
+export function absoluteReviewDate(iso: string, locale: string): string {
   const date = new Date(iso);
-  return `${dayOf(date, true)}, ${timeOf(date)}`;
+  return `${dayOf(date, locale, true)}, ${timeOf(date, locale)}`;
 }
 
 export function relativeReviewDate(
   t: ReviewsTranslator,
   iso: string,
+  locale: string,
   now: Date
 ): string {
   const date = new Date(iso);
@@ -48,10 +49,10 @@ export function relativeReviewDate(
   const today = kyivDay(now);
   const daysAgo = Math.round((today.start - then.start) / DAY_MS);
   if (daysAgo === 0) {
-    return t("today", { time: timeOf(date) });
+    return t("today", { time: timeOf(date, locale) });
   }
   if (daysAgo === 1) {
-    return t("yesterday", { time: timeOf(date) });
+    return t("yesterday", { time: timeOf(date, locale) });
   }
-  return `${dayOf(date, then.year !== today.year)}, ${timeOf(date)}`;
+  return `${dayOf(date, locale, then.year !== today.year)}, ${timeOf(date, locale)}`;
 }

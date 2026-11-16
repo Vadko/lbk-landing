@@ -616,8 +616,8 @@ export const be = {
     backShotAlt: "Галоўны экран LBK Launcher",
     backShotCaption: "Галоўны экран",
     phrases: {
-      effortless: "без лішніх намаганняў!",
-      oneClick: "адным націскам!",
+      effortless: "без высілку!",
+      oneClick: "адным клікам!",
       simple: "гэта проста!",
       top: "гэта крута!",
     },
@@ -704,6 +704,15 @@ export const be = {
       description: "Уся наша актыўная аўдыторыя",
     },
     dau: { title: "DAU", description: "Штодзённыя актыўныя карыстальнікі" },
+  },
+  languageSwitcher: {
+    label: "Мова сайта",
+    names: {
+      uk: "Українська",
+      en: "English",
+      be: "Беларуская",
+      pl: "Polski",
+    },
   },
   legalLayout: {
     updated: "Абноўлена: {date}",

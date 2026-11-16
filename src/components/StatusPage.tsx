@@ -1,8 +1,8 @@
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import { faHome } from "@fortawesome/free-solid-svg-icons/faHome";
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { Link } from "@/i18n/navigation";
 
 interface StatusPageProps {
   code: string;

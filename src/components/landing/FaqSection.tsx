@@ -1,11 +1,11 @@
 "use client";
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { useGamesCount } from "@/hooks/useGames";
+import { Link } from "@/i18n/navigation";
 import { BOT_URL } from "@/lib/constants";
 
 const FAQ_ITEMS = [

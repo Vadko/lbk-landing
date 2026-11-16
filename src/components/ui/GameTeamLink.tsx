@@ -1,10 +1,10 @@
 "use client";
 
 import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { Link } from "@/i18n/navigation";
 import { getSpecialTranslatorInfo } from "@/lib/specialTranslators";
 import { Tooltip } from "./Tooltip";
 

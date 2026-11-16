@@ -3,9 +3,9 @@ import { faTiktok } from "@fortawesome/free-brands-svg-icons/faTiktok";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons/faXTwitter";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons/faYoutube";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { SvgIcon } from "@/components/ui/SvgIcon";
+import { Link } from "@/i18n/navigation";
 
 export async function Footer() {
   const t = await getTranslations("footer");

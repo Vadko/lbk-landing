@@ -2,11 +2,11 @@
 
 import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import Image from "next/image";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { AuthorName } from "@/components/ui/AuthorName";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { TranslateTypeBadge } from "@/components/ui/TranslateTypeBadge";
+import { Link } from "@/i18n/navigation";
 import { getImageUrl } from "@/lib/images";
 import { teamToSlug } from "@/lib/transliterate";
 import type { GameGroup, TranslationItem } from "@/lib/types";

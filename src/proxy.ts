@@ -1,14 +1,15 @@
 import { type NextRequest, NextResponse } from "next/server";
+import createMiddleware from "next-intl/middleware";
+import { splitLocale } from "@/i18n/locale-path";
+import { routing } from "@/i18n/routing";
 import { isLauncherUserAgent } from "@/lib/captcha/is-launcher-user-agent";
 import { isMaintenanceMode } from "@/lib/maintenance";
+import { notFoundResponse } from "@/lib/not-found-response";
 import { resolveGamePath } from "@/lib/proxy-games";
 import { STATUS_PAGE_HEADER, statusPageResponse } from "@/lib/status-page";
+import { isUnlocalizedPath } from "@/lib/unlocalized-path";
 
-function notFound(request: NextRequest) {
-  return NextResponse.rewrite(new URL("/_not-found", request.url), {
-    status: 404,
-  });
-}
+const intlMiddleware = createMiddleware(routing);
 
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
@@ -27,31 +28,42 @@ export async function proxy(request: NextRequest) {
     if (isLauncherUserAgent(request.headers.get("user-agent"))) {
       return NextResponse.next();
     }
-    return notFound(request);
+    return notFoundResponse(request, routing.defaultLocale);
   }
 
+  const { locale, path } = splitLocale(pathname);
+
   // Only the proxy's own fetch reaches the status pages; a direct visit gets the 404 it would without them
-  if (pathname === "/gone" || pathname === "/maintenance") {
+  if (path === "/gone" || path === "/maintenance") {
     if (request.headers.get(STATUS_PAGE_HEADER) === "1") {
-      return NextResponse.next();
+      return intlMiddleware(request);
     }
-    return notFound(request);
+    return notFoundResponse(request, locale);
   }
 
   // 503 + Retry-After so search engines keep the indexed pages instead of the stub
   if (isMaintenanceMode()) {
-    return statusPageResponse("/maintenance", 503, { "Retry-After": "3600" });
+    return statusPageResponse(
+      "/maintenance",
+      503,
+      { "Retry-After": "3600" },
+      locale
+    );
   }
 
-  // 410 Gone / 308 for deleted and renamed translations.
+  // 308 for a renamed game, 410 for a deleted one, 404 for any other unknown game path; a null answer carries on to the page
   const gameResponse = await resolveGamePath(request);
   if (gameResponse) {
     return gameResponse;
   }
 
-  const response = NextResponse.next();
+  if (isUnlocalizedPath(pathname)) {
+    return NextResponse.next();
+  }
+
+  const response = intlMiddleware(request);
   // Filtered catalog URLs stay out of the index; reading searchParams in metadata would make /games dynamic
-  if (pathname === "/games" && search) {
+  if (path === "/games" && search) {
     response.headers.set("X-Robots-Tag", "noindex, follow");
   }
   return response;

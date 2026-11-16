@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useClientValue } from "@/hooks/useClientValue";
 import {
   absoluteReviewDate,
@@ -13,9 +13,10 @@ interface ReviewDateProps {
 
 export function ReviewDate({ iso }: ReviewDateProps) {
   const t = useTranslations("gameReviews");
+  const locale = useLocale();
   const label = useClientValue(
-    () => relativeReviewDate(t, iso, new Date()),
-    absoluteReviewDate(iso)
+    () => relativeReviewDate(t, iso, locale, new Date()),
+    absoluteReviewDate(iso, locale)
   );
   return <time dateTime={iso}>{label}</time>;
 }

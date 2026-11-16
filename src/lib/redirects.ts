@@ -20,21 +20,28 @@ export async function getRedirect(oldPath: string): Promise<string | null> {
   return fetchRedirect(oldPath);
 }
 
+export async function findMovedGamePath(
+  slug: string,
+  teamSlug: string | null,
+  lookup: (oldPath: string) => Promise<string | null>
+): Promise<string | null> {
+  if (!teamSlug) {
+    return lookup(`/games/${slug}`);
+  }
+  const newPath = await lookup(`/games/${slug}/${teamSlug}`);
+  if (newPath) {
+    return newPath;
+  }
+  const newSlugPath = await lookup(`/games/${slug}`);
+  return newSlugPath ? `${newSlugPath}/${teamSlug}` : null;
+}
+
 export async function resolveMovedGamePath(
   slug: string,
   teamSlug?: string,
   prefix = "/games"
 ): Promise<string | null> {
-  const oldPath = teamSlug ? `/games/${slug}/${teamSlug}` : `/games/${slug}`;
-  let newPath = await getRedirect(oldPath);
-
-  if (!newPath && teamSlug) {
-    const newSlugPath = await getRedirect(`/games/${slug}`);
-    if (newSlugPath) {
-      newPath = `${newSlugPath}/${teamSlug}`;
-    }
-  }
-
+  const newPath = await findMovedGamePath(slug, teamSlug ?? null, getRedirect);
   if (!newPath) {
     return null;
   }

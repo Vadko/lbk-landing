@@ -1,6 +1,6 @@
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import { faHandHoldingHeart } from "@fortawesome/free-solid-svg-icons/faHandHoldingHeart";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 
 interface FundraisingProgressProps {
@@ -18,12 +18,13 @@ export async function FundraisingProgress({
   }
 
   const t = await getTranslations("fundraising");
+  const locale = await getLocale();
   const currentAmount = current ?? 0;
   const percentage = Math.min(Math.round((currentAmount / goal) * 100), 100);
   const isCompleted = currentAmount >= goal;
 
   const formatAmount = (amount: number) => {
-    return new Intl.NumberFormat("uk-UA").format(amount);
+    return new Intl.NumberFormat(locale).format(amount);
   };
 
   return (

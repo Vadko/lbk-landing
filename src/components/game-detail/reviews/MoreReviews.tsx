@@ -2,7 +2,7 @@
 
 import { faRotate } from "@fortawesome/free-solid-svg-icons/faRotate";
 import { unstable_isUnrecognizedActionError } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Fragment, type ReactNode, useState } from "react";
 import { ActionIcon } from "@/components/ui/ActionIcon";
 import { useActionPhase } from "@/hooks/useActionPhase";
@@ -27,6 +27,7 @@ export function MoreReviews({
   cursor: firstCursor,
 }: MoreReviewsProps) {
   const t = useTranslations("gameReviews");
+  const locale = useLocale();
   const [batches, setBatches] = useState<Batch[]>([]);
   const [cursor, setCursor] = useState(firstCursor);
   const [hasMore, setHasMore] = useState(true);
@@ -38,7 +39,7 @@ export function MoreReviews({
 
   const load = async (): Promise<boolean> => {
     setIsLoading(true);
-    const loaded = await loadMoreReviews(gameId, cursor, type)
+    const loaded = await loadMoreReviews(locale, gameId, cursor, type)
       .then((page) => {
         setBatches((current) => [
           ...current,
