@@ -283,7 +283,7 @@ export default async function PrivacyPage({ params }: LocaleParams) {
           <li>{t.rich("recipients.external.zaraz", { b })}</li>
           <li>{t.rich("recipients.external.turnstile", { b, turnstile })}</li>
           <li>{t.rich("recipients.external.googleAnalytics", { b })}</li>
-          <li>{t.rich("recipients.external.resend", { b })}</li>
+          <li>{t.rich("recipients.external.amazonSes", { b })}</li>
           <li>{t.rich("recipients.external.youtube", { b })}</li>
           <li>{t.rich("recipients.external.steam", { b })}</li>
           <li>{t.rich("recipients.external.github", { b })}</li>

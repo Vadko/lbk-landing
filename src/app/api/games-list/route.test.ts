@@ -60,6 +60,12 @@ function row(slug: string) {
   return { slug, name: slug, translations: [] };
 }
 
+const BY_RANK = [
+  ["has_manual", { ascending: false }],
+  ["rating", { ascending: false, nullsFirst: false }],
+  ["slug", { ascending: true }],
+];
+
 function rows(prefix: string, count: number) {
   return Array.from({ length: count }, (_, i) => row(`${prefix}_${i}`));
 }
@@ -221,10 +227,41 @@ describe("GET /api/games-list", () => {
       "games_grouped",
       "games_grouped",
     ]);
+    expect(ordersOf(db.state.queries[0])).toEqual(BY_RANK);
+    expect(slugsOf(body)).toEqual(["fallout_nv"]);
+  });
+
+  it.each([
+    ["the default sort", { search: "doom" }],
+    ["the name sort", { search: "doom", sortBy: "name" }],
+  ])("orders a search under %s by manual translations, then rating", async (_label, params) => {
+    db.state.answer = () => ({ data: [row("doom")], error: null, count: 1 });
+
+    await get(params);
+
+    expect(ordersOf(db.state.queries[0])).toEqual(BY_RANK);
+  });
+
+  it("keeps an explicit sort for a search", async () => {
+    db.state.answer = () => ({ data: [row("doom")], error: null, count: 1 });
+
+    await get({ search: "doom", sortBy: "downloads" });
+
     expect(ordersOf(db.state.queries[0])).toEqual([
-      ["name", { ascending: true, nullsFirst: false }],
+      ["downloads", { ascending: false, nullsFirst: false }],
       ["slug", { ascending: true }],
     ]);
-    expect(slugsOf(body)).toEqual(["fallout_nv"]);
+  });
+
+  it("keeps the fuzzy RPC's order, which lists games with a manual translation first", async () => {
+    const fuzzy = [row("mixed"), row("manual"), row("ai_best"), row("ai_next")];
+    db.state.answer = (query) =>
+      query.source === "fuzzy_search_games"
+        ? { data: fuzzy, error: null, count: null }
+        : { data: [], error: null, count: 0 };
+
+    const { body } = await get({ search: "dark sols" });
+
+    expect(slugsOf(body)).toEqual(["mixed", "manual", "ai_best", "ai_next"]);
   });
 });

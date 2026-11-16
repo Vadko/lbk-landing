@@ -38,21 +38,25 @@ export function MoreReviews({
 
   const load = async (): Promise<boolean> => {
     setIsLoading(true);
-    try {
-      const page = await loadMoreReviews(gameId, cursor, type);
-      setBatches((current) => [...current, { cursor, threads: page.threads }]);
-      // A repeated cursor would re-arm the sentinel after every load
-      setHasMore(page.nextCursor !== null && page.nextCursor !== cursor);
-      setCursor(page.nextCursor);
-      setFailed(false);
-      return true;
-    } catch (error) {
-      setIsOutdated(unstable_isUnrecognizedActionError(error));
-      setFailed(true);
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
+    const loaded = await loadMoreReviews(gameId, cursor, type)
+      .then((page) => {
+        setBatches((current) => [
+          ...current,
+          { cursor, threads: page.threads },
+        ]);
+        // A repeated cursor would re-arm the sentinel after every load
+        setHasMore(page.nextCursor !== null && page.nextCursor !== cursor);
+        setCursor(page.nextCursor);
+        setFailed(false);
+        return true;
+      })
+      .catch((error: unknown) => {
+        setIsOutdated(unstable_isUnrecognizedActionError(error));
+        setFailed(true);
+        return false;
+      });
+    setIsLoading(false);
+    return loaded;
   };
 
   // The button stays up while its check mark plays, when a click must not load again

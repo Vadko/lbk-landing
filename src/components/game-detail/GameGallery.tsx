@@ -5,7 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getImageUrl } from "@/lib/images";
 
 const GameLightbox = dynamic(
@@ -58,32 +58,25 @@ export default function GameGallery({
     dragFree: true,
   });
 
-  const onThumbClick = useCallback(
-    (index: number) => {
-      if (!emblaMainApi) {
-        return;
-      }
-      emblaMainApi.scrollTo(index);
-    },
-    [emblaMainApi]
-  );
-
-  const onSelect = useCallback(() => {
+  const onThumbClick = (index: number) => {
     if (!emblaMainApi) {
       return;
     }
-    setSelectedIndex(emblaMainApi.selectedScrollSnap());
-  }, [emblaMainApi]);
+    emblaMainApi.scrollTo(index);
+  };
 
   useEffect(() => {
     if (!emblaMainApi) {
       return;
     }
+    const onSelect = () => {
+      setSelectedIndex(emblaMainApi.selectedScrollSnap());
+    };
     emblaMainApi.on("select", onSelect).on("reInit", onSelect);
     return () => {
       emblaMainApi.off("select", onSelect).off("reInit", onSelect);
     };
-  }, [emblaMainApi, onSelect]);
+  }, [emblaMainApi]);
 
   // Keep the thumbs in sync with the main carousel
   useEffect(() => {

@@ -1,4 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { orderCatalog } from "@/lib/catalogOrder";
 import { GAMES_PER_PAGE } from "@/lib/constants";
 import { createServerClient } from "@/lib/supabase/server";
 import { teamToSlug } from "@/lib/transliterate";
@@ -19,13 +20,10 @@ export async function getGamesBySlug(slug: string): Promise<Game[]> {
 
   const supabase = createServerClient();
 
-  const { data, error } = await supabase
-    .from("games")
-    .select("*")
-    .eq("slug", slug)
-    .eq("approved", true)
-    .eq("hide", false)
-    .order("translation_progress", { ascending: false });
+  // lbk-admin's migration 212: the approved, visible translations, manual first, then by translation_rating()
+  const { data, error } = await supabase.rpc("get_game_translations", {
+    p_slug: slug,
+  });
 
   if (error) {
     return [];
@@ -120,11 +118,11 @@ export async function getInitialGames(): Promise<GamesGroupedResponse> {
   const supabase = createServerClient();
   const limit = GAMES_PER_PAGE;
 
-  const { data, error, count } = await supabase
-    .from("games_grouped")
-    .select("*", { count: "exact" })
-    .order("name", { ascending: true, nullsFirst: false })
-    .range(0, limit - 1);
+  // The same order /api/games-list pages by, or page 2 repeats and skips games at the boundary
+  const { data, error, count } = await orderCatalog(
+    supabase.from("games_grouped").select("*", { count: "exact" }),
+    "name"
+  ).range(0, limit - 1);
 
   if (error) {
     return { games: [], total: 0, hasMore: false, nextOffset: limit };

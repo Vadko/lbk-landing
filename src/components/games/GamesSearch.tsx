@@ -20,7 +20,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AIBadgeIcon } from "@/components/ui/icons/AIBadgeIcon";
 import { AIEditedBadgeIcon } from "@/components/ui/icons/AIEditedBadgeIcon";
 import { SvgIcon } from "@/components/ui/SvgIcon";
@@ -121,59 +121,12 @@ export function GamesSearch({
   const authorListRef = useRef<HTMLDivElement>(null);
   const authorSearchInputRef = useRef<HTMLInputElement>(null);
 
-  // Filter authors based on search
-  const filteredAuthors = useMemo(() => {
-    if (!authorSearch.trim()) {
-      return authors;
-    }
-    const search = authorSearch.toLowerCase();
-    return authors.filter((a) => a.toLowerCase().includes(search));
-  }, [authors, authorSearch]);
-
-  // Paginated authors to display
-  const visibleAuthors = useMemo(() => {
-    return filteredAuthors.slice(0, authorsDisplayed);
-  }, [filteredAuthors, authorsDisplayed]);
-
-  const hasMoreAuthors = useMemo(() => {
-    return authorsDisplayed < filteredAuthors.length;
-  }, [authorsDisplayed, filteredAuthors.length]);
-
   // Focus search input when dropdown opens
   useEffect(() => {
     if (isAuthorOpen && authorSearchInputRef.current) {
       authorSearchInputRef.current.focus();
     }
   }, [isAuthorOpen]);
-
-  // Handle search input change with pagination reset
-  const handleAuthorSearchChange = useCallback((newValue: string) => {
-    setAuthorSearch(newValue);
-    setAuthorsDisplayed(AUTHORS_PER_PAGE);
-  }, []);
-
-  // Handle dropdown toggle with reset
-  const handleAuthorDropdownToggle = useCallback(() => {
-    if (isAuthorOpen) {
-      setAuthorSearch("");
-      setAuthorsDisplayed(AUTHORS_PER_PAGE);
-    } else {
-      trackViewTranslatorsPage();
-    }
-    setIsAuthorOpen(!isAuthorOpen);
-  }, [isAuthorOpen]);
-
-  // Infinite scroll handler for authors
-  const handleAuthorScroll = useCallback(() => {
-    if (!authorListRef.current || !hasMoreAuthors) {
-      return;
-    }
-
-    const { scrollTop, scrollHeight, clientHeight } = authorListRef.current;
-    if (scrollTop + clientHeight >= scrollHeight - 50) {
-      setAuthorsDisplayed((prev) => prev + AUTHORS_PER_PAGE);
-    }
-  }, [hasMoreAuthors]);
 
   // Debounced search
   useEffect(() => {
@@ -211,6 +164,48 @@ export function GamesSearch({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Kept on purpose: without it the compiler folds the author list into one cache with the whole toolbar
+  const { filteredAuthors, visibleAuthors, hasMoreAuthors } = useMemo(() => {
+    const query = authorSearch.toLowerCase();
+    const filtered = authorSearch.trim()
+      ? authors.filter((a) => a.toLowerCase().includes(query))
+      : authors;
+    return {
+      filteredAuthors: filtered,
+      visibleAuthors: filtered.slice(0, authorsDisplayed),
+      hasMoreAuthors: authorsDisplayed < filtered.length,
+    };
+  }, [authors, authorSearch, authorsDisplayed]);
+
+  // Handle search input change with pagination reset
+  const handleAuthorSearchChange = (newValue: string) => {
+    setAuthorSearch(newValue);
+    setAuthorsDisplayed(AUTHORS_PER_PAGE);
+  };
+
+  // Handle dropdown toggle with reset
+  const handleAuthorDropdownToggle = () => {
+    if (isAuthorOpen) {
+      setAuthorSearch("");
+      setAuthorsDisplayed(AUTHORS_PER_PAGE);
+    } else {
+      trackViewTranslatorsPage();
+    }
+    setIsAuthorOpen(!isAuthorOpen);
+  };
+
+  // Infinite scroll handler for authors
+  const handleAuthorScroll = () => {
+    if (!authorListRef.current || !hasMoreAuthors) {
+      return;
+    }
+
+    const { scrollTop, scrollHeight, clientHeight } = authorListRef.current;
+    if (scrollTop + clientHeight >= scrollHeight - 50) {
+      setAuthorsDisplayed((prev) => prev + AUTHORS_PER_PAGE);
+    }
+  };
 
   // Toggle status selection
   const handleStatusToggle = (statusValue: string) => {
@@ -254,17 +249,17 @@ export function GamesSearch({
   };
 
   // Status button label (also covers voice/achievements/translation type grouped in the same dropdown)
-  const statusLabel = useMemo(() => {
-    const total =
-      selectedStatuses.length +
-      selectedTranslationTypes.length +
-      (hasVoice ? 1 : 0) +
-      (hasAchievements ? 1 : 0) +
-      (fromWorkshop ? 1 : 0);
-    if (total === 0) {
+  const statusFilterCount =
+    selectedStatuses.length +
+    selectedTranslationTypes.length +
+    (hasVoice ? 1 : 0) +
+    (hasAchievements ? 1 : 0) +
+    (fromWorkshop ? 1 : 0);
+  const getStatusLabel = () => {
+    if (statusFilterCount === 0) {
       return t("allStatuses");
     }
-    if (total === 1) {
+    if (statusFilterCount === 1) {
       if (selectedStatuses.length === 1) {
         const opt = STATUS_OPTIONS.find((o) => o.value === selectedStatuses[0]);
         return opt ? tStatus(opt.value) : selectedStatuses[0];
@@ -280,34 +275,21 @@ export function GamesSearch({
       }
       return hasAchievements ? t("achievements") : t("workshop");
     }
-    return t("filtersCount", { count: String(total) });
-  }, [
-    t,
-    tStatus,
-    tType,
-    selectedStatuses,
-    selectedTranslationTypes,
-    hasVoice,
-    hasAchievements,
-    fromWorkshop,
-  ]);
+    return t("filtersCount", { count: String(statusFilterCount) });
+  };
+  const statusLabel = getStatusLabel();
 
   // Author button label
-  const authorLabel = useMemo(() => {
-    if (selectedAuthors.length === 0) {
-      return t("allAuthors");
-    }
-    if (selectedAuthors.length === 1) {
-      return selectedAuthors[0];
-    }
-    return t("authorsCount", { count: String(selectedAuthors.length) });
-  }, [t, selectedAuthors]);
+  const authorLabel =
+    selectedAuthors.length === 0
+      ? t("allAuthors")
+      : selectedAuthors.length === 1
+        ? selectedAuthors[0]
+        : t("authorsCount", { count: String(selectedAuthors.length) });
 
   // Sort button label
-  const sortLabel = useMemo(() => {
-    const option = SORT_OPTIONS.find((o) => o.value === sortBy);
-    return t(`sort.${option?.value ?? "name"}`);
-  }, [t, sortBy]);
+  const sortOption = SORT_OPTIONS.find((o) => o.value === sortBy);
+  const sortLabel = t(`sort.${sortOption?.value ?? "name"}`);
 
   return (
     <div className="games-filters-wrapper">
