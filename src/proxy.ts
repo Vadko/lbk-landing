@@ -4,19 +4,12 @@ import { splitLocale } from "@/i18n/locale-path";
 import { routing } from "@/i18n/routing";
 import { isLauncherUserAgent } from "@/lib/captcha/is-launcher-user-agent";
 import { isMaintenanceMode } from "@/lib/maintenance";
+import { notFoundResponse } from "@/lib/not-found-response";
 import { resolveGamePath } from "@/lib/proxy-games";
 import { STATUS_PAGE_HEADER, statusPageResponse } from "@/lib/status-page";
 import { isUnlocalizedPath } from "@/lib/unlocalized-path";
 
 const intlMiddleware = createMiddleware(routing);
-
-// Lands on [locale]/[...rest], which renders the localized 404 with the navbar
-function notFound(request: NextRequest) {
-  return NextResponse.rewrite(
-    new URL(`/${routing.defaultLocale}/_not-found`, request.url),
-    { status: 404 }
-  );
-}
 
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
@@ -35,7 +28,7 @@ export async function proxy(request: NextRequest) {
     if (isLauncherUserAgent(request.headers.get("user-agent"))) {
       return NextResponse.next();
     }
-    return notFound(request);
+    return notFoundResponse(request, routing.defaultLocale);
   }
 
   const { locale, path } = splitLocale(pathname);
@@ -45,7 +38,7 @@ export async function proxy(request: NextRequest) {
     if (request.headers.get(STATUS_PAGE_HEADER) === "1") {
       return intlMiddleware(request);
     }
-    return notFound(request);
+    return notFoundResponse(request, locale);
   }
 
   // 503 + Retry-After so search engines keep the indexed pages instead of the stub
@@ -58,7 +51,7 @@ export async function proxy(request: NextRequest) {
     );
   }
 
-  // 410 Gone for deleted translations; a null answer carries on to the page
+  // 308 for a renamed game, 410 for a deleted one, 404 for any other unknown game path; a null answer carries on to the page
   const gameResponse = await resolveGamePath(request);
   if (gameResponse) {
     return gameResponse;

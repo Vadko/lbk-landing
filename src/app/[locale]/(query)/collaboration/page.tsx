@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { PartnersListSection } from "@/components/collaboration/PartnersListSection";
 import { PartnersStatsSection } from "@/components/collaboration/PartnersStatsSection";
 import { PartnerValueSection } from "@/components/collaboration/PartnerValueSection";
@@ -10,8 +10,8 @@ import { CodeIcon } from "@/components/icons";
 import { CtaSection } from "@/components/ui/CtaSection";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { PageHeroSection } from "@/components/ui/PageHeroSection";
-import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
 import { BOT_URL } from "@/lib/constants";
+import { localizedAlternates } from "@/lib/localizedAlternates";
 
 const FLOW_STEPS = [
   "register",
@@ -21,19 +21,17 @@ const FLOW_STEPS = [
   "done",
 ] as const;
 
-export async function generateMetadata({
-  params,
-}: LocaleParams): Promise<Metadata> {
-  const locale = await resolveLocale(params);
-  const t = await getTranslations({ locale, namespace: "collaboration" });
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = await getTranslations("collaboration");
   return {
     title: t("title"),
     description: t("description"),
+    alternates: localizedAlternates("/collaboration", locale),
   };
 }
 
-export default async function CollaborationRoutePage({ params }: LocaleParams) {
-  await resolveLocale(params);
+export default async function CollaborationRoutePage() {
   const t = await getTranslations("collaboration");
 
   return (

@@ -2,18 +2,17 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons/faGamepad";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { GameBanner, GameDetailArticle } from "@/components/game-detail";
 import { SvgIcon } from "@/components/ui/SvgIcon";
 import { Link, permanentRedirect } from "@/i18n/navigation";
-import { resolveLocale } from "@/i18n/resolve-locale";
 import { routing } from "@/i18n/routing";
 import { STATUS_BADGE_CLASSES } from "@/lib/constants";
 import { generateBreadcrumbLD } from "@/lib/game-jsonld";
 import { getAllGameSlugs, getGamesBySlug } from "@/lib/games";
 import { getImageUrl } from "@/lib/images";
 import {
-  localizedAlternates,
+  gameAlternates,
   localizedUrl,
   openGraphLocale,
 } from "@/lib/localizedAlternates";
@@ -21,12 +20,16 @@ import { getRedirect } from "@/lib/redirects";
 import { teamToSlug } from "@/lib/transliterate";
 
 interface PageProps {
-  params: Promise<{ locale: string; slug: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export const instant = false;
 
+// An unknown slug renders before the response starts, so its 404 or 308 is the real status instead of a streamed 200
+export const unstable_paramMatching = { slug: "blocking" };
+
 export async function generateStaticParams() {
+  // Next throws when a child generateStaticParams returns [] for a parent locale, so every call lists the uk pages and en/be/pl render on demand
   const slugs = await getAllGameSlugs();
   return slugs.map((slug) => ({ locale: routing.defaultLocale, slug }));
 }
@@ -34,10 +37,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const locale = await resolveLocale(params);
+  const locale = await getLocale();
   const { slug } = await params;
   const translations = await getGamesBySlug(slug);
-  const t = await getTranslations({ locale, namespace: "gameMeta" });
+  const t = await getTranslations("gameMeta");
 
   if (translations.length === 0) {
     return { title: t("gameNotFound") };
@@ -78,10 +81,7 @@ export async function generateMetadata({
           ? [getImageUrl(game.banner_path, game.updated_at)!]
           : undefined,
       },
-      alternates: localizedAlternates(
-        `/games/${slug}/${teamToSlug(game.team)}`,
-        locale
-      ),
+      alternates: gameAlternates(`/games/${slug}/${teamToSlug(game.team)}`),
     };
   }
 
@@ -115,12 +115,12 @@ export async function generateMetadata({
         ? [getImageUrl(game.banner_path, game.updated_at)!]
         : undefined,
     },
-    alternates: localizedAlternates(`/games/${slug}`, locale),
+    alternates: gameAlternates(`/games/${slug}`),
   };
 }
 
 export default async function GamePage({ params }: PageProps) {
-  const locale = await resolveLocale(params);
+  const locale = await getLocale();
   const { slug } = await params;
   const translations = await getGamesBySlug(slug);
 

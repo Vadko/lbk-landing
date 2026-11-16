@@ -1,4 +1,9 @@
-import { isLocale, type Locale, routing } from "./routing";
+import { type Locale, routing } from "./routing";
+
+// The proxy bundle resolves next-intl under react-server, where its entries pull in request.ts and next/root-params, so this module stays dependency-free
+function isLocale(value: string | undefined): value is Locale {
+  return routing.locales.some((locale) => locale === value);
+}
 
 export function splitLocale(pathname: string): {
   locale: Locale;
@@ -16,12 +21,4 @@ export function localizedPath(path: string, locale: Locale): string {
     return path;
   }
   return path === "/" ? `/${locale}` : `/${locale}${path}`;
-}
-
-export function localeSwitchHref(
-  pathname: string,
-  locale: Locale,
-  suffix: string
-): string {
-  return `${localizedPath(splitLocale(pathname).path, locale)}${suffix}`;
 }

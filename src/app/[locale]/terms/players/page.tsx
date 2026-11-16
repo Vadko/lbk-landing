@@ -1,16 +1,13 @@
 ﻿import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
-import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
 import { BOT_URL } from "@/lib/constants";
 import { localizedAlternates } from "@/lib/localizedAlternates";
 import { LegalLayout } from "../../legal-layout";
 
-export async function generateMetadata({
-  params,
-}: LocaleParams): Promise<Metadata> {
-  const locale = await resolveLocale(params);
-  const t = await getTranslations({ locale, namespace: "playerTerms" });
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = await getTranslations("playerTerms");
 
   return {
     title: t("title"),
@@ -25,8 +22,7 @@ export async function generateMetadata({
 
 const b = (chunks: ReactNode) => <strong>{chunks}</strong>;
 
-export default async function TermsPlayersPage({ params }: LocaleParams) {
-  await resolveLocale(params);
+export default async function TermsPlayersPage() {
   const t = await getTranslations("playerTerms");
   const tLegal = await getTranslations("legalLayout");
 

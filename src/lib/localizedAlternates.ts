@@ -1,4 +1,4 @@
-import { localizedPath } from "@/i18n/locale-path";
+import { getPathname } from "@/i18n/navigation";
 import { type Locale, routing } from "@/i18n/routing";
 
 const SITE_URL = "https://lbklauncher.com";
@@ -15,7 +15,7 @@ export function openGraphLocale(locale: Locale): string {
 }
 
 export function localizedUrl(path: string, locale: Locale): string {
-  return `${SITE_URL}${localizedPath(path, locale)}`;
+  return `${SITE_URL}${getPathname({ href: path, locale })}`;
 }
 
 export function localizedAlternates(path: string, locale: Locale) {
@@ -28,4 +28,9 @@ export function localizedAlternates(path: string, locale: Locale) {
       "x-default": localizedUrl(path, routing.defaultLocale),
     },
   };
+}
+
+// A game's description, the bulk of its page, is stored in Ukrainian only, so every locale's copy names the uk page as canonical and none claims hreflang
+export function gameAlternates(path: string) {
+  return { canonical: localizedUrl(path, routing.defaultLocale) };
 }

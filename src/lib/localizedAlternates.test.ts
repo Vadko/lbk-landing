@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  gameAlternates,
   localizedAlternates,
   localizedUrl,
   openGraphLocale,
@@ -32,6 +33,14 @@ describe("localizedAlternates", () => {
         pl: "https://lbklauncher.com/pl/games",
         "x-default": "https://lbklauncher.com/games",
       },
+    });
+  });
+});
+
+describe("gameAlternates", () => {
+  it("points every locale at the uk page without hreflang", () => {
+    expect(gameAlternates("/games/portal/team-a")).toEqual({
+      canonical: "https://lbklauncher.com/games/portal/team-a",
     });
   });
 });

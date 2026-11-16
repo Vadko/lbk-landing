@@ -2,11 +2,11 @@
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons/faGlobe";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
 import { SvgIcon } from "@/components/ui/SvgIcon";
-import { localeSwitchHref } from "@/i18n/locale-path";
+import { getPathname, usePathname } from "@/i18n/navigation";
 import { type Locale, routing } from "@/i18n/routing";
 import { stepLocale } from "@/i18n/step-locale";
 
@@ -63,7 +63,10 @@ export function LanguageSwitcher({
       return;
     }
     const { search, hash } = window.location;
-    router.replace(localeSwitchHref(pathname, next, `${search}${hash}`));
+    // next-intl's router forces a prefix on a locale switch, which costs Ukrainian a /uk → / redirect
+    router.replace(
+      `${getPathname({ href: pathname, locale: next })}${search}${hash}`
+    );
   };
 
   const focusOption = (option: Locale) => {
@@ -93,9 +96,8 @@ export function LanguageSwitcher({
         ref={buttonRef}
         className="language-switcher__button glass-bg"
         aria-label={t("label")}
-        aria-haspopup="true"
         aria-expanded={isOpen}
-        aria-controls={listId}
+        aria-controls={isOpen ? listId : undefined}
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <SvgIcon icon={faGlobe} />

@@ -2,12 +2,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import {
-  localizedAlternates,
-  localizedUrl,
-  openGraphLocale,
-} from "@/lib/localizedAlternates";
-import "../globals.css";
+import "@/app/globals.css";
+import { outfit } from "@/app/fonts";
 import { ClientUtilities } from "@/components/layout/ClientUtilities";
 import { Footer } from "@/components/layout/Footer";
 import { IframeResizeMessenger } from "@/components/layout/IframeResizeMessenger";
@@ -16,7 +12,7 @@ import { PageOnlyScript } from "@/components/layout/PageOnlyScript";
 import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
 import { routing } from "@/i18n/routing";
 import { getGamesCount } from "@/lib/games-count";
-import { outfit } from "../fonts";
+import { localizedUrl, openGraphLocale } from "@/lib/localizedAlternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -45,7 +41,6 @@ export async function generateMetadata({
     openGraph: {
       type: "website",
       locale: openGraphLocale(locale),
-      url: localizedUrl("/", locale),
       siteName: t("brandTitle"),
       title: t("brandTitle"),
       description,
@@ -75,7 +70,6 @@ export async function generateMetadata({
         "max-snippet": -1,
       },
     },
-    alternates: localizedAlternates("/", locale),
     icons: {
       icon: "/assets/favicon.ico",
       apple: "/assets/favicon.ico",

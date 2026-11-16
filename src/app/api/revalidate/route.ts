@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { refreshDeletedSlugsCache } from "@/lib/deleted-slugs-cache";
+import { refreshGamePathsCache } from "@/lib/game-paths-cache";
 import { internalPaths } from "@/lib/internal-paths";
 import { teamToSlug } from "@/lib/transliterate";
 
@@ -57,12 +58,11 @@ export async function POST(request: NextRequest) {
     revalidateEveryLocale("/games");
     paths.push("/games");
 
-    // Only a deletion changes the deleted-slugs set. Recompute it admin-side
-    // (not on the user's request) so the just-deleted page returns 410 right
-    // away; ordinary updates leave the set untouched, so we skip the work.
-    if (deleted) {
-      await refreshDeletedSlugsCache();
-    }
+    // Recomputed admin-side so a user request never waits on a rebuild; only a deletion changes the deleted-slugs set
+    await Promise.all([
+      refreshGamePathsCache(),
+      deleted ? refreshDeletedSlugsCache() : undefined,
+    ]);
 
     return NextResponse.json({ revalidated: true, paths });
   } catch (error) {

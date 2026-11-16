@@ -1,18 +1,21 @@
 import { NextIntlClientProvider } from "next-intl";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { StatusPage } from "@/components/StatusPage";
-import { routing } from "@/i18n/routing";
 import { outfit } from "./fonts";
 
+// The locale comes from a request header, so every 404 renders per request instead of from one prerendered uk page
+export const instant = false;
+
 export default async function GlobalNotFound() {
+  const locale = await getLocale();
   const t = await getTranslations("statusPage.notFound");
 
   return (
     <html
-      lang={routing.defaultLocale}
+      lang={locale}
       suppressHydrationWarning
       className={outfit.variable}
       data-scroll-behavior="smooth"

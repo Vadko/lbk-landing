@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { GameDetailArticle } from "@/components/game-detail";
 import { permanentRedirect } from "@/i18n/navigation";
-import { resolveLocale } from "@/i18n/resolve-locale";
 import { routing } from "@/i18n/routing";
 import {
   getAllGameSlugsWithTeams,
@@ -11,20 +10,21 @@ import {
   getGamesBySlug,
 } from "@/lib/games";
 import { getImageUrl } from "@/lib/images";
-import {
-  localizedAlternates,
-  openGraphLocale,
-} from "@/lib/localizedAlternates";
+import { gameAlternates, openGraphLocale } from "@/lib/localizedAlternates";
 import { resolveMovedGamePath } from "@/lib/redirects";
 import { teamToSlug } from "@/lib/transliterate";
 
 interface PageProps {
-  params: Promise<{ locale: string; slug: string; team: string }>;
+  params: Promise<{ slug: string; team: string }>;
 }
 
 export const instant = false;
 
+// An unknown slug renders before the response starts, so its 404 or 308 is the real status instead of a streamed 200
+export const unstable_paramMatching = { slug: "blocking", team: "blocking" };
+
 export async function generateStaticParams() {
+  // Next throws when a child generateStaticParams returns [] for a parent locale, so every call lists the uk pages and en/be/pl render on demand
   const slugsWithTeams = await getAllGameSlugsWithTeams();
   return slugsWithTeams.map(({ slug, teamSlug }) => ({
     locale: routing.defaultLocale,
@@ -36,10 +36,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const locale = await resolveLocale(params);
+  const locale = await getLocale();
   const { slug, team: teamSlugParam } = await params;
   const game = await getGameBySlugAndTeamSlug(slug, teamSlugParam);
-  const t = await getTranslations({ locale, namespace: "gameMeta" });
+  const t = await getTranslations("gameMeta");
 
   if (!game) {
     return { title: t("translationNotFound") };
@@ -75,15 +75,12 @@ export async function generateMetadata({
         ? [getImageUrl(game.banner_path, game.updated_at)!]
         : undefined,
     },
-    alternates: localizedAlternates(
-      `/games/${slug}/${teamToSlug(game.team)}`,
-      locale
-    ),
+    alternates: gameAlternates(`/games/${slug}/${teamToSlug(game.team)}`),
   };
 }
 
 export default async function GameTranslationPage({ params }: PageProps) {
-  const locale = await resolveLocale(params);
+  const locale = await getLocale();
   const { slug, team: teamSlugParam } = await params;
   const game = await getGameBySlugAndTeamSlug(slug, teamSlugParam);
 

@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { TechStackDiagram } from "@/components/tech-stack/TechStackDiagram";
-import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
 import { localizedAlternates } from "@/lib/localizedAlternates";
 
-export async function generateMetadata({
-  params,
-}: LocaleParams): Promise<Metadata> {
-  const locale = await resolveLocale(params);
-  const t = await getTranslations({ locale, namespace: "techStack" });
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = await getTranslations("techStack");
   return {
     title: t("title"),
     description: t("description"),
@@ -121,8 +118,7 @@ function StackList({ rows }: StackListProps) {
   );
 }
 
-export default async function TechStackPage({ params }: LocaleParams) {
-  await resolveLocale(params);
+export default async function TechStackPage() {
   const t = await getTranslations("techStack");
 
   const projects = [

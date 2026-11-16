@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
-import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
 import { BOT_URL } from "@/lib/constants";
 import { localizedAlternates } from "@/lib/localizedAlternates";
 import { LegalLayout } from "../legal-layout";
 
-export async function generateMetadata({
-  params,
-}: LocaleParams): Promise<Metadata> {
-  const locale = await resolveLocale(params);
-  const t = await getTranslations({ locale, namespace: "privacyPolicy" });
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = await getTranslations("privacyPolicy");
 
   return {
     title: t("title"),
@@ -72,8 +69,7 @@ const turnstile = (chunks: ReactNode) => (
   </a>
 );
 
-export default async function PrivacyPage({ params }: LocaleParams) {
-  await resolveLocale(params);
+export default async function PrivacyPage() {
   const t = await getTranslations("privacyPolicy");
   const tLegal = await getTranslations("legalLayout");
 

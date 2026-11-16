@@ -41,6 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     slugGroups.set(game.slug, existing);
   }
 
+  // Only the uk game pages: en/be/pl copies canonicalize to them (gameAlternates)
   const gameUrls: MetadataRoute.Sitemap = [];
 
   for (const [slug, translations] of slugGroups) {
@@ -50,23 +51,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           new Date(t.updated_at) > latest ? new Date(t.updated_at) : latest,
         new Date(0)
       );
-      gameUrls.push(
-        ...withLocales(`/games/${slug}`, {
-          lastModified: latestUpdate,
-          changeFrequency: "weekly",
-          priority: 0.7,
-        })
-      );
+      gameUrls.push({
+        url: localizedUrl(`/games/${slug}`, routing.defaultLocale),
+        lastModified: latestUpdate,
+        changeFrequency: "weekly",
+        priority: 0.7,
+      });
     }
 
     for (const translation of translations) {
-      gameUrls.push(
-        ...withLocales(`/games/${slug}/${teamToSlug(translation.team)}`, {
-          lastModified: new Date(translation.updated_at),
-          changeFrequency: "weekly",
-          priority: 0.6,
-        })
-      );
+      gameUrls.push({
+        url: localizedUrl(
+          `/games/${slug}/${teamToSlug(translation.team)}`,
+          routing.defaultLocale
+        ),
+        lastModified: new Date(translation.updated_at),
+        changeFrequency: "weekly",
+        priority: 0.6,
+      });
     }
   }
 

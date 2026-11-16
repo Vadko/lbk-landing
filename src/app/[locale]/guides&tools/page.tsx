@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import type { Messages } from "next-intl";
-import { getTranslations } from "next-intl/server";
-import { type LocaleParams, resolveLocale } from "@/i18n/resolve-locale";
+import { getLocale, getTranslations } from "next-intl/server";
 import { localizedAlternates } from "@/lib/localizedAlternates";
 
-export async function generateMetadata({
-  params,
-}: LocaleParams): Promise<Metadata> {
-  const locale = await resolveLocale(params);
-  const t = await getTranslations({ locale, namespace: "guidesTools" });
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = await getTranslations("guidesTools");
   return {
     title: t("title"),
     description: t("description"),
@@ -195,8 +192,7 @@ const docsList: DocsSection[] = [
   },
 ];
 
-export default async function InfoPage({ params }: LocaleParams) {
-  await resolveLocale(params);
+export default async function InfoPage() {
   const t = await getTranslations("guidesTools");
 
   return (
