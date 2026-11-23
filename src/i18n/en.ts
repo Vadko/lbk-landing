@@ -254,6 +254,7 @@ export const en = {
     guides: "Guides and tools",
     techStack: "Technology stack",
     community: "Community",
+    partners: "Partners",
     legal: "Legal",
     privacy: "Privacy policy",
     termsPlayers: "Terms for players",

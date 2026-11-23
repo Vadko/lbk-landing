@@ -89,6 +89,48 @@ export async function Footer() {
           </div>
 
           <div className="footer-section">
+            <h4>{t("partners")}</h4>
+            <ul className="footer-links">
+              <li>
+                <a
+                  href="https://fancon.ua/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  FanCon
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://kuli.com.ua/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Kuli
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://t.me/s/cloverdub"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  CloverDUB
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://prystanok.com.ua/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Prystanok
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="footer-section">
             <h4>{t("legal")}</h4>
             <ul className="footer-links">
               <li>
