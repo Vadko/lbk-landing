@@ -261,6 +261,7 @@ export const uk = {
     guides: "Посібники та інструменти",
     techStack: "Технічний стек",
     community: "Спільнота",
+    partners: "Партнери",
     legal: "Юридична інформація",
     privacy: "Політика приватності",
     termsPlayers: "Умови для гравців",

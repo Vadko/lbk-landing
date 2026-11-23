@@ -19,6 +19,12 @@ export function PartnerSection() {
       height: 40,
     },
     {
+      name: "Prystanok",
+      Logo: "/assets/Logo-Prystanok.svg",
+      width: 43,
+      height: 43,
+    },
+    {
       name: "FanСon",
       Logo: "/assets/Logo-FanСon.png",
       width: 58,

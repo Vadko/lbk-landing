@@ -267,6 +267,7 @@ export const pl = {
     guides: "Poradniki i narzędzia",
     techStack: "Stos technologiczny",
     community: "Społeczność",
+    partners: "Partnerzy",
     legal: "Informacje prawne",
     privacy: "Polityka prywatności",
     termsPlayers: "Warunki dla graczy",
