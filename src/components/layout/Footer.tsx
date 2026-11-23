@@ -97,7 +97,7 @@ export async function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  FanСon
+                  FanCon
                 </a>
               </li>
               <li>
