@@ -45,6 +45,11 @@ const getOSPlatform = (): Platform => {
   return "windows";
 };
 
+const AUR_PACKAGE_URL = "https://aur.archlinux.org/packages/lbk-launcher-bin";
+const AUR_HELPER_COMMAND = "yay -S lbk-launcher-bin";
+const AUR_MANUAL_COMMAND =
+  "git clone https://aur.archlinux.org/lbk-launcher-bin.git && cd lbk-launcher-bin && makepkg -si";
+
 const emptySubscribe = () => () => {};
 
 const strong = (chunks: ReactNode) => <strong>{chunks}</strong>;
@@ -274,6 +279,7 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
         <h3>{t("downloadOptions")}</h3>
         <ul className="setup-files">
           <li>{t.rich("linux.flatpakFile", { b: strong })}</li>
+          <li>{t.rich("linux.aurFile", { b: strong })}</li>
           <li>
             {appImageUrl ? (
               <a href={appImageUrl} className="setup-link">
@@ -302,6 +308,33 @@ function LinuxInstructions({ appImageUrl }: { appImageUrl: string | null }) {
             text={`flatpak install --user ${flatpakrefUrl}`}
             title={t("copyCommand")}
           />
+        </div>
+      </div>
+
+      <div className="setup-section">
+        <h3>{t("linux.aurTitle")}</h3>
+        <p>
+          {t.rich("linux.aurIntro", {
+            link: (chunks) => (
+              <a
+                href={AUR_PACKAGE_URL}
+                className="setup-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {chunks}
+              </a>
+            ),
+          })}
+        </p>
+        <div className="setup-code">
+          <code>{AUR_HELPER_COMMAND}</code>
+          <CopyButton text={AUR_HELPER_COMMAND} title={t("copyCommand")} />
+        </div>
+        <p>{t("linux.aurManual")}</p>
+        <div className="setup-code">
+          <code>{AUR_MANUAL_COMMAND}</code>
+          <CopyButton text={AUR_MANUAL_COMMAND} title={t("copyCommand")} />
         </div>
       </div>
 

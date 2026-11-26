@@ -1200,12 +1200,17 @@ export const pl = {
       title: "Instalacja na Linux",
       flatpakFile:
         "<b>Flatpak</b> — zalecany dla Steam Deck i dystrybucji obsługujących Flatpak",
+      aurFile: "<b>AUR</b> — dla Arch Linux i dystrybucji pochodnych",
       appImageFile: "— format uniwersalny",
       rpmFile: "— dla Fedora/RHEL",
       flatpakTitle: "Instalacja Flatpak (zalecana)",
       flatpakIntro:
         "Najprostszy sposób instalacji launchera. Otwórz <link>link do flatpakref</link> — system automatycznie zaproponuje zainstalowanie aplikacji.",
       viaTerminal: "Albo przez terminal:",
+      aurTitle: "Instalacja z AUR (Arch Linux)",
+      aurIntro:
+        "Pakiet <link>lbk-launcher-bin</link> zainstalujesz dowolnym pomocnikiem AUR, np. yay lub paru:",
+      aurManual: "Albo ręcznie, bez pomocnika:",
       appImageTitle: "Instalacja AppImage",
       appImageDownload: "Pobierz plik AppImage",
       appImageExecutable:
