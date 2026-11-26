@@ -1190,12 +1190,17 @@ export const uk = {
       title: "Встановлення на Linux",
       flatpakFile:
         "<b>Flatpak</b> — рекомендовано для Steam Deck і дистрибутивів із підтримкою Flatpak",
+      aurFile: "<b>AUR</b> — для Arch Linux і похідних дистрибутивів",
       appImageFile: "— універсальний формат",
       rpmFile: "— для Fedora/RHEL",
       flatpakTitle: "Встановлення Flatpak (рекомендовано)",
       flatpakIntro:
         "Найпростіший спосіб встановити лаунчер. Відкрийте <link>посилання на flatpakref</link> — система запропонує встановити застосунок автоматично.",
       viaTerminal: "Або через термінал:",
+      aurTitle: "Встановлення з AUR (Arch Linux)",
+      aurIntro:
+        "Пакет <link>lbk-launcher-bin</link> встановлюється будь-яким AUR-хелпером, наприклад yay або paru:",
+      aurManual: "Або вручну, без хелпера:",
       appImageTitle: "Встановлення AppImage",
       appImageDownload: "Завантажте файл AppImage",
       appImageExecutable:
